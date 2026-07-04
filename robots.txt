@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /_templates/
+
+Sitemap: https://ursdom.ru/sitemap.xml
