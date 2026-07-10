@@ -1,0 +1,12 @@
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+{%- for c in breadcrumbs %}
+{%- if c.item %}
+        { "@type": "ListItem", "position": {{ loop.index }}, "name": "{{ c.name }}", "item": "{{ c.item }}" }{{ "," if not loop.last else "" }}
+{%- else %}
+        { "@type": "ListItem", "position": {{ loop.index }}, "name": "{{ c.name }}" }{{ "," if not loop.last else "" }}
+{%- endif %}
+{%- endfor %}
+      ]
+    }

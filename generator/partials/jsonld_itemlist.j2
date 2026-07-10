@@ -1,0 +1,10 @@
+    {
+      "@type": "ItemList",
+      "name": "{{ itemlist_name }}",
+      "itemListOrder": "https://schema.org/ItemListOrderDescending",
+      "itemListElement": [
+{%- for it in itemlist %}
+        { "@type": "ListItem", "position": {{ loop.index }}, "name": "{{ it }}" }{{ "," if not loop.last else "" }}
+{%- endfor %}
+      ]
+    }

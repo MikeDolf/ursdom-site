@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#1e3a4f">
+<title>{{ title }} | НАШДОМ</title>
+<meta name="description" content="{{ description }}">
+<link rel="canonical" href="{{ canonical }}">
+<meta property="og:type" content="{{ og_type }}">
+<meta property="og:locale" content="ru_RU">
+<meta property="og:site_name" content="НАШДОМ">
+<meta property="og:title" content="{{ og_title }}">
+<meta property="og:description" content="{{ og_description }}">
+<meta property="og:url" content="{{ canonical }}">
+<meta property="og:image" content="https://ursdom.ru/img/og-cover.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="НАШДОМ: инженерный справочник по дренажу, скважине и ливнёвке">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://ursdom.ru/img/og-cover.png">
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+{{ graph_block }}
+  ]
+}
+</script>
+</head>
+<body>
+<a class="skip-link" href="#content">К содержимому</a>
+{{ header }}
+{{ breadcrumbs_html }}
+<main id="content">
+<article>
+{{ body }}</article>
+</main>
+{{ footer }}
+{{ metrika }}
+</body>
+</html>

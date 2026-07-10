@@ -1,0 +1,12 @@
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+{%- for qa in faq %}
+        {
+          "@type": "Question",
+          "name": "{{ qa.q }}",
+          "acceptedAnswer": { "@type": "Answer", "text": "{{ qa.a }}" }
+        }{{ "," if not loop.last else "" }}
+{%- endfor %}
+      ]
+    }
