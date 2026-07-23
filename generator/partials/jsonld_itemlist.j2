@@ -4,7 +4,7 @@
       "itemListOrder": "https://schema.org/ItemListOrderDescending",
       "itemListElement": [
 {%- for it in itemlist %}
-        { "@type": "ListItem", "position": {{ loop.index }}, "name": "{{ it }}" }{{ "," if not loop.last else "" }}
+        { "@type": "ListItem", "position": {{ loop.index }}, "name": "{{ it.name }}"{% if it.url %}, "url": "{{ it.url }}"{% endif %} }{{ "," if not loop.last else "" }}
 {%- endfor %}
       ]
     }

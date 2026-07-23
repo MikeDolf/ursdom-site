@@ -47,7 +47,7 @@
     "headline": "Кессон для скважины: какой выбрать",
     "jsonld_description": "Сравнение кессона из бетонных колец, пластикового и металлического: размеры, гидроизоляция, монтаж своими руками и альтернатива в виде адаптера.",
     "datePublished": "2026-07-04",
-    "dateModified": "2026-07-07"
+    "dateModified": "2026-07-23"
   },
   {
     "url": "/drenazh/rating-drenazhnyh-trub/",
@@ -100,9 +100,18 @@
     "marker": "рейтинг дренажных труб",
     "itemlist_name": "Рейтинг дренажных труб по типу и диаметру",
     "itemlist": [
-      "Гофрированная одностенная 110 в геотекстиле",
-      "Двустенная 110-160 с гладким каналом",
-      "Двустенная 200-300 для коллектора"
+      {
+        "name": "Гофрированная одностенная 110 в геотекстиле",
+        "url": "https://ursdom.ru/drenazh/rating-drenazhnyh-trub/#pos1"
+      },
+      {
+        "name": "Двустенная 110-160 с гладким каналом",
+        "url": "https://ursdom.ru/drenazh/rating-drenazhnyh-trub/#pos2"
+      },
+      {
+        "name": "Двустенная 200-300 для коллектора",
+        "url": "https://ursdom.ru/drenazh/rating-drenazhnyh-trub/#pos3"
+      }
     ]
   },
   {
@@ -156,9 +165,18 @@
     "marker": "лучший геотекстиль для дренажа",
     "itemlist_name": "Рейтинг геотекстиля для дренажа по плотности",
     "itemlist": [
-      "Иглопробивной 150-200 г/м²",
-      "Иглопробивной 250 г/м² под щебень",
-      "Иглопробивной 300 г/м² под нагрузку"
+      {
+        "name": "Иглопробивной 150-200 г/м²",
+        "url": "https://ursdom.ru/drenazh/rating-geotekstilya/#pos1"
+      },
+      {
+        "name": "Иглопробивной 250 г/м² под щебень",
+        "url": "https://ursdom.ru/drenazh/rating-geotekstilya/#pos2"
+      },
+      {
+        "name": "Иглопробивной 300 г/м² под нагрузку",
+        "url": "https://ursdom.ru/drenazh/rating-geotekstilya/#pos3"
+      }
     ]
   },
   {
@@ -212,9 +230,18 @@
     "marker": "рейтинг гидроаккумуляторов для скважины",
     "itemlist_name": "Рейтинг гидроаккумуляторов для скважины по объёму",
     "itemlist": [
-      "Гидроаккумулятор 50 л для дома",
-      "Гидроаккумулятор 100 л для полива",
-      "Гидроаккумулятор 24 л для дачи"
+      {
+        "name": "Гидроаккумулятор 50 л для дома",
+        "url": "https://ursdom.ru/skvazhina/rating-gidroakkumulyatorov/#pos1"
+      },
+      {
+        "name": "Гидроаккумулятор 100 л для полива",
+        "url": "https://ursdom.ru/skvazhina/rating-gidroakkumulyatorov/#pos2"
+      },
+      {
+        "name": "Гидроаккумулятор 24 л для дачи",
+        "url": "https://ursdom.ru/skvazhina/rating-gidroakkumulyatorov/#pos3"
+      }
     ]
   }
 ]

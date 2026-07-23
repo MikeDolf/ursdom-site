@@ -54,7 +54,10 @@ def extract(rel_url):
         il = types["ItemList"]
         entry["marker"] = title.split(":")[0].strip().lower()
         entry["itemlist_name"] = il["name"]
-        entry["itemlist"] = [x["name"] for x in il["itemListElement"]]
+        entry["itemlist"] = [
+            {"name": x["name"], **({"url": x["url"]} if x.get("url") else {})}
+            for x in il["itemListElement"]
+        ]
 
     body = s.split("<article>\n", 1)[1].rsplit("\n</article>", 1)[0] + "\n"
     with open(os.path.join(GEN_DIR, "content", slug + ".html"), "w", encoding="utf-8") as f:
