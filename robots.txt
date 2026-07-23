@@ -1,5 +1,21 @@
 User-agent: *
 Allow: /
 Disallow: /_templates/
+Disallow: /audit/
+Disallow: /generator/
+
+User-agent: GPTBot
+User-agent: OAI-SearchBot
+User-agent: ChatGPT-User
+User-agent: PerplexityBot
+User-agent: ClaudeBot
+User-agent: Google-Extended
+User-agent: Applebot-Extended
+User-agent: CCBot
+User-agent: YandexAdditional
+Allow: /
+Disallow: /_templates/
+Disallow: /audit/
+Disallow: /generator/
 
 Sitemap: https://ursdom.ru/sitemap.xml
