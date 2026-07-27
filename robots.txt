@@ -3,6 +3,7 @@ Allow: /
 Disallow: /_templates/
 Disallow: /audit/
 Disallow: /generator/
+Disallow: /dostavka-src/
 
 User-agent: GPTBot
 User-agent: OAI-SearchBot
@@ -17,5 +18,7 @@ Allow: /
 Disallow: /_templates/
 Disallow: /audit/
 Disallow: /generator/
+Disallow: /dostavka-src/
 
 Sitemap: https://ursdom.ru/sitemap.xml
+Sitemap: https://ursdom.ru/dostavka/sitemap.xml

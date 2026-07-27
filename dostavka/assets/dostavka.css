@@ -1,0 +1,112 @@
+/* Тема раздела доставки. Изолирована от main.css сайта ursdom.
+   Крупный читаемый шрифт, заметные кнопки, контраст на тёмных секциях. */
+:root{
+  --d-bg:#ffffff; --d-text:#1f2937; --d-muted:#5b6673;
+  --d-dark:#1e293b; --d-dark2:#0f172a; --d-line:#e2e8f0; --d-card:#f8fafc;
+  --d-accent:#c0392b; --d-accent-dark:#9c2c20; --d-ok:#1f8a4c;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  font-size:18px;line-height:1.6;color:var(--d-text);background:var(--d-bg);-webkit-text-size-adjust:100%}
+img{max-width:100%;height:auto}
+a{color:var(--d-accent)}
+.wrap{max-width:60rem;margin:0 auto;padding:0 1rem}
+.d-skip{position:absolute;left:-9999px}
+.d-skip:focus{left:1rem;top:1rem;position:fixed;background:#fff;padding:.5rem;z-index:100}
+
+/* шапка + callbar */
+.d-header{background:var(--d-dark);color:#fff}
+.d-header .wrap{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.7rem 1rem;flex-wrap:wrap}
+.d-logo{font-weight:800;font-size:1.35rem;color:#fff;text-decoration:none;letter-spacing:.3px}
+.d-logo span{color:#f0b429}
+.d-head-phone{display:flex;flex-direction:column;align-items:flex-end;gap:.15rem}
+.d-head-phone a{color:#fff;font-weight:800;font-size:1.3rem;text-decoration:none;white-space:nowrap}
+.d-head-phone small{color:#cbd5e1;font-size:.8rem}
+
+/* hero */
+.d-hero{background:linear-gradient(180deg,var(--d-dark),var(--d-dark2));color:#fff;padding:2.4rem 0 2.2rem}
+.d-hero h1{color:#fff;font-size:2rem;margin:0 0 .6rem;line-height:1.2}
+.d-hero p{color:#e2e8f0;font-size:1.15rem;margin:.2rem 0 1.2rem;max-width:44rem}
+.d-hero .d-cta-row{display:flex;gap:.8rem;flex-wrap:wrap}
+
+/* кнопки */
+.d-btn{display:inline-block;background:var(--d-accent);color:#fff;text-decoration:none;
+  font-weight:800;font-size:1.1rem;padding:.9rem 1.5rem;border-radius:10px;border:none;cursor:pointer;text-align:center}
+.d-btn:hover{background:var(--d-accent-dark)}
+.d-btn-ghost{background:transparent;border:2px solid #fff;color:#fff}
+.d-btn-max{background:#2563eb}
+.d-btn-wide{width:100%;font-size:1.2rem;padding:1.05rem}
+
+/* секции */
+main{display:block}
+section{padding:2rem 0}
+h2{font-size:1.55rem;line-height:1.25;margin:0 0 1rem;color:var(--d-dark2)}
+h3{font-size:1.2rem;margin:1.2rem 0 .4rem;color:var(--d-dark2)}
+.d-dark-sec{background:var(--d-dark);color:#fff}
+.d-dark-sec h2,.d-dark-sec h3{color:#fff}
+.d-dark-sec p{color:#e2e8f0}
+
+/* карточки/сетки */
+.d-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:1rem}
+.d-card{background:var(--d-card);border:1px solid var(--d-line);border-radius:12px;padding:1.1rem}
+.d-card strong{display:block;font-size:1.1rem;margin-bottom:.3rem;color:var(--d-dark2)}
+
+/* таблицы */
+.d-table-wrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:1rem}
+caption{text-align:left;color:var(--d-muted);margin-bottom:.5rem}
+th,td{border:1px solid var(--d-line);padding:.6rem .7rem;text-align:left}
+th{background:var(--d-card)}
+.d-note{color:var(--d-muted);font-size:.95rem}
+
+/* блок "проще позвонить" */
+.d-callblock{background:linear-gradient(180deg,#7f1d1d,#991b1b);color:#fff;border-radius:14px;padding:1.6rem;text-align:center}
+.d-callblock h2{color:#fff}
+.d-callblock .d-bigphone{font-size:1.9rem;font-weight:800;color:#fff;text-decoration:none;display:inline-block;margin:.3rem 0 1rem}
+.d-note-light{color:#fecaca}
+
+/* форма заявки */
+.d-form{background:var(--d-card);border:1px solid var(--d-line);border-radius:14px;padding:1.4rem}
+.d-form label{display:block;font-weight:700;margin:.7rem 0 .3rem}
+.d-form input,.d-form select,.d-form textarea{width:100%;font-size:1.1rem;padding:.8rem;border:1px solid #cbd5e1;border-radius:9px;font-family:inherit}
+.d-form textarea{min-height:5rem}
+.d-form .d-hp{position:absolute;left:-9999px}
+
+/* faq */
+.d-faq details{border:1px solid var(--d-line);border-radius:10px;padding:.2rem 1rem;margin:.6rem 0;background:#fff}
+.d-faq summary{font-weight:700;cursor:pointer;padding:.7rem 0;font-size:1.05rem}
+.d-faq details[open] summary{border-bottom:1px solid var(--d-line);margin-bottom:.5rem}
+
+/* хлебные крошки + перелинковка */
+.d-crumbs{font-size:.95rem;color:var(--d-muted);padding:.7rem 0}
+.d-crumbs a{color:var(--d-muted)}
+.d-related ul{list-style:none;padding:0;margin:0}
+.d-related li{margin:.4rem 0}
+
+/* список городов/материалов */
+.d-list{columns:2;gap:1.4rem}
+@media(max-width:640px){.d-list{columns:1}}
+
+/* подвал */
+.d-footer{background:var(--d-dark2);color:#cbd5e1;padding:2rem 0 5.5rem}
+.d-footer a{color:#e2e8f0}
+.d-footer h3{color:#fff}
+.d-foot-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(13rem,1fr));gap:1.2rem}
+
+/* мобильная нижняя панель звонка */
+.d-mobilebar{position:fixed;left:0;right:0;bottom:0;display:none;z-index:50;
+  background:var(--d-dark);border-top:1px solid #334155}
+.d-mobilebar a{flex:1;text-align:center;padding:.9rem 0;color:#fff;text-decoration:none;font-weight:800;font-size:1.05rem}
+.d-mobilebar a.max{background:#2563eb}
+.d-mobilebar a.call{background:var(--d-accent)}
+@media(max-width:720px){
+  .d-mobilebar{display:flex}
+  .d-hero h1{font-size:1.6rem}
+  .d-head-phone{display:none}
+}
+/* утилиты раскладки (вместо инлайн-стилей в шаблонах) */
+.d-two{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;align-items:start}
+@media(max-width:720px){.d-two{grid-template-columns:1fr}}
+.d-center-row{justify-content:center}
+.d-copy{margin-top:1.2rem;color:#94a3b8;font-size:.9rem}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
