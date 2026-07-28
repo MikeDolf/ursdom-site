@@ -45,6 +45,59 @@
 {% endfor %}</div>
 {%- endmacro %}
 
+{% macro midcta(cfg, headline, text) -%}
+<div class="d-midcta">
+  <h3>{{ headline }}</h3>
+  <p>{{ text }}</p>
+  <div class="d-cta-row">
+    <a class="d-btn" href="{{ cfg.phone_href }}" onclick="try{ym({{ cfg.metrika_id }},'reachGoal','call')}catch(e){}">Позвонить {{ cfg.phone }}</a>
+    <a class="d-btn d-btn-ghost" href="#zayavka">Оставить заявку</a>
+  </div>
+</div>
+{%- endmacro %}
+
+{% macro author_block(author, updated) -%}
+<div class="d-author">
+  <div class="d-ava" aria-hidden="true">{{ author.initials }}</div>
+  <div>
+    <strong>{{ author.name }}</strong>
+    <p>{{ author.role }}. {{ author.bio }}</p>
+  </div>
+</div>
+<p class="d-upd">Материал обновлён {{ updated }}. Цифры проверены по действующим ГОСТам и практике отгрузок по Свердловской области.</p>
+{%- endmacro %}
+
+{% macro blocks(s) -%}
+{% if s.p %}{% for para in s.p %}  <p>{{ para }}</p>
+{% endfor %}{% endif %}
+{%- if s.callout %}  <div class="d-callout{% if s.callout_warn %} d-warn{% endif %}"><p><strong>{{ s.callout[0] }}</strong> {{ s.callout[1] }}</p></div>
+{% endif %}
+{%- if s.ul %}  <ul>
+{% for i in s.ul %}    <li>{{ i }}</li>
+{% endfor %}  </ul>
+{% endif %}
+{%- if s.steps %}  <ol class="d-steps">
+{% for i in s.steps %}    <li>{{ i }}</li>
+{% endfor %}  </ol>
+{% endif %}
+{%- if s.table %}  <div class="d-table-wrap"><table>
+    <caption>{{ s.table.caption }}</caption>
+    <thead><tr>{% for th in s.table.head %}<th>{{ th }}</th>{% endfor %}</tr></thead>
+    <tbody>
+{% for row in s.table.rows %}      <tr>{% for cell in row %}<td>{{ cell }}</td>{% endfor %}</tr>
+{% endfor %}    </tbody>
+  </table></div>
+{% endif %}
+{%- if s.sub %}{% for sb in s.sub %}  <h3>{{ sb.h3 }}</h3>
+{% for para in sb.p %}  <p>{{ para }}</p>
+{% endfor %}{% if sb.ul %}  <ul>
+{% for i in sb.ul %}    <li>{{ i }}</li>
+{% endfor %}  </ul>
+{% endif %}{% endfor %}{% endif %}
+{%- if s.after %}{% for para in s.after %}  <p>{{ para }}</p>
+{% endfor %}{% endif %}
+{%- endmacro %}
+
 {% macro related(links) -%}
 <nav class="d-related" aria-label="Смотрите также">
   <h2>Смотрите также</h2>

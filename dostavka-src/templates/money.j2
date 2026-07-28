@@ -10,15 +10,35 @@
   </div>
 </div></section>
 
-<section><div class="wrap">
+<section><div class="wrap d-prose">
+  <h2 id="ceny">Цены на {{ mat_gen }} с доставкой</h2>
+  <div class="d-table-wrap"><table>
+    <caption>{{ price_note }}</caption>
+    <thead><tr><th>Материал</th><th>Цена за куб, руб</th></tr></thead>
+    <tbody>
+{% for name,price in per_cube %}      <tr><td>{{ name }}</td><td>{{ price }}</td></tr>
+{% endfor %}    </tbody>
+  </table></div>
+  <p class="d-note">{{ delivery_note }}</p>
+
+  <h2 id="kak-zakazat">Как заказать {{ mat_acc }}</h2>
+  <ol class="d-steps">
+    <li>Скажите вид материала и объём в кубах. Если объём неизвестен, назовите размеры участка работ и толщину слоя.</li>
+    <li>Назовите адрес и опишите заезд: ширина ворот, место для разворота и подъёма кузова.</li>
+    <li>Получите точную цену с доставкой. {{ cfg.callback_promise|capitalize }}.</li>
+    <li>Принимаете машину на объекте и проверяете объём. {{ cfg.payment }}</li>
+  </ol>
+
+  {{ m.midcta(cfg, "Не знаете, сколько кубов нужно?", "Назовите размеры площадки, фундамента или траншеи. Посчитаем объём с запасом на уплотнение и подберём машину под ваш заезд.") }}
+
   <p>{{ intro }}</p>
 
-  <h2>Виды {{ mat_gen }}</h2>
+  <h2 id="vidy">Виды {{ mat_gen }}</h2>
   <div class="d-grid">
 {% for t,d in types %}    <div class="d-card"><strong>{{ t }}</strong><p>{{ d }}</p></div>
 {% endfor %}  </div>
 {% if fractions %}
-  <h2>Фракции и применение</h2>
+  <h2 id="frakcii">Фракции и применение</h2>
   <div class="d-table-wrap"><table>
     <caption>Какая фракция щебня под какую задачу</caption>
     <thead><tr><th>Фракция</th><th>Где применяют</th></tr></thead>
@@ -27,6 +47,16 @@
 {% endfor %}    </tbody>
   </table></div>
 {% endif %}
+
+  <h2 id="skolko">Сколько нужно на типовые задачи</h2>
+  <div class="d-table-wrap"><table>
+    <caption>Готовые расчёты с запасом на уплотнение, чтобы прикинуть объём до звонка</caption>
+    <thead><tr><th>Задача</th><th>Объём с запасом</th><th>Машина</th></tr></thead>
+    <tbody>
+{% for task,vol,car in calc_rows %}      <tr><td>{{ task }}</td><td>{{ vol }}</td><td>{{ car }}</td></tr>
+{% endfor %}    </tbody>
+  </table></div>
+  <p class="d-note">Расчёт ориентировочный: точный объём зависит от толщины слоя и плотности грунта. Посчитаем под ваш объект по размерам.</p>
 </div></section>
 
 <section class="d-dark-sec"><div class="wrap">
@@ -36,15 +66,8 @@
 </div></section>
 
 <section><div class="wrap">
-  <h2>Ориентировочные цены</h2>
-  <div class="d-table-wrap"><table>
-    <caption>{{ price_note }}</caption>
-    <thead><tr><th>Материал</th><th>Цена за куб, руб</th></tr></thead>
-    <tbody>
-{% for name,price in per_cube %}      <tr><td>{{ name }}</td><td>{{ price }}</td></tr>
-{% endfor %}    </tbody>
-  </table></div>
-  <p class="d-note">{{ delivery_note }}</p>
+  <h2>Что мы гарантируем</h2>
+  {{ m.guarantees(guarantees) }}
 </div></section>
 
 <section id="zayavka"><div class="wrap d-two">
