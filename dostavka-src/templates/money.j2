@@ -11,7 +11,7 @@
 </div></section>
 
 <section><div class="wrap d-prose">
-  <h2 id="ceny">Цены на {{ mat_gen }} с доставкой</h2>
+  <h2 id="ceny">Цены на {{ mat_vin }} с доставкой</h2>
   <div class="d-table-wrap"><table>
     <caption>{{ price_note }}</caption>
     <thead><tr><th>Материал</th><th>Цена за куб, руб</th></tr></thead>
@@ -21,7 +21,7 @@
   </table></div>
   <p class="d-note">{{ delivery_note }}</p>
 
-  <h2 id="kak-zakazat">Как заказать {{ mat_acc }}</h2>
+  <h2 id="kak-zakazat">Как заказать {{ mat_order }}</h2>
   <ol class="d-steps">
     <li>Скажите вид материала и объём в кубах. Если объём неизвестен, назовите размеры участка работ и толщину слоя.</li>
     <li>Назовите адрес и опишите заезд: ширина ворот, место для разворота и подъёма кузова.</li>
@@ -33,7 +33,7 @@
 
   <p>{{ intro }}</p>
 
-  <h2 id="vidy">Виды {{ mat_gen }}</h2>
+  <h2 id="vidy">Виды {{ mat_rod }}</h2>
   <div class="d-grid">
 {% for t,d in types %}    <div class="d-card"><strong>{{ t }}</strong><p>{{ d }}</p></div>
 {% endfor %}  </div>
@@ -73,7 +73,7 @@
 <section id="zayavka"><div class="wrap d-two">
   <div>{{ m.callblock(cfg) }}</div>
   <div>
-    <h2>Заявка на {{ mat_acc }}</h2>
+    <h2>Заявка на {{ mat_order }}</h2>
     {{ m.lead_form(cfg, subject) }}
   </div>
 </div></section>
