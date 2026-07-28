@@ -36,7 +36,7 @@ def localbusiness():
         "@type": "LocalBusiness",
         "@id": DOMAIN + SITE["base"] + "#business",
         "name": SITE["brand"],
-        "description": SITE["tagline"] + " по " + SITE["region"],
+        "description": SITE["tagline"] + " по " + SITE["region_dat"],
         "url": DOMAIN + SITE["base"],
         "telephone": SITE["phone"],
         "email": SITE["email"],
@@ -90,7 +90,7 @@ jl = graph(localbusiness(), bc_schema(crumb_items), faq_schema(MATERIALS["shcheb
 htmlp = env.get_template("hub.j2").render(
     **BASE_CTX, title="Доставка щебня, песка и нерудных материалов по Екатеринбургу и области",
     desc="Доставка щебня, песка, ПГС и отсева по Екатеринбургу и Свердловской области. Самосвалы от 5 до 20 кубов, оплата после выгрузки, честный объём.",
-    canonical=DOMAIN + url, h1="Доставка щебня, песка и нерудных материалов по " + SITE["region"],
+    canonical=DOMAIN + url, h1="Доставка щебня, песка и нерудных материалов по " + SITE["region_dat"],
     crumbs_html=crumbs(crumb_items), jsonld=jl,
     faq=MATERIALS["shcheben"]["faq"][:4],
     related_links=[("/dostavka/shcheben/", "Доставка щебня: фракции и цены"),
@@ -100,12 +100,12 @@ pages.append((url, htmlp, "hub"))
 
 # ---- MONEY: щебень, песок ----
 money_cfg = {
-    "shcheben": dict(hero_sub="Гранитный, известняковый, гравийный и вторичный щебень с доставкой по " + SITE["region"] + ". Фракции 5-20, 20-40, 40-70 и отсев, самосвалы от 5 до 20 кубов.",
+    "shcheben": dict(hero_sub="Гранитный, известняковый, гравийный и вторичный щебень с доставкой по " + SITE["region_dat"] + ". Фракции 5-20, 20-40, 40-70 и отсев, самосвалы от 5 до 20 кубов.",
                      mat_gen="щебня", mat_acc="доставку щебня", subject="доставка щебня, " + SITE["region_short"],
                      title="Доставка щебня в Екатеринбурге и области: фракции, цена",
                      desc="Доставка щебня по Екатеринбургу и Свердловской области: гранит, известняк, фракции 5-20, 20-40, 40-70. Самосвалы 5-20 кубов, оплата после выгрузки.",
                      h1="Доставка щебня по Екатеринбургу и Свердловской области"),
-    "pesok": dict(hero_sub="Карьерный и речной песок с доставкой по " + SITE["region"] + ". Под отсыпку, подушку фундамента, бетон и кладку.",
+    "pesok": dict(hero_sub="Карьерный и речной песок с доставкой по " + SITE["region_dat"] + ". Под отсыпку, подушку фундамента, бетон и кладку.",
                   mat_gen="песка", mat_acc="доставку песка", subject="доставка песка, " + SITE["region_short"],
                   title="Доставка песка в Екатеринбурге и области: карьерный, речной",
                   desc="Доставка песка по Екатеринбургу и Свердловской области: карьерный для отсыпки, речной мытый для бетона. Самосвалы от 5 кубов, оплата после выгрузки.",
