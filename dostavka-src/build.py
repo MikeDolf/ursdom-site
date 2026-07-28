@@ -87,6 +87,28 @@ def article_schema(url, title, desc, author=None):
             "publisher": {"@type": "Organization", "name": SITE["brand"]}}
 
 
+def product_schema(name, desc, low_price, url):
+    """Product + AggregateOffer с честной ценой 'от N'. lowPrice отражает
+    минимальную цену за куб по прайсу, поэтому разметка не расходится со страницей."""
+    return {
+        "@type": "Product",
+        "name": name,
+        "description": desc,
+        "category": "Нерудные строительные материалы",
+        "url": DOMAIN + url,
+        "brand": {"@type": "Brand", "name": SITE["brand"]},
+        "offers": {
+            "@type": "AggregateOffer",
+            "lowPrice": low_price,
+            "priceCurrency": "RUB",
+            "availability": "https://schema.org/InStock",
+            "unitText": "кубометр",
+            "areaServed": SITE["region"],
+            "seller": {"@id": DOMAIN + SITE["base"] + "#business"},
+        },
+    }
+
+
 def graph(*nodes):
     return json.dumps({"@context": "https://schema.org", "@graph": list(nodes)},
                       ensure_ascii=False, indent=2)
@@ -119,7 +141,8 @@ htmlp = env.get_template("hub.j2").render(
     related_links=[("/dostavka/shcheben/", "Доставка щебня: фракции и цены"),
                    ("/dostavka/shcheben/frakciya-20-40/", "Щебень 20-40: характеристики и расчёт"),
                    ("/dostavka/pesok/", "Доставка песка"),
-                   ("/dostavka/stati/skolko-shchebnya-v-kamaze/", "Сколько щебня в КамАЗе")])
+                   ("/dostavka/stati/chem-otsypat-uchastok/", "Чем отсыпать участок"),
+                   ("/dostavka/stati/dostavka-na-dachu/", "Доставка на дачу и в СНТ")])
 pages.append((url, htmlp, "hub"))
 
 # ---- MONEY: щебень, песок ----
@@ -145,11 +168,14 @@ money_cfg = {
                 desc="Доставка ПГС и ОПГС по Екатеринбургу и Свердловской области. Песчано-гравийная смесь под отсыпку и планировку. Цена за куб, самосвалы 5-20 кубов, оплата после выгрузки.",
                 h1="Доставка ПГС по Екатеринбургу и Свердловской области"),
 }
+MONEY_LOW_PRICE = {"shcheben": "600", "pesok": "350", "otsev": "500", "pgs": "500"}
+
 for slug, mc in money_cfg.items():
     mat = MATERIALS[slug]
     url = SITE["base"] + slug + "/"
     crumb_items = [("Главная", "/"), ("Доставка материалов", SITE["base"]), (mat["name"], None)]
-    jl = graph(localbusiness(), bc_schema(crumb_items), faq_schema(mat["faq"]))
+    jl = graph(localbusiness(), bc_schema(crumb_items), faq_schema(mat["faq"]),
+               product_schema(mat["name"], mc["desc"], MONEY_LOW_PRICE[slug], url))
     if slug == "shcheben":
         rel = [("/dostavka/shcheben/frakciya-20-40/", "Щебень 20-40: характеристики, расчёт, цена"),
                ("/dostavka/shcheben/v-meshkah/", "Щебень в мешках: фасовка и когда это выгодно"),
@@ -159,19 +185,21 @@ for slug, mc in money_cfg.items():
     elif slug == "otsev":
         rel = [("/dostavka/shcheben/", "Доставка щебня"),
                ("/dostavka/pesok/", "Доставка песка"),
+               ("/dostavka/stati/chem-otsypat-uchastok/", "Чем отсыпать участок"),
                ("/dostavka/stati/cena-kuba-s-dostavkoy/", "Из чего складывается цена куба"),
                ("/dostavka/", "Все города и материалы")]
     elif slug == "pgs":
         rel = [("/dostavka/pesok/", "Доставка песка"),
                ("/dostavka/shcheben/", "Доставка щебня"),
+               ("/dostavka/stati/chem-otsypat-uchastok/", "Чем отсыпать участок"),
                ("/dostavka/stati/cena-kuba-s-dostavkoy/", "Из чего складывается цена куба"),
                ("/dostavka/", "Все города и материалы")]
     else:
-        rel = [("/dostavka/pesok/bogdanovich/", "Доставка песка в Богданович"),
-               ("/dostavka/pesok/irbit/", "Доставка песка в Ирбит"),
-               ("/dostavka/shcheben/", "Доставка щебня"),
-               ("/dostavka/stati/skolko-shchebnya-nuzhno/", "Сколько нужно и сколько в самосвале"),
-               ("/dostavka/", "Все города и материалы")]
+        rel = [("/dostavka/pesok/karyernyy/", "Карьерный песок: виды и цена"),
+               ("/dostavka/pesok/rechnoy/", "Речной мытый песок"),
+               ("/dostavka/stati/kakoy-pesok-vybrat/", "Какой песок выбрать под задачу"),
+               ("/dostavka/pesok/bogdanovich/", "Доставка песка в Богданович"),
+               ("/dostavka/pesok/irbit/", "Доставка песка в Ирбит")]
     htmlp = env.get_template("money.j2").render(
         **BASE_CTX, **mc, canonical=DOMAIN + url, crumbs_html=crumbs(crumb_items), jsonld=jl,
         intro=mat["intro"], types=mat["types"], fractions=mat.get("fractions"),
@@ -266,13 +294,19 @@ for c in PESOK_CITIES:
 # ---- ЛОНГРИДЫ (низкоконкурентные ключи Мутагена) ----
 for a in LONGREADS:
     url = SITE["base"] + a["slug"] + "/"
-    parent = ("Щебень", SITE["base"] + "shcheben/") if a["slug"].startswith("shcheben/") \
-        else ("Статьи", None)
+    if a["slug"].startswith("shcheben/"):
+        parent = ("Щебень", SITE["base"] + "shcheben/")
+    elif a["slug"].startswith("pesok/"):
+        parent = ("Песок", SITE["base"] + "pesok/")
+    else:
+        parent = ("Статьи", None)
     crumb_items = [("Главная", "/"), ("Доставка материалов", SITE["base"]), parent,
                    (a["h1"], None)]
     nodes = [localbusiness(), bc_schema(crumb_items), faq_schema(a["faq"])]
     if a["kind"] == "article":
         nodes.append(article_schema(url, a["title"], a["desc"], AUTHOR_FULL))
+    if a.get("low_price"):
+        nodes.append(product_schema(a["h1"], a["desc"], a["low_price"], url))
     jl = graph(*nodes)
     rel = [("/dostavka/shcheben/", "Доставка щебня: все фракции и цены"),
            ("/dostavka/", "Все города и материалы")]

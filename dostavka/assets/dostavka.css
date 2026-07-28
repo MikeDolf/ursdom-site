@@ -156,4 +156,18 @@ th{background:var(--d-card)}
 .d-cat-price small{font-size:.85rem;font-weight:600;color:var(--d-muted)}
 .d-cat-card p{margin:0;font-size:.95rem;color:var(--d-muted)}
 .d-cat-go{margin-top:auto;padding-top:.5rem;font-weight:700;font-size:.95rem;color:var(--d-accent)}
+/* мобильные тап-таргеты: ссылки в списках и крошках добираем до 44px по высоте.
+   Google и Яндекс учитывают удобство нажатия как фактор мобильного ранжирования. */
+@media(max-width:720px){
+  .d-related li{margin:0}
+  .d-related li a{display:block;padding:.75rem 0;line-height:1.35}
+  .d-list li{margin:0}
+  .d-list li a{display:block;padding:.7rem 0;line-height:1.35}
+  .d-crumbs{padding:.4rem 0}
+  .d-crumbs a{display:inline-block;padding:.5rem 0}
+  .d-footer a{display:inline-block;padding:.4rem 0}
+  .d-foot-grid li{margin:0}
+  .d-toc li{margin:0}
+  .d-toc li a{display:block;padding:.6rem 0;line-height:1.35}
+}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
