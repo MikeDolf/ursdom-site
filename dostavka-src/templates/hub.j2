@@ -15,7 +15,7 @@
   <div class="d-cat">
 {% for name,price,href,desc in catalog %}    <div class="d-cat-card">
       <p class="d-cat-name">{% if href %}<a href="{{ href }}">{{ name }}</a>{% else %}{{ name }}{% endif %}</p>
-      <p class="d-cat-price">{{ price }} <small>руб/м³</small></p>
+      <p class="d-cat-price">{{ price }}{% if price != "по запросу" %} <small>руб/м³</small>{% endif %}</p>
       <p>{{ desc }}</p>
 {% if href %}      <p class="d-cat-go">Подробнее и заказать</p>
 {% endif %}    </div>

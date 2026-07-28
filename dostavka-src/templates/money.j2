@@ -40,7 +40,7 @@
 {% if fractions %}
   <h2 id="frakcii">Фракции и применение</h2>
   <div class="d-table-wrap"><table>
-    <caption>Какая фракция щебня под какую задачу</caption>
+    <caption>Какая фракция {{ mat_rod }} под какую задачу</caption>
     <thead><tr><th>Фракция</th><th>Где применяют</th></tr></thead>
     <tbody>
 {% for f,use in fractions %}      <tr><td>{{ f }}</td><td>{{ use }}</td></tr>
