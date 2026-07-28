@@ -11,12 +11,16 @@
 </div></section>
 
 <section><div class="wrap">
-  <h2>Что возим</h2>
-  <div class="d-grid">
-    <div class="d-card"><strong><a href="/dostavka/shcheben/">Щебень</a></strong><p>Гранитный, известняковый, гравийный, вторичный. Фракции 5-20, 20-40, 40-70 и отсев.</p></div>
-    <div class="d-card"><strong><a href="/dostavka/pesok/">Песок</a></strong><p>Карьерный для отсыпки и речной мытый для бетона и кладки.</p></div>
-{% for name,desc in extra %}    <div class="d-card"><strong>{{ name }}</strong><p>{{ desc }}</p></div>
+  <h2>Что возим и сколько стоит</h2>
+  <div class="d-cat">
+{% for name,price,href,desc in catalog %}    <div class="d-cat-card">
+      <p class="d-cat-name">{% if href %}<a href="{{ href }}">{{ name }}</a>{% else %}{{ name }}{% endif %}</p>
+      <p class="d-cat-price">{{ price }} <small>руб/м³</small></p>
+      <p>{{ desc }}</p>
+{% if href %}      <p class="d-cat-go">Подробнее и заказать</p>
+{% endif %}    </div>
 {% endfor %}  </div>
+  <p class="d-note">{{ price_note }}</p>
 </div></section>
 
 <section class="d-dark-sec"><div class="wrap">

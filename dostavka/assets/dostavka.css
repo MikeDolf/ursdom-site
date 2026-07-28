@@ -143,4 +143,17 @@ th{background:var(--d-card)}
 .d-toc ol{margin:0;padding-left:1.3rem}
 .d-toc li{margin:.3rem 0}
 .d-upd{color:var(--d-muted);font-size:.9rem;margin:.2rem 0 1.2rem}
+
+/* каталог-плитка с ценами: цена видна сразу, карточка кликабельна целиком */
+.d-cat{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:1rem}
+.d-cat-card{position:relative;background:#fff;border:1px solid var(--d-line);border-radius:12px;
+  padding:1.1rem 1.2rem;display:flex;flex-direction:column;gap:.35rem}
+.d-cat-card:hover{border-color:var(--d-accent);box-shadow:0 2px 10px rgba(0,0,0,.07)}
+.d-cat-name{font-size:1.15rem;font-weight:800;color:var(--d-dark2);margin:0}
+.d-cat-name a{color:var(--d-dark2);text-decoration:none}
+.d-cat-name a::after{content:"";position:absolute;inset:0}
+.d-cat-price{font-size:1.45rem;font-weight:800;color:var(--d-accent);line-height:1.1}
+.d-cat-price small{font-size:.85rem;font-weight:600;color:var(--d-muted)}
+.d-cat-card p{margin:0;font-size:.95rem;color:var(--d-muted)}
+.d-cat-go{margin-top:auto;padding-top:.5rem;font-weight:700;font-size:.95rem;color:var(--d-accent)}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}

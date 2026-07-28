@@ -12,7 +12,7 @@ sys.path.insert(0, os.path.join(HERE, "data"))
 
 from site_config import SITE, ADVANTAGES, GUARANTEES
 from products import MATERIALS, EXTRA
-from prices import PER_CUBE, PRICE_NOTE, DELIVERY_NOTE
+from prices import PER_CUBE, PRICE_NOTE, DELIVERY_NOTE, CATALOG
 from cities import CITIES, PESOK_CITIES
 from longreads import LONGREADS, AUTHOR_FULL, UPDATED
 
@@ -102,7 +102,7 @@ def write(url, html_str):
 
 BASE_CTX = dict(cfg=SITE, advantages=ADVANTAGES, guarantees=GUARANTEES,
                 per_cube=PER_CUBE_LIST, price_note=PRICE_NOTE, delivery_note=DELIVERY_NOTE,
-                extra=EXTRA, cities=CITIES, calc_rows=CALC_ROWS)
+                extra=EXTRA, cities=CITIES, calc_rows=CALC_ROWS, catalog=CATALOG)
 
 pages = []  # (url, rendered_html, family)
 
@@ -134,6 +134,16 @@ money_cfg = {
                   title="Доставка песка в Екатеринбурге и области: карьерный, речной",
                   desc="Доставка песка по Екатеринбургу и Свердловской области: карьерный для отсыпки, речной мытый для бетона. Цена за куб, самосвалы от 5 кубов, оплата после выгрузки.",
                   h1="Доставка песка по Екатеринбургу и Свердловской области"),
+    "otsev": dict(hero_sub="Гранитный, известняковый и вторичный отсев 0-5 с доставкой по " + SITE["region_dat"] + ". Под тротуарную плитку, расклинцовку и планировку участка.",
+                  mat_gen="отсев", mat_acc="доставку отсева", subject="доставка отсева, " + SITE["region_short"],
+                  title="Отсев с доставкой в Екатеринбурге: купить щебёночный отсев",
+                  desc="Отсев 0-5 с доставкой по Екатеринбургу и Свердловской области: гранитный, известняковый, вторичный. Под плитку и планировку. Цена за куб, оплата после выгрузки.",
+                  h1="Отсев с доставкой по Екатеринбургу и Свердловской области"),
+    "pgs": dict(hero_sub="Природная ПГС и обогащённая ОПГС с доставкой по " + SITE["region_dat"] + ". Под планировку territории, подсыпку оснований и обратную засыпку.",
+                mat_gen="ПГС", mat_acc="доставку ПГС", subject="доставка ПГС, " + SITE["region_short"],
+                title="Купить ПГС с доставкой в Екатеринбурге: цена за куб",
+                desc="Доставка ПГС и ОПГС по Екатеринбургу и Свердловской области. Песчано-гравийная смесь под отсыпку и планировку. Цена за куб, самосвалы 5-20 кубов, оплата после выгрузки.",
+                h1="Доставка ПГС по Екатеринбургу и Свердловской области"),
 }
 for slug, mc in money_cfg.items():
     mat = MATERIALS[slug]
@@ -145,6 +155,16 @@ for slug, mc in money_cfg.items():
                ("/dostavka/shcheben/v-meshkah/", "Щебень в мешках: фасовка и когда это выгодно"),
                ("/dostavka/stati/skolko-shchebnya-v-kamaze/", "Сколько щебня в КамАЗе"),
                ("/dostavka/pesok/", "Доставка песка"),
+               ("/dostavka/", "Все города и материалы")]
+    elif slug == "otsev":
+        rel = [("/dostavka/shcheben/", "Доставка щебня"),
+               ("/dostavka/pesok/", "Доставка песка"),
+               ("/dostavka/stati/cena-kuba-s-dostavkoy/", "Из чего складывается цена куба"),
+               ("/dostavka/", "Все города и материалы")]
+    elif slug == "pgs":
+        rel = [("/dostavka/pesok/", "Доставка песка"),
+               ("/dostavka/shcheben/", "Доставка щебня"),
+               ("/dostavka/stati/cena-kuba-s-dostavkoy/", "Из чего складывается цена куба"),
                ("/dostavka/", "Все города и материалы")]
     else:
         rel = [("/dostavka/pesok/bogdanovich/", "Доставка песка в Богданович"),
@@ -195,8 +215,8 @@ for c in CITIES:
            ("/dostavka/shcheben/frakciya-20-40/", "Щебень 20-40: расчёт объёма и цена")] + others
     htmlp = env.get_template("geo.j2").render(
         **BASE_CTX, city=c, canonical=DOMAIN + url, crumbs_html=crumbs(crumb_items), jsonld=jl,
-        title=f"Доставка щебня {c['prep']}: цена за куб, самосвалом с выгрузкой",
-        desc=f"Доставка щебня {c['prep']} и в район ({c['dist']}). Гранит, известняк, фракции 20-40, 40-70. Цена за куб, самосвалы 5-20 кубов, оплата после выгрузки.",
+        title=f"Доставка щебня {c['prep']}: цена за куб самосвалом",
+        desc=f"Доставка щебня {c['prep']} и в район ({c['dist']}). Гранит, известняк, фракции 20-40, 40-70. Цена за куб, оплата после выгрузки.",
         h1=f"Доставка щебня {c['prep']}",
         hero_sub=f"Щебень всех фракций с доставкой {c['prep']} и в район. {ucfirst(c['dist'])}. "
                  f"Самосвалы от 5 до 20 кубов, {SITE['payment_short']}",
@@ -280,6 +300,14 @@ for url, h, fam in pages:
     sm.append(f"  <url>\n    <loc>{DOMAIN}{url}</loc>\n    <lastmod>{TODAY}</lastmod>\n  </url>")
 sm.append("</urlset>\n")
 open(os.path.join(OUT, "sitemap.xml"), "w", encoding="utf-8").write("\n".join(sm))
+
+# список URL для переобхода в Яндекс.Вебмастере. Кладём в audit/ (закрыт в robots.txt),
+# чтобы служебный файл не попал в индекс вместе со страницами раздела.
+AUDIT = os.path.join(ROOT, "audit")
+os.makedirs(AUDIT, exist_ok=True)
+with open(os.path.join(AUDIT, "dostavka-urls.txt"), "w", encoding="utf-8") as fh:
+    for url, h, fam in pages:
+        fh.write(DOMAIN + url + "\n")
 
 print(f"Собрано страниц: {len(pages)}")
 for p, url, fam in written:
