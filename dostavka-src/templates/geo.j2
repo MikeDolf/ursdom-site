@@ -27,7 +27,7 @@
 <section><div class="wrap">
   <h2>Ориентировочные цены</h2>
   <div class="d-table-wrap"><table>
-    <caption>{{ price_note }} Для {{ city.name }} итог зависит от расстояния ({{ city.dist }}).</caption>
+    <caption>{{ price_note }} Итоговая цена с доставкой {{ city.prep }} зависит от расстояния ({{ city.dist }}).</caption>
     <thead><tr><th>Материал</th><th>Цена за куб, руб</th></tr></thead>
     <tbody>
 {% for name,price in per_cube %}      <tr><td>{{ name }}</td><td>{{ price }}</td></tr>
