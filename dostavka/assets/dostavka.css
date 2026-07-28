@@ -45,6 +45,11 @@ h3{font-size:1.2rem;margin:1.2rem 0 .4rem;color:var(--d-dark2)}
 .d-dark-sec{background:var(--d-dark);color:#fff}
 .d-dark-sec h2,.d-dark-sec h3{color:#fff}
 .d-dark-sec p{color:#e2e8f0}
+/* Карточки внутри тёмной секции светлые, поэтому светлый текст секции в них
+   не наследуем: иначе серое по белому не читается. */
+.d-dark-sec .d-card{color:var(--d-text)}
+.d-dark-sec .d-card p{color:var(--d-text)}
+.d-dark-sec .d-card strong{color:var(--d-dark2)}
 
 /* карточки/сетки */
 .d-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:1rem}
@@ -60,10 +65,13 @@ th{background:var(--d-card)}
 .d-note{color:var(--d-muted);font-size:.95rem}
 
 /* блок "проще позвонить" */
-.d-callblock{background:linear-gradient(180deg,#7f1d1d,#991b1b);color:#fff;border-radius:14px;padding:1.6rem;text-align:center}
+.d-callblock{background:linear-gradient(180deg,#166534,#15803d);color:#fff;border-radius:14px;padding:1.6rem;text-align:center}
 .d-callblock h2{color:#fff}
 .d-callblock .d-bigphone{font-size:1.9rem;font-weight:800;color:#fff;text-decoration:none;display:inline-block;margin:.3rem 0 1rem}
-.d-note-light{color:#fecaca}
+.d-note-light{color:#dcfce7}
+/* Синий MAX на зелёном фоне почти сливается по яркости, поэтому на карточке
+   звонка даём ему белую обводку для отделения от фона. */
+.d-callblock .d-btn-max{box-shadow:0 0 0 2px #fff}
 
 /* форма заявки */
 .d-form{background:var(--d-card);border:1px solid var(--d-line);border-radius:14px;padding:1.4rem}
