@@ -11,6 +11,27 @@
 </div></section>
 
 <section><div class="wrap d-prose">
+{% if commercial %}
+  <h2 id="ceny">{{ price_head }}</h2>
+  <div class="d-table-wrap"><table>
+    <caption>{{ price_note }}</caption>
+    <thead><tr><th>Материал</th><th>Цена за куб, руб</th></tr></thead>
+    <tbody>
+{% for name,price in per_cube %}      <tr><td>{{ name }}</td><td>{{ price }}</td></tr>
+{% endfor %}    </tbody>
+  </table></div>
+  <p class="d-note">{{ delivery_note }}</p>
+
+  <h2 id="kak-zakazat">{{ order_head }}</h2>
+  <ol class="d-steps">
+    <li>Скажите материал и объём в кубах. Не знаете объём: назовите размеры участка работ, посчитаем сами.</li>
+    <li>Назовите адрес и опишите заезд: ширина ворот, место для разворота и подъёма кузова.</li>
+    <li>Получите точную цену с доставкой. {{ cfg.callback_promise|capitalize }}, на месте сумма не меняется.</li>
+    <li>Принимаете машину на объекте и проверяете объём. {{ cfg.payment }}</li>
+  </ol>
+
+  {{ m.midcta(cfg, cta_head, cta_text) }}
+{% endif %}
   {{ m.author_block(author, updated) }}
   <div class="d-tldr"><strong>Коротко, если некогда читать</strong><p>{{ lead }}</p></div>
   <div class="d-toc"><strong>О чём этот материал</strong>
@@ -22,7 +43,7 @@
 {% for s in sections %}
   <h2 id="{{ s.id }}">{{ s.h }}</h2>
 {{ m.blocks(s) }}
-{% if loop.index == cta_after %}{{ m.midcta(cfg, cta_head, cta_text) }}{% endif %}
+{% if loop.index == cta_after %}{{ m.midcta(cfg, cta_head2|default(cta_head), cta_text2|default(cta_text)) }}{% endif %}
 {% endfor %}
 </div></section>
 

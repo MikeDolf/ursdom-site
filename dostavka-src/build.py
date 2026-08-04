@@ -319,6 +319,9 @@ for a in LONGREADS:
         title=a["title"], desc=a["desc"], h1=a["h1"], hero_sub=a["hero_sub"], lead=a["lead"],
         sections=a["sections"], faq=a["faq"], subject=a["subject"], form_head=a["form_head"],
         cta_after=a["cta_after"], cta_head=a["cta_head"], cta_text=a["cta_text"],
+        cta_head2=a.get("cta_head2"), cta_text2=a.get("cta_text2"),
+        commercial=a.get("commercial", False),
+        price_head=a.get("price_head", ""), order_head=a.get("order_head", ""),
         related_links=rel[:5])
     pages.append((url, htmlp, "longread"))
 
