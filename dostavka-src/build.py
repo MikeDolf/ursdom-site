@@ -203,7 +203,7 @@ for slug, mc in money_cfg.items():
     htmlp = env.get_template("money.j2").render(
         **BASE_CTX, **mc, canonical=DOMAIN + url, crumbs_html=crumbs(crumb_items), jsonld=jl,
         intro=mat["intro"], types=mat["types"], fractions=mat.get("fractions"),
-        faq=mat["faq"], related_links=rel)
+        faq=mat["faq"], related_links=rel + [(f"/dostavka/shcheben/{o['slug']}/", f"Доставка щебня {o['prep']}") for o in CITIES[:6]])
     pages.append((url, htmlp, "money"))
 
 
@@ -237,10 +237,17 @@ for c in CITIES:
                    ("Щебень", SITE["base"] + "shcheben/"), (c["name"], None)]
     cfaq = geo_faq(c, "щебня", "щебень")
     jl = graph(localbusiness(), bc_schema(crumb_items), faq_schema(cfaq))
+    # соседние города берём со сдвигом от текущего, чтобы вес не оседал на первых по списку
+    idx = [i for i, o in enumerate(CITIES) if o["slug"] == c["slug"]][0]
+    ring = CITIES[idx + 1:] + CITIES[:idx]
     others = [(f"/dostavka/shcheben/{o['slug']}/", f"Доставка щебня {o['prep']}")
-              for o in CITIES if o["slug"] != c["slug"]][:3]
+              for o in ring][:6]
     rel = [("/dostavka/shcheben/", "Доставка щебня: все фракции и цены"),
-           ("/dostavka/shcheben/frakciya-20-40/", "Щебень 20-40: расчёт объёма и цена")] + others
+           ("/dostavka/shcheben/frakciya-20-40/", "Щебень 20-40: расчёт объёма и цена"),
+           ("/dostavka/shcheben/frakciya-5-20/", "Щебень 5-20: под бетон и дорожки"),
+           ("/dostavka/pesok/", "Доставка песка"),
+           ("/dostavka/otsev/", "Отсев 0-5"),
+           ("/dostavka/stati/cena-kuba-s-dostavkoy/", "Цена за куб с доставкой")] + others
     htmlp = env.get_template("geo.j2").render(
         **BASE_CTX, city=c, canonical=DOMAIN + url, crumbs_html=crumbs(crumb_items), jsonld=jl,
         title=f"Доставка щебня {c['prep']}: цена за куб самосвалом",
@@ -248,7 +255,7 @@ for c in CITIES:
         h1=f"Доставка щебня {c['prep']}",
         hero_sub=f"Щебень всех фракций с доставкой {c['prep']} и в район. {ucfirst(c['dist'])}. "
                  f"Самосвалы от 5 до 20 кубов, {SITE['payment_short']}",
-        faq=cfaq, related_links=rel[:5])
+        faq=cfaq, related_links=rel[:12])
     pages.append((url, htmlp, "geo"))
 
 # ---- ГЕО: песок × город (ключи Мутагена конк 1) ----
@@ -286,9 +293,16 @@ for c in PESOK_CITIES:
                  "назовём итоговую цену с доставкой.",
         subject=f"песок, {c['name']}", faq=cfaq,
         related_links=[("/dostavka/pesok/", "Доставка песка: виды и цены"),
-                       (f"/dostavka/shcheben/{c['slug']}/", f"Доставка щебня {c['prep']}"),
-                       ("/dostavka/stati/skolko-shchebnya-v-kamaze/", "Сколько кубов в самосвале"),
-                       ("/dostavka/", "Все города и материалы")])
+                       ("/dostavka/pesok/karyernyy/", "Карьерный песок"),
+                       ("/dostavka/pesok/rechnoy/", "Речной мытый песок"),
+                       ("/dostavka/shcheben/", "Доставка щебня"),
+                       ("/dostavka/otsev/", "Отсев 0-5"),
+                       ("/dostavka/pgs/", "ПГС и ОПГС"),
+                       ("/dostavka/stati/cena-kuba-s-dostavkoy/", "Цена за куб с доставкой"),
+                       ("/dostavka/stati/skolko-shchebnya-v-kamaze/", "КамАЗ: цена за машину"),
+                       ("/dostavka/", "Все города и материалы")]
+                      + [(f"/dostavka/shcheben/{o['slug']}/", f"Доставка щебня {o['prep']}")
+                         for o in CITIES[:3]])
     pages.append((url, htmlp, "geo-pesok"))
 
 # ---- ЛОНГРИДЫ (низкоконкурентные ключи Мутагена) ----
@@ -309,10 +323,15 @@ for a in LONGREADS:
         nodes.append(product_schema(a["h1"], a["desc"], a["low_price"], url))
     jl = graph(*nodes)
     rel = [("/dostavka/shcheben/", "Доставка щебня: все фракции и цены"),
+           ("/dostavka/pesok/", "Доставка песка"),
+           ("/dostavka/otsev/", "Отсев 0-5"),
+           ("/dostavka/pgs/", "ПГС и ОПГС"),
            ("/dostavka/", "Все города и материалы")]
     for other in LONGREADS:
         if other["slug"] != a["slug"]:
             rel.append((SITE["base"] + other["slug"] + "/", other["h1"]))
+    rel += [(f"/dostavka/shcheben/{o['slug']}/", f"Доставка щебня {o['prep']}")
+            for o in CITIES[:4]]
     htmlp = env.get_template("longread.j2").render(
         **BASE_CTX, author=AUTHOR_FULL, updated=UPDATED,
         canonical=DOMAIN + url, crumbs_html=crumbs(crumb_items), jsonld=jl,
@@ -322,7 +341,7 @@ for a in LONGREADS:
         cta_head2=a.get("cta_head2"), cta_text2=a.get("cta_text2"),
         commercial=a.get("commercial", False),
         price_head=a.get("price_head", ""), order_head=a.get("order_head", ""),
-        related_links=rel[:5])
+        related_links=rel[:12])
     pages.append((url, htmlp, "longread"))
 
 # ---- ЗАПИСЬ ----
