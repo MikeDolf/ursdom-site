@@ -22,7 +22,7 @@ DOMAIN = SITE["domain"]
 TODAY = "2026-07-28"
 PER_CUBE_LIST = list(PER_CUBE.items())
 
-# готовые расчёты объёма: помогают заказчику прикинуть кубы до звонка (конверсия)
+# готовые расчёты объёма: помогают заказчику прикинуть кубы до заявки (конверсия)
 CALC_ROWS = [
     ("Заезд 3 на 8 м, слой 20 см", "около 6 м³", "Самосвал 5-6,5 м³"),
     ("Площадка под авто 6 на 4 м, слой 20 см", "около 6 м³", "Самосвал 5-6,5 м³"),
@@ -54,7 +54,6 @@ def localbusiness():
         "name": SITE["brand"],
         "description": SITE["tagline"] + " по " + SITE["region_dat"],
         "url": DOMAIN + SITE["base"],
-        "telephone": SITE["phone"],
         "email": SITE["email"],
         "areaServed": SITE["region"],
         "openingHours": "Mo-Sa 08:00-20:00",

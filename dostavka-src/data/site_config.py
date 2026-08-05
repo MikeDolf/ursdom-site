@@ -12,8 +12,9 @@ SITE = {
     "region_short": "Свердловская область",
 
     # контакты (реальные, из брифа)
-    "phone": "+7 950 646-09-53",
-    "phone_href": "tel:+79506460953",
+    # Телефон на сайте НЕ публикуем: связь через MAX и форму заявки.
+    # Номер оставлен только для внутренних нужд, в шаблоны не выводится.
+    "phone_internal": "+7 950 646-09-53",
     "max_url": "https://max.ru/u/f9LHodD0cOIgiq2N2buCj7oU32e1sbUDdW834GzM718dViUBpco7KXS8n10",
     "email": "mezdudelom73@gmail.com",
     "hours": "Пн-Сб, 8:00-20:00",
@@ -30,6 +31,8 @@ SITE = {
     "web3forms_key": "4c17cc27-0b22-40b7-bea5-47ff348ef6c8",
     "metrika_id": "110405092",                  # общий счётчик, чтобы отслеживать переходы
     "goal_lead": "lead",                        # цель на отправку формы
+    "goal_contact": "call",                     # цель на клик по MAX (id прежний,
+                                                # чтобы не пересобирать цели в Метрике)
 
     # og-обложка (общая с сайтом)
     "og_image": "https://ursdom.ru/img/og-cover.png",

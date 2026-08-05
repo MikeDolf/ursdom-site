@@ -21,6 +21,8 @@ a{color:var(--d-accent)}
 .d-logo span{color:#f0b429}
 .d-head-phone{display:flex;flex-direction:column;align-items:flex-end;gap:.15rem}
 .d-head-phone a{color:#fff;font-weight:800;font-size:1.3rem;text-decoration:none;white-space:nowrap}
+.d-head-max{background:#2563eb;padding:.5rem 1rem;border-radius:9px;font-size:1.05rem!important}
+.d-head-max:hover{background:#1d4ed8}
 .d-head-phone small{color:#cbd5e1;font-size:.8rem}
 
 /* hero */
@@ -67,7 +69,10 @@ th{background:var(--d-card)}
 /* блок "проще позвонить" */
 .d-callblock{background:linear-gradient(180deg,#166534,#15803d);color:#fff;border-radius:14px;padding:1.6rem;text-align:center}
 .d-callblock h2{color:#fff}
-.d-callblock .d-bigphone{font-size:1.9rem;font-weight:800;color:#fff;text-decoration:none;display:inline-block;margin:.3rem 0 1rem}
+.d-callblock .d-bigmax{display:inline-block;margin:.5rem 0 1rem;background:#2563eb;color:#fff;
+  font-size:1.35rem;font-weight:800;text-decoration:none;padding:.9rem 1.6rem;border-radius:12px;
+  box-shadow:0 0 0 2px #fff}
+.d-callblock .d-bigmax:hover{background:#1d4ed8}
 .d-note-light{color:#dcfce7}
 /* Синий MAX на зелёном фоне почти сливается по яркости, поэтому на карточке
    звонка даём ему белую обводку для отделения от фона. */
