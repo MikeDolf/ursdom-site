@@ -43,7 +43,7 @@
 {% for s in sections %}
   <h2 id="{{ s.id }}">{{ s.h }}</h2>
 {{ m.blocks(s) }}
-{% if loop.index == cta_after %}{{ m.midcta(cfg, cta_head2|default(cta_head), cta_text2|default(cta_text)) }}{% endif %}
+{% if loop.index == cta_after %}{{ m.midcta(cfg, cta_head2 or cta_head, cta_text2 or cta_text) }}{% endif %}
 {% endfor %}
 </div></section>
 
