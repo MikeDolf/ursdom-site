@@ -135,7 +135,7 @@
   <h1>Доставка щебня в Дегтярск</h1>
   <p>Щебень всех фракций с доставкой в Дегтярск и в район. Около 50 км от Екатеринбурга. Самосвалы от 5 до 20 кубов, оплата после выгрузки, без предоплаты.</p>
   <div class="d-cta-row">
-    <a class="d-btn" href="https://max.ru/u/f9LHodD0cOIgiq2N2buCj7oU32e1sbUDdW834GzM718dViUBpco7KXS8n10" target="_blank" rel="noopener" onclick="try{ym(110405092,'reachGoal','call')}catch(e){}">Написать в MAX</a>
+    <a class="d-btn d-btn-max" href="https://max.ru/u/f9LHodD0cOIgiq2N2buCj7oU32e1sbUDdW834GzM718dViUBpco7KXS8n10" target="_blank" rel="noopener" onclick="try{ym(110405092,'reachGoal','call')}catch(e){}">Написать в MAX</a>
     <a class="d-btn d-btn-ghost" href="#zayavka">Узнать цену с доставкой</a>
   </div>
 </div></section>
@@ -172,7 +172,7 @@
   <h3>Посчитаем объём и цену за 15 минут</h3>
   <p>Назовите задачу и адрес в Дегтярске, подберём фракцию и машину под ваш заезд, назовём итоговую сумму с доставкой.</p>
   <div class="d-cta-row">
-    <a class="d-btn" href="https://max.ru/u/f9LHodD0cOIgiq2N2buCj7oU32e1sbUDdW834GzM718dViUBpco7KXS8n10" target="_blank" rel="noopener" onclick="try{ym(110405092,'reachGoal','call')}catch(e){}">Написать в MAX</a>
+    <a class="d-btn d-btn-max" href="https://max.ru/u/f9LHodD0cOIgiq2N2buCj7oU32e1sbUDdW834GzM718dViUBpco7KXS8n10" target="_blank" rel="noopener" onclick="try{ym(110405092,'reachGoal','call')}catch(e){}">Написать в MAX</a>
     <a class="d-btn d-btn-ghost" href="#zayavka">Узнать цену с доставкой</a>
   </div>
 </div>
@@ -295,6 +295,40 @@
   <a class="max" href="https://max.ru/u/f9LHodD0cOIgiq2N2buCj7oU32e1sbUDdW834GzM718dViUBpco7KXS8n10" target="_blank" rel="noopener" onclick="try{ym(110405092,'reachGoal','call')}catch(e){}">Написать в MAX</a>
   <a class="call" href="#zayavka">Узнать цену</a>
 </div>
+<aside class="d-pop" id="d-pop" aria-label="Связаться с нами" hidden>
+  <button class="d-pop-x" type="button" aria-label="Закрыть окно">×</button>
+  <strong>Связаться с нами</strong>
+  <p>Назовите материал, объём и адрес: посчитаем цену с доставкой и перезвоним за 15 минут.</p>
+  <a class="d-pop-max" href="https://max.ru/u/f9LHodD0cOIgiq2N2buCj7oU32e1sbUDdW834GzM718dViUBpco7KXS8n10" target="_blank" rel="noopener" onclick="try{ym(110405092,'reachGoal','call')}catch(e){}">Написать в MAX</a>
+  <a class="d-pop-lead" href="#zayavka">Узнать цену с доставкой</a>
+  <small>Пн-Сб, 8:00-20:00</small>
+</aside>
+<script>
+(function(){
+  var el=document.getElementById('d-pop');
+  if(!el) return;
+  // Закрыли один раз - не показываем до конца сессии.
+  try{ if(sessionStorage.getItem('dpop')==='off') return; }catch(e){}
+  el.hidden=false;
+  var shown=false;
+  function check(){
+    // Показываем после прокрутки на экран с небольшим запасом.
+    if(!shown && window.pageYOffset > window.innerHeight*0.8){
+      shown=true; el.classList.add('is-on');
+      window.removeEventListener('scroll',check);
+    }
+  }
+  window.addEventListener('scroll',check,{passive:true});
+  check();
+  function close(){
+    el.classList.remove('is-on');
+    try{ sessionStorage.setItem('dpop','off'); }catch(e){}
+  }
+  el.querySelector('.d-pop-x').addEventListener('click',close);
+  el.querySelector('.d-pop-lead').addEventListener('click',close);
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape') close(); });
+})();
+</script>
 <script type="text/javascript">
    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
    m[i].l=1*new Date();

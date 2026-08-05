@@ -36,7 +36,11 @@ a{color:var(--d-accent)}
   font-weight:800;font-size:1.1rem;padding:.9rem 1.5rem;border-radius:10px;border:none;cursor:pointer;text-align:center}
 .d-btn:hover{background:var(--d-accent-dark)}
 .d-btn-ghost{background:transparent;border:2px solid #fff;color:#fff}
-.d-btn-max{background:#2563eb}
+/* MAX сделан заметнее прочих кнопок: белая обводка отделяет его от любого фона,
+   увеличенный кегль и тень выделяют как основное действие. */
+.d-btn-max{background:#2563eb;box-shadow:0 0 0 2px #fff,0 4px 14px rgba(0,0,0,.28);
+  font-size:1.18rem;padding:1rem 1.7rem}
+.d-btn-max:hover{background:#1d4ed8}
 .d-btn-wide{width:100%;font-size:1.2rem;padding:1.05rem}
 
 /* секции */
@@ -183,4 +187,28 @@ th{background:var(--d-card)}
   .d-toc li{margin:0}
   .d-toc li a{display:block;padding:.6rem 0;line-height:1.35}
 }
+
+/* Плавающее окно связи. Появляется после прокрутки на экран, закрывается крестиком
+   и до конца сессии больше не показывается. На мобильных скрыто: там уже есть
+   нижняя панель, два перекрывающих блока мешали бы читать. */
+.d-pop{position:fixed;right:1.2rem;bottom:1.2rem;z-index:60;width:19rem;max-width:calc(100vw - 2.4rem);
+  background:var(--d-dark);color:#fff;border-radius:14px;padding:1.15rem 1.25rem 1.1rem;
+  box-shadow:0 10px 34px rgba(0,0,0,.34);
+  opacity:0;transform:translateY(14px);pointer-events:none;
+  transition:opacity .25s ease,transform .25s ease}
+.d-pop.is-on{opacity:1;transform:translateY(0);pointer-events:auto}
+.d-pop strong{display:block;font-size:1.15rem;margin:0 1.4rem .35rem 0}
+.d-pop p{margin:0 0 .9rem;font-size:.95rem;color:#e2e8f0;line-height:1.45}
+.d-pop small{display:block;margin-top:.6rem;color:#cbd5e1;font-size:.85rem}
+.d-pop-max,.d-pop-lead{display:block;text-align:center;text-decoration:none;font-weight:800;
+  border-radius:10px;padding:.8rem 1rem}
+.d-pop-max{background:#2563eb;color:#fff;box-shadow:0 0 0 2px #fff;margin-bottom:.6rem}
+.d-pop-max:hover{background:#1d4ed8}
+.d-pop-lead{background:transparent;color:#fff;border:2px solid #fff}
+.d-pop-lead:hover{background:rgba(255,255,255,.12)}
+.d-pop-x{position:absolute;top:.5rem;right:.55rem;width:2rem;height:2rem;line-height:1;
+  background:transparent;border:0;color:#cbd5e1;font-size:1.5rem;cursor:pointer;border-radius:8px}
+.d-pop-x:hover{background:rgba(255,255,255,.14);color:#fff}
+@media(max-width:720px){.d-pop{display:none}}
+@media(prefers-reduced-motion:reduce){.d-pop{transition:none}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}

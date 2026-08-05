@@ -63,6 +63,40 @@
   <a class="max" href="{{ cfg.max_url }}" target="_blank" rel="noopener" onclick="try{ym({{ cfg.metrika_id }},'reachGoal','{{ cfg.goal_contact }}')}catch(e){}">Написать в MAX</a>
   <a class="call" href="#zayavka">Узнать цену</a>
 </div>
+<aside class="d-pop" id="d-pop" aria-label="Связаться с нами" hidden>
+  <button class="d-pop-x" type="button" aria-label="Закрыть окно">×</button>
+  <strong>Связаться с нами</strong>
+  <p>Назовите материал, объём и адрес: посчитаем цену с доставкой и {{ cfg.callback_promise }}.</p>
+  <a class="d-pop-max" href="{{ cfg.max_url }}" target="_blank" rel="noopener" onclick="try{ym({{ cfg.metrika_id }},'reachGoal','{{ cfg.goal_contact }}')}catch(e){}">Написать в MAX</a>
+  <a class="d-pop-lead" href="#zayavka">Узнать цену с доставкой</a>
+  <small>{{ cfg.hours }}</small>
+</aside>
+<script>
+(function(){
+  var el=document.getElementById('d-pop');
+  if(!el) return;
+  // Закрыли один раз - не показываем до конца сессии.
+  try{ if(sessionStorage.getItem('dpop')==='off') return; }catch(e){}
+  el.hidden=false;
+  var shown=false;
+  function check(){
+    // Показываем после прокрутки на экран с небольшим запасом.
+    if(!shown && window.pageYOffset > window.innerHeight*0.8){
+      shown=true; el.classList.add('is-on');
+      window.removeEventListener('scroll',check);
+    }
+  }
+  window.addEventListener('scroll',check,{passive:true});
+  check();
+  function close(){
+    el.classList.remove('is-on');
+    try{ sessionStorage.setItem('dpop','off'); }catch(e){}
+  }
+  el.querySelector('.d-pop-x').addEventListener('click',close);
+  el.querySelector('.d-pop-lead').addEventListener('click',close);
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape') close(); });
+})();
+</script>
 <script type="text/javascript">
    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
    m[i].l=1*new Date();
