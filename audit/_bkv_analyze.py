@@ -168,9 +168,16 @@ for p, ex in phrases.items():
 # "щебень купить в качканаре", "купить щебень в качканаре",
 # "качканар щебень купить" - это один и тот же запрос Вордстата.
 # Схлопываем по множеству слов, иначе сумма завышается в разы.
+# Схлопываем ТОЛЬКО для оценки объёма спроса. Сами варианты написания
+# сохраняем отдельным файлом: для текста страниц они нужны, разные
+# формулировки цепляют разные интенты и дают естественные вхождения.
+# Предлог частью ключа оставляем: "щебень в арамиль" и "щебень арамиль"
+# это разные фразы с разной точной частотой (0 против 11).
 norm = {}
+variants = collections.defaultdict(list)
 for p, ex in clean.items():
-    k = frozenset(w for w in p.split() if w not in STOPW)
+    k = frozenset(p.split())
+    variants[k].append((ex, p))
     if k not in norm or ex > norm[k][1]:
         norm[k] = (p, ex)
 dedup_n = len(clean)
@@ -409,6 +416,26 @@ with io.open(os.path.join(OUT, "bukvarix-neutral.csv"), "w", encoding="utf-8") a
     for p, ex in sorted(neutral.items(), key=lambda i: -i[1]):
         if ex >= 5:
             fh.write("%s;%d;%.1f;%s\n" % (p, ex, ex * REGION_SHARE, "K" if COMM.search(p) else "I"))
+
+# варианты написания: для текста страниц и для расширения затравок
+with io.open(os.path.join(OUT, "bukvarix-variants.csv"), "w", encoding="utf-8") as fh:
+    fh.write("основная фраза;точная;варианты написания;их частоты\n")
+    rows = []
+    for k, vs in variants.items():
+        if len(vs) < 2:
+            continue
+        vs.sort(reverse=True)
+        if vs[0][0] < 5:
+            continue
+        rows.append(vs)
+    rows.sort(key=lambda v: -v[0][0])
+    for vs in rows:
+        head_ex, head = vs[0]
+        rest = vs[1:]
+        fh.write("%s;%d;%s;%s\n" % (head, head_ex,
+                                     " | ".join(p for _, p in rest),
+                                     " | ".join(str(e) for e, _ in rest)))
+    print("вариантов написания сохранено: %d групп" % len(rows))
 
 print("сырых фраз: %d -> после шлюзов: %d" % (raw_n, len(clean)))
 print("гео: %d, нейтральных: %d (K %d / I %d)"

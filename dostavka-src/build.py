@@ -12,6 +12,9 @@ sys.path.insert(0, os.path.join(HERE, "data"))
 
 from site_config import SITE, ADVANTAGES, GUARANTEES
 from products import MATERIALS, EXTRA
+from products_ext import MATERIALS_EXT, MONEY_CFG_EXT
+from geo_matrix import (CITY_FACTS, MATRIX, ALREADY, MAT_FORMS,
+                        ANGLE, LOCAL, MAT_TASK, example_for, plecho)
 from prices import PER_CUBE, PRICE_NOTE, DELIVERY_NOTE, CATALOG
 from cities import CITIES, PESOK_CITIES
 from longreads import LONGREADS, AUTHOR_FULL, UPDATED
@@ -360,6 +363,191 @@ for a in LONGREADS:
         related_links=rel[:12])
     pages.append((url, htmlp, "longread"))
 
+# ---- НОВЫЕ ТОВАРНЫЕ СТРАНИЦЫ (керамзит, гравий, крошка, скала, ЩПС, бут) ----
+for slug, mc in MONEY_CFG_EXT.items():
+    mat = MATERIALS_EXT[slug]
+    url = SITE["base"] + slug + "/"
+    crumb_items = [("Главная", "/"), ("Доставка материалов", SITE["base"]),
+                   (mat["name"], None)]
+    jl = graph(localbusiness(), bc_schema(crumb_items), faq_schema(mat["faq"]),
+               product_schema(mat["name"], mc["desc"], mc["low"], url))
+    rel = [("/dostavka/shcheben/", "Доставка щебня"),
+           ("/dostavka/pesok/", "Доставка песка"),
+           ("/dostavka/otsev/", "Отсев 0-5"),
+           ("/dostavka/pgs/", "ПГС и ОПГС"),
+           ("/dostavka/stati/skolko-vesit-kub/", "Сколько весит куб материала"),
+           ("/dostavka/stati/koefficient-uplotneniya/", "Коэффициент уплотнения"),
+           ("/dostavka/", "Все города и материалы")]
+    rel += [("/dostavka/" + o + "/", MATERIALS_EXT[o]["name"] + " с доставкой")
+            for o in MONEY_CFG_EXT if o != slug]
+    htmlp = env.get_template("money.j2").render(
+        **BASE_CTX, canonical=DOMAIN + url, crumbs_html=crumbs(crumb_items),
+        jsonld=jl, title=mc["title"], desc=mc["desc"], h1=mc["h1"],
+        hero_sub=mc["hero_sub"], mat_vin=mc["mat_vin"], mat_rod=mc["mat_rod"],
+        mat_order=mc["mat_order"], subject=mc["mat_vin"] + ", " + SITE["region_short"],
+        intro=mat["intro"], types=mat["types"], fractions=mat.get("fractions"),
+        faq=mat["faq"], related_links=rel[:12])
+    pages.append((url, htmlp, "money-ext"))
+
+# ---- ГОРОДСКИЕ СТРАНИЦЫ: ОДИН ГОРОД = ОДНА СТРАНИЦА ----
+# Первая попытка была делать отдельную страницу на каждую пару город-материал.
+# Проверка похожести это забраковала: "песок в Нижнем Тагиле" и "керамзит
+# в Нижнем Тагиле" совпадали на 89 процентов, потому что вся городская часть
+# у них общая, а различается только название материала. Это дорвейность
+# в чистом виде, и под фильтр уехал бы весь раздел.
+# Поэтому город получает одну страницу, а материалы идут на ней секциями
+# со своими заголовками, ценой и расчётом. Запрос "керамзит Реж" эта
+# страница закрывает разделом, а не отдельным адресом.
+GEO_FRACTIONS = {
+    "shcheben": [("5-20 мм", "Бетон, дорожки, отмостка, тонкие слои"),
+                 ("20-40 мм", "Фундамент, заезд, площадка, дренаж"),
+                 ("40-70 мм", "Основание дороги, отсыпка слабых грунтов"),
+                 ("Отсев 0-5", "Расклинцовка верха и подсыпка под плитку")],
+    "pesok": [("Карьерный сеяный", "Отсыпка, обратная засыпка, подушка фундамента"),
+              ("Речной мытый", "Бетон, кладочные и штукатурные растворы")],
+    "otsev": [("0-5 гранитный", "Основание под тротуарную плитку"),
+              ("0-10", "Расклинцовка щебня 20-40 и 40-70")],
+    "keramzit": [("10-20 мм", "Утепление пола по грунту и между лагами"),
+                 ("20-40 мм", "Утепление кровли, засыпка больших пустот")],
+    "graviy": [("20-40 мм", "Дренаж вокруг дома, засыпка, подъём уровня"),
+               ("40-120 мм", "Галька: ландшафт и сухие ручьи")],
+    "pgs": [("Природная ПГС", "Планировка территории и черновая отсыпка"),
+            ("Обогащённая ОПГС", "Основания под нагрузку")],
+}
+
+
+def geo_city_faq(facts, mats, pl, dist):
+    """FAQ городской страницы. Падежи материалов подставляются явно:
+    ровно на этом месте раньше вылезали 'привезёте щебня' и 'виды щебень'."""
+    first = MAT_FORMS[mats[0]]
+    q = [
+        (f"Сколько стоит доставка {facts['prep']}?",
+         f"Цена складывается из стоимости материала за куб и доставки на плечо "
+         f"{dist}. Назовите материал, объём и адрес, посчитаем итог и "
+         f"{SITE['callback_promise']}. На месте сумма не меняется."),
+        (f"Какие материалы возите {facts['prep']}?",
+         "Возим " + ", ".join(MAT_FORMS[m]["vin"] for m in mats) +
+         ". Всё это можно взять одной заявкой: расчёт общий, "
+         "рейсы планируем на один день."),
+        (f"За какой срок привезёте {first['vin']} {facts['prep']}?",
+         f"Рейс {pl['term']}. Точное окно доставки согласуем при заказе "
+         f"и предупреждаем о выезде машины."),
+        ("Какой минимальный объём заказа?",
+         f"Возим от 5 кубов. {pl['minv']}"),
+        ("Нужна ли предоплата?",
+         f"Нет. {SITE['payment']} Сначала машина приезжает и выгружается, "
+         f"вы проверяете объём, потом расчёт."),
+        ("Как проверить объём при приёмке?",
+         "Замерьте кузов рулеткой до разгрузки: длина на ширину на высоту борта. "
+         "Паспортный объём кузова водитель называет по документам на машину. "
+         "Мы разгружаем при заказчике, чтобы это можно было сделать сразу."),
+        (f"Куда именно возите {facts['prep']} и в округ?",
+         f"{facts['areas'][0].upper()}{facts['areas'][1:]}. По адресам за городом "
+         f"уточняйте состояние подъезда: гружёный самосвал проходит не везде."),
+    ]
+    if facts.get("note"):
+        q.insert(1, (f"Есть ли особенности с доставкой {facts['prep']}?",
+                     facts["note"]))
+    return q
+
+
+OLD_CITY = {c["slug"]: c for c in CITIES}
+
+for city_slug, mats in MATRIX.items():
+    facts = CITY_FACTS[city_slug]
+    pl = plecho(facts["km"])
+    dist = f"около {facts['km']} км от Екатеринбурга"
+    url = f"{SITE['base']}shcheben/{city_slug}/"
+    old = OLD_CITY.get(city_slug)
+
+    mat_blocks = []
+    for mkey in mats:
+        mat = MAT_FORMS[mkey]
+        mat_blocks.append(dict(
+            key=mkey, name=mat["name"], vin=mat["vin"], rod=mat["rod"],
+            url="/dostavka/" + mat["url"] + "/",
+            task=MAT_TASK.get((mkey, facts["kind"]), MAT_TASK[(mkey, "small")]),
+            ex=example_for(mkey, city_slug, facts["km"]),
+            fractions=GEO_FRACTIONS.get(mkey),
+            price=next((p for n, p in PER_CUBE.items()
+                        if n.lower().startswith(mat["vin"][:5].lower())), mat["low"]),
+        ))
+
+    names = [MAT_FORMS[m]["vin"] for m in mats]
+    h1 = f"Доставка нерудных материалов {facts['prep']}"
+    title = f"Щебень и песок {facts['prep']}: доставка, цена за куб"
+    if len(title) > 70:
+        title = f"Доставка {facts['prep']}: щебень, песок, цена за куб"
+    desc = (f"Доставка {facts['prep']} и по округу: " + ", ".join(names) +
+            f". Плечо {dist}, самосвалы от 5 до 20 кубов, оплата после "
+            f"выгрузки. Цену с доставкой называем по заявке.")[:200]
+    hero = (f"Везём " + ", ".join(names) + f" {facts['prep']} самосвалами "
+            f"от 5 до 20 кубов. Плечо {pl['tier']}, {dist}: {pl['term']}. "
+            f"Оплата после выгрузки, объём проверяете при приёмке.")
+
+    if old:
+        p_plecho, p_kuda, p_grunt = old["block"], old["areas"], old["objects"]
+        p_econ = old["use"]
+        p_sroki = old["terms"]
+    else:
+        p_plecho = (f"{facts['name']} стоит {dist} по {facts['tract']}. "
+                    f"Это {pl['tier']} рейс. {pl['econ']}")
+        p_econ = (f"{facts['name']} это {facts['life']}. От этого зависит и что "
+                  f"здесь заказывают, и какими объёмами: снабженец предприятия "
+                  f"и хозяин участка приходят с разными задачами, и материал "
+                  f"мы подбираем под задачу, а не по прайсу сверху вниз.")
+        p_kuda = (f"Возим {facts['prep']} и в округ: {facts['areas']}. "
+                  f"По адресам за чертой города заранее скажите, какой заезд: "
+                  f"гружёный самосвал не везде разворачивается и не везде "
+                  f"поднимает кузов под проводами и ветками.")
+        p_grunt = (f"{facts['ground'][0].upper()}{facts['ground'][1:]} - вот с чем "
+                   f"здесь приходится считаться при выборе материала и толщины слоя. "
+                   f"На слабом основании слой делают толще и стелют геотекстиль, "
+                   f"иначе материал уходит вниз за пару сезонов.")
+        p_sroki = (f"Рейс {facts['prep']} {pl['term']}. Машину подбираем "
+                   f"под объём и под ваш заезд: если ворота узкие или негде "
+                   f"развернуться, подадим короткий самосвал вместо длинного.")
+
+    crumb_items = [("Главная", "/"), ("Доставка материалов", SITE["base"]),
+                   ("Щебень", SITE["base"] + "shcheben/"), (facts["name"], None)]
+    cfaq = geo_city_faq(facts, mats, pl, dist)
+    jl = graph(localbusiness(), bc_schema(crumb_items), faq_schema(cfaq),
+               product_schema(h1, desc, MAT_FORMS[mats[0]]["low"], url))
+
+    rel = [("/dostavka/shcheben/", "Щебень: все виды и цены"),
+           ("/dostavka/stati/skolko-vesit-kub/", "Сколько весит куб материала"),
+           ("/dostavka/stati/koefficient-uplotneniya/", "Сколько заказывать с учётом уплотнения"),
+           ("/dostavka/", "Все города и материалы")]
+    rel += [("/dostavka/" + MAT_FORMS[m]["url"] + "/",
+             MAT_FORMS[m]["name"] + ": виды и цены") for m in mats[1:4]]
+    ring = list(MATRIX)
+    k = ring.index(city_slug)
+    for nb in ring[k + 1:] + ring[:k]:
+        if len(rel) >= 12:
+            break
+        rel.append((f"/dostavka/shcheben/{nb}/",
+                    f"Доставка {CITY_FACTS[nb]['prep']}"))
+
+    htmlp = env.get_template("geo2.j2").render(
+        **BASE_CTX, canonical=DOMAIN + url, crumbs_html=crumbs(crumb_items),
+        jsonld=jl, title=title, desc=desc, h1=h1, hero_sub=hero,
+        city=dict(facts, dist=dist), dist=dist, mat_blocks=mat_blocks,
+        p_plecho=p_plecho, p_econ=p_econ, p_kuda=p_kuda, p_grunt=p_grunt,
+        p_sroki=p_sroki, p_minv=pl["minv"], p_local=LOCAL[city_slug],
+        faq=cfaq, related_links=rel[:12])
+    pages.append((url, htmlp, "geo-city"))
+
+# старые гео-страницы по щебню заменены городскими: убираем дубли по URL
+_seen, _uniq = set(), []
+for u, h, f in pages:
+    if u in _seen and f == "geo":
+        continue
+    if u in _seen:
+        _uniq = [(uu, hh, ff) for uu, hh, ff in _uniq if uu != u]
+    _seen.add(u)
+    _uniq.append((u, h, f))
+pages = _uniq
+
 # ---- ПОЛИТИКА ОБРАБОТКИ ДАННЫХ (у раздела свои формы, нужна своя политика) ----
 url = SITE["base"] + "politika/"
 crumb_items = [("Главная", "/"), ("Доставка материалов", SITE["base"]),
@@ -375,6 +563,27 @@ htmlp = env.get_template("legal.j2").render(
 pages.append((url, htmlp, "legal"))
 
 # ---- ЗАПИСЬ ----
+# Сначала убираем страницы, которых больше нет в плане сборки. Без этого
+# после смены архитектуры на диске остаются осиротевшие адреса: они
+# продолжают отдаваться, попадают в индекс и выглядят как дубли.
+_planned = {os.path.join(ROOT, u.strip("/"), "index.html") for u, _, _ in pages}
+_orphans = []
+for _dp, _dn, _fn in os.walk(OUT):
+    if "index.html" in _fn:
+        _f = os.path.join(_dp, "index.html")
+        if _f not in _planned:
+            _orphans.append(_f)
+for _f in _orphans:
+    os.remove(_f)
+    _d = os.path.dirname(_f)
+    while _d != OUT and not os.listdir(_d):
+        os.rmdir(_d)
+        _d = os.path.dirname(_d)
+if _orphans:
+    print("Удалено осиротевших страниц: %d" % len(_orphans))
+    for _f in sorted(_orphans):
+        print("  - /%s/" % os.path.relpath(os.path.dirname(_f), ROOT).replace(os.sep, "/"))
+
 written = []
 for url, h, fam in pages:
     written.append((write(url, h), url, fam))
@@ -407,20 +616,24 @@ def visible(hs):
     return re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", hs)).strip()
 
 
-for fam in ("geo", "geo-pesok"):
-    grp = [(u, visible(h)) for u, h, f in pages if f == fam]
-    if len(grp) < 2:
-        continue
-    print(f"\nПохожесть страниц [{fam}] (порог < 0.80):")
-    mx, worst = 0, None
-    for i in range(len(grp)):
-        for j in range(i + 1, len(grp)):
-            r = difflib.SequenceMatcher(None, grp[i][1], grp[j][1]).ratio()
-            if r > mx:
-                mx, worst = r, (grp[i][0], grp[j][0])
-            if r >= 0.80:
-                print(f"  ВЫСОКАЯ {r:.2f}: {grp[i][0]} vs {grp[j][0]}")
-    print(f"  максимум {mx:.2f} ({worst[0]} vs {worst[1]})  {'OK' if mx < 0.80 else 'ПРЕВЫШЕНО'}")
+# Сравниваем ВСЕ гео-страницы между собой, а не внутри семейства.
+# Раньше проверка шла по семействам, и пара "щебень в Реже" против
+# "отсев в Реже" вообще не сравнивалась, хотя это тоже дорвейная ось.
+grp = [(u, visible(h)) for u, h, f in pages if f.startswith("geo")]
+print(f"\nПохожесть гео-страниц, все пары (порог < 0.80): {len(grp)} страниц")
+mx, worst, high = 0, None, []
+for i in range(len(grp)):
+    for j in range(i + 1, len(grp)):
+        r = difflib.SequenceMatcher(None, grp[i][1], grp[j][1]).ratio()
+        if r > mx:
+            mx, worst = r, (grp[i][0], grp[j][0])
+        if r >= 0.80:
+            high.append((r, grp[i][0], grp[j][0]))
+high.sort(reverse=True)
+for r, a, b in high:
+    print(f"  ВЫСОКАЯ {r:.2f}: {a} vs {b}")
+print(f"  пар выше порога: {len(high)}")
+print(f"  максимум {mx:.2f} ({worst[0]} vs {worst[1]})  {'OK' if mx < 0.80 else 'ПРЕВЫШЕНО'}")
 
 wc = [(u, len(visible(h).split())) for u, h, f in pages]
 print("\nОбъём текста (слов):")
