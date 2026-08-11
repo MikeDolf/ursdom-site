@@ -187,24 +187,33 @@ for slug, mc in money_cfg.items():
         rel = [("/dostavka/shcheben/frakciya-20-40/", "Щебень 20-40: характеристики, расчёт, цена"),
                ("/dostavka/shcheben/v-meshkah/", "Щебень в мешках: фасовка и когда это выгодно"),
                ("/dostavka/stati/skolko-shchebnya-v-kamaze/", "Сколько щебня в КамАЗе"),
+               ("/dostavka/stati/shcheben-ili-graviy/", "Чем отличается щебень от гравия"),
+               ("/dostavka/stati/skolko-vesit-kub/", "Сколько весит куб щебня и песка"),
+               ("/dostavka/stati/koefficient-uplotneniya/", "Коэффициент уплотнения: сколько заказывать"),
                ("/dostavka/pesok/", "Доставка песка"),
                ("/dostavka/", "Все города и материалы")]
     elif slug == "otsev":
         rel = [("/dostavka/shcheben/", "Доставка щебня"),
                ("/dostavka/pesok/", "Доставка песка"),
                ("/dostavka/stati/chem-otsypat-uchastok/", "Чем отсыпать участок"),
+               ("/dostavka/stati/koefficient-uplotneniya/", "Коэффициент уплотнения: сколько заказывать"),
+               ("/dostavka/stati/skolko-vesit-kub/", "Сколько весит куб отсева и щебня"),
                ("/dostavka/stati/cena-kuba-s-dostavkoy/", "Из чего складывается цена куба"),
                ("/dostavka/", "Все города и материалы")]
     elif slug == "pgs":
         rel = [("/dostavka/pesok/", "Доставка песка"),
                ("/dostavka/shcheben/", "Доставка щебня"),
                ("/dostavka/stati/chem-otsypat-uchastok/", "Чем отсыпать участок"),
+               ("/dostavka/stati/shcheben-ili-graviy/", "Чем отличается щебень от гравия"),
+               ("/dostavka/stati/koefficient-uplotneniya/", "Коэффициент уплотнения ПГС"),
                ("/dostavka/stati/cena-kuba-s-dostavkoy/", "Из чего складывается цена куба"),
                ("/dostavka/", "Все города и материалы")]
     else:
         rel = [("/dostavka/pesok/karyernyy/", "Карьерный песок: виды и цена"),
                ("/dostavka/pesok/rechnoy/", "Речной мытый песок"),
                ("/dostavka/stati/kakoy-pesok-vybrat/", "Какой песок выбрать под задачу"),
+               ("/dostavka/stati/skolko-shchebnya-i-peska-na-kub-betona/", "Сколько песка и щебня на куб бетона"),
+               ("/dostavka/stati/skolko-vesit-kub/", "Сколько весит куб песка"),
                ("/dostavka/pesok/bogdanovich/", "Доставка песка в Богданович"),
                ("/dostavka/pesok/irbit/", "Доставка песка в Ирбит")]
     htmlp = env.get_template("money.j2").render(
