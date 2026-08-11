@@ -53,7 +53,8 @@
         <h3>Материалы</h3>
         <p><a href="/dostavka/shcheben/">Доставка щебня</a><br>
         <a href="/dostavka/pesok/">Доставка песка</a><br>
-        <a href="/dostavka/">Все города и материалы</a></p>
+        <a href="/dostavka/">Все города и материалы</a><br>
+        <a href="/dostavka/politika/">Обработка данных</a></p>
       </div>
     </div>
     <p class="d-copy">© 2026 {{ cfg.brand }}. Доставка нерудных материалов по {{ cfg.region_dat }}. Цены на сайте ориентировочные, точную стоимость называем по заявке.</p>
@@ -61,14 +62,14 @@
 </footer>
 <div class="d-mobilebar">
   <a class="max" href="{{ cfg.max_url }}" target="_blank" rel="noopener" onclick="try{ym({{ cfg.metrika_id }},'reachGoal','{{ cfg.goal_contact }}')}catch(e){}">Написать в MAX</a>
-  <a class="call" href="#zayavka">Узнать цену</a>
+  <a class="call" href="{{ form_anchor|default('#zayavka') }}">Узнать цену</a>
 </div>
 <aside class="d-pop" id="d-pop" aria-label="Связаться с нами" hidden>
   <button class="d-pop-x" type="button" aria-label="Закрыть окно">×</button>
   <strong>Связаться с нами</strong>
   <p>Назовите материал, объём и адрес: посчитаем цену с доставкой и {{ cfg.callback_promise }}.</p>
   <a class="d-pop-max" href="{{ cfg.max_url }}" target="_blank" rel="noopener" onclick="try{ym({{ cfg.metrika_id }},'reachGoal','{{ cfg.goal_contact }}')}catch(e){}">Написать в MAX</a>
-  <a class="d-pop-lead" href="#zayavka">Узнать цену с доставкой</a>
+  <a class="d-pop-lead" href="{{ form_anchor|default('#zayavka') }}">Узнать цену с доставкой</a>
   <small>{{ cfg.hours }}</small>
 </aside>
 <script>

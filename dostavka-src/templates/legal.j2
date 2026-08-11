@@ -1,0 +1,25 @@
+{% extends "base.j2" %}
+{% block body %}
+<section><div class="wrap d-prose">
+  <h1>{{ h1 }}</h1>
+  <p class="d-upd">Редакция от {{ updated }}.</p>
+
+{% for s in sections %}
+  <h2 id="{{ s.id }}">{{ s.h }}</h2>
+{% if s.p %}{% for para in s.p %}  <p>{{ para }}</p>
+{% endfor %}{% endif %}
+{% if s.ul %}  <ul>
+{% for i in s.ul %}    <li>{{ i }}</li>
+{% endfor %}  </ul>
+{% endif %}
+{% if s.table %}  <div class="d-table-wrap"><table>
+    <caption>{{ s.table.caption }}</caption>
+    <thead><tr>{% for th in s.table.head %}<th>{{ th }}</th>{% endfor %}</tr></thead>
+    <tbody>
+{% for row in s.table.rows %}      <tr>{% for cell in row %}<td>{{ cell }}</td>{% endfor %}</tr>
+{% endfor %}    </tbody>
+  </table></div>
+{% endif %}
+{% endfor %}
+</div></section>
+{% endblock %}

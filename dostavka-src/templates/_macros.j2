@@ -10,8 +10,12 @@
   <input id="lf-phone" type="tel" name="Телефон" placeholder="+7" required>
   <label for="lf-msg">Что и куда привезти</label>
   <textarea id="lf-msg" name="Заявка" placeholder="Например: щебень 20-40, 10 кубов, Первоуральск, адрес"></textarea>
+  <label class="d-consent"><input type="checkbox" name="Согласие" value="да" required>
+    <span>Согласен на обработку персональных данных для ответа на заявку, включая
+    передачу через зарубежный сервис отправки форм.
+    <a href="/dostavka/politika/">Как мы обрабатываем данные</a></span></label>
   <button class="d-btn d-btn-wide" type="submit">Отправить заявку</button>
-  <p class="d-note">Нажимая кнопку, вы соглашаетесь на обработку контактов для ответа на заявку. {{ cfg.callback_promise|capitalize }}.</p>
+  <p class="d-note">{{ cfg.callback_promise|capitalize }}. Заявка ни к чему не обязывает.</p>
 </form>
 {%- endmacro %}
 

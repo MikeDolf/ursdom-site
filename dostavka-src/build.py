@@ -15,9 +15,17 @@ from products import MATERIALS, EXTRA
 from prices import PER_CUBE, PRICE_NOTE, DELIVERY_NOTE, CATALOG
 from cities import CITIES, PESOK_CITIES
 from longreads import LONGREADS, AUTHOR_FULL, UPDATED
+from legal import legal_sections, LEGAL_UPDATED
 
 env = Environment(loader=FileSystemLoader(os.path.join(HERE, "templates")),
                   autoescape=False, trim_blocks=False, lstrip_blocks=False)
+
+# Версия CSS считается из содержимого файла. Раньше она была константой в конфиге,
+# и после правок стилей вернувшийся посетитель получал старый файл из кеша.
+_css = os.path.join(OUT, "assets", "dostavka.css")
+if os.path.exists(_css):
+    import hashlib
+    SITE["css_version"] = hashlib.md5(open(_css, "rb").read()).hexdigest()[:8]
 DOMAIN = SITE["domain"]
 TODAY = "2026-07-28"
 PER_CUBE_LIST = list(PER_CUBE.items())
@@ -342,6 +350,20 @@ for a in LONGREADS:
         price_head=a.get("price_head", ""), order_head=a.get("order_head", ""),
         related_links=rel[:12])
     pages.append((url, htmlp, "longread"))
+
+# ---- ПОЛИТИКА ОБРАБОТКИ ДАННЫХ (у раздела свои формы, нужна своя политика) ----
+url = SITE["base"] + "politika/"
+crumb_items = [("Главная", "/"), ("Доставка материалов", SITE["base"]),
+               ("Обработка данных", None)]
+htmlp = env.get_template("legal.j2").render(
+    **BASE_CTX, canonical=DOMAIN + url, crumbs_html=crumbs(crumb_items),
+    jsonld=graph(localbusiness(), bc_schema(crumb_items)),
+    title="Обработка персональных данных: раздел доставки материалов",
+    desc="Как раздел доставки нерудных материалов обрабатывает данные из формы заявки: какие поля, зачем, кому передаются, сроки хранения и как отозвать согласие.",
+    h1="Обработка персональных данных в разделе доставки",
+    updated=LEGAL_UPDATED, sections=legal_sections(SITE),
+    form_anchor=SITE["base"] + "#zayavka")
+pages.append((url, htmlp, "legal"))
 
 # ---- ЗАПИСЬ ----
 written = []
