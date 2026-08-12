@@ -11,7 +11,7 @@
 </div></section>
 
 <section><div class="wrap d-prose">
-  <h2 id="ceny">Цены {{ city.loc }} с доставкой</h2>
+  <h2 id="ceny">Цены на щебень и песок {{ city.loc }} с доставкой</h2>
   <div class="d-table-wrap"><table>
     <caption>{{ price_note }} Итоговая цена {{ city.prep }} зависит от плеча ({{ dist }}) и объёма машины.</caption>
     <thead><tr><th>Материал</th><th>Цена за куб, руб</th></tr></thead>
@@ -42,7 +42,7 @@
   и разобранный расчёт объёма на типовой задаче.</p>
 
 {% for b in mat_blocks %}
-  <h3 id="m-{{ b.key }}">{{ b.name }} {{ city.prep }}</h3>
+  <h3 id="m-{{ b.key }}">{{ b.name }} {{ city.loc }}</h3>
   <p>{{ b.task }}</p>
 {% if b.fractions %}  <div class="d-table-wrap"><table>
     <caption>Ходовые фракции {{ b.rod }} и применение {{ city.loc }}</caption>

@@ -68,7 +68,9 @@ def localbusiness():
         "email": SITE["email"],
         "areaServed": SITE["region"],
         "openingHours": "Mo-Sa 08:00-20:00",
-        "priceRange": "по запросу",
+        "priceRange": "₽₽",
+        "currenciesAccepted": "RUB",
+        "paymentAccepted": "Наличные, банковская карта, безналичный перевод",
     }
 
 
@@ -134,7 +136,19 @@ def write(url, html_str):
 
 BASE_CTX = dict(cfg=SITE, advantages=ADVANTAGES, guarantees=GUARANTEES,
                 per_cube=PER_CUBE_LIST, price_note=PRICE_NOTE, delivery_note=DELIVERY_NOTE,
-                extra=EXTRA, cities=CITIES, calc_rows=CALC_ROWS, catalog=CATALOG)
+                extra=EXTRA, calc_rows=CALC_ROWS, catalog=CATALOG,
+                cities=[dict(slug=cs, prep=CITY_FACTS[cs]["prep"],
+                             loc=CITY_FACTS[cs]["loc"],
+                             name=CITY_FACTS[cs]["name"],
+                             km=CITY_FACTS[cs]["km"],
+                             mats=", ".join(MAT_FORMS[m]["vin"] for m in ms))
+                        for cs, ms in sorted(MATRIX.items(),
+                                             key=lambda i: CITY_FACTS[i[0]]["km"])]
+                       + [dict(slug="sredneuralsk", prep="в Среднеуральск",
+                               loc="в Среднеуральске", name="Среднеуральск", km=25,
+                               mats="щебень")],
+                more_materials=[(("/dostavka/" + k + "/"), v["name"])
+                                for k, v in MATERIALS_EXT.items()])
 
 pages = []  # (url, rendered_html, family)
 
@@ -474,10 +488,14 @@ for city_slug, mats in MATRIX.items():
         ))
 
     names = [MAT_FORMS[m]["vin"] for m in mats]
-    h1 = f"Доставка нерудных материалов {facts['prep']}"
-    title = f"Щебень и песок {facts['prep']}: доставка, цена за куб"
+    # Порядок материалов в заголовке: щебень первым всегда, дальше по спросу.
+    head = ["shcheben"] + [m for m in mats if m != "shcheben"]
+    m1, m2 = MAT_FORMS[head[0]], MAT_FORMS[head[1]] if len(head) > 1 else None
+    pair = m1["name"] + (" и " + m2["vin"] if m2 else "")
+    h1 = f"{pair} {facts['loc']} с доставкой"
+    title = f"{m1['name']} {facts['loc']}: доставка, цена за куб"
     if len(title) > 70:
-        title = f"Доставка {facts['prep']}: щебень, песок, цена за куб"
+        title = f"{m1['name']} {facts['loc']}: цена за куб"
     desc = (f"Доставка {facts['prep']} и по округу: " + ", ".join(names) +
             f". Плечо {dist}, самосвалы от 5 до 20 кубов, оплата после "
             f"выгрузки. Цену с доставкой называем по заявке.")[:200]
