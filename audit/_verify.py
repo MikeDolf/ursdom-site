@@ -282,6 +282,27 @@ for name, got, want, tol in ARITH:
     if abs(got - want) > tol:
         bad("(тексты)", "арифметика", "%s: расчёт даёт %.2f" % (name, got))
 
+# --- 19. классы в разметке без стилей и стили без разметки
+# Появилось после редизайна: CSS был написан под воображаемую разметку,
+# и весь каталог с подвалом уехали в прод без оформления. Глазами
+# это заметно не на всех страницах, а расхождение видно сразу.
+_css_path = os.path.join(DIR, "assets", "dostavka.css")
+if os.path.exists(_css_path):
+    _css = io.open(_css_path, encoding="utf-8").read()
+    _css_nc = re.sub(r"/\*.*?\*/", " ", _css, flags=re.S)
+    _defined = set(re.findall(r"\.([a-zA-Z][\w-]*)", _css_nc))
+    _used = collections.Counter()
+    for _u, _h in pages.items():
+        for _m in re.finditer(r'class="([^"]+)"', _h):
+            for _c in _m.group(1).split():
+                _used[_c] += 1
+    for _c, _n in sorted(_used.items()):
+        if _c.startswith("d-") and _c not in _defined:
+            bad("(стили)", "css", "класс %r есть на %d страницах, но стилей нет" % (_c, _n))
+    for _c in sorted(_defined):
+        if _c.startswith("d-") and _c not in _used:
+            bad("(стили)", "css", "стиль для %r написан, но такого класса в разметке нет" % _c)
+
 # ------------------------------------------------------------------ вывод
 by_kind = collections.Counter(k for _, k, _ in problems)
 print("страниц проверено: %d" % len(pages))
