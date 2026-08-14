@@ -1,0 +1,31 @@
+{% extends "base.j2" %}
+{% block body %}
+<section><div class="wrap d-prose d-thanks">
+  <h1>{{ h1 }}</h1>
+  <p class="d-lead">{{ lead }}</p>
+
+  <div class="d-callout"><p><strong>Что дальше.</strong> {{ next_step }}</p></div>
+
+  <h2>Пока ждёте</h2>
+  <p>Если вопрос срочный или хотите уточнить детали прямо сейчас, напишите
+  в MAX: там отвечаем быстрее, чем на почту.</p>
+  <div class="d-cta-row">
+    <a class="d-btn d-btn-max" href="{{ cfg.max_url }}" target="_blank" rel="noopener">Написать в MAX</a>
+    <a class="d-btn d-btn-ghost" href="{{ cfg.base }}">Вернуться в каталог</a>
+  </div>
+
+  <h2>Что почитать, пока считаем</h2>
+  <ul>
+{% for href, txt in links %}    <li><a href="{{ href }}">{{ txt }}</a></li>
+{% endfor %}  </ul>
+</div></section>
+{% endblock %}
+
+{% block tail %}
+<script>
+/* Цель засчитывается здесь, а не по нажатию кнопки на форме.
+   Раньше она стояла на onsubmit и срабатывала даже если отправка
+   падала: число целей расходилось с числом дошедших заявок. */
+try{ym({{ cfg.metrika_id }},'reachGoal','{{ cfg.goal_lead }}')}catch(e){}
+</script>
+{% endblock %}

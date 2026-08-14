@@ -1,6 +1,7 @@
 {% macro lead_form(cfg, subject) -%}
-<form class="d-form" action="https://api.web3forms.com/submit" method="POST" onsubmit="try{ym({{ cfg.metrika_id }},'reachGoal','{{ cfg.goal_lead }}')}catch(e){}">
+<form class="d-form" action="https://api.web3forms.com/submit" method="POST">
   <input type="hidden" name="access_key" value="{{ cfg.web3forms_key }}">
+  <input type="hidden" name="redirect" value="{{ cfg.domain }}{{ cfg.base }}spasibo/">
   <input type="hidden" name="subject" value="Заявка: {{ subject }}">
   <input type="hidden" name="from_name" value="{{ cfg.brand }}, сайт">
   <input type="text" name="botcheck" class="d-hp" tabindex="-1" autocomplete="off">

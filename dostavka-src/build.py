@@ -617,6 +617,31 @@ for u, h, f in pages:
     _uniq.append((u, h, f))
 pages = _uniq
 
+# ---- СТРАНИЦА БЛАГОДАРНОСТИ ----
+# Без неё Web3Forms после отправки показывал свою страницу на чужом домене:
+# человек уходил с сайта, а сессия в Метрике обрывалась. Здесь же засчитывается
+# цель - по факту доставки, а не по нажатию кнопки.
+url = SITE["base"] + "spasibo/"
+crumb_items = [("Главная", "/"), ("Доставка материалов", SITE["base"]),
+               ("Заявка принята", None)]
+htmlp = env.get_template("thanks.j2").render(
+    **BASE_CTX, canonical=DOMAIN + url, crumbs_html=crumbs(crumb_items),
+    jsonld=graph(localbusiness(), bc_schema(crumb_items)),
+    title="Заявка принята: считаем стоимость с доставкой",
+    desc="Заявка на доставку нерудных материалов принята. Считаем объём и стоимость с доставкой на ваш адрес и возвращаемся с ответом.",
+    h1="Заявка принята",
+    lead="Спасибо. Заявка ушла к нам, считаем объём и стоимость с доставкой "
+         "на ваш адрес.",
+    next_step=SITE["callback_promise"][0].upper() + SITE["callback_promise"][1:] +
+              ". Назовём точную сумму с доставкой и согласуем удобное окно "
+              "приезда машины. Заявка ни к чему не обязывает.",
+    links=[("/dostavka/stati/skolko-vesit-kub/", "Сколько весит куб щебня, песка и отсева"),
+           ("/dostavka/stati/koefficient-uplotneniya/", "Сколько заказывать с запасом на уплотнение"),
+           ("/dostavka/stati/skolko-shchebnya-v-kamaze/", "Сколько кубов входит в КамАЗ"),
+           ("/dostavka/", "Все материалы и города")],
+    noindex=True, no_cta=True)
+pages.append((url, htmlp, "thanks"))
+
 # ---- ПОЛИТИКА ОБРАБОТКИ ДАННЫХ (у раздела свои формы, нужна своя политика) ----
 url = SITE["base"] + "politika/"
 crumb_items = [("Главная", "/"), ("Доставка материалов", SITE["base"]),
@@ -660,7 +685,11 @@ for url, h, fam in pages:
 # ---- SITEMAP раздела ----
 sm = ['<?xml version="1.0" encoding="UTF-8"?>',
       '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
+# Страница благодарности закрыта от индексации, поэтому в карту не идёт:
+# иначе Вебмастер отчитается о ней как об исключённой и будет прав.
 for url, h, fam in pages:
+    if fam == "thanks":
+        continue
     sm.append(f"  <url>\n    <loc>{DOMAIN}{url}</loc>\n    <lastmod>{TODAY}</lastmod>\n  </url>")
 sm.append("</urlset>\n")
 open(os.path.join(OUT, "sitemap.xml"), "w", encoding="utf-8").write("\n".join(sm))
