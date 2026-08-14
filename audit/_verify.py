@@ -39,8 +39,14 @@ prose = {}
 for url, html in sorted(pages.items()):
 
     # --- 1. баланс тегов
+    # Комментарии выбрасываем до разбора. Регулярка тегов видела в "<!--"
+    # тег с именем "!--" и клала его на стек навсегда, поэтому любая
+    # страница с комментарием в теле объявлялась сломанной. Заодно это
+    # чинит настоящую дыру: закомментированный <div> раньше тоже попадал
+    # на стек, хотя браузер его не видит.
     stack = []
-    for closing, name, selfclose in TAG.findall(html):
+    scan = re.sub(r"<!--.*?-->", "", html, flags=re.S)
+    for closing, name, selfclose in TAG.findall(scan):
         n = name.lower()
         if n in VOID or selfclose:
             continue

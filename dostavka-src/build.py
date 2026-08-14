@@ -16,7 +16,7 @@ from products import MATERIALS, EXTRA
 from products_ext import MATERIALS_EXT, MONEY_CFG_EXT
 from geo_matrix import (CITY_FACTS, MATRIX, ALREADY, MAT_FORMS,
                         ANGLE, LOCAL, MAT_TASK, example_for, plecho)
-from prices import PER_CUBE, PRICE_NOTE, DELIVERY_NOTE, CATALOG
+from prices import PER_CUBE, PRICE_NOTE, DELIVERY_NOTE, CATALOG, SIEVE, HERO_CELL, HERO_FRAC
 from cities import CITIES, PESOK_CITIES
 from longreads import LONGREADS, AUTHOR_FULL, UPDATED
 from legal import legal_sections, LEGAL_UPDATED
@@ -184,7 +184,7 @@ def photos_for(slug):
 
 BASE_CTX = dict(cfg=SITE, advantages=ADVANTAGES, guarantees=GUARANTEES,
                 per_cube=PER_CUBE_LIST, price_note=PRICE_NOTE, delivery_note=DELIVERY_NOTE,
-                extra=EXTRA, calc_rows=CALC_ROWS, catalog=CATALOG,
+                extra=EXTRA, calc_rows=CALC_ROWS, catalog=CATALOG, sieve=SIEVE,
                 cities=[dict(slug=cs, prep=CITY_FACTS[cs]["prep"],
                              loc=CITY_FACTS[cs]["loc"],
                              name=CITY_FACTS[cs]["name"],
@@ -286,7 +286,8 @@ for slug, mc in money_cfg.items():
     htmlp = env.get_template("money.j2").render(
         **BASE_CTX, **mc, canonical=DOMAIN + url, crumbs_html=crumbs(crumb_items), jsonld=jl,
         intro=mat["intro"], types=mat["types"], fractions=mat.get("fractions"),
-        faq=mat["faq"], photos=_ph,
+        faq=mat["faq"], photos=_ph, hero_cell=HERO_CELL.get(slug, 34),
+        hero_frac=HERO_FRAC.get(slug, "щебень 20-40 мм"),
         related_links=rel + [(f"/dostavka/shcheben/{o['slug']}/", f"Доставка щебня {o['prep']}") for o in CITIES[:6]])
     pages.append((url, htmlp, "money"))
 
@@ -451,7 +452,8 @@ for slug, mc in MONEY_CFG_EXT.items():
         hero_sub=mc["hero_sub"], mat_vin=mc["mat_vin"], mat_rod=mc["mat_rod"],
         mat_order=mc["mat_order"], subject=mc["mat_vin"] + ", " + SITE["region_short"],
         intro=mat["intro"], types=mat["types"], fractions=mat.get("fractions"),
-        faq=mat["faq"], related_links=rel[:12])
+        faq=mat["faq"], related_links=rel[:12], hero_cell=HERO_CELL.get(slug, 34),
+        hero_frac=HERO_FRAC.get(slug, "щебень 20-40 мм"))
     pages.append((url, htmlp, "money-ext"))
 
 # ---- ГОРОДСКИЕ СТРАНИЦЫ: ОДИН ГОРОД = ОДНА СТРАНИЦА ----

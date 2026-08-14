@@ -1,3 +1,49 @@
+{# Стопка сит: главный объект дизайн-кода «Рассев».
+   Каждая строка - одно сито. Ячейка нарисована в вёрстке с шагом --cell,
+   который выведен из настоящего размера фракции в миллиметрах (см. SIEVE
+   в data/prices.py). На ячейке лежат зёрна, и они заведомо крупнее
+   отверстия: ширина зерна равна 1,35 × --cell, потому что через сито
+   проходит только то, что мельче ячейки. Силуэты угловатые, а не круглые:
+   щебень колотый, окатанной формы у него нет.  #}
+{% macro stone(i) -%}
+<svg class="d-sieve-stone" viewBox="0 0 40 34" aria-hidden="true" focusable="false">
+{%- if i == 1 %}<path d="M2 16 L13 3 L20 8 L31 1 L38 15 L30 22 L34 28 L17 33 L8 26 Z"/>
+{%- elif i == 2 %}<path d="M5 10 L18 1 L24 9 L35 4 L39 19 L27 24 L29 31 L12 29 L1 19 Z"/>
+{%- else %}<path d="M1 13 L11 4 L22 7 L28 1 L38 12 L31 19 L37 27 L19 33 L5 25 Z"/>
+{%- endif %}</svg>
+{%- endmacro %}
+
+{# Боковое сито в герое. На широком экране правая половина стального поля
+   иначе стоит пустой, а пустота - ровно та претензия, с которой начался
+   этот редизайн. Панель показывает ячейку страницы в крупном масштабе:
+   на песке она мелкая, на буте крупная, шаг тот же --cell, что и у полосы
+   внизу. Сама сетка декоративна для скринридера и скрыта, подпись - нет:
+   она называет фракцию словами. #}
+{% macro hero_panel(label) -%}
+<aside class="d-hero-panel">
+  <span class="d-hero-mesh" aria-hidden="true">{{ stone(1) }}{{ stone(2) }}{{ stone(3) }}</span>
+  <span class="d-hero-cap">Ячейка страницы<b>{{ label }}</b></span>
+</aside>
+{%- endmacro %}
+
+{% macro sieve(rows) -%}
+<ol class="d-sieve" aria-label="Фракции нерудных материалов по возрастанию размера зерна">
+{% for mm,cell,frac,name,use,price,href in rows %}  <li class="d-sieve-row" style="--cell:{{ cell }}px">
+    <span class="d-sieve-mesh">{{ stone(1) }}{{ stone(2) }}{{ stone(3) }}</span>
+    <span>
+      <a class="d-sieve-frac" href="{{ href }}">{{ frac }} <i>мм</i></a>
+      <span class="d-sieve-name">{{ name }}</span>
+    </span>
+    <span class="d-sieve-use">{{ use }}</span>
+    <span class="d-sieve-price">{{ price }} <i>руб/м³</i></span>
+  </li>
+{% endfor %}</ol>
+<p class="d-sieve-note">Ячейка на каждой строке нарисована в масштабе: шаг сетки взят
+от настоящего размера фракции, поэтому разницу между отсевом и щебнем 20-40 видно,
+не переходя на страницу. Цены ориентировочные,
+<a href="#zayavka">точную с доставкой называем по заявке</a>.</p>
+{%- endmacro %}
+
 {% macro lead_form(cfg, subject) -%}
 <form class="d-form" action="https://api.web3forms.com/submit" method="POST">
   <input type="hidden" name="access_key" value="{{ cfg.web3forms_key }}">
