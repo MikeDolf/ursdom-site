@@ -147,10 +147,38 @@ for url, html in sorted(pages.items()):
     if len(h1) != 1:
         bad(url, "структура", "h1 на странице: %d" % len(h1))
 
-    # --- 11. картинки без alt
+    # --- 11. картинки: alt, существование файла, заявленные размеры
+    # Проверка src появилась после того, как подменённый путь к фото
+    # прошёл всю сюиту незамеченным: проверялись только href.
     for m in re.finditer(r"<img\b[^>]*>", html):
-        if 'alt="' not in m.group(0):
-            bad(url, "доступность", "img без alt: %s" % m.group(0)[:60])
+        tag = m.group(0)
+        if 'alt="' not in tag:
+            bad(url, "доступность", "img без alt: %s" % tag[:60])
+        src = re.search(r'src="([^"]+)"', tag)
+        if not src:
+            bad(url, "картинка", "img без src: %s" % tag[:60])
+            continue
+        path = src.group(1)
+        if path.startswith("http") or path.startswith("data:"):
+            continue
+        fs = os.path.join(ROOT, path.split("?")[0].lstrip("/"))
+        if not os.path.exists(fs):
+            bad(url, "ссылка", "битая картинка: %s" % path)
+            continue
+        wm = re.search(r'width="(\d+)"', tag)
+        hm = re.search(r'height="(\d+)"', tag)
+        if wm and hm:
+            try:
+                from PIL import Image as _Im
+                with _Im.open(fs) as _i:
+                    rw, rh = _i.size
+                if (rw, rh) != (int(wm.group(1)), int(hm.group(1))):
+                    bad(url, "картинка",
+                        "размеры в теге %sx%s, у файла %dx%d: браузер зарезервирует "
+                        "неверное место и вёрстка прыгнет"
+                        % (wm.group(1), hm.group(1), rw, rh))
+            except ImportError:
+                pass
 
     # --- 12. якоря и ссылки
     for m in re.finditer(r'id="([^"]+)"', html):

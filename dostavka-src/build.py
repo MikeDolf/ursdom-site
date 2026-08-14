@@ -3,6 +3,7 @@
 """Сборка раздела доставки в /dostavka/. Изолирован от ursdom.
 Зависимости: Python 3 + jinja2. Вывод: статические index.html + sitemap раздела."""
 import os, sys, json, difflib
+from PIL import Image
 from jinja2 import Environment, FileSystemLoader
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -99,7 +100,7 @@ def article_schema(url, title, desc, author=None):
             "publisher": {"@type": "Organization", "name": SITE["brand"]}}
 
 
-def product_schema(name, desc, low_price, url):
+def product_schema(name, desc, low_price, url, images=None):
     """Product + AggregateOffer с честной ценой 'от N'. lowPrice отражает
     минимальную цену за куб по прайсу, поэтому разметка не расходится со страницей."""
     return {
@@ -108,6 +109,7 @@ def product_schema(name, desc, low_price, url):
         "description": desc,
         "category": "Нерудные строительные материалы",
         "url": DOMAIN + url,
+        **({"image": [DOMAIN + i for i in images]} if images else {}),
         "brand": {"@type": "Brand", "name": SITE["brand"]},
         "offers": {
             "@type": "AggregateOffer",
@@ -132,6 +134,52 @@ def write(url, html_str):
     os.makedirs(os.path.dirname(path), exist_ok=True)
     open(path, "w", encoding="utf-8").write(html_str)
     return path
+
+
+
+# ---- ФОТОГРАФИИ МАТЕРИАЛОВ ----
+# Alt и подпись пишутся под конкретный кадр. Шаблонный alt вида
+# "щебень фото" не помогает ни скринридеру, ни поиску по картинкам.
+PHOTOS = {
+    "shcheben": [
+        ("granit-5-20-tape.jpg",
+         "Гранитный щебень фракции 5-20 мм, рядом рулетка с делениями до 50 см",
+         "Гранитный щебень 5-20 на площадке. Рулетка рядом показывает реальный "
+         "размер зерна: основная масса проходит между 5 и 20 миллиметрами."),
+        ("granit-20-40-macro.jpg",
+         "Крупный план гранитного щебня 20-40 мм с монетой 10 рублей для масштаба",
+         "Гранит 20-40 крупным планом. Видны свежие сколы и розовые вкрапления "
+         "полевого шпата, характерные для уральского гранита. Монета для масштаба."),
+        ("granit-40-70-hand.jpg",
+         "Крупные куски гранитного щебня 40-70 мм в руке в рабочей перчатке",
+         "Фракция 40-70 в ладони: такой камень идёт в основание дороги и в отсыпку "
+         "слабых грунтов, где нужен объём и несущая способность."),
+        ("izvestnyak-20-40.jpg",
+         "Известняковый щебень 20-40 мм светло-серого и жёлтого цвета",
+         "Известняковый щебень 20-40. Светлее гранита, поверхность матовая без "
+         "блеска. Дешевле, но мягче: под нагрузку и в воду его не берут."),
+        ("graviyniy-20-40.jpg",
+         "Гравийный щебень 20-40 мм с частично окатанным зерном",
+         "Гравийный щебень 20-40. Зерно частично окатанное, частично колотое: "
+         "это дроблёный гравий, промежуточный вариант между гравием и гранитом."),
+        ("vtorichniy-boy-betona.jpg",
+         "Вторичный щебень из дроблёного бетона с торчащим куском ржавой арматуры",
+         "Вторичный щебень из бетонного боя. На переднем плане видна арматурная "
+         "проволока: под чистовые работы и в дренаж такой материал не годится, "
+         "его место в черновой отсыпке."),
+    ],
+}
+
+
+def photos_for(slug):
+    out = []
+    for f, a, c in PHOTOS.get(slug, []):
+        path = os.path.join(OUT, "assets", "img", slug, f)
+        with Image.open(path) as im:
+            w, h = im.size
+        out.append(dict(src="/dostavka/assets/img/" + slug + "/" + f,
+                        alt=a, cap=c, w=w, h=h))
+    return out
 
 
 BASE_CTX = dict(cfg=SITE, advantages=ADVANTAGES, guarantees=GUARANTEES,
@@ -198,8 +246,10 @@ for slug, mc in money_cfg.items():
     mat = MATERIALS[slug]
     url = SITE["base"] + slug + "/"
     crumb_items = [("Главная", "/"), ("Доставка материалов", SITE["base"]), (mat["name"], None)]
+    _ph = photos_for(slug)
     jl = graph(localbusiness(), bc_schema(crumb_items), faq_schema(mat["faq"]),
-               product_schema(mat["name"], mc["desc"], MONEY_LOW_PRICE[slug], url))
+               product_schema(mat["name"], mc["desc"], MONEY_LOW_PRICE[slug], url,
+                              images=[x["src"] for x in _ph]))
     if slug == "shcheben":
         rel = [("/dostavka/shcheben/frakciya-20-40/", "Щебень 20-40: характеристики, расчёт, цена"),
                ("/dostavka/shcheben/v-meshkah/", "Щебень в мешках: фасовка и когда это выгодно"),
@@ -236,7 +286,8 @@ for slug, mc in money_cfg.items():
     htmlp = env.get_template("money.j2").render(
         **BASE_CTX, **mc, canonical=DOMAIN + url, crumbs_html=crumbs(crumb_items), jsonld=jl,
         intro=mat["intro"], types=mat["types"], fractions=mat.get("fractions"),
-        faq=mat["faq"], related_links=rel + [(f"/dostavka/shcheben/{o['slug']}/", f"Доставка щебня {o['prep']}") for o in CITIES[:6]])
+        faq=mat["faq"], photos=_ph,
+        related_links=rel + [(f"/dostavka/shcheben/{o['slug']}/", f"Доставка щебня {o['prep']}") for o in CITIES[:6]])
     pages.append((url, htmlp, "money"))
 
 

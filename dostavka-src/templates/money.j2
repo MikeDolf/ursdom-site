@@ -33,6 +33,18 @@
 
   <p>{{ intro }}</p>
 
+{% if photos %}
+  <h2 id="foto">Как выглядит {{ mat_vin }}</h2>
+  <p>Снимки по каждому виду и фракции: по ним видно и цвет породы, и форму
+  зерна, и реальный размер камня относительно рулетки или монеты.</p>
+  <div class="d-photos">
+{% for ph in photos %}    <figure>
+      <img src="{{ ph.src }}" alt="{{ ph.alt }}" width="{{ ph.w }}" height="{{ ph.h }}" loading="lazy" decoding="async">
+      <figcaption>{{ ph.cap }}</figcaption>
+    </figure>
+{% endfor %}  </div>
+{% endif %}
+
   <h2 id="vidy">Виды {{ mat_rod }}</h2>
   <div class="d-grid">
 {% for t,d in types %}    <div class="d-card"><strong>{{ t }}</strong><p>{{ d }}</p></div>

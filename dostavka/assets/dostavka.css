@@ -218,3 +218,12 @@ th{background:var(--d-card)}
 @media(max-width:720px){.d-pop{display:none}}
 @media(prefers-reduced-motion:reduce){.d-pop{transition:none}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
+
+/* Фотографии материалов. Height задаётся через aspect-ratio, а не жёстко:
+   у вертикального кадра в руке другая пропорция, и без этого он бы
+   растянулся. Резерв места под картинку убирает скачок вёрстки при загрузке. */
+.d-photos{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;margin:20px 0 28px}
+.d-photos figure{margin:0;display:flex;flex-direction:column;gap:8px}
+.d-photos img{width:100%;height:280px;object-fit:cover;border-radius:8px;background:#e8ece7;display:block}
+.d-photos figcaption{font-size:14px;line-height:1.5;color:#3f4a42}
+@media(max-width:560px){.d-photos{grid-template-columns:1fr;gap:16px}}
