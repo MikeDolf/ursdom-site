@@ -16,6 +16,7 @@ from products import MATERIALS, EXTRA
 from products_ext import MATERIALS_EXT, MONEY_CFG_EXT
 from products_zhbi import MATERIALS_ZHBI, MONEY_CFG_ZHBI
 from products_beton import MATERIALS_BETON, MONEY_CFG_BETON
+from products_gap import MATERIALS_GAP, MONEY_CFG_GAP
 from geo_matrix import (CITY_FACTS, MATRIX, ALREADY, MAT_FORMS,
                         ANGLE, LOCAL, MAT_TASK, example_for, plecho)
 from prices import PER_CUBE, PRICE_NOTE, DELIVERY_NOTE, CATALOG, SIEVE, HERO_CELL, HERO_FRAC
@@ -26,7 +27,8 @@ from longreads_beton import BETON_LONGREADS
 from longreads_zadachi import ZADACHI_LONGREADS
 from longreads_smezh import SMEZH_LONGREADS
 from longreads_beton2 import BETON2_LONGREADS
-LONGREADS = LONGREADS + CORE_LONGREADS + BETON_LONGREADS + ZADACHI_LONGREADS + SMEZH_LONGREADS + BETON2_LONGREADS
+from longreads_gap import GAP_LONGREADS
+LONGREADS = LONGREADS + CORE_LONGREADS + BETON_LONGREADS + ZADACHI_LONGREADS + SMEZH_LONGREADS + BETON2_LONGREADS + GAP_LONGREADS
 from legal import legal_sections, LEGAL_UPDATED
 
 env = Environment(loader=FileSystemLoader(os.path.join(HERE, "templates")),
@@ -208,7 +210,9 @@ BASE_CTX = dict(cfg=SITE, advantages=ADVANTAGES, guarantees=GUARANTEES,
                                + [(("/dostavka/" + k + "/"), v["name"])
                                   for k, v in MATERIALS_ZHBI.items()]
                                + [(("/dostavka/" + k + "/"), v["name"])
-                                  for k, v in MATERIALS_BETON.items()])
+                                  for k, v in MATERIALS_BETON.items()]
+                               + [(("/dostavka/" + k + "/"), v["name"])
+                                  for k, v in MATERIALS_GAP.items()])
 
 pages = []  # (url, rendered_html, family)
 
@@ -261,10 +265,22 @@ PESOK_GEO = [("/dostavka/pesok/bogdanovich/", "Доставка песка в Б
 SREDNEURALSK = [("/dostavka/shcheben/sredneuralsk/", "Доставка щебня в Среднеуральск")]
 
 # Ячейка сита и профильные статьи для товарных страниц без своего товара.
-ZHBI_CELL = {"beton": 19, "trotuarnaya-plitka": 8, "bordyur": 19, "lotki-vodootvodnye": 34,
+ZHBI_CELL = {"beton": 19, "cement-i-smesi": 8, "plitka-osobaya": 8,
+             "lyuki-i-kryshki": 34, "betonnye-zabory": 34, "bitum-i-asfalt": 19,
+             "peregorodochnye-bloki": 19, "opory-i-stoyki": 46,
+             "stroitelnaya-himiya": 6, "dresva-i-shlak": 19, "trotuarnaya-plitka": 8, "bordyur": 19, "lotki-vodootvodnye": 34,
              "kolca-zhbi": 34, "stenovye-bloki": 19, "malye-formy": 34,
              "zhbi-izdeliya": 46}
-ZHBI_FRAC = {"beton": "щебень 5-20 мм в бетон", "trotuarnaya-plitka": "отсев 0-5 мм под плитку",
+ZHBI_FRAC = {"beton": "щебень 5-20 мм в бетон",
+             "cement-i-smesi": "песок 0-5 мм в раствор",
+             "plitka-osobaya": "отсев 0-5 мм под плитку",
+             "lyuki-i-kryshki": "щебень 20-40 мм на обвязку",
+             "betonnye-zabory": "щебень 20-40 мм под столб",
+             "bitum-i-asfalt": "щебень 5-20 мм в обработку",
+             "peregorodochnye-bloki": "песок 0-5 мм в раствор",
+             "opory-i-stoyki": "скальный грунт под опору",
+             "stroitelnaya-himiya": "песок до 2,5 мм в смесь",
+             "dresva-i-shlak": "дресва 2-40 мм", "trotuarnaya-plitka": "отсев 0-5 мм под плитку",
              "bordyur": "щебень 5-20 мм под замок",
              "lotki-vodootvodnye": "щебень 20-40 мм под ложе",
              "kolca-zhbi": "щебень 20-40 мм на фильтр",
@@ -272,6 +288,27 @@ ZHBI_FRAC = {"beton": "щебень 5-20 мм в бетон", "trotuarnaya-plitk
              "malye-formy": "щебень 20-40 мм под основание",
              "zhbi-izdeliya": "щебень 20-40 мм в подготовку"}
 ZHBI_ART = {
+ "cement-i-smesi": [("/dostavka/stati/cement-m400-i-m500/", "Цемент М400 и М500: расход"),
+                    ("/dostavka/stati/rastvor-proporcii/", "Раствор: пропорции и расход"),
+                    ("/dostavka/stati/marki-betona/", "Марки бетона")],
+ "plitka-osobaya": [("/dostavka/stati/ukladka-trotuarnoy-plitki/", "Укладка тротуарной плитки"),
+                    ("/dostavka/stati/vybrat-trotuarnuyu-plitku/", "Какую плитку выбрать"),
+                    ("/dostavka/stati/behaton/", "Бехатон: что это")],
+ "lyuki-i-kryshki": [("/dostavka/stati/kolca-zhbi-razmery/", "Кольца ЖБИ: размеры и вес"),
+                     ("/dostavka/stati/lotki-i-dozhdepriemniki/", "Лотки и дождеприёмники")],
+ "betonnye-zabory": [("/dostavka/stati/marki-betona/", "Марки бетона для столбов"),
+                     ("/dostavka/stati/frakcii-shchebnya/", "Фракции щебня под подсыпку")],
+ "bitum-i-asfalt": [("/dostavka/stati/holodnyy-asfalt/", "Холодный асфальт: когда работает"),
+                    ("/dostavka/stati/frakcii-shchebnya/", "Фракции щебня в основание")],
+ "peregorodochnye-bloki": [("/dostavka/stati/arbolit-i-polistirolbeton/", "Арболит и полистиролбетон"),
+                           ("/dostavka/stati/rastvor-proporcii/", "Кладочный раствор")],
+ "opory-i-stoyki": [("/dostavka/stati/skalnyy-grunt-dresva-but/", "Скальный грунт под опоры"),
+                    ("/dostavka/stati/marki-betona/", "Марки бетона")],
+ "stroitelnaya-himiya": [("/dostavka/stati/gidroizolyaciya-betona/", "Гидроизоляция бетона"),
+                         ("/dostavka/stati/propitki-dlya-betona/", "Пропитки и упрочнители"),
+                         ("/dostavka/stati/remontnye-smesi-dlya-betona/", "Ремонтные смеси")],
+ "dresva-i-shlak": [("/dostavka/stati/skalnyy-grunt-dresva-but/", "Скальный грунт, дресва и бут"),
+                    ("/dostavka/stati/chem-otsypat-uchastok/", "Чем отсыпать участок")],
  "beton": [("/dostavka/beton/cena-za-kub/", "Куб бетона: цена, вес, объём"),
            ("/dostavka/beton/m300/", "Бетон М300"),
            ("/dostavka/beton/m200/", "Бетон М200"),
@@ -544,8 +581,8 @@ for slug, mc in MONEY_CFG_EXT.items():
 # Плитка, бордюр, лотки, кольца, блоки, малые формы и ЖБИ. Продаются
 # штуками и метрами, а не кубами, поэтому единицы измерения приходят
 # из конфига, а не зашиты в money.j2.
-_ZHBI_ALL = dict(MONEY_CFG_ZHBI); _ZHBI_ALL.update(MONEY_CFG_BETON)
-_MAT_ALL = dict(MATERIALS_ZHBI); _MAT_ALL.update(MATERIALS_BETON)
+_ZHBI_ALL = dict(MONEY_CFG_ZHBI); _ZHBI_ALL.update(MONEY_CFG_BETON); _ZHBI_ALL.update(MONEY_CFG_GAP)
+_MAT_ALL = dict(MATERIALS_ZHBI); _MAT_ALL.update(MATERIALS_BETON); _MAT_ALL.update(MATERIALS_GAP)
 for slug, mc in _ZHBI_ALL.items():
     mat = _MAT_ALL[slug]
     url = SITE["base"] + slug + "/"
@@ -553,8 +590,14 @@ for slug, mc in _ZHBI_ALL.items():
                    (mat["name"], None)]
     jl = graph(localbusiness(), bc_schema(crumb_items), faq_schema(mat["faq"]),
                product_schema(mat["name"], mc["desc"], mc["low"], url))
+    # Список соседей крутится от текущей страницы, а не от начала.
+    # Иначе при обрезке на 14 последние товарные страницы не получают
+    # ни одной входящей ссылки: ровно та же ошибка, что уже была
+    # с лонгридами и стоила семи сирот.
+    _keys = list(_ZHBI_ALL)
+    _i = _keys.index(slug)
     rel = [("/dostavka/" + o + "/", _MAT_ALL[o]["name"] + " с доставкой")
-           for o in _ZHBI_ALL if o != slug]
+           for o in _keys[_i + 1:] + _keys[:_i]]
     rel += ZHBI_ART.get(slug, [])
     rel += [("/dostavka/shcheben/", "Доставка щебня: все фракции и цены"),
             ("/dostavka/pesok/", "Доставка песка"),
