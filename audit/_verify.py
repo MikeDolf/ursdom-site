@@ -260,6 +260,26 @@ for text, hrefs in anchor_map.items():
                                                "Связаться", "Отправить")):
         bad("(весь раздел)", "анкор", "%r ведёт на %s" % (text, sorted(hrefs)))
 
+# --- 20. сироты: на каждую страницу должны вести ссылки с других страниц
+# Появилась после того, как семь новых статей собрались, прошли всю сюиту
+# и оказались недостижимы: список связанных обрезался на двенадцати, а статей
+# стало двадцать три. Sitemap их содержал, ссылок не вело ни одной, и ни одна
+# из девятнадцати проверок этого не заметила.
+_links = collections.defaultdict(set)
+for url, html in pages.items():
+    for href in re.findall(r'href="(/dostavka/[^"#?]*)"', html):
+        if not href.endswith("/"):
+            href += "/"
+        if href != url:
+            _links[href].add(url)
+MIN_IN = 3
+for url in sorted(pages):
+    if url.endswith("/spasibo/"):      # страница благодарности вне навигации
+        continue
+    n = len(_links.get(url, ()))
+    if n < MIN_IN:
+        bad(url, "сироты", "входящих внутренних ссылок %d, нужно от %d" % (n, MIN_IN))
+
 # --- 17. похожесть страниц: защита от дорвейности
 urls = sorted(prose)
 for i, a in enumerate(urls):

@@ -19,6 +19,8 @@ from geo_matrix import (CITY_FACTS, MATRIX, ALREADY, MAT_FORMS,
 from prices import PER_CUBE, PRICE_NOTE, DELIVERY_NOTE, CATALOG, SIEVE, HERO_CELL, HERO_FRAC
 from cities import CITIES, PESOK_CITIES
 from longreads import LONGREADS, AUTHOR_FULL, UPDATED
+from longreads_core import CORE_LONGREADS
+LONGREADS = LONGREADS + CORE_LONGREADS
 from legal import legal_sections, LEGAL_UPDATED
 
 env = Environment(loader=FileSystemLoader(os.path.join(HERE, "templates")),
@@ -240,6 +242,26 @@ money_cfg = {
                 desc="Доставка ПГС и ОПГС по Екатеринбургу и Свердловской области. Песчано-гравийная смесь под отсыпку и планировку. Цена за куб, самосвалы 5-20 кубов, оплата после выгрузки.",
                 h1="Доставка ПГС по Екатеринбургу и Свердловской области"),
 }
+# Городские страницы песка стоят отдельно от таблицы городов на хабе,
+# поэтому ссылки на них проставляем явно: без этого они остаются сиротами
+# (поймано проверкой 20 в audit/_verify.py).
+PESOK_GEO = [("/dostavka/pesok/bogdanovich/", "Доставка песка в Богданович"),
+             ("/dostavka/pesok/irbit/", "Доставка песка в Ирбит"),
+             ("/dostavka/pesok/nevyansk/", "Доставка песка в Невьянск")]
+SREDNEURALSK = [("/dostavka/shcheben/sredneuralsk/", "Доставка щебня в Среднеуральск")]
+
+MAT_ART = {'shcheben': [('/dostavka/stati/frakcii-shchebnya/', 'Фракции щебня: какая под какую задачу'), ('/dostavka/stati/gost-na-shcheben-i-pesok/', 'ГОСТ на щебень и песок: что спрашивать')],
+    'pesok': [('/dostavka/stati/modul-krupnosti-peska/', 'Модуль крупности песка'), ('/dostavka/stati/gost-na-shcheben-i-pesok/', 'ГОСТ на щебень и песок: что спрашивать')],
+    'otsev': [('/dostavka/stati/otsev-gde-primenyat/', 'Отсев 0-5: где применяют и чем заменить'), ('/dostavka/stati/frakcii-shchebnya/', 'Фракции щебня: какая под какую задачу')],
+    'pgs': [('/dostavka/stati/pgs-ili-opgs/', 'ПГС и ОПГС: чем отличаются'), ('/dostavka/stati/skalnyy-grunt-dresva-but/', 'Скальный грунт, дресва и бут')],
+    'keramzit': [('/dostavka/stati/keramzit-frakcii-i-ves/', 'Керамзит: фракции, вес и где выгоден')],
+    'skalnyy-grunt': [('/dostavka/stati/skalnyy-grunt-dresva-but/', 'Скальный грунт, дресва и бут'), ('/dostavka/stati/pgs-ili-opgs/', 'ПГС и ОПГС: чем отличаются')],
+    'butovyy-kamen': [('/dostavka/stati/skalnyy-grunt-dresva-but/', 'Скальный грунт, дресва и бут')],
+    'graviy': [('/dostavka/stati/frakcii-shchebnya/', 'Фракции щебня: какая под какую задачу')],
+    'shchps': [('/dostavka/stati/pgs-ili-opgs/', 'ПГС и ОПГС: чем отличаются')],
+    'granitnaya-kroshka': [('/dostavka/stati/otsev-gde-primenyat/', 'Отсев 0-5: где применяют')],
+    'asfaltovaya-kroshka': [('/dostavka/stati/skalnyy-grunt-dresva-but/', 'Чем отсыпать дёшево')]}
+
 MONEY_LOW_PRICE = {"shcheben": "600", "pesok": "350", "otsev": "500", "pgs": "500"}
 
 for slug, mc in money_cfg.items():
@@ -283,12 +305,13 @@ for slug, mc in money_cfg.items():
                ("/dostavka/stati/skolko-vesit-kub/", "Сколько весит куб песка"),
                ("/dostavka/pesok/bogdanovich/", "Доставка песка в Богданович"),
                ("/dostavka/pesok/irbit/", "Доставка песка в Ирбит")]
+    rel = MAT_ART.get(slug, []) + (PESOK_GEO if slug == "pesok" else []) + (SREDNEURALSK if slug == "shcheben" else []) + rel
     htmlp = env.get_template("money.j2").render(
         **BASE_CTX, **mc, canonical=DOMAIN + url, crumbs_html=crumbs(crumb_items), jsonld=jl,
         intro=mat["intro"], types=mat["types"], fractions=mat.get("fractions"),
         faq=mat["faq"], photos=_ph, hero_cell=HERO_CELL.get(slug, 34),
         hero_frac=HERO_FRAC.get(slug, "щебень 20-40 мм"),
-        related_links=rel + [(f"/dostavka/shcheben/{o['slug']}/", f"Доставка щебня {o['prep']}") for o in CITIES[:6]])
+        related_links=list(dict.fromkeys(rel + [(f"/dostavka/shcheben/{o['slug']}/", f"Доставка щебня {o['prep']}") for o in CITIES[:6]]))[:14])
     pages.append((url, htmlp, "money"))
 
 
@@ -377,7 +400,9 @@ for c in PESOK_CITIES:
         cta_text="Назовите размеры участка работ и адрес, подберём вид песка и машину, "
                  "назовём итоговую цену с доставкой.",
         subject=f"песок, {c['name']}", faq=cfaq,
-        related_links=[("/dostavka/pesok/", "Доставка песка: виды и цены"),
+        related_links=[x for x in PESOK_GEO if x[0] != url] +
+                      SREDNEURALSK +
+                      [("/dostavka/pesok/", "Доставка песка: виды и цены"),
                        ("/dostavka/pesok/karyernyy/", "Карьерный песок"),
                        ("/dostavka/pesok/rechnoy/", "Речной мытый песок"),
                        ("/dostavka/shcheben/", "Доставка щебня"),
@@ -407,14 +432,28 @@ for a in LONGREADS:
     if a.get("low_price"):
         nodes.append(product_schema(a["h1"], a["desc"], a["low_price"], url))
     jl = graph(*nodes)
-    rel = [("/dostavka/shcheben/", "Доставка щебня: все фракции и цены"),
-           ("/dostavka/pesok/", "Доставка песка"),
-           ("/dostavka/otsev/", "Отсев 0-5"),
-           ("/dostavka/pgs/", "ПГС и ОПГС"),
-           ("/dostavka/", "Все города и материалы")]
-    for other in LONGREADS:
-        if other["slug"] != a["slug"]:
-            rel.append((SITE["base"] + other["slug"] + "/", other["h1"]))
+    # Сначала явно заданные связи, потом остальные лонгриды.
+    # Без этого rel[:12] отрезал всё, что не поместилось: список
+    # вырос до 23 статей, и новые становились сиротами - на них
+    # не вело ни одной ссылки со всего сайта.
+    by_slug = {o["slug"]: o for o in LONGREADS}
+    rel = []
+    for sl in a.get("related", []):
+        o = by_slug.get(sl)
+        if o:
+            rel.append((SITE["base"] + sl + "/", o["h1"]))
+    rel += [("/dostavka/shcheben/", "Доставка щебня: все фракции и цены"),
+            ("/dostavka/pesok/", "Доставка песка"),
+            ("/dostavka/otsev/", "Отсев 0-5"),
+            ("/dostavka/pgs/", "ПГС и ОПГС"),
+            ("/dostavka/", "Все города и материалы")]
+    # Запасной список крутится от текущей статьи, а не от начала.
+    # Иначе ссылки достаются первым девяти по порядку объявления,
+    # а всё, что добавлено позже, не получает ни одной входящей.
+    i0 = next(i for i, o in enumerate(LONGREADS) if o["slug"] == a["slug"])
+    ordered = LONGREADS[i0 + 1:] + LONGREADS[:i0]
+    for other in ordered:
+        rel.append((SITE["base"] + other["slug"] + "/", other["h1"]))
     rel += [(f"/dostavka/shcheben/{o['slug']}/", f"Доставка щебня {o['prep']}")
             for o in CITIES[:4]]
     htmlp = env.get_template("longread.j2").render(
@@ -426,7 +465,7 @@ for a in LONGREADS:
         cta_head2=a.get("cta_head2"), cta_text2=a.get("cta_text2"),
         commercial=a.get("commercial", False),
         price_head=a.get("price_head", ""), order_head=a.get("order_head", ""),
-        related_links=rel[:12])
+        related_links=list(dict.fromkeys(rel))[:14])
     pages.append((url, htmlp, "longread"))
 
 # ---- НОВЫЕ ТОВАРНЫЕ СТРАНИЦЫ (керамзит, гравий, крошка, скала, ЩПС, бут) ----
@@ -446,13 +485,14 @@ for slug, mc in MONEY_CFG_EXT.items():
            ("/dostavka/", "Все города и материалы")]
     rel += [("/dostavka/" + o + "/", MATERIALS_EXT[o]["name"] + " с доставкой")
             for o in MONEY_CFG_EXT if o != slug]
+    rel = MAT_ART.get(slug, []) + (PESOK_GEO if slug == "pesok" else []) + (SREDNEURALSK if slug == "shcheben" else []) + rel
     htmlp = env.get_template("money.j2").render(
         **BASE_CTX, canonical=DOMAIN + url, crumbs_html=crumbs(crumb_items),
         jsonld=jl, title=mc["title"], desc=mc["desc"], h1=mc["h1"],
         hero_sub=mc["hero_sub"], mat_vin=mc["mat_vin"], mat_rod=mc["mat_rod"],
         mat_order=mc["mat_order"], subject=mc["mat_vin"] + ", " + SITE["region_short"],
         intro=mat["intro"], types=mat["types"], fractions=mat.get("fractions"),
-        faq=mat["faq"], related_links=rel[:12], hero_cell=HERO_CELL.get(slug, 34),
+        faq=mat["faq"], related_links=list(dict.fromkeys(rel))[:14], hero_cell=HERO_CELL.get(slug, 34),
         hero_frac=HERO_FRAC.get(slug, "щебень 20-40 мм"))
     pages.append((url, htmlp, "money-ext"))
 
