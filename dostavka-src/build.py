@@ -20,7 +20,10 @@ from prices import PER_CUBE, PRICE_NOTE, DELIVERY_NOTE, CATALOG, SIEVE, HERO_CEL
 from cities import CITIES, PESOK_CITIES
 from longreads import LONGREADS, AUTHOR_FULL, UPDATED
 from longreads_core import CORE_LONGREADS
-LONGREADS = LONGREADS + CORE_LONGREADS
+from longreads_beton import BETON_LONGREADS
+from longreads_zadachi import ZADACHI_LONGREADS
+from longreads_smezh import SMEZH_LONGREADS
+LONGREADS = LONGREADS + CORE_LONGREADS + BETON_LONGREADS + ZADACHI_LONGREADS + SMEZH_LONGREADS
 from legal import legal_sections, LEGAL_UPDATED
 
 env = Environment(loader=FileSystemLoader(os.path.join(HERE, "templates")),
