@@ -14,6 +14,7 @@ sys.path.insert(0, os.path.join(HERE, "data"))
 from site_config import SITE, ADVANTAGES, GUARANTEES
 from products import MATERIALS, EXTRA
 from products_ext import MATERIALS_EXT, MONEY_CFG_EXT
+from products_zhbi import MATERIALS_ZHBI, MONEY_CFG_ZHBI
 from geo_matrix import (CITY_FACTS, MATRIX, ALREADY, MAT_FORMS,
                         ANGLE, LOCAL, MAT_TASK, example_for, plecho)
 from prices import PER_CUBE, PRICE_NOTE, DELIVERY_NOTE, CATALOG, SIEVE, HERO_CELL, HERO_FRAC
@@ -201,7 +202,9 @@ BASE_CTX = dict(cfg=SITE, advantages=ADVANTAGES, guarantees=GUARANTEES,
                                loc="в Среднеуральске", name="Среднеуральск", km=25,
                                mats="щебень")],
                 more_materials=[(("/dostavka/" + k + "/"), v["name"])
-                                for k, v in MATERIALS_EXT.items()])
+                                for k, v in MATERIALS_EXT.items()]
+                               + [(("/dostavka/" + k + "/"), v["name"])
+                                  for k, v in MATERIALS_ZHBI.items()])
 
 pages = []  # (url, rendered_html, family)
 
@@ -252,6 +255,32 @@ PESOK_GEO = [("/dostavka/pesok/bogdanovich/", "Доставка песка в Б
              ("/dostavka/pesok/irbit/", "Доставка песка в Ирбит"),
              ("/dostavka/pesok/nevyansk/", "Доставка песка в Невьянск")]
 SREDNEURALSK = [("/dostavka/shcheben/sredneuralsk/", "Доставка щебня в Среднеуральск")]
+
+# Ячейка сита и профильные статьи для товарных страниц без своего товара.
+ZHBI_CELL = {"trotuarnaya-plitka": 8, "bordyur": 19, "lotki-vodootvodnye": 34,
+             "kolca-zhbi": 34, "stenovye-bloki": 19, "malye-formy": 34,
+             "zhbi-izdeliya": 46}
+ZHBI_FRAC = {"trotuarnaya-plitka": "отсев 0-5 мм под плитку",
+             "bordyur": "щебень 5-20 мм под замок",
+             "lotki-vodootvodnye": "щебень 20-40 мм под ложе",
+             "kolca-zhbi": "щебень 20-40 мм на фильтр",
+             "stenovye-bloki": "щебень 5-20 мм в раствор",
+             "malye-formy": "щебень 20-40 мм под основание",
+             "zhbi-izdeliya": "щебень 20-40 мм в подготовку"}
+ZHBI_ART = {
+ "trotuarnaya-plitka": [("/dostavka/stati/ukladka-trotuarnoy-plitki/", "Укладка тротуарной плитки"),
+                        ("/dostavka/stati/vybrat-trotuarnuyu-plitku/", "Какую плитку выбрать"),
+                        ("/dostavka/stati/pesok-pod-plitku/", "Сколько песка и отсева под плитку")],
+ "bordyur": [("/dostavka/stati/ustanovka-bordyura/", "Установка бордюра: порядок и расход"),
+             ("/dostavka/stati/razmery-bordyurov/", "Размеры и вес бордюров")],
+ "lotki-vodootvodnye": [("/dostavka/stati/lotki-i-dozhdepriemniki/", "Лотки и дождеприёмники: монтаж")],
+ "kolca-zhbi": [("/dostavka/stati/kolca-zhbi-razmery/", "Кольца ЖБИ: размеры, вес, объём")],
+ "stenovye-bloki": [("/dostavka/stati/arbolit-i-polistirolbeton/", "Арболит и полистиролбетон"),
+                    ("/dostavka/stati/rastvor-proporcii/", "Кладочный раствор: пропорции")],
+ "malye-formy": [("/dostavka/stati/frakcii-shchebnya/", "Фракции щебня под основание")],
+ "zhbi-izdeliya": [("/dostavka/stati/marki-betona/", "Марки бетона"),
+                   ("/dostavka/stati/frakcii-shchebnya/", "Фракции щебня под подготовку")],
+}
 
 MAT_ART = {'shcheben': [('/dostavka/stati/frakcii-shchebnya/', 'Фракции щебня: какая под какую задачу'), ('/dostavka/stati/gost-na-shcheben-i-pesok/', 'ГОСТ на щебень и песок: что спрашивать')],
     'pesok': [('/dostavka/stati/modul-krupnosti-peska/', 'Модуль крупности песка'), ('/dostavka/stati/gost-na-shcheben-i-pesok/', 'ГОСТ на щебень и песок: что спрашивать')],
@@ -498,6 +527,50 @@ for slug, mc in MONEY_CFG_EXT.items():
         faq=mat["faq"], related_links=list(dict.fromkeys(rel))[:14], hero_cell=HERO_CELL.get(slug, 34),
         hero_frac=HERO_FRAC.get(slug, "щебень 20-40 мм"))
     pages.append((url, htmlp, "money-ext"))
+
+# ---- ТОВАРНЫЕ СТРАНИЦЫ ПОД КОММЕРЧЕСКИЙ СПРОС БЕЗ СВОЕГО ТОВАРА ----
+# Плитка, бордюр, лотки, кольца, блоки, малые формы и ЖБИ. Продаются
+# штуками и метрами, а не кубами, поэтому единицы измерения приходят
+# из конфига, а не зашиты в money.j2.
+for slug, mc in MONEY_CFG_ZHBI.items():
+    mat = MATERIALS_ZHBI[slug]
+    url = SITE["base"] + slug + "/"
+    crumb_items = [("Главная", "/"), ("Доставка материалов", SITE["base"]),
+                   (mat["name"], None)]
+    jl = graph(localbusiness(), bc_schema(crumb_items), faq_schema(mat["faq"]),
+               product_schema(mat["name"], mc["desc"], mc["low"], url))
+    rel = [("/dostavka/" + o + "/", MATERIALS_ZHBI[o]["name"] + " с доставкой")
+           for o in MONEY_CFG_ZHBI if o != slug]
+    rel += ZHBI_ART.get(slug, [])
+    rel += [("/dostavka/shcheben/", "Доставка щебня: все фракции и цены"),
+            ("/dostavka/pesok/", "Доставка песка"),
+            ("/dostavka/otsev/", "Отсев 0-5"),
+            ("/dostavka/", "Все города и материалы")]
+    ctx = dict(BASE_CTX)
+    ctx.update(
+        canonical=DOMAIN + url, crumbs_html=crumbs(crumb_items), jsonld=jl,
+        title=mc["title"], desc=mc["desc"], h1=mc["h1"], hero_sub=mc["hero_sub"],
+        mat_vin=mc["mat_vin"], mat_rod=mc["mat_rod"], mat_order=mc["mat_order"],
+        subject=mat["name"] + ", " + SITE["region_short"],
+        intro=mat["intro"], types=mat["types"], fractions=mat.get("fractions"),
+        faq=mat["faq"],
+        price_rows=mat["price_rows"], calc_rows=mat["calc_rows"],
+        price_col1=mc["price_col1"], price_col2=mc["price_col2"],
+        calc_head=mc["calc_head"], calc_caption=mc["calc_caption"],
+        calc_col1=mc["calc_col1"], calc_col2=mc["calc_col2"], calc_col3=mc["calc_col3"],
+        types_head=mc["types_head"],
+        fractions_head=mat.get("fractions_head", mc.get("fractions_head", "Размеры и применение")),
+        fractions_col1=mat.get("fractions_col1", mc.get("fractions_col1", "Позиция")),
+        fractions_col2=mat.get("fractions_col2", mc.get("fractions_col2", "Где применяют")),
+        fractions_caption="Что под какую задачу",
+        related_links=list(dict.fromkeys(rel))[:14],
+        hero_cell=ZHBI_CELL.get(slug, 34), hero_frac=ZHBI_FRAC.get(slug, "щебень 20-40 мм"),
+        price_note="Цены ориентировочные по рынку Свердловской области. "
+                   "Товар возим под заказ: наличие, размер и срок подтверждаем по заявке.",
+        delivery_note="Доставку считаем отдельно: она зависит от веса, габарита и плеча. "
+                      "Тяжёлые изделия требуют манипулятора, и это оговаривается заранее.")
+    htmlp = env.get_template("money.j2").render(**ctx)
+    pages.append((url, htmlp, "money-zhbi"))
 
 # ---- ГОРОДСКИЕ СТРАНИЦЫ: ОДИН ГОРОД = ОДНА СТРАНИЦА ----
 # Первая попытка была делать отдельную страницу на каждую пару город-материал.

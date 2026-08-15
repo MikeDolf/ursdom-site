@@ -17,9 +17,9 @@
   <h2 id="ceny">Цены на {{ mat_vin }} с доставкой</h2>
   <div class="d-table-wrap"><table>
     <caption>{{ price_note }}</caption>
-    <thead><tr><th>Материал</th><th>Цена за куб, руб</th></tr></thead>
+    <thead><tr><th>{{ price_col1|default("Материал") }}</th><th>{{ price_col2|default("Цена за куб, руб") }}</th></tr></thead>
     <tbody>
-{% for name,price in per_cube %}      <tr><td>{{ name }}</td><td>{{ price }}</td></tr>
+{% for name,price in price_rows|default(per_cube) %}      <tr><td>{{ name }}</td><td>{{ price }}</td></tr>
 {% endfor %}    </tbody>
   </table></div>
   <p class="d-note">{{ delivery_note }}</p>
@@ -48,25 +48,25 @@
 {% endfor %}  </div>
 {% endif %}
 
-  <h2 id="vidy">Виды {{ mat_rod }}</h2>
+  <h2 id="vidy">{{ types_head|default("Виды " ~ mat_rod) }}</h2>
   <div class="d-grid">
 {% for t,d in types %}    <div class="d-card"><strong>{{ t }}</strong><p>{{ d }}</p></div>
 {% endfor %}  </div>
 {% if fractions %}
-  <h2 id="frakcii">Фракции и применение</h2>
+  <h2 id="frakcii">{{ fractions_head|default("Фракции и применение") }}</h2>
   <div class="d-table-wrap"><table>
-    <caption>Какая фракция {{ mat_rod }} под какую задачу</caption>
-    <thead><tr><th>Фракция</th><th>Где применяют</th></tr></thead>
+    <caption>{{ fractions_caption|default("Какая фракция " ~ mat_rod ~ " под какую задачу") }}</caption>
+    <thead><tr><th>{{ fractions_col1|default("Фракция") }}</th><th>{{ fractions_col2|default("Где применяют") }}</th></tr></thead>
     <tbody>
 {% for f,use in fractions %}      <tr><td>{{ f }}</td><td>{{ use }}</td></tr>
 {% endfor %}    </tbody>
   </table></div>
 {% endif %}
 
-  <h2 id="skolko">Сколько нужно на типовые задачи</h2>
+  <h2 id="skolko">{{ calc_head|default("Сколько нужно на типовые задачи") }}</h2>
   <div class="d-table-wrap"><table>
-    <caption>Готовые расчёты с запасом на уплотнение, чтобы прикинуть объём до заявки</caption>
-    <thead><tr><th>Задача</th><th>Объём с запасом</th><th>Машина</th></tr></thead>
+    <caption>{{ calc_caption|default("Готовые расчёты с запасом на уплотнение, чтобы прикинуть объём до заявки") }}</caption>
+    <thead><tr><th>{{ calc_col1|default("Задача") }}</th><th>{{ calc_col2|default("Объём с запасом") }}</th><th>{{ calc_col3|default("Машина") }}</th></tr></thead>
     <tbody>
 {% for task,vol,car in calc_rows %}      <tr><td>{{ task }}</td><td>{{ vol }}</td><td>{{ car }}</td></tr>
 {% endfor %}    </tbody>
