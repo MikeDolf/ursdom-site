@@ -15,6 +15,7 @@ from site_config import SITE, ADVANTAGES, GUARANTEES
 from products import MATERIALS, EXTRA
 from products_ext import MATERIALS_EXT, MONEY_CFG_EXT
 from products_zhbi import MATERIALS_ZHBI, MONEY_CFG_ZHBI
+from products_beton import MATERIALS_BETON, MONEY_CFG_BETON
 from geo_matrix import (CITY_FACTS, MATRIX, ALREADY, MAT_FORMS,
                         ANGLE, LOCAL, MAT_TASK, example_for, plecho)
 from prices import PER_CUBE, PRICE_NOTE, DELIVERY_NOTE, CATALOG, SIEVE, HERO_CELL, HERO_FRAC
@@ -24,7 +25,8 @@ from longreads_core import CORE_LONGREADS
 from longreads_beton import BETON_LONGREADS
 from longreads_zadachi import ZADACHI_LONGREADS
 from longreads_smezh import SMEZH_LONGREADS
-LONGREADS = LONGREADS + CORE_LONGREADS + BETON_LONGREADS + ZADACHI_LONGREADS + SMEZH_LONGREADS
+from longreads_beton2 import BETON2_LONGREADS
+LONGREADS = LONGREADS + CORE_LONGREADS + BETON_LONGREADS + ZADACHI_LONGREADS + SMEZH_LONGREADS + BETON2_LONGREADS
 from legal import legal_sections, LEGAL_UPDATED
 
 env = Environment(loader=FileSystemLoader(os.path.join(HERE, "templates")),
@@ -204,7 +206,9 @@ BASE_CTX = dict(cfg=SITE, advantages=ADVANTAGES, guarantees=GUARANTEES,
                 more_materials=[(("/dostavka/" + k + "/"), v["name"])
                                 for k, v in MATERIALS_EXT.items()]
                                + [(("/dostavka/" + k + "/"), v["name"])
-                                  for k, v in MATERIALS_ZHBI.items()])
+                                  for k, v in MATERIALS_ZHBI.items()]
+                               + [(("/dostavka/" + k + "/"), v["name"])
+                                  for k, v in MATERIALS_BETON.items()])
 
 pages = []  # (url, rendered_html, family)
 
@@ -257,10 +261,10 @@ PESOK_GEO = [("/dostavka/pesok/bogdanovich/", "Доставка песка в Б
 SREDNEURALSK = [("/dostavka/shcheben/sredneuralsk/", "Доставка щебня в Среднеуральск")]
 
 # Ячейка сита и профильные статьи для товарных страниц без своего товара.
-ZHBI_CELL = {"trotuarnaya-plitka": 8, "bordyur": 19, "lotki-vodootvodnye": 34,
+ZHBI_CELL = {"beton": 19, "trotuarnaya-plitka": 8, "bordyur": 19, "lotki-vodootvodnye": 34,
              "kolca-zhbi": 34, "stenovye-bloki": 19, "malye-formy": 34,
              "zhbi-izdeliya": 46}
-ZHBI_FRAC = {"trotuarnaya-plitka": "отсев 0-5 мм под плитку",
+ZHBI_FRAC = {"beton": "щебень 5-20 мм в бетон", "trotuarnaya-plitka": "отсев 0-5 мм под плитку",
              "bordyur": "щебень 5-20 мм под замок",
              "lotki-vodootvodnye": "щебень 20-40 мм под ложе",
              "kolca-zhbi": "щебень 20-40 мм на фильтр",
@@ -268,6 +272,12 @@ ZHBI_FRAC = {"trotuarnaya-plitka": "отсев 0-5 мм под плитку",
              "malye-formy": "щебень 20-40 мм под основание",
              "zhbi-izdeliya": "щебень 20-40 мм в подготовку"}
 ZHBI_ART = {
+ "beton": [("/dostavka/beton/cena-za-kub/", "Куб бетона: цена, вес, объём"),
+           ("/dostavka/beton/m300/", "Бетон М300"),
+           ("/dostavka/beton/m200/", "Бетон М200"),
+           ("/dostavka/beton/betononasos/", "Бетононасос: когда нужен"),
+           ("/dostavka/stati/marki-betona/", "Марки бетона: какая под что"),
+           ("/dostavka/stati/skolko-betona-v-miksere/", "Сколько бетона в миксере")],
  "trotuarnaya-plitka": [("/dostavka/stati/ukladka-trotuarnoy-plitki/", "Укладка тротуарной плитки"),
                         ("/dostavka/stati/vybrat-trotuarnuyu-plitku/", "Какую плитку выбрать"),
                         ("/dostavka/stati/pesok-pod-plitku/", "Сколько песка и отсева под плитку")],
@@ -452,6 +462,8 @@ for a in LONGREADS:
     url = SITE["base"] + a["slug"] + "/"
     if a["slug"].startswith("shcheben/"):
         parent = ("Щебень", SITE["base"] + "shcheben/")
+    elif a["slug"].startswith("beton/"):
+        parent = ("Бетон", SITE["base"] + "beton/")
     elif a["slug"].startswith("pesok/"):
         parent = ("Песок", SITE["base"] + "pesok/")
     else:
@@ -532,15 +544,17 @@ for slug, mc in MONEY_CFG_EXT.items():
 # Плитка, бордюр, лотки, кольца, блоки, малые формы и ЖБИ. Продаются
 # штуками и метрами, а не кубами, поэтому единицы измерения приходят
 # из конфига, а не зашиты в money.j2.
-for slug, mc in MONEY_CFG_ZHBI.items():
-    mat = MATERIALS_ZHBI[slug]
+_ZHBI_ALL = dict(MONEY_CFG_ZHBI); _ZHBI_ALL.update(MONEY_CFG_BETON)
+_MAT_ALL = dict(MATERIALS_ZHBI); _MAT_ALL.update(MATERIALS_BETON)
+for slug, mc in _ZHBI_ALL.items():
+    mat = _MAT_ALL[slug]
     url = SITE["base"] + slug + "/"
     crumb_items = [("Главная", "/"), ("Доставка материалов", SITE["base"]),
                    (mat["name"], None)]
     jl = graph(localbusiness(), bc_schema(crumb_items), faq_schema(mat["faq"]),
                product_schema(mat["name"], mc["desc"], mc["low"], url))
-    rel = [("/dostavka/" + o + "/", MATERIALS_ZHBI[o]["name"] + " с доставкой")
-           for o in MONEY_CFG_ZHBI if o != slug]
+    rel = [("/dostavka/" + o + "/", _MAT_ALL[o]["name"] + " с доставкой")
+           for o in _ZHBI_ALL if o != slug]
     rel += ZHBI_ART.get(slug, [])
     rel += [("/dostavka/shcheben/", "Доставка щебня: все фракции и цены"),
             ("/dostavka/pesok/", "Доставка песка"),

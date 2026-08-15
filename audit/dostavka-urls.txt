@@ -51,6 +51,13 @@ https://ursdom.ru/dostavka/stati/ustanovka-bordyura/
 https://ursdom.ru/dostavka/stati/razmery-bordyurov/
 https://ursdom.ru/dostavka/stati/remontnye-smesi-dlya-betona/
 https://ursdom.ru/dostavka/stati/kolca-zhbi-razmery/
+https://ursdom.ru/dostavka/beton/cena-za-kub/
+https://ursdom.ru/dostavka/beton/m200/
+https://ursdom.ru/dostavka/beton/m250/
+https://ursdom.ru/dostavka/beton/m300/
+https://ursdom.ru/dostavka/beton/m350/
+https://ursdom.ru/dostavka/beton/m400/
+https://ursdom.ru/dostavka/beton/betononasos/
 https://ursdom.ru/dostavka/keramzit/
 https://ursdom.ru/dostavka/graviy/
 https://ursdom.ru/dostavka/asfaltovaya-kroshka/
@@ -65,6 +72,7 @@ https://ursdom.ru/dostavka/kolca-zhbi/
 https://ursdom.ru/dostavka/stenovye-bloki/
 https://ursdom.ru/dostavka/malye-formy/
 https://ursdom.ru/dostavka/zhbi-izdeliya/
+https://ursdom.ru/dostavka/beton/
 https://ursdom.ru/dostavka/shcheben/nizhniy-tagil/
 https://ursdom.ru/dostavka/shcheben/pervouralsk/
 https://ursdom.ru/dostavka/shcheben/kamensk-uralskiy/
