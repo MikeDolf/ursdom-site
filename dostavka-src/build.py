@@ -17,6 +17,7 @@ from products_ext import MATERIALS_EXT, MONEY_CFG_EXT
 from products_zhbi import MATERIALS_ZHBI, MONEY_CFG_ZHBI
 from products_beton import MATERIALS_BETON, MONEY_CFG_BETON
 from products_gap import MATERIALS_GAP, MONEY_CFG_GAP
+from products_gap2 import MATERIALS_GAP2, MONEY_CFG_GAP2
 from geo_matrix import (CITY_FACTS, MATRIX, ALREADY, MAT_FORMS,
                         ANGLE, LOCAL, MAT_TASK, example_for, plecho)
 from prices import PER_CUBE, PRICE_NOTE, DELIVERY_NOTE, CATALOG, SIEVE, HERO_CELL, HERO_FRAC
@@ -212,7 +213,9 @@ BASE_CTX = dict(cfg=SITE, advantages=ADVANTAGES, guarantees=GUARANTEES,
                                + [(("/dostavka/" + k + "/"), v["name"])
                                   for k, v in MATERIALS_BETON.items()]
                                + [(("/dostavka/" + k + "/"), v["name"])
-                                  for k, v in MATERIALS_GAP.items()])
+                                  for k, v in MATERIALS_GAP.items()]
+                               + [(("/dostavka/" + k + "/"), v["name"])
+                                  for k, v in MATERIALS_GAP2.items()])
 
 pages = []  # (url, rendered_html, family)
 
@@ -265,13 +268,22 @@ PESOK_GEO = [("/dostavka/pesok/bogdanovich/", "Доставка песка в Б
 SREDNEURALSK = [("/dostavka/shcheben/sredneuralsk/", "Доставка щебня в Среднеуральск")]
 
 # Ячейка сита и профильные статьи для товарных страниц без своего товара.
-ZHBI_CELL = {"beton": 19, "cement-i-smesi": 8, "plitka-osobaya": 8,
+ZHBI_CELL = {"beton": 19, "trotuarnaya-plitka-razmery": 8, "pechnye-smesi": 6,
+             "reshetki-dozhdepriemnikov": 34, "bordyur-vidy": 19,
+             "fbs-bloki": 46, "dorozhnye-plity": 46, "peskobloki": 19, "cement-i-smesi": 8, "plitka-osobaya": 8,
              "lyuki-i-kryshki": 34, "betonnye-zabory": 34, "bitum-i-asfalt": 19,
              "peregorodochnye-bloki": 19, "opory-i-stoyki": 46,
              "stroitelnaya-himiya": 6, "dresva-i-shlak": 19, "trotuarnaya-plitka": 8, "bordyur": 19, "lotki-vodootvodnye": 34,
              "kolca-zhbi": 34, "stenovye-bloki": 19, "malye-formy": 34,
              "zhbi-izdeliya": 46}
 ZHBI_FRAC = {"beton": "щебень 5-20 мм в бетон",
+             "trotuarnaya-plitka-razmery": "отсев 0-5 мм под плитку",
+             "pechnye-smesi": "песок до 2,5 мм в смесь",
+             "reshetki-dozhdepriemnikov": "щебень 20-40 мм под лоток",
+             "bordyur-vidy": "щебень 5-20 мм под замок",
+             "fbs-bloki": "щебень 20-40 мм в подготовку",
+             "dorozhnye-plity": "щебень 20-40 мм в основание",
+             "peskobloki": "песок 0-5 мм в раствор",
              "cement-i-smesi": "песок 0-5 мм в раствор",
              "plitka-osobaya": "отсев 0-5 мм под плитку",
              "lyuki-i-kryshki": "щебень 20-40 мм на обвязку",
@@ -288,6 +300,27 @@ ZHBI_FRAC = {"beton": "щебень 5-20 мм в бетон",
              "malye-formy": "щебень 20-40 мм под основание",
              "zhbi-izdeliya": "щебень 20-40 мм в подготовку"}
 ZHBI_ART = {
+ "trotuarnaya-plitka-razmery": [("/dostavka/trotuarnaya-plitka/", "Тротуарная плитка: цены и виды"),
+                                ("/dostavka/stati/vybrat-trotuarnuyu-plitku/", "Какую плитку выбрать"),
+                                ("/dostavka/stati/ukladka-trotuarnoy-plitki/", "Укладка плитки"),
+                                ("/dostavka/stati/behaton/", "Бехатон: что это")],
+ "pechnye-smesi": [("/dostavka/cement-i-smesi/", "Цемент и сухие смеси"),
+                   ("/dostavka/stati/rastvor-proporcii/", "Раствор: пропорции и расход")],
+ "reshetki-dozhdepriemnikov": [("/dostavka/lotki-vodootvodnye/", "Водоотводные лотки"),
+                               ("/dostavka/stati/lotki-i-dozhdepriemniki/", "Лотки и дождеприёмники: монтаж"),
+                               ("/dostavka/lyuki-i-kryshki/", "Люки и крышки")],
+ "bordyur-vidy": [("/dostavka/bordyur/", "Бордюр и поребрик: цены"),
+                  ("/dostavka/stati/ustanovka-bordyura/", "Установка бордюра"),
+                  ("/dostavka/stati/razmery-bordyurov/", "Размеры и вес бордюров")],
+ "fbs-bloki": [("/dostavka/zhbi-izdeliya/", "ЖБИ: плиты, перемычки, опоры"),
+               ("/dostavka/stati/marki-betona/", "Марки бетона"),
+               ("/dostavka/stati/frakcii-shchebnya/", "Фракции щебня в подготовку")],
+ "dorozhnye-plity": [("/dostavka/zhbi-izdeliya/", "ЖБИ: плиты, перемычки, опоры"),
+                     ("/dostavka/stati/frakcii-shchebnya/", "Фракции щебня в основание"),
+                     ("/dostavka/stati/koefficient-uplotneniya/", "Коэффициент уплотнения")],
+ "peskobloki": [("/dostavka/stenovye-bloki/", "Стеновые блоки"),
+                ("/dostavka/peregorodochnye-bloki/", "Перегородочные блоки"),
+                ("/dostavka/stati/rastvor-proporcii/", "Кладочный раствор")],
  "cement-i-smesi": [("/dostavka/stati/cement-m400-i-m500/", "Цемент М400 и М500: расход"),
                     ("/dostavka/stati/rastvor-proporcii/", "Раствор: пропорции и расход"),
                     ("/dostavka/stati/marki-betona/", "Марки бетона")],
@@ -581,8 +614,8 @@ for slug, mc in MONEY_CFG_EXT.items():
 # Плитка, бордюр, лотки, кольца, блоки, малые формы и ЖБИ. Продаются
 # штуками и метрами, а не кубами, поэтому единицы измерения приходят
 # из конфига, а не зашиты в money.j2.
-_ZHBI_ALL = dict(MONEY_CFG_ZHBI); _ZHBI_ALL.update(MONEY_CFG_BETON); _ZHBI_ALL.update(MONEY_CFG_GAP)
-_MAT_ALL = dict(MATERIALS_ZHBI); _MAT_ALL.update(MATERIALS_BETON); _MAT_ALL.update(MATERIALS_GAP)
+_ZHBI_ALL = dict(MONEY_CFG_ZHBI); _ZHBI_ALL.update(MONEY_CFG_BETON); _ZHBI_ALL.update(MONEY_CFG_GAP); _ZHBI_ALL.update(MONEY_CFG_GAP2)
+_MAT_ALL = dict(MATERIALS_ZHBI); _MAT_ALL.update(MATERIALS_BETON); _MAT_ALL.update(MATERIALS_GAP); _MAT_ALL.update(MATERIALS_GAP2)
 for slug, mc in _ZHBI_ALL.items():
     mat = _MAT_ALL[slug]
     url = SITE["base"] + slug + "/"
