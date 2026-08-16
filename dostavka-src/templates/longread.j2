@@ -46,7 +46,7 @@
 {{ m.blocks(s) }}
 {% if loop.index == cta_after %}{{ m.midcta(cfg, cta_head2 or cta_head, cta_text2 or cta_text) }}{% endif %}
 {% endfor %}
-{% if conv %}{{ m.order_block(cfg, conv.head, conv.rows, order_steps, price_note) }}
+{% if conv %}{{ m.order_block(cfg, conv.head, conv.rows, order_steps, price_note, conv.note) }}
 {% endif %}{% if calc %}{{ m.calculator(cfg, calc) }}
 {% endif %}{# Завершающий призыв не рендерится, если призыв в разделах
    уже сработал после последнего из них: тогда два одинаковых блока

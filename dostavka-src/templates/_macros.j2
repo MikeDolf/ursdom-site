@@ -143,7 +143,7 @@
 {# Блок в конце статьи. До него текст обрывался, и читатель попадал
    сразу в «Как мы возим»: между дочитанным материалом и заявкой
    не было ни одного шага. #}
-{% macro order_block(cfg, head, rows, steps, price_note) -%}
+{% macro order_block(cfg, head, rows, steps, price_note, note=None) -%}
 <h2 id="skolko-stoit">{{ head }}</h2>
 <div class="d-table-wrap"><table>
   <caption>{{ price_note }}</caption>
@@ -152,7 +152,8 @@
 {% for name,price,href in rows %}    <tr><td><a href="{{ href }}">{{ name }}</a></td><td>{{ price }}</td></tr>
 {% endfor %}  </tbody>
 </table></div>
-
+{% if note %}<p class="d-note">{{ note }}</p>
+{% endif %}
 <h3 id="kak-zakazat-dostavku">Как заказать доставку</h3>
 <ol class="d-steps">
 {% for s in steps %}  <li>{{ s }}</li>
