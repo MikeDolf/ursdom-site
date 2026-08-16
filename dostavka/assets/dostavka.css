@@ -521,6 +521,22 @@ table td:only-child,table td:first-child:last-child{font-weight:400}
   text-transform:uppercase;color:var(--d-brass);margin-bottom:9px}
 .d-tldr p{margin:0;font-size:17px;color:var(--d-on-steel);line-height:1.55}
 
+/* ---------------------------------------------------- ценовой якорь
+   Ценник на поддоне: латунная кромка слева, цифра набрана моноширинными
+   знаками из того же набора, что и все числа на сайте. Полоса стоит
+   сразу под врезкой «коротко», потому что до неё статья на полторы
+   тысячи слов не называла ни одной цены. */
+.d-pricebar{display:flex;flex-wrap:wrap;gap:6px 18px;align-items:baseline;
+  justify-content:space-between;background:var(--d-enamel-2);
+  border:1px solid var(--d-rule);border-left:3px solid var(--d-brass);
+  padding:14px 18px;margin:0 0 26px}
+.d-pricebar b{font-weight:750;font-size:16px;color:var(--d-ink);letter-spacing:-.01em}
+/* Цель нажатия у ссылки в полосе. Первая версия дала 174x23 при минимуме
+   44 по WCAG 2.5.8, и это поймал audit/_ui_audit.mjs: строчная ссылка
+   в flex-строке высоту от текста не набирает, её задают отступами. */
+.d-pricebar a{display:inline-flex;align-items:center;min-height:44px;
+  padding:0 2px;font-size:14.5px;color:var(--d-brass-text);white-space:nowrap}
+
 .d-toc{background:var(--d-paper);border:1px solid var(--d-rule);padding:19px 22px;
   margin:0 0 28px}
 .d-toc strong{display:block;font-size:12.5px;letter-spacing:.11em;text-transform:uppercase;

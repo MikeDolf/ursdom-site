@@ -107,6 +107,46 @@
 </div>
 {%- endmacro %}
 
+{# Ценовой якорь под врезкой «коротко». Статья на 1500 слов без единой
+   цифры в рублях оставляла главный вопрос читателя без ответа до самого
+   конца, а чаще навсегда. Полоса даёт цифру сразу и короткий путь вниз,
+   к полному прайсу и порядку заказа. #}
+{% macro pricebar(anchor) -%}
+<div class="d-pricebar">
+  <b>{{ anchor }}</b>
+  <a href="#skolko-stoit">Все цены и как заказать</a>
+</div>
+{%- endmacro %}
+
+{# Блок в конце статьи. До него текст обрывался, и читатель попадал
+   сразу в «Как мы возим»: между дочитанным материалом и заявкой
+   не было ни одного шага. #}
+{% macro order_block(cfg, head, rows, steps, price_note) -%}
+<h2 id="skolko-stoit">{{ head }}</h2>
+<div class="d-table-wrap"><table>
+  <caption>{{ price_note }}</caption>
+  <thead><tr><th>Позиция</th><th>Цена с доставкой</th></tr></thead>
+  <tbody>
+{% for name,price,href in rows %}    <tr><td><a href="{{ href }}">{{ name }}</a></td><td>{{ price }}</td></tr>
+{% endfor %}  </tbody>
+</table></div>
+
+<h2 id="kak-zakazat-dostavku">Как заказать доставку</h2>
+<ol class="d-steps">
+{% for s in steps %}  <li>{{ s }}</li>
+{% endfor %}</ol>
+{%- endmacro %}
+
+{# Возражения, которые до этого выяснялись только в переписке, то есть
+   уже после того, как человек решился написать. Стоят рядом с формой:
+   это последнее, что читают перед отправкой заявки. #}
+{% macro objections(items) -%}
+<h2>Что важно знать до заявки</h2>
+<div class="d-grid">
+{% for t,d in items %}  <div class="d-card"><strong>{{ t }}</strong><p>{{ d }}</p></div>
+{% endfor %}</div>
+{%- endmacro %}
+
 {% macro author_block(author, updated) -%}
 <div class="d-author">
   <div class="d-ava" aria-hidden="true">{{ author.initials }}</div>

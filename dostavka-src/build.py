@@ -22,6 +22,7 @@ from products_gap3 import MATERIALS_GAP3, MONEY_CFG_GAP3
 from products_rev import MATERIALS_REV, MONEY_CFG_REV
 from geo_matrix import (CITY_FACTS, MATRIX, ALREADY, MAT_FORMS,
                         ANGLE, LOCAL, MAT_TASK, example_for, plecho)
+from conversion import PRICE_SETS, FAM, ORDER_STEPS, OBJECTIONS
 from prices import PER_CUBE, PRICE_NOTE, DELIVERY_NOTE, CATALOG, SIEVE, HERO_CELL, HERO_FRAC
 from cities import CITIES, PESOK_CITIES
 from longreads import LONGREADS, AUTHOR_FULL, UPDATED
@@ -564,6 +565,17 @@ for c in PESOK_CITIES:
                          for o in CITIES[:3]])
     pages.append((url, htmlp, "geo-pesok"))
 
+# Семейство прайса берётся из явной таблицы. Незнакомый слаг не угадываем
+# по подстроке: угадывание отправило бы «отсев» в песок, а «цемент М400
+# и М500» в нерудку. Он падает в nerud и печатается в отчёт сборки.
+_NOFAM = []
+def CONV_FOR(slug):
+    f = FAM.get(slug)
+    if f is None:
+        _NOFAM.append(slug)
+        f = "nerud"
+    return PRICE_SETS[f]
+
 # ---- ЛОНГРИДЫ (низкоконкурентные ключи Мутагена) ----
 for a in LONGREADS:
     url = SITE["base"] + a["slug"] + "/"
@@ -615,6 +627,8 @@ for a in LONGREADS:
         cta_after=a["cta_after"], cta_head=a["cta_head"], cta_text=a["cta_text"],
         cta_head2=a.get("cta_head2"), cta_text2=a.get("cta_text2"),
         commercial=a.get("commercial", False),
+        conv=(None if a.get("commercial") else CONV_FOR(a["slug"])),
+        order_steps=ORDER_STEPS, objections=OBJECTIONS,
         price_head=a.get("price_head", ""), order_head=a.get("order_head", ""),
         related_links=list(dict.fromkeys(rel))[:14])
     pages.append((url, htmlp, "longread"))
@@ -977,6 +991,11 @@ for r, a, b in high:
     print(f"  ВЫСОКАЯ {r:.2f}: {a} vs {b}")
 print(f"  пар выше порога: {len(high)}")
 print(f"  максимум {mx:.2f} ({worst[0]} vs {worst[1]})  {'OK' if mx < 0.80 else 'ПРЕВЫШЕНО'}")
+
+if _NOFAM:
+    print("\nБЕЗ СЕМЕЙСТВА ПРАЙСА, ушли в nerud по умолчанию:")
+    for _s in _NOFAM:
+        print("  " + _s)
 
 wc = [(u, len(visible(h).split())) for u, h, f in pages]
 print("\nОбъём текста (слов):")
