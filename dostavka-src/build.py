@@ -19,6 +19,7 @@ from products_beton import MATERIALS_BETON, MONEY_CFG_BETON
 from products_gap import MATERIALS_GAP, MONEY_CFG_GAP
 from products_gap2 import MATERIALS_GAP2, MONEY_CFG_GAP2
 from products_gap3 import MATERIALS_GAP3, MONEY_CFG_GAP3
+from products_rev import MATERIALS_REV, MONEY_CFG_REV
 from geo_matrix import (CITY_FACTS, MATRIX, ALREADY, MAT_FORMS,
                         ANGLE, LOCAL, MAT_TASK, example_for, plecho)
 from prices import PER_CUBE, PRICE_NOTE, DELIVERY_NOTE, CATALOG, SIEVE, HERO_CELL, HERO_FRAC
@@ -31,7 +32,10 @@ from longreads_smezh import SMEZH_LONGREADS
 from longreads_beton2 import BETON2_LONGREADS
 from longreads_gap import GAP_LONGREADS
 from longreads_gap2 import GAP2_LONGREADS
-LONGREADS = LONGREADS + CORE_LONGREADS + BETON_LONGREADS + ZADACHI_LONGREADS + SMEZH_LONGREADS + BETON2_LONGREADS + GAP_LONGREADS + GAP2_LONGREADS
+from longreads_plitka import PLITKA_LONGREADS
+from longreads_beton3 import BETON3_LONGREADS
+from longreads_smesi import SMESI_LONGREADS
+LONGREADS = LONGREADS + CORE_LONGREADS + BETON_LONGREADS + ZADACHI_LONGREADS + SMEZH_LONGREADS + BETON2_LONGREADS + GAP_LONGREADS + GAP2_LONGREADS + PLITKA_LONGREADS + BETON3_LONGREADS + SMESI_LONGREADS
 from legal import legal_sections, LEGAL_UPDATED
 
 env = Environment(loader=FileSystemLoader(os.path.join(HERE, "templates")),
@@ -323,10 +327,15 @@ ZHBI_ART = {
                                 ("/dostavka/stati/behaton/", "Бехатон: что это")],
  "pechnye-smesi": [("/dostavka/cement-i-smesi/", "Цемент и сухие смеси"),
                    ("/dostavka/stati/rastvor-proporcii/", "Раствор: пропорции и расход")],
- "reshetki-dozhdepriemnikov": [("/dostavka/lotki-vodootvodnye/", "Водоотводные лотки"),
+ "dozhdepriemniki": [("/dostavka/reshetki-dozhdepriemnikov/", "Решётки к дождеприёмникам"),
+                     ("/dostavka/stati/lotki-i-dozhdepriemniki/", "Лотки и дождеприёмники: монтаж"),
+                     ("/dostavka/lotki-vodootvodnye/", "Водоотводные лотки")],
+ "reshetki-dozhdepriemnikov": [("/dostavka/dozhdepriemniki/", "Дождеприёмники: размеры и глубина"),
+                               ("/dostavka/lotki-vodootvodnye/", "Водоотводные лотки"),
                                ("/dostavka/stati/lotki-i-dozhdepriemniki/", "Лотки и дождеприёмники: монтаж"),
                                ("/dostavka/lyuki-i-kryshki/", "Люки и крышки")],
- "bordyur-vidy": [("/dostavka/bordyur/", "Бордюр и поребрик: цены"),
+ "bordyur-vidy": [("/dostavka/stati/sadovyy-bordyur/", "Садовый бордюр: высота и заглубление"),
+                  ("/dostavka/bordyur/", "Бордюр и поребрик: цены"),
                   ("/dostavka/stati/ustanovka-bordyura/", "Установка бордюра"),
                   ("/dostavka/stati/razmery-bordyurov/", "Размеры и вес бордюров")],
  "fbs-bloki": [("/dostavka/zhbi-izdeliya/", "ЖБИ: плиты, перемычки, опоры"),
@@ -338,10 +347,13 @@ ZHBI_ART = {
  "peskobloki": [("/dostavka/stenovye-bloki/", "Стеновые блоки"),
                 ("/dostavka/peregorodochnye-bloki/", "Перегородочные блоки"),
                 ("/dostavka/stati/rastvor-proporcii/", "Кладочный раствор")],
- "cement-i-smesi": [("/dostavka/stati/cement-m400-i-m500/", "Цемент М400 и М500: расход"),
+ "cement-i-smesi": [("/dostavka/stati/kladochnaya-smes/", "Кладочная смесь: марки и расход"),
+                    ("/dostavka/stati/nalivnoy-pol/", "Наливной пол и ровнитель"),
+                    ("/dostavka/stati/cement-m400-i-m500/", "Цемент М400 и М500: расход"),
                     ("/dostavka/stati/rastvor-proporcii/", "Раствор: пропорции и расход"),
                     ("/dostavka/stati/marki-betona/", "Марки бетона")],
- "plitka-osobaya": [("/dostavka/stati/ukladka-trotuarnoy-plitki/", "Укладка тротуарной плитки"),
+ "plitka-osobaya": [("/dostavka/stati/taktilnaya-plitka/", "Тактильная плитка: типы рифов и ГОСТ"),
+                    ("/dostavka/stati/ukladka-trotuarnoy-plitki/", "Укладка тротуарной плитки"),
                     ("/dostavka/stati/vybrat-trotuarnuyu-plitku/", "Какую плитку выбрать"),
                     ("/dostavka/stati/behaton/", "Бехатон: что это")],
  "lyuki-i-kryshki": [("/dostavka/stati/kolca-zhbi-razmery/", "Кольца ЖБИ: размеры и вес"),
@@ -360,12 +372,18 @@ ZHBI_ART = {
  "dresva-i-shlak": [("/dostavka/stati/skalnyy-grunt-dresva-but/", "Скальный грунт, дресва и бут"),
                     ("/dostavka/stati/chem-otsypat-uchastok/", "Чем отсыпать участок")],
  "beton": [("/dostavka/beton/cena-za-kub/", "Куб бетона: цена, вес, объём"),
+           ("/dostavka/beton/m150/", "Бетон М150: пол по грунту"),
+           ("/dostavka/beton/m100/", "Бетон М100 и тощий бетон"),
            ("/dostavka/beton/m300/", "Бетон М300"),
            ("/dostavka/beton/m200/", "Бетон М200"),
            ("/dostavka/beton/betononasos/", "Бетононасос: когда нужен"),
            ("/dostavka/stati/marki-betona/", "Марки бетона: какая под что"),
            ("/dostavka/stati/skolko-betona-v-miksere/", "Сколько бетона в миксере")],
- "trotuarnaya-plitka": [("/dostavka/stati/ukladka-trotuarnoy-plitki/", "Укладка тротуарной плитки"),
+ "trotuarnaya-plitka": [("/dostavka/stati/uzory-plitki/", "Формы и узоры плитки"),
+                        ("/dostavka/stati/cvet-trotuarnoy-plitki/", "Цвет плитки: что держится"),
+                        ("/dostavka/stati/shvy-trotuarnoy-plitki/", "Швы плитки: чем засыпать"),
+                        ("/dostavka/stati/granitnaya-bruschatka/", "Гранитная брусчатка"),
+                        ("/dostavka/stati/ukladka-trotuarnoy-plitki/", "Укладка тротуарной плитки"),
                         ("/dostavka/stati/vybrat-trotuarnuyu-plitku/", "Какую плитку выбрать"),
                         ("/dostavka/stati/pesok-pod-plitku/", "Сколько песка и отсева под плитку")],
  "bordyur": [("/dostavka/stati/ustanovka-bordyura/", "Установка бордюра: порядок и расход"),
@@ -631,8 +649,8 @@ for slug, mc in MONEY_CFG_EXT.items():
 # Плитка, бордюр, лотки, кольца, блоки, малые формы и ЖБИ. Продаются
 # штуками и метрами, а не кубами, поэтому единицы измерения приходят
 # из конфига, а не зашиты в money.j2.
-_ZHBI_ALL = dict(MONEY_CFG_ZHBI); _ZHBI_ALL.update(MONEY_CFG_BETON); _ZHBI_ALL.update(MONEY_CFG_GAP); _ZHBI_ALL.update(MONEY_CFG_GAP2); _ZHBI_ALL.update(MONEY_CFG_GAP3)
-_MAT_ALL = dict(MATERIALS_ZHBI); _MAT_ALL.update(MATERIALS_BETON); _MAT_ALL.update(MATERIALS_GAP); _MAT_ALL.update(MATERIALS_GAP2); _MAT_ALL.update(MATERIALS_GAP3)
+_ZHBI_ALL = dict(MONEY_CFG_ZHBI); _ZHBI_ALL.update(MONEY_CFG_BETON); _ZHBI_ALL.update(MONEY_CFG_GAP); _ZHBI_ALL.update(MONEY_CFG_GAP2); _ZHBI_ALL.update(MONEY_CFG_GAP3); _ZHBI_ALL.update(MONEY_CFG_REV)
+_MAT_ALL = dict(MATERIALS_ZHBI); _MAT_ALL.update(MATERIALS_BETON); _MAT_ALL.update(MATERIALS_GAP); _MAT_ALL.update(MATERIALS_GAP2); _MAT_ALL.update(MATERIALS_GAP3); _MAT_ALL.update(MATERIALS_REV)
 for slug, mc in _ZHBI_ALL.items():
     mat = _MAT_ALL[slug]
     url = SITE["base"] + slug + "/"
