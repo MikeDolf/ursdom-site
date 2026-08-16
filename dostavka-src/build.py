@@ -35,7 +35,8 @@ from longreads_gap2 import GAP2_LONGREADS
 from longreads_plitka import PLITKA_LONGREADS
 from longreads_beton3 import BETON3_LONGREADS
 from longreads_smesi import SMESI_LONGREADS
-LONGREADS = LONGREADS + CORE_LONGREADS + BETON_LONGREADS + ZADACHI_LONGREADS + SMEZH_LONGREADS + BETON2_LONGREADS + GAP_LONGREADS + GAP2_LONGREADS + PLITKA_LONGREADS + BETON3_LONGREADS + SMESI_LONGREADS
+from longreads_skala import SKALA_LONGREADS
+LONGREADS = LONGREADS + CORE_LONGREADS + BETON_LONGREADS + ZADACHI_LONGREADS + SMEZH_LONGREADS + BETON2_LONGREADS + GAP_LONGREADS + GAP2_LONGREADS + PLITKA_LONGREADS + BETON3_LONGREADS + SMESI_LONGREADS + SKALA_LONGREADS
 from legal import legal_sections, LEGAL_UPDATED
 
 env = Environment(loader=FileSystemLoader(os.path.join(HERE, "templates")),
@@ -402,7 +403,8 @@ MAT_ART = {'shcheben': [('/dostavka/stati/frakcii-shchebnya/', 'Фракции �
     'otsev': [('/dostavka/stati/otsev-gde-primenyat/', 'Отсев 0-5: где применяют и чем заменить'), ('/dostavka/stati/frakcii-shchebnya/', 'Фракции щебня: какая под какую задачу')],
     'pgs': [('/dostavka/stati/pgs-ili-opgs/', 'ПГС и ОПГС: чем отличаются'), ('/dostavka/stati/skalnyy-grunt-dresva-but/', 'Скальный грунт, дресва и бут')],
     'keramzit': [('/dostavka/stati/keramzit-frakcii-i-ves/', 'Керамзит: фракции, вес и где выгоден')],
-    'skalnyy-grunt': [('/dostavka/stati/skalnyy-grunt-dresva-but/', 'Скальный грунт, дресва и бут'), ('/dostavka/stati/pgs-ili-opgs/', 'ПГС и ОПГС: чем отличаются')],
+    'skalnyy-grunt': [('/dostavka/stati/skalnyy-grunt-klassifikaciya/', 'Скальный грунт: классификация и разработка'),
+                      ('/dostavka/stati/skalnyy-grunt-dresva-but/', 'Скальный грунт, дресва и бут'), ('/dostavka/stati/pgs-ili-opgs/', 'ПГС и ОПГС: чем отличаются')],
     'butovyy-kamen': [('/dostavka/stati/skalnyy-grunt-dresva-but/', 'Скальный грунт, дресва и бут')],
     'graviy': [('/dostavka/stati/frakcii-shchebnya/', 'Фракции щебня: какая под какую задачу')],
     'shchps': [('/dostavka/stati/pgs-ili-opgs/', 'ПГС и ОПГС: чем отличаются')],
