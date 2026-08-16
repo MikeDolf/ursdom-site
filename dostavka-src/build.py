@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """Сборка раздела доставки в /dostavka/. Изолирован от ursdom.
 Зависимости: Python 3 + jinja2. Вывод: статические index.html + sitemap раздела."""
-import os, sys, json, difflib
+import os, sys, json, re, difflib
 from PIL import Image
 from jinja2 import Environment, FileSystemLoader
 
@@ -147,6 +147,58 @@ def product_schema(name, desc, low_price, url, images=None):
         },
     }
 
+
+
+# Наличие по семейству прайса. Нерудку и бетон возим со склада и от завода,
+# всё штучное идёт под заказ - ровно так, как написано текстом на товарных
+# страницах через UNDER_ORDER. Разметка обязана совпадать с текстом:
+# InStock на позиции, которой нет в наличии, это обман и разметки, и человека.
+_IN_STOCK_FAMS = {"nerud", "pesok", "beton", "asfalt", "smesi"}
+_PRICE_RX = re.compile(r"(\d[\d\s]*)")
+
+
+def pricelist_schema(fam_key, rows, page_url):
+    """ItemList из Product+Offer по таблице цен в статье.
+
+    Строки таблицы это не товары этой страницы, а товары, на которые она
+    ссылается, поэтому у каждого Product стоит свой url на товарную,
+    а не url статьи. Иначе поиск получил бы десяток разных товаров
+    по одному адресу.
+
+    Цена берётся из той же строки, что видит человек: 'от 1400 руб/м³'
+    даёт lowPrice 1400. Позиции 'по запросу' в разметку не попадают
+    вообще - Offer без цены бесполезен и засоряет граф.
+    """
+    avail = ("https://schema.org/InStock" if fam_key in _IN_STOCK_FAMS
+             else "https://schema.org/PreOrder")
+    items = []
+    for name, price, href in rows:
+        m = _PRICE_RX.search(price)
+        if not m or "запрос" in price:
+            continue
+        low = m.group(1).replace(" ", "")
+        unit = ("кубометр" if "м³" in price else
+                "квадратный метр" if "м²" in price else
+                "мешок" if "мешок" in price else "штука")
+        items.append({
+            "@type": "ListItem", "position": len(items) + 1,
+            "item": {
+                "@type": "Product", "name": name,
+                "category": "Нерудные строительные материалы",
+                "url": DOMAIN + href,
+                "brand": {"@type": "Brand", "name": SITE["brand"]},
+                "offers": {
+                    "@type": "Offer", "price": low, "priceCurrency": "RUB",
+                    "availability": avail, "unitText": unit,
+                    "areaServed": SITE["region"], "url": DOMAIN + href,
+                    "seller": {"@id": DOMAIN + SITE["base"] + "#business"},
+                },
+            }})
+    if not items:
+        return None
+    return {"@type": "ItemList", "name": "Цены с доставкой",
+            "url": DOMAIN + page_url + "#skolko-stoit",
+            "numberOfItems": len(items), "itemListElement": items}
 
 def graph(*nodes):
     return json.dumps({"@context": "https://schema.org", "@graph": list(nodes)},
@@ -585,7 +637,7 @@ def CONV_FOR(slug):
     if f is None:
         _NOFAM.append(slug)
         f = "nerud"
-    return PRICE_SETS[f]
+    return f, PRICE_SETS[f]
 
 # ---- ЛОНГРИДЫ (низкоконкурентные ключи Мутагена) ----
 for a in LONGREADS:
@@ -601,7 +653,12 @@ for a in LONGREADS:
         parent = ("Статьи", None)
     crumb_items = [("Главная", "/"), ("Доставка материалов", SITE["base"]), parent,
                    (a["h1"], None)]
+    _fam, _conv = (None, None) if a.get("commercial") else CONV_FOR(a["slug"])
     nodes = [localbusiness(), bc_schema(crumb_items), faq_schema(a["faq"])]
+    if _conv:
+        _pl = pricelist_schema(_fam, _conv["rows"], url)
+        if _pl:
+            nodes.append(_pl)
     if a["kind"] == "article":
         nodes.append(article_schema(url, a["title"], a["desc"], AUTHOR_FULL))
     if a.get("low_price"):
@@ -639,7 +696,7 @@ for a in LONGREADS:
         cta_after=a["cta_after"], cta_head=a["cta_head"], cta_text=a["cta_text"],
         cta_head2=a.get("cta_head2"), cta_text2=a.get("cta_text2"),
         commercial=a.get("commercial", False),
-        conv=(None if a.get("commercial") else CONV_FOR(a["slug"])),
+        conv=_conv,
         order_steps=ORDER_STEPS, objections=OBJECTIONS,
         price_head=a.get("price_head", ""), order_head=a.get("order_head", ""),
         related_links=list(dict.fromkeys(rel))[:14])

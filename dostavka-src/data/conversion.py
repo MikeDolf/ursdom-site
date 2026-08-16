@@ -181,6 +181,9 @@ FAM = {
  "stati/dostavka-na-dachu": "nerud",
  "stati/cena-kuba-s-dostavkoy": "nerud",
  "stati/skolko-shchebnya-v-kamaze": "nerud",
+ "stati/podushka-pod-fundament": "nerud",
+ "stati/materialy-na-dom-po-etapam": "nerud",
+ "shcheben/frakciya-40-70": "nerud",
  "shcheben/frakciya-20-40": "nerud",
  "shcheben/frakciya-5-20": "nerud",
  "shcheben/v-meshkah": "nerud",
@@ -213,6 +216,7 @@ FAM = {
  "stati/rastvor-proporcii": "smesi",
  "stati/cement-m400-i-m500": "smesi",
  "stati/kladochnaya-smes": "smesi",
+ "stati/pechnoy-rastvor": "smesi",
  "stati/nalivnoy-pol": "smesi",
  "stati/propitki-dlya-betona": "smesi",
  "stati/gidroizolyaciya-betona": "smesi",
@@ -230,6 +234,8 @@ FAM = {
  "stati/shvy-trotuarnoy-plitki": "plitka",
  # бордюр
  "stati/razmery-bordyurov": "bordyur",
+ "bordyur/trotuarnyy": "bordyur",
+ "bordyur/sadovyy": "bordyur",
  "stati/ustanovka-bordyura": "bordyur",
  "stati/sadovyy-bordyur": "bordyur",
  # водоотвод и кольца
