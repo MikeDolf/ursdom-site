@@ -304,6 +304,27 @@ ARITH = [
     ("50 м2 слой 0,15 щебень к1.2 = 9 кубов", 50 * 0.15 * 1.2, 9, 0.01),
     ("200 м2 слой 0,2 к1.2 = 48 кубов", 200 * 0.2 * 1.2, 48, 0.01),
 ]
+# Калькулятор: формула в data/calc.py и в assets/calc.js должна давать
+# одно и то же. Расхождение означает, что человек видит одну сумму,
+# а в заявке получает другую, и заметить это без проверки нельзя.
+sys.path.insert(0, os.path.join(ROOT, "dostavka-src", "data"))
+try:
+    from calc import estimate as _est, RATE_PER_KM as _RATE, trips as _trips
+    ARITH += [
+        ("калькулятор: 10 м³ x 1400 + 45 км x 95", _est(10, 1400, 45)["total"], 18275, 0.01),
+        ("калькулятор: 5 м³ x 350 + 25 км x 95", _est(5, 350, 25)["total"], 4125, 0.01),
+        ("калькулятор: 30 м³ это 2 рейса по 20", _trips(30)[0], 2, 0.01),
+        ("калькулятор: 30 м³ x 500 + 2 рейса x 140 км x 95", _est(30, 500, 140)["total"], 41600, 0.01),
+        ("тариф в конфиге 95 руб/км", _RATE, 95, 0.01),
+    ]
+    _js = io.open(os.path.join(DIR, "assets", "calc.js"), encoding="utf-8").read()
+    for _need in ("TRUCKS = [5, 10, 20]", "Math.ceil(v / big)", "v * price", "t.n * km * RATE"):
+        if _need not in _js:
+            bad("(калькулятор)", "арифметика",
+                "формула в calc.js разошлась с calc.py: нет %r" % _need)
+except Exception as _e:
+    bad("(калькулятор)", "арифметика", "не удалось проверить: %s" % _e)
+
 for name, got, want, tol in ARITH:
     if abs(got - want) > tol:
         bad("(тексты)", "арифметика", "%s: расчёт даёт %.2f" % (name, got))

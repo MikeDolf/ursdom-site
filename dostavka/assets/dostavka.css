@@ -521,6 +521,53 @@ table td:only-child,table td:first-child:last-child{font-weight:400}
   text-transform:uppercase;color:var(--d-brass);margin-bottom:9px}
 .d-tldr p{margin:0;font-size:17px;color:var(--d-on-steel);line-height:1.55}
 
+/* ---------------------------------------------------- калькулятор
+   Прибор на эмалевом поддоне: та же логика, что у стопки сит. Ползунок
+   это единственный элемент управления в дизайн-коде, у которого есть
+   собственный бегунок, поэтому он набран латунью как действие, а дорожка
+   графитом как разлиновка. Цель нажатия бегунка 28px: меньше её
+   не поймать пальцем на ходу. */
+.d-calc{background:var(--d-paper);border:1px solid var(--d-rule);
+  padding:24px;margin:30px 0}
+.d-calc h2{margin-top:0}
+.d-calc-lead{font-size:15.5px;color:var(--d-ink-2);margin:0 0 20px}
+.d-calc-row{margin:0 0 16px}
+.d-calc-row label{display:block;font-size:14px;font-weight:700;
+  letter-spacing:.02em;color:var(--d-ink-2);margin-bottom:7px}
+.d-calc-row select{width:100%;max-width:34rem;padding:11px 12px;font:inherit;
+  font-size:16px;color:var(--d-ink);background:#fff;
+  border:1px solid var(--d-rule-2);min-height:44px}
+.d-calc-row output{font-variant-numeric:tabular-nums;color:var(--d-ink)}
+.d-calc input[type=range]{width:100%;max-width:34rem;height:28px;
+  -webkit-appearance:none;appearance:none;background:transparent}
+.d-calc input[type=range]::-webkit-slider-runnable-track{height:4px;
+  background:var(--d-graph)}
+.d-calc input[type=range]::-moz-range-track{height:4px;background:var(--d-graph)}
+.d-calc input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;
+  width:28px;height:28px;margin-top:-12px;background:var(--d-brass);
+  border:2px solid var(--d-steel);cursor:pointer}
+.d-calc input[type=range]::-moz-range-thumb{width:28px;height:28px;
+  background:var(--d-brass);border:2px solid var(--d-steel);cursor:pointer}
+.d-calc input[type=range]:focus-visible{outline:2px solid var(--d-steel);
+  outline-offset:4px}
+.d-calc-ui{display:block}
+.d-calc-ui[hidden]{display:none}
+.d-calc-static[hidden]{display:none}
+.d-calc-out{display:block;margin:20px 0}
+.d-calc-table{width:100%;border-collapse:collapse}
+.d-calc-table th,.d-calc-table td{padding:11px 0;text-align:left;
+  border-bottom:1px solid var(--d-rule);font-size:15.5px;vertical-align:baseline}
+.d-calc-table th{font-weight:700;width:34%}
+.d-calc-table td:last-child{text-align:right;font-weight:750;
+  font-variant-numeric:tabular-nums;white-space:nowrap}
+.d-calc-total th,.d-calc-total td{border-bottom:none;padding-top:14px;
+  font-size:18px;font-weight:800}
+@media (max-width:560px){
+  .d-calc{padding:18px 16px}
+  .d-calc-table th{width:auto}
+  .d-calc-table td:nth-child(2){display:none}
+}
+
 /* ---------------------------------------------------- телефон в шапке
    Номер набран моноширинными цифрами из того же набора, что все числа
    на сайте: телефон это тоже измерение, и он обязан читаться цифра

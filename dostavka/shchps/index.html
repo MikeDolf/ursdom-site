@@ -18,7 +18,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preload" href="/dostavka/assets/fonts/golos-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/dostavka/assets/fonts/mono-num.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/dostavka/assets/dostavka.css?v=7e85c4c3">
+<link rel="stylesheet" href="/dostavka/assets/dostavka.css?v=13338ca1">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <script type="application/ld+json">
 {
@@ -268,6 +268,94 @@
     </tbody>
   </table></div>
   <p class="d-note">Расчёт ориентировочный: точный объём зависит от толщины слоя и плотности грунта. Посчитаем под ваш объект по размерам.</p>
+<section class="d-calc" id="kalkulyator"
+         data-rate="95" data-min="5">
+  <h2>Калькулятор доставки</h2>
+  <p class="d-calc-lead">Считает материал, число рейсов и плечо доставки по тарифу
+  95 рублей за километр. Расчёт предварительный: тариф зависит от сезона,
+  заезда и загрузки машин, точную сумму называем по заявке.</p>
+
+  <div class="d-calc-ui" hidden>
+    <div class="d-calc-row">
+      <label for="calc-mat">Материал</label>
+      <select id="calc-mat">
+        <option value="1400">Щебень гранитный 20-40, 1400 руб/м³</option>
+        <option value="1500">Щебень гранитный 5-20, 1500 руб/м³</option>
+        <option value="900">Щебень известняковый 20-40, 900 руб/м³</option>
+        <option value="500">Отсев 0-5, 500 руб/м³</option>
+        <option value="350">Песок карьерный, 350 руб/м³</option>
+        <option value="700">Песок речной мытый, 700 руб/м³</option>
+        <option value="500">ПГС, 500 руб/м³</option>
+        <option value="400">Скальный грунт, 400 руб/м³</option>
+      </select>
+    </div>
+    <div class="d-calc-row">
+      <label for="calc-vol">Объём: <output id="calc-vol-out">10</output> м³</label>
+      <input id="calc-vol" type="range" min="1" max="40" step="1" value="10">
+    </div>
+    <div class="d-calc-row">
+      <label for="calc-dest">Куда везём</label>
+      <select id="calc-dest">
+        <option value="15">Берёзовский, 15 км</option>
+        <option value="15">Верхняя Пышма, 15 км</option>
+        <option value="20">Горный Щит, 20 км</option>
+        <option value="25" selected>Екатеринбург и ближний пояс, 25 км</option>
+        <option value="25" selected>Среднеуральск, 25 км</option>
+        <option value="25" selected>Арамиль, 25 км</option>
+        <option value="45">Первоуральск, 45 км</option>
+        <option value="45">Ревда, 45 км</option>
+        <option value="50">Сысерть, 50 км</option>
+        <option value="50">Дегтярск, 50 км</option>
+        <option value="55">Билимбай, 55 км</option>
+        <option value="60">Полевской, 60 км</option>
+        <option value="85">Асбест, 85 км</option>
+        <option value="100">Каменск-Уральский, 100 км</option>
+        <option value="100">Богданович, 100 км</option>
+        <option value="140">Нижний Тагил, 140 км</option>
+        <option value="200">Ирбит, 200 км</option>
+      </select>
+    </div>
+    <output class="d-calc-out" id="calc-out" aria-live="polite">
+      <table class="d-calc-table"><tbody>
+        <tr><th scope="row">Материал</th><td>10 м³ × 1 400 руб</td><td>14 000 руб</td></tr>
+        <tr><th scope="row">Доставка</th><td>1 рейс × 25 км × 95 руб</td><td>2 375 руб</td></tr>
+        <tr class="d-calc-total"><th scope="row" colspan="2">Итого предварительно</th><td>16 375 руб</td></tr>
+      </tbody></table>
+      <p class="d-note">Кузов 10 м³. Расчёт предварительный,
+      точную сумму называем по заявке.</p>
+    </output>
+    <div class="d-cta-row">
+      <a class="d-btn d-btn-max" href="https://wa.me/79506460953" target="_blank" rel="noopener" onclick="try{ym(110405092,'reachGoal','wa')}catch(e){}">Уточнить в WhatsApp</a>
+      <a class="d-btn d-btn-ghost" href="#zayavka">Оставить заявку</a>
+    </div>
+  </div>
+
+  <div class="d-calc-static">
+    <div class="d-table-wrap"><table>
+      <caption>Примеры расчёта: ЩПС по 550 руб/м³,
+      доставка 95 руб/км</caption>
+      <thead><tr><th>Объём</th><th>Куда</th><th>Плечо</th><th>Рейсы</th>
+      <th>Материал, руб</th><th>Доставка, руб</th><th>Итого, руб</th></tr></thead>
+      <tbody>
+        <tr><td>8 м³</td><td>Екатеринбург</td><td>25 км</td><td>1 × 10 м³</td><td>4 400</td><td>2 375</td><td>6 775</td></tr>
+        <tr><td>8 м³</td><td>Первоуральск</td><td>45 км</td><td>1 × 10 м³</td><td>4 400</td><td>4 275</td><td>8 675</td></tr>
+        <tr><td>8 м³</td><td>Нижний Тагил</td><td>140 км</td><td>1 × 10 м³</td><td>4 400</td><td>13 300</td><td>17 700</td></tr>
+        <tr><td>16 м³</td><td>Екатеринбург</td><td>25 км</td><td>1 × 20 м³</td><td>8 800</td><td>2 375</td><td>11 175</td></tr>
+        <tr><td>16 м³</td><td>Первоуральск</td><td>45 км</td><td>1 × 20 м³</td><td>8 800</td><td>4 275</td><td>13 075</td></tr>
+        <tr><td>16 м³</td><td>Нижний Тагил</td><td>140 км</td><td>1 × 20 м³</td><td>8 800</td><td>13 300</td><td>22 100</td></tr>
+        <tr><td>25 м³</td><td>Екатеринбург</td><td>25 км</td><td>2 × 20 м³</td><td>13 750</td><td>4 750</td><td>18 500</td></tr>
+        <tr><td>25 м³</td><td>Первоуральск</td><td>45 км</td><td>2 × 20 м³</td><td>13 750</td><td>8 550</td><td>22 300</td></tr>
+        <tr><td>25 м³</td><td>Нижний Тагил</td><td>140 км</td><td>2 × 20 м³</td><td>13 750</td><td>26 600</td><td>40 350</td></tr>
+        <tr><td>35 м³</td><td>Екатеринбург</td><td>25 км</td><td>2 × 20 м³</td><td>19 250</td><td>4 750</td><td>24 000</td></tr>
+        <tr><td>35 м³</td><td>Первоуральск</td><td>45 км</td><td>2 × 20 м³</td><td>19 250</td><td>8 550</td><td>27 800</td></tr>
+        <tr><td>35 м³</td><td>Нижний Тагил</td><td>140 км</td><td>2 × 20 м³</td><td>19 250</td><td>26 600</td><td>45 850</td></tr>
+      </tbody>
+    </table></div>
+    <p class="d-note">Объём сверх 20 м³ везётся несколькими рейсами,
+    и плечо оплачивается за каждый. Заказ меньше 5 м³ возможен,
+    но рейс оплачивается целиком, поэтому куб выходит дороже.</p>
+  </div>
+</section>
 </div></section>
 
 <section class="d-dark-sec"><div class="wrap">
@@ -389,6 +477,7 @@
     <p class="d-copy">© 2026 Щебень-Урал. Доставка нерудных материалов по Екатеринбургу и Свердловской области. Цены на сайте ориентировочные, точную стоимость называем по заявке.</p>
   </div>
 </footer>
+<script src="/dostavka/assets/calc.js?v=13338ca1" defer></script>
 
 
 <a class="d-wa" href="https://wa.me/79506460953" target="_blank" rel="noopener"

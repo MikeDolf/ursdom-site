@@ -50,8 +50,9 @@
 {% if loop.index == cta_after %}{{ m.midcta(cfg, cta_head2 or cta_head, cta_text2 or cta_text) }}{% endif %}
 {% endfor %}
 {% if conv %}{{ m.order_block(cfg, conv.head, conv.rows, order_steps, price_note) }}
-  {{ m.midcta(cfg, cta_head, cta_text) }}
-{% endif %}</div></section>
+{% endif %}{% if calc %}{{ m.calculator(cfg, calc) }}
+{% endif %}  {{ m.midcta(cfg, cta_head, cta_text) }}
+</div></section>
 
 <section class="d-dark-sec"><div class="wrap">
   <h2>Как мы возим</h2>

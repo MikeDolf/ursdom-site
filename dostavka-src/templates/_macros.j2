@@ -147,6 +147,74 @@
 {% endfor %}</div>
 {%- endmacro %}
 
+{# Калькулятор доставки.
+
+   Работает БЕЗ JavaScript: ниже рендерится настоящая таблица примеров,
+   она видна поисковику, читается со скринридера и остаётся рабочей при
+   отключённом скрипте. Скрипт только надстраивает интерактив: подменяет
+   таблицу на форму с ползунком. Обратный порядок дал бы пустой блок
+   и в индексе, и у части посетителей.
+
+   Результат везде подписан как предварительный. Тариф назван владельцем
+   как «очень примерно», и калькулятор обязан говорить это вслух,
+   а не выдавать цифру за счёт. #}
+{% macro calculator(cfg, calc) -%}
+<section class="d-calc" id="kalkulyator"
+         data-rate="{{ calc.rate }}" data-min="{{ calc.min_volume }}">
+  <h2>Калькулятор доставки</h2>
+  <p class="d-calc-lead">Считает материал, число рейсов и плечо доставки по тарифу
+  {{ calc.rate }} рублей за километр. Расчёт предварительный: тариф зависит от сезона,
+  заезда и загрузки машин, точную сумму называем по заявке.</p>
+
+  <div class="d-calc-ui" hidden>
+    <div class="d-calc-row">
+      <label for="calc-mat">Материал</label>
+      <select id="calc-mat">
+{% for name,price in calc.materials %}        <option value="{{ price }}">{{ name }}, {{ price }} руб/м³</option>
+{% endfor %}      </select>
+    </div>
+    <div class="d-calc-row">
+      <label for="calc-vol">Объём: <output id="calc-vol-out">10</output> м³</label>
+      <input id="calc-vol" type="range" min="1" max="40" step="1" value="10">
+    </div>
+    <div class="d-calc-row">
+      <label for="calc-dest">Куда везём</label>
+      <select id="calc-dest">
+{% for name,km in calc.destinations %}        <option value="{{ km }}"{% if km == 25 %} selected{% endif %}>{{ name }}, {{ km }} км</option>
+{% endfor %}      </select>
+    </div>
+    <output class="d-calc-out" id="calc-out" aria-live="polite">
+      <table class="d-calc-table"><tbody>
+        <tr><th scope="row">Материал</th><td>{{ calc.start.vol }} м³ × {{ calc.start.price_s }} руб</td><td>{{ calc.start.material_s }} руб</td></tr>
+        <tr><th scope="row">Доставка</th><td>{{ calc.start.trips }} рейс × {{ calc.start.km }} км × {{ calc.rate }} руб</td><td>{{ calc.start.delivery_s }} руб</td></tr>
+        <tr class="d-calc-total"><th scope="row" colspan="2">Итого предварительно</th><td>{{ calc.start.total_s }} руб</td></tr>
+      </tbody></table>
+      <p class="d-note">Кузов {{ calc.start.capacity }} м³. Расчёт предварительный,
+      точную сумму называем по заявке.</p>
+    </output>
+    <div class="d-cta-row">
+      <a class="d-btn d-btn-max" href="{{ cfg.wa_url }}" target="_blank" rel="noopener" onclick="try{ym({{ cfg.metrika_id }},'reachGoal','{{ cfg.goal_wa }}')}catch(e){}">Уточнить в WhatsApp</a>
+      <a class="d-btn d-btn-ghost" href="#zayavka">Оставить заявку</a>
+    </div>
+  </div>
+
+  <div class="d-calc-static">
+    <div class="d-table-wrap"><table>
+      <caption>Примеры расчёта: {{ calc.examples.material }} по {{ calc.examples.price }} руб/м³,
+      доставка {{ calc.rate }} руб/км</caption>
+      <thead><tr><th>Объём</th><th>Куда</th><th>Плечо</th><th>Рейсы</th>
+      <th>Материал, руб</th><th>Доставка, руб</th><th>Итого, руб</th></tr></thead>
+      <tbody>
+{% for r in calc.examples.rows %}        <tr>{% for c in r %}<td>{{ c }}</td>{% endfor %}</tr>
+{% endfor %}      </tbody>
+    </table></div>
+    <p class="d-note">Объём сверх {{ calc.trucks[-1][0] }} м³ везётся несколькими рейсами,
+    и плечо оплачивается за каждый. Заказ меньше {{ calc.min_volume }} м³ возможен,
+    но рейс оплачивается целиком, поэтому куб выходит дороже.</p>
+  </div>
+</section>
+{%- endmacro %}
+
 {% macro author_block(author, updated) -%}
 <div class="d-author">
   <div class="d-ava" aria-hidden="true">{{ author.initials }}</div>

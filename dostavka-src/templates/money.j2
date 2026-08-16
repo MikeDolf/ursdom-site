@@ -72,6 +72,7 @@
 {% endfor %}    </tbody>
   </table></div>
   <p class="d-note">Расчёт ориентировочный: точный объём зависит от толщины слоя и плотности грунта. Посчитаем под ваш объект по размерам.</p>
+{% if calc %}{{ m.calculator(cfg, calc) }}{% endif %}
 </div></section>
 
 <section class="d-dark-sec"><div class="wrap">

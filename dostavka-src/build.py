@@ -25,6 +25,11 @@ from geo_matrix import (CITY_FACTS, MATRIX, ALREADY, MAT_FORMS,
 import autolink
 from hubs import HUBS
 from canonical import canonical
+from calc import calc_for, PER_PAGE as _CALC_ON
+
+# Список страниц с калькулятором живёт в data/calc.py вместе с их
+# материалами и объёмами: два списка в двух файлах разошлись бы
+# при первом же добавлении страницы.
 from conversion import PRICE_SETS, FAM, ORDER_STEPS, OBJECTIONS
 from prices import PER_CUBE, PRICE_NOTE, DELIVERY_NOTE, CATALOG, SIEVE, HERO_CELL, HERO_FRAC
 from cities import CITIES, PESOK_CITIES
@@ -519,8 +524,10 @@ for slug, mc in money_cfg.items():
                ("/dostavka/pesok/bogdanovich/", "Доставка песка в Богданович"),
                ("/dostavka/pesok/irbit/", "Доставка песка в Ирбит")]
     rel = MAT_ART.get(slug, []) + (PESOK_GEO if slug == "pesok" else []) + (SREDNEURALSK if slug == "shcheben" else []) + rel
+    _calc = calc_for(slug)
     htmlp = env.get_template("money.j2").render(
-        **BASE_CTX, **mc, canonical=DOMAIN + url, crumbs_html=crumbs(crumb_items), jsonld=jl,
+        **BASE_CTX, **mc, calc=_calc, has_calc=bool(_calc),
+        canonical=DOMAIN + url, crumbs_html=crumbs(crumb_items), jsonld=jl,
         intro=mat["intro"], types=mat["types"], fractions=mat.get("fractions"),
         faq=mat["faq"], photos=_ph, hero_cell=HERO_CELL.get(slug, 34),
         hero_frac=HERO_FRAC.get(slug, "щебень 20-40 мм"),
@@ -639,6 +646,9 @@ def CONV_FOR(slug):
         f = "nerud"
     return f, PRICE_SETS[f]
 
+
+
+
 # ---- ЛОНГРИДЫ (низкоконкурентные ключи Мутагена) ----
 for a in LONGREADS:
     url = SITE["base"] + a["slug"] + "/"
@@ -688,7 +698,9 @@ for a in LONGREADS:
         rel.append((SITE["base"] + other["slug"] + "/", other["h1"]))
     rel += [(f"/dostavka/shcheben/{o['slug']}/", f"Доставка щебня {o['prep']}")
             for o in CITIES[:4]]
+    _calc = calc_for(a["slug"])
     htmlp = env.get_template("longread.j2").render(
+        calc=_calc, has_calc=bool(_calc),
         **BASE_CTX, author=AUTHOR_FULL, updated=UPDATED,
         canonical=DOMAIN + url, crumbs_html=crumbs(crumb_items), jsonld=jl,
         title=a["title"], desc=a["desc"], h1=a["h1"], hero_sub=a["hero_sub"], lead=a["lead"],
@@ -720,8 +732,9 @@ for slug, mc in MONEY_CFG_EXT.items():
     rel += [("/dostavka/" + o + "/", MATERIALS_EXT[o]["name"] + " с доставкой")
             for o in MONEY_CFG_EXT if o != slug]
     rel = MAT_ART.get(slug, []) + (PESOK_GEO if slug == "pesok" else []) + (SREDNEURALSK if slug == "shcheben" else []) + rel
+    _calc = calc_for(slug)
     htmlp = env.get_template("money.j2").render(
-        **BASE_CTX, canonical=DOMAIN + url, crumbs_html=crumbs(crumb_items),
+        **BASE_CTX, calc=_calc, has_calc=bool(_calc), canonical=DOMAIN + url, crumbs_html=crumbs(crumb_items),
         jsonld=jl, title=mc["title"], desc=mc["desc"], h1=mc["h1"],
         hero_sub=mc["hero_sub"], mat_vin=mc["mat_vin"], mat_rod=mc["mat_rod"],
         mat_order=mc["mat_order"], subject=mc["mat_vin"] + ", " + SITE["region_short"],
@@ -771,7 +784,9 @@ for slug, mc in _ZHBI_ALL.items():
             ("/dostavka/otsev/", "Отсев 0-5"),
             ("/dostavka/", "Все города и материалы")]
     ctx = dict(BASE_CTX)
+    _calc = calc_for(slug)
     ctx.update(
+        calc=_calc, has_calc=bool(_calc),
         canonical=DOMAIN + url, crumbs_html=crumbs(crumb_items), jsonld=jl,
         title=mc["title"], desc=mc["desc"], h1=mc["h1"], hero_sub=mc["hero_sub"],
         mat_vin=mc["mat_vin"], mat_rod=mc["mat_rod"], mat_order=mc["mat_order"],
