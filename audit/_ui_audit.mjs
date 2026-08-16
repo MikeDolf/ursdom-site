@@ -86,7 +86,11 @@ const PROBE = () => {
       const offscreen = r.right < 0 || r.left > window.innerWidth;
       const stretched = el.closest('.d-sieve-row, .d-cat-card');
       const box = stretched ? stretched.getBoundingClientRect() : r;
-      const need = el.tagName === 'INPUT' ? 24 : 44;
+      // Порог поднят с 44 до 48 по требованию владельца. 44 это
+      // минимум WCAG 2.5.5 (AAA), 48 это рекомендация Material и
+      // Lighthouse: под неё же проверяет мобильный аудит Google.
+      // Галка остаётся на 24 по WCAG 2.5.8 (AA): у неё своя норма.
+      const need = el.tagName === 'INPUT' ? 24 : 48;
       if (!offscreen && cs.display !== 'inline' && r.height > 0
           && (box.height < need - 0.5 || box.width < 24)) {
         out.tap.push({ el: sel(el), w: Math.round(box.width), h: Math.round(box.height), need });
@@ -104,7 +108,7 @@ const PROBE = () => {
   if (skip) {
     skip.focus();
     const sr = skip.getBoundingClientRect();
-    if (sr.height < 43.5) out.tap.push({ el: 'a.d-skip:focus', w: Math.round(sr.width), h: Math.round(sr.height), need: 44 });
+    if (sr.height < 47.5) out.tap.push({ el: 'a.d-skip:focus', w: Math.round(sr.width), h: Math.round(sr.height), need: 48 });
     skip.blur();
   }
 

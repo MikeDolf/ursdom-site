@@ -42,7 +42,12 @@
   зерна, и реальный размер камня относительно рулетки или монеты.</p>
   <div class="d-photos">
 {% for ph in photos %}    <figure>
-      <img src="{{ ph.src }}" alt="{{ ph.alt }}" width="{{ ph.w }}" height="{{ ph.h }}" loading="lazy" decoding="async">
+      <picture>
+{% if ph.webp %}        <source type="image/webp" srcset="{{ ph.webp }}" sizes="(max-width: 700px) 100vw, 46vw">
+{% endif %}        <img src="{{ ph.src }}" srcset="{{ ph.jpg }}" sizes="(max-width: 700px) 100vw, 46vw"
+             alt="{{ ph.alt }}" width="{{ ph.w }}" height="{{ ph.h }}"
+             loading="lazy" decoding="async">
+      </picture>
       <figcaption>{{ ph.cap }}</figcaption>
     </figure>
 {% endfor %}  </div>

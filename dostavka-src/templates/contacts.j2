@@ -1,0 +1,72 @@
+{% extends "base.j2" %}
+{% import "_macros.j2" as m %}
+{% block body %}
+<section class="d-hero" style="--cell:22px"><div class="wrap d-hero-grid">
+  <div class="d-hero-main">
+  <h1>{{ h1 }}</h1>
+  <p>{{ hero_sub }}</p>
+  <div class="d-cta-row">
+    <a class="d-btn d-btn-max" href="{{ cfg.phone_href }}" onclick="try{ym({{ cfg.metrika_id }},'reachGoal','{{ cfg.goal_contact }}')}catch(e){}">{{ cfg.phone }}</a>
+    <a class="d-btn d-btn-ghost" href="{{ cfg.wa_url }}" target="_blank" rel="noopener" onclick="try{ym({{ cfg.metrika_id }},'reachGoal','{{ cfg.goal_wa }}')}catch(e){}">Написать в WhatsApp</a>
+  </div>
+  </div>
+  {{ m.hero_panel("щебень 20-40 мм") }}
+</div></section>
+
+{# Реквизиты и адрес в семантической разметке. Микроформат h-card
+   не используется: JSON-LD в шапке документа уже несёт те же данные
+   для машин, а дублирование разметки двумя способами даёт поисковику
+   два источника правды вместо одного. #}
+<section><div class="wrap d-prose">
+  <h2 id="rekvizity">Кто мы и где находимся</h2>
+  <div class="d-table-wrap"><table>
+    <caption>Реквизиты и контакты {{ cfg.brand }}</caption>
+    <tbody>
+      <tr><th scope="row">Наименование</th><td>{{ cfg.legal_name }}</td></tr>
+      <tr><th scope="row">Адрес базы</th><td>{{ cfg.city }}, {{ cfg.street }}</td></tr>
+      <tr><th scope="row">Телефон</th><td><a href="{{ cfg.phone_href }}" onclick="try{ym({{ cfg.metrika_id }},'reachGoal','{{ cfg.goal_contact }}')}catch(e){}">{{ cfg.phone }}</a></td></tr>
+      <tr><th scope="row">WhatsApp</th><td><a href="{{ cfg.wa_url }}" target="_blank" rel="noopener" onclick="try{ym({{ cfg.metrika_id }},'reachGoal','{{ cfg.goal_wa }}')}catch(e){}">Написать, {{ cfg.wa_promise }}</a></td></tr>
+      <tr><th scope="row">MAX</th><td><a href="{{ cfg.max_url }}" target="_blank" rel="noopener" onclick="try{ym({{ cfg.metrika_id }},'reachGoal','{{ cfg.goal_contact }}')}catch(e){}">Написать в MAX</a></td></tr>
+      <tr><th scope="row">Почта</th><td><a href="mailto:{{ cfg.email }}">{{ cfg.email }}</a></td></tr>
+      <tr><th scope="row">Режим работы</th><td>{{ cfg.hours }}</td></tr>
+      <tr><th scope="row">Оплата</th><td>{{ cfg.payment }}</td></tr>
+{% if cfg.inn %}      <tr><th scope="row">ИНН</th><td>{{ cfg.inn }}</td></tr>
+{% endif %}{% if cfg.ogrn %}      <tr><th scope="row">ОГРН</th><td>{{ cfg.ogrn }}</td></tr>
+{% endif %}    </tbody>
+  </table></div>
+</div></section>
+
+<section><div class="wrap d-prose">
+{% for s in sections %}
+  <h2 id="{{ s.id }}">{{ s.h }}</h2>
+{{ m.blocks(s) }}
+{% if loop.index == cta_after %}{{ m.midcta(cfg, cta_head, cta_text) }}{% endif %}
+{% endfor %}
+</div></section>
+
+<section class="d-dark-sec"><div class="wrap">
+  <h2>Что мы гарантируем</h2>
+  {{ m.advantages(advantages) }}
+</div></section>
+
+<section id="zayavka"><div class="wrap d-two">
+  <div>{{ m.callblock(cfg) }}</div>
+  <div>
+    <h2>{{ form_head }}</h2>
+    {{ m.lead_form(cfg, subject) }}
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  {{ m.objections(objections) }}
+</div></section>
+
+<section><div class="wrap">
+  <h2>Частые вопросы</h2>
+  {{ m.faq(faq) }}
+</div></section>
+
+<section><div class="wrap">
+  {{ m.related(related_links) }}
+</div></section>
+{% endblock %}

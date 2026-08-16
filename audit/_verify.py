@@ -390,6 +390,29 @@ if os.path.exists(_rob):
                 bad("(robots)", "robots",
                     "секция Yandex не закрывает %s, а общую секцию Яндекс игнорирует" % _d)
 
+# --- 23. картинки: атрибуты и существование всех вариантов srcset
+# Ссылка на несуществующий вариант в srcset ломает картинку молча:
+# браузер выбирает файл по ширине и не показывает ничего, а в разметке
+# всё выглядит правильно. Проверяем каждый URL из srcset на диске.
+# Пиксель Метрики исключён: у него нет размеров и не должно быть lazy,
+# отложенная загрузка счётчика means отложенная статистика.
+for _u, _h in pages.items():
+    for _m in re.finditer(r"<img\b[^>]*>", _h):
+        _tag = _m.group(0)
+        if "mc.yandex.ru" in _tag:
+            continue
+        for _attr in ('loading="lazy"', 'decoding="async"', "width=", "height=", "alt="):
+            if _attr not in _tag:
+                bad(_u, "картинки", "у <img> нет %s: %s" % (_attr, _tag[:90]))
+    for _m in re.finditer(r'srcset="([^"]+)"', _h):
+        for _part in _m.group(1).split(","):
+            _p = _part.strip().split(" ")[0]
+            if not _p.startswith("/dostavka/"):
+                continue
+            _fs = os.path.join(ROOT, _p.lstrip("/"))
+            if not os.path.exists(_fs):
+                bad(_u, "картинки", "в srcset файла нет на диске: %s" % _p)
+
 # ------------------------------------------------------------------ вывод
 by_kind = collections.Counter(k for _, k, _ in problems)
 print("страниц проверено: %d" % len(pages))
