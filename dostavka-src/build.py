@@ -22,6 +22,7 @@ from products_gap3 import MATERIALS_GAP3, MONEY_CFG_GAP3
 from products_rev import MATERIALS_REV, MONEY_CFG_REV
 from geo_matrix import (CITY_FACTS, MATRIX, ALREADY, MAT_FORMS,
                         ANGLE, LOCAL, MAT_TASK, example_for, plecho)
+import autolink
 from conversion import PRICE_SETS, FAM, ORDER_STEPS, OBJECTIONS
 from prices import PER_CUBE, PRICE_NOTE, DELIVERY_NOTE, CATALOG, SIEVE, HERO_CELL, HERO_FRAC
 from cities import CITIES, PESOK_CITIES
@@ -42,6 +43,7 @@ from legal import legal_sections, LEGAL_UPDATED
 
 env = Environment(loader=FileSystemLoader(os.path.join(HERE, "templates")),
                   autoescape=False, trim_blocks=False, lstrip_blocks=False)
+env.filters['xlink'] = autolink.link
 
 # Версия CSS считается из содержимого файла. Раньше она была константой в конфиге,
 # и после правок стилей вернувшийся посетитель получал старый файл из кеша.
@@ -579,6 +581,7 @@ def CONV_FOR(slug):
 # ---- ЛОНГРИДЫ (низкоконкурентные ключи Мутагена) ----
 for a in LONGREADS:
     url = SITE["base"] + a["slug"] + "/"
+    autolink.reset(url)
     if a["slug"].startswith("shcheben/"):
         parent = ("Щебень", SITE["base"] + "shcheben/")
     elif a["slug"].startswith("beton/"):

@@ -159,12 +159,12 @@
 {%- endmacro %}
 
 {% macro blocks(s) -%}
-{% if s.p %}{% for para in s.p %}  <p>{{ para }}</p>
+{% if s.p %}{% for para in s.p %}  <p>{{ para|xlink }}</p>
 {% endfor %}{% endif %}
 {%- if s.callout %}  <div class="d-callout{% if s.callout_warn %} d-warn{% endif %}"><p><strong>{{ s.callout[0] }}</strong> {{ s.callout[1] }}</p></div>
 {% endif %}
 {%- if s.ul %}  <ul>
-{% for i in s.ul %}    <li>{{ i }}</li>
+{% for i in s.ul %}    <li>{{ i|xlink }}</li>
 {% endfor %}  </ul>
 {% endif %}
 {%- if s.steps %}  <ol class="d-steps">
@@ -180,12 +180,12 @@
   </table></div>
 {% endif %}
 {%- if s.sub %}{% for sb in s.sub %}  <h3>{{ sb.h3 }}</h3>
-{% for para in sb.p %}  <p>{{ para }}</p>
+{% for para in sb.p %}  <p>{{ para|xlink }}</p>
 {% endfor %}{% if sb.ul %}  <ul>
-{% for i in sb.ul %}    <li>{{ i }}</li>
+{% for i in sb.ul %}    <li>{{ i|xlink }}</li>
 {% endfor %}  </ul>
 {% endif %}{% endfor %}{% endif %}
-{%- if s.after %}{% for para in s.after %}  <p>{{ para }}</p>
+{%- if s.after %}{% for para in s.after %}  <p>{{ para|xlink }}</p>
 {% endfor %}{% endif %}
 {%- endmacro %}
 
