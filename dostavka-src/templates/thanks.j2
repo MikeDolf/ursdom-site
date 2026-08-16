@@ -8,9 +8,13 @@
 
   <h2>Пока ждёте</h2>
   <p>Если вопрос срочный или хотите уточнить детали прямо сейчас, напишите
-  в MAX: там отвечаем быстрее, чем на почту.</p>
+  в мессенджер: там отвечаем быстрее, чем на почту.</p>
   <div class="d-cta-row">
-    <a class="d-btn d-btn-max" href="{{ cfg.max_url }}" target="_blank" rel="noopener">Написать в MAX</a>
+    {# Оба канала. Человек только что отправил заявку, и если вопрос
+       срочный, ему нужен тот мессенджер, который у него уже открыт,
+       а не тот, который удобнее нам. #}
+    <a class="d-btn d-btn-max" href="{{ cfg.wa_url }}" target="_blank" rel="noopener" onclick="try{ym({{ cfg.metrika_id }},'reachGoal','{{ cfg.goal_wa }}')}catch(e){}">Написать в WhatsApp</a>
+    <a class="d-btn d-btn-ghost" href="{{ cfg.max_url }}" target="_blank" rel="noopener" onclick="try{ym({{ cfg.metrika_id }},'reachGoal','{{ cfg.goal_contact }}')}catch(e){}">Написать в MAX</a>
     <a class="d-btn d-btn-ghost" href="{{ cfg.base }}">Вернуться в каталог</a>
   </div>
 

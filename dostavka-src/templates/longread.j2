@@ -51,8 +51,12 @@
 {% endfor %}
 {% if conv %}{{ m.order_block(cfg, conv.head, conv.rows, order_steps, price_note) }}
 {% endif %}{% if calc %}{{ m.calculator(cfg, calc) }}
-{% endif %}  {{ m.midcta(cfg, cta_head, cta_text) }}
-</div></section>
+{% endif %}{# Завершающий призыв не рендерится, если призыв в разделах
+   уже сработал после последнего из них: тогда два одинаковых блока
+   встают в пределах одного экрана. Ревью намерило 163-167 слов между
+   ними на пяти страницах марок бетона. #}
+{% if cta_after < sections|length %}  {{ m.midcta(cfg, cta_head, cta_text) }}
+{% endif %}</div></section>
 
 <section class="d-dark-sec"><div class="wrap">
   <h2>Как мы возим</h2>

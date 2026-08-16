@@ -225,6 +225,29 @@ def pricelist_schema(fam_key, rows, page_url):
             "url": DOMAIN + page_url + "#skolko-stoit",
             "numberOfItems": len(items), "itemListElement": items}
 
+
+# Ссылка страницы на саму себя это тупик: клик ничего не меняет, а вес
+# внутренней перелинковки уходит в никуда. Такие ссылки набежали из двух
+# мест сразу: подвал и шапка одинаковы на всех страницах, а таблица цен
+# семейства включает и текущий товар. Ревью нашло их на пятнадцати
+# страницах, в том числе на всех семи страницах марок бетона.
+#
+# Заменяем на span с aria-current="page": и клика нет, и скринридер
+# сообщает, что это текущий раздел. Классы сохраняются, поэтому вид
+# не меняется нигде, кроме исчезнувшего подчёркивания.
+_SELF_RX = re.compile(r'<a\b([^>]*?)href="([^"]+)"([^>]*?)>(.*?)</a>', re.S)
+
+
+def strip_self_links(html, url):
+    def sub(m):
+        pre, href, post, inner = m.groups()
+        if href.split("#")[0].split("?")[0] != url:
+            return m.group(0)
+        cls = re.search(r'class="([^"]*)"', pre + post)
+        cls = ' class="%s"' % cls.group(1) if cls else ""
+        return '<span%s aria-current="page">%s</span>' % (cls, inner)
+    return _SELF_RX.sub(sub, html)
+
 def graph(*nodes):
     return json.dumps({"@context": "https://schema.org", "@graph": list(nodes)},
                       ensure_ascii=False, indent=2)
@@ -234,7 +257,9 @@ def write(url, html_str):
     path = os.path.join(OUT, url[len(SITE["base"]):].strip("/"), "index.html") \
         if url != SITE["base"] else os.path.join(OUT, "index.html")
     os.makedirs(os.path.dirname(path), exist_ok=True)
-    open(path, "w", encoding="utf-8").write(html_str)
+    # Единственная точка, через которую проходят все страницы, поэтому
+    # снятие ссылок на саму себя стоит здесь, а не в каждом шаблоне.
+    open(path, "w", encoding="utf-8").write(strip_self_links(html_str, url))
     return path
 
 
