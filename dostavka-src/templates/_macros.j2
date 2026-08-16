@@ -70,8 +70,9 @@
 <div class="d-callblock">
   <h2>Связаться с нами</h2>
   <p>Напишите материал, объём и адрес, посчитаем стоимость с доставкой и {{ cfg.callback_promise }}.</p>
-  <a class="d-bigmax" href="{{ cfg.max_url }}" target="_blank" rel="noopener" onclick="try{ym({{ cfg.metrika_id }},'reachGoal','{{ cfg.goal_contact }}')}catch(e){}">Написать в MAX</a>
+  <a class="d-bigmax" href="{{ cfg.wa_url }}" target="_blank" rel="noopener" onclick="try{ym({{ cfg.metrika_id }},'reachGoal','{{ cfg.goal_wa }}')}catch(e){}">Написать в WhatsApp, {{ cfg.wa_promise }}</a>
   <div class="d-cta-row d-center-row">
+    <a class="d-btn d-btn-ghost" href="{{ cfg.max_url }}" target="_blank" rel="noopener" onclick="try{ym({{ cfg.metrika_id }},'reachGoal','{{ cfg.goal_contact }}')}catch(e){}">Написать в MAX</a>
     <a class="d-btn d-btn-ghost" href="#zayavka">Узнать цену с доставкой</a>
   </div>
   <p class="d-note d-note-light">{{ cfg.hours }}. {{ cfg.payment }}</p>
@@ -96,14 +97,31 @@
 {% endfor %}</div>
 {%- endmacro %}
 
+{# Ряд каналов связи. Один макрос на весь сайт.
+
+   Ревью паритета показало разнобой: калькулятор предлагал только
+   WhatsApp, а первый экран, блок связи, липкая панель и призыв в тексте
+   только MAX. Человек видел разные каналы на разных экранах одного
+   сайта и не понимал, куда писать. Владелец просил оба канала, значит
+   оба стоят везде, где вообще есть кнопка мессенджера.
+
+   Порядок: WhatsApp латунью как главное действие, потому что именно
+   у него обещано время ответа, MAX контуром рядом. Цели в Метрике
+   разные, поэтому видно, какой канал работает. Третья кнопка
+   необязательна и задаётся вызывающим. #}
+{% macro channels(cfg, third_href=None, third_text=None, center=False) -%}
+<div class="d-cta-row{% if center %} d-center-row{% endif %}">
+  <a class="d-btn d-btn-max" href="{{ cfg.wa_url }}" target="_blank" rel="noopener" onclick="try{ym({{ cfg.metrika_id }},'reachGoal','{{ cfg.goal_wa }}')}catch(e){}">Написать в WhatsApp</a>
+  <a class="d-btn d-btn-ghost" href="{{ cfg.max_url }}" target="_blank" rel="noopener" onclick="try{ym({{ cfg.metrika_id }},'reachGoal','{{ cfg.goal_contact }}')}catch(e){}">Написать в MAX</a>
+{% if third_href %}  <a class="d-btn d-btn-ghost" href="{{ third_href }}">{{ third_text }}</a>
+{% endif %}</div>
+{%- endmacro %}
+
 {% macro midcta(cfg, headline, text) -%}
 <div class="d-midcta">
   <h3>{{ headline }}</h3>
   <p>{{ text }}</p>
-  <div class="d-cta-row">
-    <a class="d-btn d-btn-max" href="{{ cfg.max_url }}" target="_blank" rel="noopener" onclick="try{ym({{ cfg.metrika_id }},'reachGoal','{{ cfg.goal_contact }}')}catch(e){}">Написать в MAX</a>
-    <a class="d-btn d-btn-ghost" href="#zayavka">Узнать цену с доставкой</a>
-  </div>
+  {{ channels(cfg, "#zayavka", "Узнать цену с доставкой") }}
 </div>
 {%- endmacro %}
 
@@ -192,10 +210,7 @@
       <p class="d-note">Кузов {{ calc.start.capacity }} м³. Расчёт предварительный,
       точную сумму называем по заявке.</p>
     </output>
-    <div class="d-cta-row">
-      <a class="d-btn d-btn-max" href="{{ cfg.wa_url }}" target="_blank" rel="noopener" onclick="try{ym({{ cfg.metrika_id }},'reachGoal','{{ cfg.goal_wa }}')}catch(e){}">Уточнить в WhatsApp</a>
-      <a class="d-btn d-btn-ghost" href="#zayavka">Оставить заявку</a>
-    </div>
+    {{ channels(cfg, "#zayavka", "Оставить заявку") }}
   </div>
 
   <div class="d-calc-static">

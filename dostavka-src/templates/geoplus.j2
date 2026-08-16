@@ -5,10 +5,7 @@
   <div class="d-hero-main">
   <h1>{{ h1 }}</h1>
   <p>{{ hero_sub }}</p>
-  <div class="d-cta-row">
-    <a class="d-btn d-btn-max" href="{{ cfg.max_url }}" target="_blank" rel="noopener" onclick="try{ym({{ cfg.metrika_id }},'reachGoal','{{ cfg.goal_contact }}')}catch(e){}">Написать в MAX</a>
-    <a class="d-btn d-btn-ghost" href="#zayavka">Узнать цену с доставкой</a>
-  </div>
+  {{ m.channels(cfg, "#zayavka", "Узнать цену с доставкой") }}
   </div>
   {{ m.hero_panel(hero_frac|default("щебень 20-40 мм")) }}
 </div></section>
