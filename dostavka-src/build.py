@@ -38,7 +38,8 @@ from longreads_plitka import PLITKA_LONGREADS
 from longreads_beton3 import BETON3_LONGREADS
 from longreads_smesi import SMESI_LONGREADS
 from longreads_skala import SKALA_LONGREADS
-LONGREADS = LONGREADS + CORE_LONGREADS + BETON_LONGREADS + ZADACHI_LONGREADS + SMEZH_LONGREADS + BETON2_LONGREADS + GAP_LONGREADS + GAP2_LONGREADS + PLITKA_LONGREADS + BETON3_LONGREADS + SMESI_LONGREADS + SKALA_LONGREADS
+from longreads_rev import REV_LONGREADS
+LONGREADS = LONGREADS + CORE_LONGREADS + BETON_LONGREADS + ZADACHI_LONGREADS + SMEZH_LONGREADS + BETON2_LONGREADS + GAP_LONGREADS + GAP2_LONGREADS + PLITKA_LONGREADS + BETON3_LONGREADS + SMESI_LONGREADS + SKALA_LONGREADS + REV_LONGREADS
 from legal import legal_sections, LEGAL_UPDATED
 
 env = Environment(loader=FileSystemLoader(os.path.join(HERE, "templates")),
@@ -329,7 +330,8 @@ ZHBI_ART = {
                                 ("/dostavka/stati/vybrat-trotuarnuyu-plitku/", "Какую плитку выбрать"),
                                 ("/dostavka/stati/ukladka-trotuarnoy-plitki/", "Укладка плитки"),
                                 ("/dostavka/stati/behaton/", "Бехатон: что это")],
- "pechnye-smesi": [("/dostavka/cement-i-smesi/", "Цемент и сухие смеси"),
+ "pechnye-smesi": [("/dostavka/stati/pechnoy-rastvor/", "Печной раствор: какой куда идёт"),
+                   ("/dostavka/cement-i-smesi/", "Цемент и сухие смеси"),
                    ("/dostavka/stati/rastvor-proporcii/", "Раствор: пропорции и расход")],
  "dozhdepriemniki": [("/dostavka/reshetki-dozhdepriemnikov/", "Решётки к дождеприёмникам"),
                      ("/dostavka/stati/lotki-i-dozhdepriemniki/", "Лотки и дождеприёмники: монтаж"),
@@ -401,7 +403,9 @@ ZHBI_ART = {
                    ("/dostavka/stati/frakcii-shchebnya/", "Фракции щебня под подготовку")],
 }
 
-MAT_ART = {'shcheben': [('/dostavka/stati/frakcii-shchebnya/', 'Фракции щебня: какая под какую задачу'), ('/dostavka/stati/gost-na-shcheben-i-pesok/', 'ГОСТ на щебень и песок: что спрашивать')],
+MAT_ART = {'shcheben': [('/dostavka/stati/podushka-pod-fundament/', 'Подушка под фундамент: щебень или песок'),
+                 ('/dostavka/stati/materialy-na-dom-po-etapam/', 'Материалы на дом по этапам'),
+                 ('/dostavka/stati/frakcii-shchebnya/', 'Фракции щебня: какая под какую задачу'), ('/dostavka/stati/gost-na-shcheben-i-pesok/', 'ГОСТ на щебень и песок: что спрашивать')],
     'pesok': [('/dostavka/stati/modul-krupnosti-peska/', 'Модуль крупности песка'), ('/dostavka/stati/gost-na-shcheben-i-pesok/', 'ГОСТ на щебень и песок: что спрашивать')],
     'otsev': [('/dostavka/stati/otsev-gde-primenyat/', 'Отсев 0-5: где применяют и чем заменить'), ('/dostavka/stati/frakcii-shchebnya/', 'Фракции щебня: какая под какую задачу')],
     'pgs': [('/dostavka/stati/pgs-ili-opgs/', 'ПГС и ОПГС: чем отличаются'), ('/dostavka/stati/skalnyy-grunt-dresva-but/', 'Скальный грунт, дресва и бут')],
