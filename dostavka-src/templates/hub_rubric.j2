@@ -1,0 +1,71 @@
+{% extends "base.j2" %}
+{% import "_macros.j2" as m %}
+{% block body %}
+<section class="d-hero" style="--cell:{{ hero_cell|default(28) }}px"><div class="wrap d-hero-grid">
+  <div class="d-hero-main">
+  <h1>{{ h1 }}</h1>
+  <p>{{ hero_sub }}</p>
+  <div class="d-cta-row">
+    <a class="d-btn d-btn-max" href="{{ cfg.max_url }}" target="_blank" rel="noopener" onclick="try{ym({{ cfg.metrika_id }},'reachGoal','{{ cfg.goal_contact }}')}catch(e){}">Написать в MAX</a>
+    <a class="d-btn d-btn-ghost" href="#zayavka">Рассчитать заявку</a>
+  </div>
+  </div>
+  {{ m.hero_panel(hero_frac|default("щебень 20-40 мм")) }}
+</div></section>
+
+<section><div class="wrap d-prose">
+  <div class="d-tldr"><strong>Коротко, если некогда читать</strong><p>{{ lead }}</p></div>
+  {{ m.pricebar(anchor) }}
+
+  <h2 id="skolko-stoit">{{ items_head }}</h2>
+</div></section>
+
+{# Список рубрики. Каждая карточка это отдельная посадочная страница
+   под свой параметр: клиент ищет «кольца для колодца», а не «ЖБИ». #}
+<section><div class="wrap">
+  <div class="d-cat">
+{% for it in items %}    <div class="d-cat-card">
+      <p class="d-cat-name"><a href="{{ it.href }}">{{ it.name }}</a></p>
+      <p class="d-cat-price">{{ it.price }}{% if it.unit %} <small>{{ it.unit }}</small>{% endif %}</p>
+      <p>{{ it.desc }}</p>
+      <p class="d-cat-go">Подробнее и заказать</p>
+    </div>
+{% endfor %}  </div>
+  <p class="d-note">{{ price_note }}</p>
+</div></section>
+
+<section><div class="wrap d-prose">
+{% for s in sections %}
+  <h2 id="{{ s.id }}">{{ s.h }}</h2>
+{{ m.blocks(s) }}
+{% if loop.index == cta_after %}{{ m.midcta(cfg, cta_head, cta_text) }}{% endif %}
+{% endfor %}
+</div></section>
+
+<section class="d-dark-sec"><div class="wrap">
+  <h2>Как мы возим</h2>
+  <p>Самосвалы от 5 до 20 кубов и манипулятор под штучный товар по {{ cfg.region_dat }}. Разгрузка на объекте, оплата после выгрузки, {{ cfg.callback_promise }}.</p>
+  {{ m.advantages(advantages) }}
+</div></section>
+
+<section id="zayavka"><div class="wrap d-two">
+  <div>{{ m.callblock(cfg) }}</div>
+  <div>
+    <h2>{{ form_head }}</h2>
+    {{ m.lead_form(cfg, subject) }}
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  {{ m.objections(objections) }}
+</div></section>
+
+<section><div class="wrap">
+  <h2>Частые вопросы</h2>
+  {{ m.faq(faq) }}
+</div></section>
+
+<section><div class="wrap">
+  {{ m.related(related_links) }}
+</div></section>
+{% endblock %}

@@ -23,6 +23,8 @@ from products_rev import MATERIALS_REV, MONEY_CFG_REV
 from geo_matrix import (CITY_FACTS, MATRIX, ALREADY, MAT_FORMS,
                         ANGLE, LOCAL, MAT_TASK, example_for, plecho)
 import autolink
+from hubs import HUBS
+from canonical import canonical
 from conversion import PRICE_SETS, FAM, ORDER_STEPS, OBJECTIONS
 from prices import PER_CUBE, PRICE_NOTE, DELIVERY_NOTE, CATALOG, SIEVE, HERO_CELL, HERO_FRAC
 from cities import CITIES, PESOK_CITIES
@@ -39,7 +41,8 @@ from longreads_beton3 import BETON3_LONGREADS
 from longreads_smesi import SMESI_LONGREADS
 from longreads_skala import SKALA_LONGREADS
 from longreads_rev import REV_LONGREADS
-LONGREADS = LONGREADS + CORE_LONGREADS + BETON_LONGREADS + ZADACHI_LONGREADS + SMEZH_LONGREADS + BETON2_LONGREADS + GAP_LONGREADS + GAP2_LONGREADS + PLITKA_LONGREADS + BETON3_LONGREADS + SMESI_LONGREADS + SKALA_LONGREADS + REV_LONGREADS
+from tags import TAG_LONGREADS
+LONGREADS = LONGREADS + CORE_LONGREADS + BETON_LONGREADS + ZADACHI_LONGREADS + SMEZH_LONGREADS + BETON2_LONGREADS + GAP_LONGREADS + GAP2_LONGREADS + PLITKA_LONGREADS + BETON3_LONGREADS + SMESI_LONGREADS + SKALA_LONGREADS + REV_LONGREADS + TAG_LONGREADS
 from legal import legal_sections, LEGAL_UPDATED
 
 env = Environment(loader=FileSystemLoader(os.path.join(HERE, "templates")),
@@ -217,7 +220,9 @@ BASE_CTX = dict(cfg=SITE, advantages=ADVANTAGES, guarantees=GUARANTEES,
                        + [dict(slug="sredneuralsk", prep="в Среднеуральск",
                                loc="в Среднеуральске", name="Среднеуральск", km=25,
                                mats="щебень")],
-                more_materials=[(("/dostavka/" + k + "/"), v["name"])
+                more_materials=[("/dostavka/zhbi-i-vodootvod/", "ЖБИ и водоотвод: кольца, лотки, дождеприёмники"),
+                                ("/dostavka/blagoustroystvo/", "Благоустройство участка: плитка, бордюр, основание")]
+                               + [(("/dostavka/" + k + "/"), v["name"])
                                 for k, v in MATERIALS_EXT.items()]
                                + [(("/dostavka/" + k + "/"), v["name"])
                                   for k, v in MATERIALS_ZHBI.items()]
@@ -672,6 +677,19 @@ for slug, mc in MONEY_CFG_EXT.items():
 # Плитка, бордюр, лотки, кольца, блоки, малые формы и ЖБИ. Продаются
 # штуками и метрами, а не кубами, поэтому единицы измерения приходят
 # из конфига, а не зашиты в money.j2.
+# К какой рубрике относится товарная страница. Ссылка снизу вверх
+# обязательна: без неё хаб остаётся сиротой при живых детях, и это
+# ровно то, что поймала группа 20 при первой сборке.
+_RUBRIC_OF = {}
+for _s in ("kolca-zhbi", "kolca-kanalizacionnye", "lotki-vodootvodnye",
+           "dozhdepriemniki", "reshetki-dozhdepriemnikov", "lyuki-i-kryshki",
+           "lotki-teplotrass", "fbs-bloki", "zhbi-izdeliya", "dorozhnye-plity"):
+    _RUBRIC_OF[_s] = [("/dostavka/zhbi-i-vodootvod/", "ЖБИ и водоотвод: весь раздел")]
+for _s in ("trotuarnaya-plitka", "trotuarnaya-plitka-razmery", "plitka-osobaya",
+           "bordyur", "bordyur-vidy", "malye-formy", "betonnye-zabory",
+           "stupeni-betonnye"):
+    _RUBRIC_OF[_s] = [("/dostavka/blagoustroystvo/", "Благоустройство: весь раздел")]
+
 _ZHBI_ALL = dict(MONEY_CFG_ZHBI); _ZHBI_ALL.update(MONEY_CFG_BETON); _ZHBI_ALL.update(MONEY_CFG_GAP); _ZHBI_ALL.update(MONEY_CFG_GAP2); _ZHBI_ALL.update(MONEY_CFG_GAP3); _ZHBI_ALL.update(MONEY_CFG_REV)
 _MAT_ALL = dict(MATERIALS_ZHBI); _MAT_ALL.update(MATERIALS_BETON); _MAT_ALL.update(MATERIALS_GAP); _MAT_ALL.update(MATERIALS_GAP2); _MAT_ALL.update(MATERIALS_GAP3); _MAT_ALL.update(MATERIALS_REV)
 for slug, mc in _ZHBI_ALL.items():
@@ -690,6 +708,7 @@ for slug, mc in _ZHBI_ALL.items():
     rel = [("/dostavka/" + o + "/", _MAT_ALL[o]["name"] + " с доставкой")
            for o in _keys[_i + 1:] + _keys[:_i]]
     rel += ZHBI_ART.get(slug, [])
+    rel = _RUBRIC_OF.get(slug, []) + rel
     rel += [("/dostavka/shcheben/", "Доставка щебня: все фракции и цены"),
             ("/dostavka/pesok/", "Доставка песка"),
             ("/dostavka/otsev/", "Отсев 0-5"),
@@ -871,6 +890,35 @@ for city_slug, mats in MATRIX.items():
         p_sroki=p_sroki, p_minv=pl["minv"], p_local=LOCAL[city_slug],
         faq=cfaq, related_links=rel[:12])
     pages.append((url, htmlp, "geo-city"))
+
+# ---- РУБРИЧНЫЕ ХАБЫ (ШАГ 1 архитектуры каталога) ----
+# Роль фильтра на статическом хостинге играет предгенерированный набор
+# посадочных страниц, а хаб это его точка входа. Динамических фасетов
+# быть не может: сервера нет, ?filter=... обработать негде.
+for hb in HUBS:
+    url = SITE["base"] + hb["slug"] + "/"
+    autolink.reset(url)
+    crumb_items = [("Главная", "/"), ("Доставка материалов", SITE["base"]),
+                   (hb["h1"], None)]
+    _items = [("/dostavka/", "Все материалы и города")] + \
+             [(it["href"], it["name"]) for it in hb["items"]]
+    jl = graph(localbusiness(), bc_schema(crumb_items), faq_schema(hb["faq"]),
+               {"@type": "ItemList", "name": hb["items_head"],
+                "itemListElement": [
+                    {"@type": "ListItem", "position": i + 1,
+                     "url": DOMAIN + it["href"], "name": it["name"]}
+                    for i, it in enumerate(hb["items"])]})
+    htmlp = env.get_template("hub_rubric.j2").render(
+        **BASE_CTX, canonical=canonical(url), crumbs_html=crumbs(crumb_items),
+        jsonld=jl, title=hb["title"], desc=hb["desc"], h1=hb["h1"],
+        hero_sub=hb["hero_sub"], lead=hb["lead"], anchor=hb["anchor"],
+        items_head=hb["items_head"], items=hb["items"],
+        sections=hb["sections"], faq=hb["faq"], subject=hb["subject"],
+        form_head=hb["form_head"], cta_after=hb["cta_after"],
+        cta_head=hb["cta_head"], cta_text=hb["cta_text"],
+        order_steps=ORDER_STEPS, objections=OBJECTIONS,
+        related_links=list(dict.fromkeys(_items))[:14])
+    pages.append((url, htmlp, "hub-rubric"))
 
 # старые гео-страницы по щебню заменены городскими: убираем дубли по URL
 _seen, _uniq = set(), []

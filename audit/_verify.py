@@ -329,6 +329,46 @@ if os.path.exists(_css_path):
         if _c.startswith("d-") and _c not in _used:
             bad("(стили)", "css", "стиль для %r написан, но такого класса в разметке нет" % _c)
 
+# --- 21. каноникализация: canonical обязан вести на существующую страницу
+# Появилось в ШАГЕ 1 архитектуры каталога. Канон, ведущий в никуда, хуже
+# отсутствующего: он склеивает живую страницу с ошибкой 404, и из индекса
+# выпадают обе. Проверяются четыре вещи сразу: тег есть, он абсолютный,
+# он заканчивается слешем и он указывает на реально собранный документ.
+_urls = set(pages.keys())
+for _u, _h in pages.items():
+    _m = re.search(r'<link rel="canonical" href="([^"]+)"', _h)
+    if not _m:
+        bad(_u, "canonical", "тега нет")
+        continue
+    _c = _m.group(1)
+    if not _c.startswith("https://"):
+        bad(_u, "canonical", "не абсолютный: %r" % _c)
+        continue
+    if "?" in _c or "#" in _c or "index.html" in _c:
+        bad(_u, "canonical", "не чистый адрес: %r" % _c)
+    if not _c.endswith("/"):
+        bad(_u, "canonical", "без завершающего слеша: %r" % _c)
+    _path = _c.split("ursdom.ru", 1)[-1]
+    if _path not in _urls:
+        bad(_u, "canonical", "ведёт на несуществующую страницу %r" % _path)
+
+# --- 22. Clean-param в robots.txt для Яндекса
+# Секция Yandex должна быть полной: найдя свою секцию, Яндекс полностью
+# игнорирует User-agent: *, и Disallow из общей секции на него не действуют.
+_rob = os.path.join(ROOT, "robots.txt")
+if os.path.exists(_rob):
+    _r = io.open(_rob, encoding="utf-8").read()
+    if "User-agent: Yandex" not in _r:
+        bad("(robots)", "robots", "нет отдельной секции User-agent: Yandex")
+    else:
+        _ya = _r.split("User-agent: Yandex", 1)[1].split("User-agent:", 1)[0]
+        if "Clean-param:" not in _ya:
+            bad("(robots)", "robots", "в секции Yandex нет Clean-param")
+        for _d in ("/audit/", "/dostavka-src/", "/generator/"):
+            if _d not in _ya:
+                bad("(robots)", "robots",
+                    "секция Yandex не закрывает %s, а общую секцию Яндекс игнорирует" % _d)
+
 # ------------------------------------------------------------------ вывод
 by_kind = collections.Counter(k for _, k, _ in problems)
 print("страниц проверено: %d" % len(pages))

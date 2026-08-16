@@ -4,6 +4,16 @@ Disallow: /_templates/
 Disallow: /audit/
 Disallow: /generator/
 Disallow: /dostavka-src/
+Disallow: /node_modules/
+
+User-agent: Yandex
+Allow: /
+Disallow: /_templates/
+Disallow: /audit/
+Disallow: /generator/
+Disallow: /dostavka-src/
+Disallow: /node_modules/
+Clean-param: sort&order&view&per_page&page_size&color&brand&min_price&max_price&in_stock&utm_source&utm_medium&utm_campaign&utm_term&utm_content&yclid&gclid&ymclid&fbclid&from&roistat&_openstat
 
 User-agent: GPTBot
 User-agent: OAI-SearchBot
@@ -19,6 +29,7 @@ Disallow: /_templates/
 Disallow: /audit/
 Disallow: /generator/
 Disallow: /dostavka-src/
+Disallow: /node_modules/
 
 Sitemap: https://ursdom.ru/sitemap.xml
 Sitemap: https://ursdom.ru/dostavka/sitemap.xml
