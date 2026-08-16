@@ -52,25 +52,25 @@
    уже сработал после последнего из них: тогда два одинаковых блока
    встают в пределах одного экрана. Ревью намерило 163-167 слов между
    ними на пяти страницах марок бетона. #}
-{% if cta_after < sections|length %}  {{ m.midcta(cfg, cta_head, cta_text) }}
+{# Завершающий призыв не нужен, когда ниже уже стоит блок цен
+   с порядком заказа: он повторяет то же самое через один экран. #}
+{% if cta_after < sections|length and not conv %}  {{ m.midcta(cfg, cta_head, cta_text) }}
 {% endif %}</div></section>
 
-<section class="d-dark-sec"><div class="wrap">
-  <h2>Как мы возим</h2>
-  <p>Самосвалы от 5 до 20 кубов по {{ cfg.region_dat }}. Разгрузка на объекте, оплата после выгрузки, {{ cfg.callback_promise }}.</p>
-  {{ m.advantages(advantages) }}
-</div></section>
-
-<section id="zayavka"><div class="wrap d-two">
+<section id="zayavka"><div class="wrap">
+  <h2>Оставить заявку</h2>
+  <div class="d-two">
   <div>{{ m.callblock(cfg) }}</div>
   <div>
-    <h2>{{ form_head }}</h2>
+    <h3>{{ form_head }}</h3>
     {{ m.lead_form(cfg, subject) }}
+  </div>
   </div>
 </div></section>
 
-<section><div class="wrap">
-  {{ m.objections(objections) }}
+<section class="d-dark-sec"><div class="wrap">
+  {{ m.objections(objections, None,
+     "Самосвалы от 5 до 20 кубов по " ~ cfg.region_dat ~ ". Разгрузка на объекте, оплата после выгрузки, " ~ cfg.callback_promise ~ ".") }}
 </div></section>
 
 <section><div class="wrap">

@@ -44,20 +44,18 @@
 {% endfor %}
 </div></section>
 
-<section class="d-dark-sec"><div class="wrap">
-  <h2>Что мы гарантируем</h2>
-  {{ m.advantages(advantages) }}
-</div></section>
-
-<section id="zayavka"><div class="wrap d-two">
+<section id="zayavka"><div class="wrap">
+  <h2>Оставить заявку</h2>
+  <div class="d-two">
   <div>{{ m.callblock(cfg) }}</div>
   <div>
-    <h2>{{ form_head }}</h2>
+    <h3>{{ form_head }}</h3>
     {{ m.lead_form(cfg, subject) }}
+  </div>
   </div>
 </div></section>
 
-<section><div class="wrap">
+<section class="d-dark-sec"><div class="wrap">
   {{ m.objections(objections) }}
 </div></section>
 

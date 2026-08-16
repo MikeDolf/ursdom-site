@@ -504,7 +504,13 @@ table td:only-child,table td:first-child:last-child{font-weight:400}
 /* ---------------------------------------------------- блок связи */
 .d-callblock{background:var(--d-steel);color:var(--d-on-steel);padding:26px 24px;
   border-left:3px solid var(--d-brass)}
-.d-callblock h2{color:#fff;margin-top:0}
+.d-callblock h2,.d-callblock h3{color:#fff;margin-top:0}
+/* Кнопки каналов в блоке связи тянутся на всю ширину колонки:
+   при ширине по содержимому «Написать в MAX» и «Узнать цену
+   с доставкой» вставали ступенькой разной длины под ровной
+   латунной кнопкой WhatsApp, и ряд читался как случайный. */
+.d-callblock .d-cta-row{flex-direction:column;align-items:stretch}
+.d-callblock .d-cta-row .d-btn{width:100%}
 .d-callblock p{color:var(--d-on-steel-2)}
 .d-bigmax{display:block;background:var(--d-brass);color:var(--d-steel);
   text-align:center;padding:15px;font-weight:800;font-size:16.5px;

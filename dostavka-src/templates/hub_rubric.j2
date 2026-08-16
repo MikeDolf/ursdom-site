@@ -39,22 +39,20 @@
 {% endfor %}
 </div></section>
 
-<section class="d-dark-sec"><div class="wrap">
-  <h2>Как мы возим</h2>
-  <p>Самосвалы от 5 до 20 кубов и манипулятор под штучный товар по {{ cfg.region_dat }}. Разгрузка на объекте, оплата после выгрузки, {{ cfg.callback_promise }}.</p>
-  {{ m.advantages(advantages) }}
-</div></section>
-
-<section id="zayavka"><div class="wrap d-two">
+<section id="zayavka"><div class="wrap">
+  <h2>Оставить заявку</h2>
+  <div class="d-two">
   <div>{{ m.callblock(cfg) }}</div>
   <div>
-    <h2>{{ form_head }}</h2>
+    <h3>{{ form_head }}</h3>
     {{ m.lead_form(cfg, subject) }}
+  </div>
   </div>
 </div></section>
 
-<section><div class="wrap">
-  {{ m.objections(objections) }}
+<section class="d-dark-sec"><div class="wrap">
+  {{ m.objections(objections, None,
+     "Самосвалы от 5 до 20 кубов и манипулятор под штучный товар по " ~ cfg.region_dat ~ ". Разгрузка на объекте, оплата после выгрузки, " ~ cfg.callback_promise ~ ".") }}
 </div></section>
 
 <section><div class="wrap">
