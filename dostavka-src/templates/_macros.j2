@@ -185,8 +185,8 @@
     </div>
     <output class="d-calc-out" id="calc-out" aria-live="polite">
       <table class="d-calc-table"><tbody>
-        <tr><th scope="row">Материал</th><td>{{ calc.start.vol }} м³ × {{ calc.start.price_s }} руб</td><td>{{ calc.start.material_s }} руб</td></tr>
-        <tr><th scope="row">Доставка</th><td>{{ calc.start.trips }} рейс × {{ calc.start.km }} км × {{ calc.rate }} руб</td><td>{{ calc.start.delivery_s }} руб</td></tr>
+        <tr><th scope="row">Материал</th><td class="d-calc-formula">{{ calc.start.vol }} м³ × {{ calc.start.price_s }} руб</td><td>{{ calc.start.material_s }} руб</td></tr>
+        <tr><th scope="row">Доставка</th><td class="d-calc-formula">{{ calc.start.trips }} рейс × {{ calc.start.km }} км × {{ calc.rate }} руб</td><td>{{ calc.start.delivery_s }} руб</td></tr>
         <tr class="d-calc-total"><th scope="row" colspan="2">Итого предварительно</th><td>{{ calc.start.total_s }} руб</td></tr>
       </tbody></table>
       <p class="d-note">Кузов {{ calc.start.capacity }} м³. Расчёт предварительный,

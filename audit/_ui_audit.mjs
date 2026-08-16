@@ -13,7 +13,7 @@ const ctx = await browser.newContext({ viewport: VIEW, deviceScaleFactor: 1 });
 const page = await ctx.newPage();
 
 const PROBE = () => {
-  const out = { contrast: [], tap: [], row: [], overflow: [], font: [], fs: [] };
+  const out = { contrast: [], tap: [], row: [], overflow: [], font: [], fs: [], hidden: [] };
 
   const lin = c => { c /= 255; return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4); };
   const lum = ([r, g, b]) => 0.2126 * lin(r) + 0.7152 * lin(g) + 0.0722 * lin(b);
@@ -108,6 +108,27 @@ const PROBE = () => {
   if (skip) {
     skip.focus();
     const sr = skip.getBoundingClientRect();
+    // Скрытый смысл. Рендер-аудит проверяет то, что видно, и поэтому
+    // слеп к обратной ошибке: элемент с важным текстом получил
+    // display:none и пропал совсем. Так на телефоне исчезла итоговая
+    // сумма калькулятора: правило прятало колонку по позиции, а в строке
+    // итога на этой позиции оказалась сумма. Проверяем адресно те узлы,
+    // без которых блок теряет смысл.
+    const mustSee = [
+      ['.d-calc-total td', 'итоговая сумма калькулятора'],
+      ['.d-pricebar b', 'цена в полосе якоря'],
+      ['.d-head-tel', 'телефон в шапке'],
+    ];
+    for (const [sel, what] of mustSee) {
+      const n = document.querySelector(sel);
+      if (!n) continue;
+      const r = n.getBoundingClientRect();
+      const st = getComputedStyle(n);
+      if (st.display === 'none' || st.visibility === 'hidden' || r.width < 1 || r.height < 1) {
+        out.hidden.push({ sel, what, w: Math.round(r.width), h: Math.round(r.height) });
+      }
+    }
+
     if (sr.height < 47.5) out.tap.push({ el: 'a.d-skip:focus', w: Math.round(sr.width), h: Math.round(sr.height), need: 48 });
     skip.blur();
   }

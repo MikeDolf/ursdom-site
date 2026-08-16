@@ -76,8 +76,9 @@
       html += last
         ? '<tr class="d-calc-total"><th scope="row" colspan="2">' + lines[i][0] +
           "</th><td>" + lines[i][2] + "</td></tr>"
-        : '<tr><th scope="row">' + lines[i][0] + "</th><td>" +
-          lines[i][1] + "</td><td>" + lines[i][2] + "</td></tr>";
+        : '<tr><th scope="row">' + lines[i][0] +
+          '</th><td class="d-calc-formula">' + lines[i][1] +
+          "</td><td>" + lines[i][2] + "</td></tr>";
     }
     html += "</tbody></table>";
 

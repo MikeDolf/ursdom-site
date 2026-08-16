@@ -18,7 +18,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preload" href="/dostavka/assets/fonts/golos-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/dostavka/assets/fonts/mono-num.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/dostavka/assets/dostavka.css?v=1facaecf">
+<link rel="stylesheet" href="/dostavka/assets/dostavka.css?v=4836e00e">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <script type="application/ld+json">
 {
@@ -604,8 +604,8 @@
     </div>
     <output class="d-calc-out" id="calc-out" aria-live="polite">
       <table class="d-calc-table"><tbody>
-        <tr><th scope="row">Материал</th><td>10 м³ × 1 400 руб</td><td>14 000 руб</td></tr>
-        <tr><th scope="row">Доставка</th><td>1 рейс × 25 км × 95 руб</td><td>2 375 руб</td></tr>
+        <tr><th scope="row">Материал</th><td class="d-calc-formula">10 м³ × 1 400 руб</td><td>14 000 руб</td></tr>
+        <tr><th scope="row">Доставка</th><td class="d-calc-formula">1 рейс × 25 км × 95 руб</td><td>2 375 руб</td></tr>
         <tr class="d-calc-total"><th scope="row" colspan="2">Итого предварительно</th><td>16 375 руб</td></tr>
       </tbody></table>
       <p class="d-note">Кузов 10 м³. Расчёт предварительный,
@@ -775,7 +775,8 @@
     <p class="d-copy">© 2026 Щебень-Урал. Доставка нерудных материалов по Екатеринбургу и Свердловской области. Цены на сайте ориентировочные, точную стоимость называем по заявке.</p>
   </div>
 </footer>
-<script src="/dostavka/assets/calc.js?v=1facaecf" defer></script>
+<script src="/dostavka/assets/wa.js?v=4836e00e" defer></script>
+<script src="/dostavka/assets/calc.js?v=4836e00e" defer></script>
 
 
 <a class="d-wa" href="https://wa.me/79506460953" target="_blank" rel="noopener"
@@ -789,41 +790,8 @@
   <a class="call" href="#zayavka">Узнать цену</a>
 </div>
 
-<aside class="d-pop" id="d-pop" aria-label="Связаться с нами" hidden>
-  <button class="d-pop-x" type="button" aria-label="Закрыть окно">×</button>
-  <strong>Связаться с нами</strong>
-  <p>Назовите материал, объём и адрес: посчитаем цену с доставкой и перезвоним за 15 минут.</p>
-  <a class="d-pop-max" href="https://max.ru/u/f9LHodD0cOIgiq2N2buCj7oU32e1sbUDdW834GzM718dViUBpco7KXS8n10" target="_blank" rel="noopener" onclick="try{ym(110405092,'reachGoal','call')}catch(e){}">Написать в MAX</a>
-  <a class="d-pop-lead" href="#zayavka">Узнать цену с доставкой</a>
-  <small>Пн-Сб, 8:00-20:00</small>
-</aside>
 
-<script>
-(function(){
-  var el=document.getElementById('d-pop');
-  if(!el) return;
-  // Закрыли один раз - не показываем до конца сессии.
-  try{ if(sessionStorage.getItem('dpop')==='off') return; }catch(e){}
-  el.hidden=false;
-  var shown=false;
-  function check(){
-    // Показываем после прокрутки на экран с небольшим запасом.
-    if(!shown && window.pageYOffset > window.innerHeight*0.8){
-      shown=true; el.classList.add('is-on');
-      window.removeEventListener('scroll',check);
-    }
-  }
-  window.addEventListener('scroll',check,{passive:true});
-  check();
-  function close(){
-    el.classList.remove('is-on');
-    try{ sessionStorage.setItem('dpop','off'); }catch(e){}
-  }
-  el.querySelector('.d-pop-x').addEventListener('click',close);
-  el.querySelector('.d-pop-lead').addEventListener('click',close);
-  document.addEventListener('keydown',function(e){ if(e.key==='Escape') close(); });
-})();
-</script>
+
 <script type="text/javascript">
    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
    m[i].l=1*new Date();

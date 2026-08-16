@@ -98,6 +98,7 @@
     <p class="d-copy">© 2026 {{ cfg.brand }}. Доставка нерудных материалов по {{ cfg.region_dat }}. Цены на сайте ориентировочные, точную стоимость называем по заявке.</p>
   </div>
 </footer>
+<script src="/dostavka/assets/wa.js?v={{ cfg.css_version }}" defer></script>
 {% if has_calc %}<script src="/dostavka/assets/calc.js?v={{ cfg.css_version }}" defer></script>{% endif %}
 
 {# Плавающий виджет. Стоит ПОСЛЕ подвала в потоке документа, а не перед
@@ -116,41 +117,14 @@
   <a class="call" href="{{ form_anchor|default('#zayavka') }}">Узнать цену</a>
 </div>
 {% endif %}
-{% if not no_cta %}<aside class="d-pop" id="d-pop" aria-label="Связаться с нами" hidden>
-  <button class="d-pop-x" type="button" aria-label="Закрыть окно">×</button>
-  <strong>Связаться с нами</strong>
-  <p>Назовите материал, объём и адрес: посчитаем цену с доставкой и {{ cfg.callback_promise }}.</p>
-  <a class="d-pop-max" href="{{ cfg.max_url }}" target="_blank" rel="noopener" onclick="try{ym({{ cfg.metrika_id }},'reachGoal','{{ cfg.goal_contact }}')}catch(e){}">Написать в MAX</a>
-  <a class="d-pop-lead" href="{{ form_anchor|default('#zayavka') }}">Узнать цену с доставкой</a>
-  <small>{{ cfg.hours }}</small>
-</aside>
-{% endif %}
-<script>
-(function(){
-  var el=document.getElementById('d-pop');
-  if(!el) return;
-  // Закрыли один раз - не показываем до конца сессии.
-  try{ if(sessionStorage.getItem('dpop')==='off') return; }catch(e){}
-  el.hidden=false;
-  var shown=false;
-  function check(){
-    // Показываем после прокрутки на экран с небольшим запасом.
-    if(!shown && window.pageYOffset > window.innerHeight*0.8){
-      shown=true; el.classList.add('is-on');
-      window.removeEventListener('scroll',check);
-    }
-  }
-  window.addEventListener('scroll',check,{passive:true});
-  check();
-  function close(){
-    el.classList.remove('is-on');
-    try{ sessionStorage.setItem('dpop','off'); }catch(e){}
-  }
-  el.querySelector('.d-pop-x').addEventListener('click',close);
-  el.querySelector('.d-pop-lead').addEventListener('click',close);
-  document.addEventListener('keydown',function(e){ if(e.key==='Escape') close(); });
-})();
-</script>
+{# Всплывающее окно .d-pop удалено при ревью интерфейса.
+   На телефоне в правом нижнем углу одновременно оказались три
+   перекрывающих призыва: липкая панель .d-mobilebar, это окно
+   и плавающий виджет WhatsApp. Все три ведут в одни и те же два
+   действия. Окно убрано как самое навязчивое из трёх: оно закрывало
+   контент и требовало закрытия кнопкой. Панель и виджет разведены
+   по высоте и больше не пересекаются. #}
+
 <script type="text/javascript">
    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
    m[i].l=1*new Date();

@@ -19,7 +19,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preload" href="/dostavka/assets/fonts/golos-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/dostavka/assets/fonts/mono-num.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/dostavka/assets/dostavka.css?v=1facaecf">
+<link rel="stylesheet" href="/dostavka/assets/dostavka.css?v=4836e00e">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <script type="application/ld+json">
 {
@@ -240,6 +240,7 @@
     <p class="d-copy">© 2026 Щебень-Урал. Доставка нерудных материалов по Екатеринбургу и Свердловской области. Цены на сайте ориентировочные, точную стоимость называем по заявке.</p>
   </div>
 </footer>
+<script src="/dostavka/assets/wa.js?v=4836e00e" defer></script>
 
 
 
@@ -251,32 +252,7 @@
 </a>
 
 
-<script>
-(function(){
-  var el=document.getElementById('d-pop');
-  if(!el) return;
-  // Закрыли один раз - не показываем до конца сессии.
-  try{ if(sessionStorage.getItem('dpop')==='off') return; }catch(e){}
-  el.hidden=false;
-  var shown=false;
-  function check(){
-    // Показываем после прокрутки на экран с небольшим запасом.
-    if(!shown && window.pageYOffset > window.innerHeight*0.8){
-      shown=true; el.classList.add('is-on');
-      window.removeEventListener('scroll',check);
-    }
-  }
-  window.addEventListener('scroll',check,{passive:true});
-  check();
-  function close(){
-    el.classList.remove('is-on');
-    try{ sessionStorage.setItem('dpop','off'); }catch(e){}
-  }
-  el.querySelector('.d-pop-x').addEventListener('click',close);
-  el.querySelector('.d-pop-lead').addEventListener('click',close);
-  document.addEventListener('keydown',function(e){ if(e.key==='Escape') close(); });
-})();
-</script>
+
 <script type="text/javascript">
    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
    m[i].l=1*new Date();
