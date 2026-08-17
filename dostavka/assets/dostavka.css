@@ -656,15 +656,22 @@ table td:only-child,table td:first-child:last-child{font-weight:400}
    ширины - это и было видно на экране у владельца. */
 .d-float{position:fixed;right:16px;bottom:16px;z-index:60;
   display:flex;flex-direction:column;align-items:stretch;gap:8px}
+/* Фон стальной, а не бумажный. Бумага (#f7f8f5) на эмали страницы
+   (#eef1ec) давала контраст 1,04: блок выезжал, но его не было видно,
+   держалась одна тень. Владелец так и сказал - панель перестала
+   появляться. Сталь и от эмали отбивается, и цветные значки на ней
+   читаются лучше всего, как в шапке. */
 .d-float-btn{display:inline-flex;align-items:center;gap:11px;
   min-height:52px;padding:0 20px 0 14px;text-decoration:none;
-  background:var(--d-paper);color:var(--d-ink);
-  box-shadow:0 6px 20px rgba(20,26,32,.28);transition:box-shadow .15s ease}
-.d-float-btn:hover{box-shadow:0 8px 26px rgba(20,26,32,.36)}
+  background:var(--d-steel);color:var(--d-on-steel);
+  box-shadow:0 6px 20px rgba(20,26,32,.34);transition:background .15s ease}
+.d-float-btn:hover{background:var(--d-steel-2);color:#fff}
 .d-float-btn svg{width:30px;height:30px;flex:none}
 .d-float-btn span{display:flex;flex-direction:column;line-height:1.15;
   font-weight:750;font-size:15px}
-.d-float-btn b{font-weight:600;font-size:12.5px;opacity:.8}
+/* Подпись отдельным токеном, а не прозрачностью: --d-on-steel-2 даёт
+   на стали 6,99, а opacity считается от фона и в аудит не попадает. */
+.d-float-btn b{font-weight:600;font-size:12.5px;color:var(--d-on-steel-2)}
 .d-float{transition:opacity .18s ease,transform .18s ease}
 .d-float.is-off{opacity:0;visibility:hidden;transform:translateY(8px)}
 @media (prefers-reduced-motion:reduce){.d-float,.d-float.is-off{transition:none}}
