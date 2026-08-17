@@ -9,13 +9,19 @@
 <link rel="canonical" href="{{ canonical }}">
 {% if noindex %}<meta name="robots" content="noindex,follow">
 {% endif %}
-<meta property="og:type" content="website">
+{# og:type различает статью и остальные страницы: у 59 лонгридов тип
+   article, у товарных и рубричных website. Раньше website стоял всюду,
+   и статья в пересылке выглядела как обычная страница сайта. #}
+<meta property="og:type" content="{{ og_type|default('website') }}">
 <meta property="og:locale" content="ru_RU">
 <meta property="og:site_name" content="{{ cfg.brand }}">
 <meta property="og:title" content="{{ og_title|default(title) }}">
 <meta property="og:description" content="{{ desc }}">
 <meta property="og:url" content="{{ canonical }}">
-<meta property="og:image" content="{{ cfg.og_image }}">
+{# Обложка страницы: если у страницы есть собственные снимки, в пересылку
+   идёт первый из них, иначе общая обложка раздела. og_image приходит
+   абсолютным из _photo_ctx: Open Graph относительных путей не понимает. #}
+<meta property="og:image" content="{{ og_image|default(cfg.og_image) }}">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preload" href="/dostavka/assets/fonts/golos-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/dostavka/assets/fonts/mono-num.woff2" as="font" type="font/woff2" crossorigin>

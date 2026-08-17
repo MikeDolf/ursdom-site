@@ -446,9 +446,15 @@ def _photo_ctx(slug, items, default_head=None):
     в разметку не попадают.
     """
     meta = PHOTOS_META.get(slug, {})
-    return dict(photos=items,
-                photos_head=meta.get("head", default_head),
-                photos_intro=meta.get("intro"))
+    ctx = dict(photos=items,
+               photos_head=meta.get("head", default_head),
+               photos_intro=meta.get("intro"))
+    # Первый снимок страницы становится её обложкой в пересылке. Ключ
+    # кладётся только когда снимки есть: в шаблоне стоит default(),
+    # а он подставляет общую обложку лишь для необъявленной переменной.
+    if items:
+        ctx["og_image"] = DOMAIN + items[0]["src"]
+    return ctx
 
 
 FLEET_PHOTOS = photos_for("fleet")
@@ -893,6 +899,7 @@ for a in LONGREADS:
     _calc = calc_for(a["slug"])
     htmlp = env.get_template("longread.j2").render(
         calc=_calc, has_calc=bool(_calc),
+        og_type="article" if a["kind"] == "article" else "website",
         **_photo_ctx(a["slug"], photos_for(a["slug"])),
         **BASE_CTX, author=AUTHOR_FULL, updated=UPDATED,
         canonical=DOMAIN + url, crumbs_html=crumbs(crumb_items), jsonld=jl,
