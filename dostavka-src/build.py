@@ -21,7 +21,8 @@ from products_gap2 import MATERIALS_GAP2, MONEY_CFG_GAP2
 from products_gap3 import MATERIALS_GAP3, MONEY_CFG_GAP3
 from products_rev import MATERIALS_REV, MONEY_CFG_REV
 from geo_matrix import (CITY_FACTS, MATRIX, ALREADY, MAT_FORMS,
-                        ANGLE, LOCAL, MAT_TASK, example_for, plecho)
+                        ANGLE, LOCAL, MAT_TASK, example_for, plecho,
+                        lsi_for)
 import autolink
 from hubs import HUBS
 from canonical import canonical
@@ -1155,9 +1156,27 @@ for city_slug, mats in MATRIX.items():
         rel.append((f"/dostavka/shcheben/{nb}/",
                     f"Доставка {CITY_FACTS[nb]['prep']}"))
 
+    # Смысловое ядро города. Два заголовка в geo2.j2 были дословно
+    # одинаковы на всех 32 страницах, и проверка похожести в конце
+    # сборки держалась на 0.79 при пороге 0.80. Подставляем в них
+    # местную конкретику: грунт и ближний посёлок.
+    _lsi = lsi_for(city_slug, mats)
+    # Берём ПЕРВУЮ именную группу, а не случайную: в исходных описаниях
+    # главная характеристика грунта стоит первой, и хеш-выбор давал куски
+    # вроде «участки сухие» вместо «лесные супеси и скальное основание».
+    # Уникальность страниц обеспечивает разный грунт у разных городов,
+    # а не перебор кусков внутри одного города.
+    # Если чистой группы не нашлось, берём исходную фразу целиком:
+    # она грамматична, просто длиннее.
+    _ground_tag = (_lsi["ground_lsi"] or [facts["ground"]])[0]
+    # Сами массивы тоже уходят в контекст: geo_lsi годится только
+    # перечислением после двоеточия, падеж после предлога не согласуется
+    # (см. _lsi_places в geo_matrix). Отдельного списка посёлков в текст
+    # не добавляем: facts["areas"] уже перечисляет их в блоке «Куда возим».
     htmlp = env.get_template("geo2.j2").render(
         **BASE_CTX, canonical=DOMAIN + url, crumbs_html=crumbs(crumb_items),
         jsonld=jl, title=title, desc=desc, h1=h1, hero_sub=hero,
+        **_lsi, ground_tag=_ground_tag,
         city=dict(facts, dist=dist), dist=dist, mat_blocks=mat_blocks,
         p_plecho=p_plecho, p_econ=p_econ, p_kuda=p_kuda, p_grunt=p_grunt,
         p_sroki=p_sroki, p_minv=pl["minv"], p_local=LOCAL[city_slug],
