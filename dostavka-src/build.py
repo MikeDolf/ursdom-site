@@ -336,6 +336,25 @@ def photos_for(slug):
     return out
 
 
+# Заголовок и подводка галереи по слагу. Пустой словарь означает,
+# что галереи на странице нет: макрос m.photos ничего не рендерит
+# при пустом списке, поэтому страницы без снимков не меняются.
+PHOTOS_META = {}
+
+def _photo_ctx(slug, items, default_head=None):
+    """Три переменные галереи одним куском.
+
+    Заголовок и подводка лежат в PHOTOS_META по слагу: подпись пишется
+    под конкретный набор кадров, а не шаблонной фразой «фото материала».
+    Если снимков нет, макрос не рендерит ничего, и заголовок с подводкой
+    в разметку не попадают.
+    """
+    meta = PHOTOS_META.get(slug, {})
+    return dict(photos=items,
+                photos_head=meta.get("head", default_head),
+                photos_intro=meta.get("intro"))
+
+
 BASE_CTX = dict(cfg=SITE, advantages=ADVANTAGES, guarantees=GUARANTEES,
                 per_cube=PER_CUBE_LIST, price_note=PRICE_NOTE, delivery_note=DELIVERY_NOTE,
                 extra=EXTRA, calc_rows=CALC_ROWS, catalog=CATALOG, sieve=SIEVE,
@@ -602,7 +621,8 @@ for slug, mc in money_cfg.items():
         **BASE_CTX, **mc, calc=_calc, has_calc=bool(_calc),
         canonical=DOMAIN + url, crumbs_html=crumbs(crumb_items), jsonld=jl,
         intro=mat["intro"], types=mat["types"], fractions=mat.get("fractions"),
-        faq=mat["faq"], photos=_ph, hero_cell=HERO_CELL.get(slug, 34),
+        faq=mat["faq"], hero_cell=HERO_CELL.get(slug, 34),
+        **_photo_ctx(slug, _ph, "Как выглядит " + mc["mat_vin"]),
         hero_frac=HERO_FRAC.get(slug, "щебень 20-40 мм"),
         related_links=list(dict.fromkeys(rel + [(f"/dostavka/shcheben/{o['slug']}/", f"Доставка щебня {o['prep']}") for o in CITIES[:6]]))[:14])
     pages.append((url, htmlp, "money"))

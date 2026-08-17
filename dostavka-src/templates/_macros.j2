@@ -87,6 +87,33 @@
 </div>
 {%- endmacro %}
 
+{# Сетка снимков. Один слот на весь сайт: раньше разметка галереи жила
+   только в money.j2, и на статьи, рубрики и контакты фотографию было
+   некуда положить, даже когда она есть.
+
+   Размеры width и height проставлены всегда: без них браузер не знает
+   пропорцию до загрузки файла, и страница прыгает под пальцем, когда
+   картинка приезжает. Это же считается как сдвиг макета в Core Web Vitals.
+
+   loading=lazy стоит на всех снимках галереи: она всегда ниже первого
+   экрана. На первом экране lazy ставить нельзя, там он замедляет показ. #}
+{% macro photos(items, head=None, intro=None) -%}
+{% if items %}{% if head %}  <h2 id="foto">{{ head }}</h2>
+{% endif %}{% if intro %}  <p>{{ intro }}</p>
+{% endif %}  <div class="d-photos">
+{% for ph in items %}    <figure>
+      <picture>
+{% if ph.webp %}        <source type="image/webp" srcset="{{ ph.webp }}" sizes="(max-width: 700px) 100vw, 46vw">
+{% endif %}        <img src="{{ ph.src }}" srcset="{{ ph.jpg }}" sizes="(max-width: 700px) 100vw, 46vw"
+             alt="{{ ph.alt }}" width="{{ ph.w }}" height="{{ ph.h }}"
+             loading="lazy" decoding="async">
+      </picture>
+      <figcaption>{{ ph.cap }}</figcaption>
+    </figure>
+{% endfor %}  </div>
+{% endif %}
+{%- endmacro %}
+
 {% macro lead_form(cfg, subject) -%}
 <form class="d-form" action="https://api.web3forms.com/submit" method="POST">
   <input type="hidden" name="access_key" value="{{ cfg.web3forms_key }}">

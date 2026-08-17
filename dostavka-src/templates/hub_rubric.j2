@@ -39,6 +39,11 @@
 {% endfor %}
 </div></section>
 
+{% if photos %}<section><div class="wrap d-prose">
+  {{ m.photos(photos, photos_head, photos_intro) }}
+</div></section>
+{% endif %}
+
 <section id="zayavka"><div class="wrap">
   <h2>Оставить заявку</h2>
   <div class="d-two">
