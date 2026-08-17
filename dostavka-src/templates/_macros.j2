@@ -59,6 +59,40 @@
 <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 3h18a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-9.6l-4.6 3.6A.8.8 0 0 1 5.5 21v-3H3a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Zm3.1 4.6v6.8h1.7v-4.2l1.8 3h.5l1.8-3v4.2h1.7V7.6h-1.7l-2.05 3.4L7.8 7.6H6.1Zm9.05 6.8 2.35-3.3 2.35 3.3h-1.9l-.45-.68-.45.68h-1.9Zm4.7-6.8h-1.9l-.45.68-.45-.68h-1.9l2.35 3.3 2.35-3.3Z"/></svg>
 {%- endmacro %}
 
+{# Значки-плашки в фирменных цветах сервисов, вместо контурных wa_icon/max_icon.
+   Используются только в шапке и в плавающем блоке связи - двух местах, где
+   кнопка не залита латунью/сталью и цвету есть куда лечь. Везде ещё,
+   где кнопка сама залита цветом дизайн-кода (кнопки форм, подвал, таблица
+   контактов), знак остаётся контурным: класть чужой зелёный/синий поверх
+   латуни было бы двойным цветовым пятном.
+   uid обязателен: значок вставляется на страницу дважды (шапка и плавающий
+   блок), а id градиента должен быть уникален в документе. #}
+{% macro wa_badge(uid) -%}
+<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+  <defs><linearGradient id="wa-g-{{ uid }}" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#6EE080"/><stop offset="1" stop-color="#1FA855"/>
+  </linearGradient></defs>
+  <rect width="24" height="24" rx="3" fill="url(#wa-g-{{ uid }})"/>
+  <g transform="translate(3.05,3.05) scale(.746)" fill="#fff">
+    <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.46 1.32 4.96L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.9-4.45 9.9-9.91C21.95 6.45 17.5 2 12.04 2Zm0 18.02h-.01a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.22 8.22 0 0 1-1.26-4.38c0-4.54 3.7-8.23 8.25-8.23a8.23 8.23 0 0 1 8.24 8.24c0 4.54-3.7 8.23-8.24 8.23Zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.24-.64.8-.78.97-.14.16-.29.18-.54.06-.25-.13-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.01-.38.11-.5.11-.11.25-.29.37-.43.13-.15.17-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.4-.42-.56-.43h-.47c-.16 0-.43.06-.65.31-.22.25-.85.83-.85 2.03s.87 2.35.99 2.51c.12.17 1.72 2.62 4.16 3.67.58.25 1.03.4 1.39.51.58.19 1.11.16 1.53.1.47-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.15-1.18-.06-.11-.22-.17-.47-.29Z"/>
+  </g>
+</svg>
+{%- endmacro %}
+
+{% macro max_badge(uid) -%}
+<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+  <defs>
+    <linearGradient id="mx-g-{{ uid }}" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#7B5CFA"/><stop offset=".55" stop-color="#4C8CFF"/><stop offset="1" stop-color="#38D9E8"/>
+    </linearGradient>
+    <mask id="mx-m-{{ uid }}"><rect width="24" height="24" fill="#fff"/><circle cx="13.9" cy="9.7" r="3.35"/></mask>
+  </defs>
+  <rect width="24" height="24" rx="3" fill="url(#mx-g-{{ uid }})"/>
+  <circle cx="12" cy="10.1" r="6.3" fill="#fff" mask="url(#mx-m-{{ uid }})"/>
+  <path d="M6.55 13.55 9.95 12.9 8.0 18.15Z" fill="#fff"/>
+</svg>
+{%- endmacro %}
+
 {# Плавающий блок связи. Раньше здесь висел один WhatsApp, и он же
    прятался, когда рядом оказывался блок связи или форма. Владелец
    сказал прямо: кнопка появляется, потом пропадает, и MAX в ней нет.
@@ -76,14 +110,14 @@
    в aria-label. #}
 {% macro float_block(cfg) -%}
 <div class="d-float" aria-label="Написать нам">
-  <a class="d-float-btn d-float-wa" href="{{ cfg.wa_url }}" target="_blank" rel="noopener"
+  <a class="d-float-btn" href="{{ cfg.wa_url }}" target="_blank" rel="noopener"
      aria-label="Написать в WhatsApp, {{ cfg.wa_promise }}"
      onclick="try{ym({{ cfg.metrika_id }},'reachGoal','{{ cfg.goal_wa }}')}catch(e){}">
-    {{ wa_icon() }}<span>WhatsApp<b>{{ cfg.wa_promise }}</b></span></a>
-  <a class="d-float-btn d-float-mx" href="{{ cfg.max_url }}" target="_blank" rel="noopener"
+    {{ wa_badge('float') }}<span>WhatsApp<b>{{ cfg.wa_promise }}</b></span></a>
+  <a class="d-float-btn" href="{{ cfg.max_url }}" target="_blank" rel="noopener"
      aria-label="Написать в MAX"
      onclick="try{ym({{ cfg.metrika_id }},'reachGoal','{{ cfg.goal_contact }}')}catch(e){}">
-    {{ max_icon() }}<span>MAX<b>ответим в рабочее время</b></span></a>
+    {{ max_badge('float') }}<span>MAX<b>ответим в рабочее время</b></span></a>
 </div>
 {%- endmacro %}
 

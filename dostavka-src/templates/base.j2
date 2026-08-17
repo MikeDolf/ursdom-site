@@ -65,14 +65,14 @@
        действия, а нажимают на него редко: разговор требует решимости,
        сообщение нет. #}
     <div class="d-head-links">
-      <a class="d-head-ic d-head-wa" href="{{ cfg.wa_url }}" target="_blank" rel="noopener"
+      <a class="d-head-ic" href="{{ cfg.wa_url }}" target="_blank" rel="noopener"
          aria-label="Написать в WhatsApp, {{ cfg.wa_promise }}"
          onclick="try{ym({{ cfg.metrika_id }},'reachGoal','{{ cfg.goal_wa }}')}catch(e){}">
-        {{ m.wa_icon() }}<span>WhatsApp</span></a>
-      <a class="d-head-ic d-head-mx" href="{{ cfg.max_url }}" target="_blank" rel="noopener"
+        {{ m.wa_badge('head') }}<span>WhatsApp</span></a>
+      <a class="d-head-ic" href="{{ cfg.max_url }}" target="_blank" rel="noopener"
          aria-label="Написать в MAX"
          onclick="try{ym({{ cfg.metrika_id }},'reachGoal','{{ cfg.goal_contact }}')}catch(e){}">
-        {{ m.max_icon() }}<span>MAX</span></a>
+        {{ m.max_badge('head') }}<span>MAX</span></a>
     </div>
   </div>
 </header>

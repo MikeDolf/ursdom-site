@@ -208,19 +208,20 @@ table,.d-sieve,.d-cat-price{font-variant-numeric:tabular-nums}
   flex:0 0 auto;margin-right:9px}
 .d-logo span{color:var(--d-on-steel-2)}
 .d-logo:hover{color:#fff}
-.d-head-links{display:flex;align-items:center;gap:8px}
+.d-head-links{display:flex;align-items:center;gap:4px}
 /* Две кнопки мессенджеров вместо номера. Номер убран по просьбе
    владельца, он остался в подвале и на странице контактов.
-   WhatsApp латунью как главное действие, у него обещано время ответа;
-   MAX контуром рядом. Цель нажатия 48px по WCAG 2.5.8. */
-.d-head-ic{display:inline-flex;align-items:center;gap:8px;min-height:48px;
-  padding:0 16px;font-weight:750;font-size:14.5px;letter-spacing:-.01em;
-  text-decoration:none;white-space:nowrap;transition:background .15s ease}
-.d-head-ic svg{width:20px;height:20px;fill:currentColor;flex:none}
-.d-head-wa{background:var(--d-brass);color:var(--d-steel)!important}
-.d-head-wa:hover{background:var(--d-brass-h);color:var(--d-steel)!important}
-.d-head-mx{border:1px solid var(--d-steel-3);color:var(--d-on-steel)!important}
-.d-head-mx:hover{border-color:var(--d-brass);color:#fff!important}
+   Знак цветной, в фирменных цветах сервиса (см. m.wa_badge/max_badge) -
+   владелец предпочёл узнаваемость логотипа единству латуни/стали.
+   Кнопка поэтому без своей заливки: два бренда рядом уже дают цвет,
+   заливать их ещё и в латунь/сталь было бы третьим слоем. Цель нажатия
+   48px по WCAG 2.5.8. */
+.d-head-ic{display:inline-flex;align-items:center;gap:9px;min-height:48px;
+  padding:0 12px;font-weight:750;font-size:14.5px;letter-spacing:-.01em;
+  text-decoration:none;white-space:nowrap;color:var(--d-on-steel)!important;
+  transition:background .15s ease}
+.d-head-ic svg{width:27px;height:27px;flex:none}
+.d-head-ic:hover{background:rgba(255,255,255,.08);color:#fff!important}
 @media(max-width:900px){
   /* Подписи уходят, остаются знаки: имя сервиса читается по иконке,
      а полное название лежит в aria-label. */
@@ -639,10 +640,11 @@ table td:only-child,table td:first-child:last-child{font-weight:400}
 }
 
 /* ---------------------------------------------------- плавающий блок связи
-   Латунь это цвет действия во всём дизайн-коде, и блок не делает
-   исключения: зелёный и синий цвета мессенджеров спорили бы и со сталью,
-   и с латунью, а два чужих бренда рядом превратили бы угол экрана
-   в чужую витрину. Сервис узнаётся по форме знака.
+   Прежде обе кнопки заливались латунью/сталью, а сервис узнавался
+   по форме знака, не по цвету: два чужих бренда рядом иначе превратили бы
+   угол экрана в чужую витрину. Владелец решил иначе - знак несёт
+   собственный цвет сервиса (зелёный WhatsApp, градиент MAX), а плашка
+   под ним нейтральная светлая, чтобы значок не спорил ещё и с латунью/сталью.
 
    Каналов два, как и везде на сайте. Блок выезжает один раз после
    первого экрана и дальше стоит: прежняя версия пряталась от блоков
@@ -650,14 +652,12 @@ table td:only-child,table td:first-child:last-child{font-weight:400}
    а не миганием (см. .d-callblock ниже). */
 .d-float{position:fixed;right:16px;bottom:16px;z-index:60;
   display:flex;flex-direction:column;align-items:flex-end;gap:8px}
-.d-float-btn{display:inline-flex;align-items:center;gap:10px;
-  min-height:52px;padding:0 18px 0 14px;text-decoration:none;
-  box-shadow:0 6px 20px rgba(20,26,32,.28);transition:background .15s ease}
-.d-float-wa{background:var(--d-brass);color:var(--d-steel)}
-.d-float-wa:hover{background:var(--d-brass-h);color:var(--d-steel)}
-.d-float-mx{background:var(--d-steel);color:var(--d-on-steel)}
-.d-float-mx:hover{background:var(--d-steel-2);color:#fff}
-.d-float-btn svg{width:24px;height:24px;fill:currentColor;flex:none}
+.d-float-btn{display:inline-flex;align-items:center;gap:11px;
+  min-height:52px;padding:0 20px 0 14px;text-decoration:none;
+  background:var(--d-paper);color:var(--d-ink);
+  box-shadow:0 6px 20px rgba(20,26,32,.28);transition:box-shadow .15s ease}
+.d-float-btn:hover{box-shadow:0 8px 26px rgba(20,26,32,.36)}
+.d-float-btn svg{width:30px;height:30px;flex:none}
 .d-float-btn span{display:flex;flex-direction:column;line-height:1.15;
   font-weight:750;font-size:15px}
 .d-float-btn b{font-weight:600;font-size:12.5px;opacity:.8}
