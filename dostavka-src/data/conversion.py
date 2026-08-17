@@ -186,6 +186,13 @@ PRICE_SETS = {
 
 # --- Семейство для каждой статьи. Явно, без угадывания по подстроке.
 FAM = {
+ # Брендовые страницы: семейство задано явно, чтобы гидроизоляция
+ # не показывала прайс на щебень, как это уже случалось с бордюром.
+ "stati/pronikayushchaya-gidroizolyaciya": "smesi",
+ "stati/kladochnaya-smes-dlya-pechey": "smesi",
+ "stati/plastikovyy-sadovyy-bordyur": "bordyur",
+ "stati/proizvoditeli-trotuarnoy-plitki": "plitka",
+
  # нерудка, расчёты и характеристики
  "stati/frakcii-shchebnya": "nerud",
  "stati/kakoy-shcheben-vybrat": "nerud",
