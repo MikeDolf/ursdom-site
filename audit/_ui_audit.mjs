@@ -98,7 +98,7 @@ const PROBE = () => {
     }
 
     if (r.right > window.innerWidth + 2 && cs.overflowX !== 'auto' && cs.overflowX !== 'scroll') {
-      const p = el.closest('[style*="overflow"], .d-table-wrap');
+      const p = el.closest('[style*="overflow"], .d-table-wrap, .d-fleet-row');
       if (!p) out.overflow.push({ el: sel(el), right: Math.round(r.right), win: window.innerWidth });
     }
   }

@@ -346,15 +346,8 @@ if os.path.exists(_css_path):
     for _c, _n in sorted(_used.items()):
         if _c.startswith("d-") and _c not in _defined:
             bad("(стили)", "css", "класс %r есть на %d страницах, но стилей нет" % (_c, _n))
-    # d-fleet стоит заранее: полоса техники и базы подключена во все
-    # шаблоны через fleet_photos, но список PHOTOS["fleet"] в build.py
-    # пуст, пока владелец не пришлёт годные снимки парка. Макрос ничего
-    # не рендерит при пустом списке, поэтому классы осиротели честно,
-    # а не по ошибке. Как только там появится первая запись, классы
-    # попадут в разметку сами и эту пару можно будет убрать из списка.
-    _staged = {"d-fleet", "d-fleet-row"}
     for _c in sorted(_defined):
-        if _c.startswith("d-") and _c not in _used and _c not in _staged:
+        if _c.startswith("d-") and _c not in _used:
             bad("(стили)", "css", "стиль для %r написан, но такого класса в разметке нет" % _c)
 
 # --- 21. каноникализация: canonical обязан вести на существующую страницу
