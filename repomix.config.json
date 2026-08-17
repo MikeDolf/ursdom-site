@@ -1,0 +1,53 @@
+{
+  "$schema": "https://repomix.com/schemas/latest/schema.json",
+  "output": {
+    "filePath": "repomix-output.xml",
+    "style": "xml",
+    "removeComments": false,
+    "removeEmptyLines": false,
+    "showLineNumbers": false,
+    "directoryStructure": true
+  },
+  "include": [
+    "dostavka-src/**",
+    "generator/**",
+    "_templates/**",
+    "dostavka/assets/**",
+    "assets/**",
+    "audit/*.py",
+    "audit/*.mjs",
+    "audit/*.md",
+    "*.md",
+    "robots.txt",
+    "CNAME"
+  ],
+  "ignore": {
+    "useGitignore": true,
+    "useDefaultPatterns": true,
+    "customPatterns": [
+      "**/__pycache__/**",
+      "**/*.pyc",
+      "repomix-output.xml",
+      "node_modules/**",
+      "audit/in/**",
+      "audit/out/**",
+      "audit/**/*.csv",
+      "audit/**/*.txt",
+      "audit/design-directions.html",
+      "dostavka/**/index.html",
+      "drenazh/**",
+      "livnevka/**",
+      "skvazhina/**",
+      "kontakty/**",
+      "o-proekte/**",
+      "politika/**",
+      "index.html",
+      "404.html",
+      "sitemap.xml",
+      "dostavka/sitemap.xml"
+    ]
+  },
+  "security": {
+    "enableSecurityCheck": true
+  }
+}
