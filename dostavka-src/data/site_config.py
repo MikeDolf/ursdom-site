@@ -56,7 +56,7 @@ SITE = {
 
     # og-обложка (общая с сайтом)
     "og_image": "https://ursdom.ru/img/og-cover.png",
-    "css_version": "8",
+    "css_version": "10",
 }
 
 # гарантии/преимущества (честные, без выдуманных цифр автопарка)

@@ -1,48 +1,46 @@
-/* Плавающий виджет уступает место блокам связи.
+/* Плавающий блок связи: появляется один раз и больше не пропадает.
 
-   Ревью на телефоне показало, что виджет закрывает кнопку «Узнать цену
-   с доставкой» в блоке связи: у неё срезается хвост текста. Фиксированный
-   элемент перекрывает что-нибудь всегда, поэтому задача не убрать
-   перекрытие вообще, а не перекрывать то, что дублирует сам виджет.
+   Что было раньше и почему это переделано. Скрипт следил за блоками
+   связи через IntersectionObserver и убирал виджет с экрана, когда
+   рядом оказывалась форма заявки или блок с кнопками: логика была
+   «не перекрывать то, что виджет и так дублирует». На практике это
+   читалось как поломка. Владелец описал это так: кнопка появляется,
+   а потом пропадает. Он прав, и это важнее исходной причины.
 
-   Без этого скрипта виджет просто остаётся видимым всегда: деградация
-   такая же, как была до правки, ничего не ломается. */
+   Мигающий элемент интерфейса всегда выглядит сбоем, даже когда
+   мигает по правилу: человек не видит правила, он видит, что кнопка
+   была и исчезла, и перестаёт ей доверять. Перекрытие снято иначе,
+   без скрипта: на телефоне блок стоит над липкой панелью, а нижние
+   секции связи получили нижнее поле под его высоту.
+
+   Осталось единственное правило: на первом экране блока нет. Там
+   собственные кнопки крупнее и стоят в потоке, а виджет ложился
+   на цену в стопке сит. После 700 пикселей прокрутки блок выезжает
+   и дальше стоит на месте до конца страницы.
+
+   Без скрипта блок просто виден всегда: класс is-off ставится только
+   отсюда, поэтому отключённый JavaScript ничего не ломает. */
 (function () {
   "use strict";
-  var wa = document.querySelector(".d-wa");
-  if (!wa || !("IntersectionObserver" in window)) return;
+  var el = document.querySelector(".d-float");
+  if (!el) return;
 
-  var zones = document.querySelectorAll("#zayavka, .d-callblock, .d-midcta, footer.d-footer");
-  if (!zones.length) return;
-
-  /* Виджет не показывается на первом экране. Ревью намерило, что
-     на хабе он ложится ровно на цену в стопке сит: это главный элемент
-     первого экрана, и закрывать его кнопкой, дублирующей шапку, глупо.
-     Появляется после того, как человек начал читать. */
   var SHOW_AFTER = 700;
-  var scrolled = false;
+  var shown = false;
+
   function onScroll() {
-    var was = scrolled;
-    scrolled = (window.pageYOffset || document.documentElement.scrollTop) > SHOW_AFTER;
-    if (was !== scrolled) apply();
-  }
-
-  var visible = 0;
-
-  function apply() {
-    wa.classList.toggle("is-off", visible > 0 || !scrolled);
-  }
-  var io = new IntersectionObserver(function (entries) {
-    for (var i = 0; i < entries.length; i++) {
-      visible += entries[i].isIntersecting ? 1 : -1;
+    if (shown) return;
+    if ((window.pageYOffset || document.documentElement.scrollTop) > SHOW_AFTER) {
+      shown = true;
+      el.classList.remove("is-off");
+      /* Слушатель снимается сразу после первого срабатывания:
+         дальше следить не за чем, а лишний обработчик на прокрутке
+         это работа на каждом кадре ради ничего. */
+      window.removeEventListener("scroll", onScroll);
     }
-    if (visible < 0) visible = 0;
-    apply();
-  }, { rootMargin: "-10% 0px -10% 0px" });
+  }
 
-  for (var i = 0; i < zones.length; i++) io.observe(zones[i]);
-
+  el.classList.add("is-off");
   window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();
-  apply();
 })();
