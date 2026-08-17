@@ -65,14 +65,14 @@
        действия, а нажимают на него редко: разговор требует решимости,
        сообщение нет. #}
     <div class="d-head-links">
-      <a class="d-head-ic" href="{{ cfg.wa_url }}" target="_blank" rel="noopener"
-         aria-label="Написать в WhatsApp, {{ cfg.wa_promise }}"
-         onclick="try{ym({{ cfg.metrika_id }},'reachGoal','{{ cfg.goal_wa }}')}catch(e){}">
-        {{ m.wa_badge('head') }}<span>WhatsApp</span></a>
       <a class="d-head-ic" href="{{ cfg.max_url }}" target="_blank" rel="noopener"
-         aria-label="Написать в MAX"
+         aria-label="Написать в MAX, {{ cfg.reply_promise }}"
          onclick="try{ym({{ cfg.metrika_id }},'reachGoal','{{ cfg.goal_contact }}')}catch(e){}">
         {{ m.max_badge('head') }}<span>MAX</span></a>
+      <a class="d-head-ic" href="{{ cfg.wa_url }}" target="_blank" rel="noopener"
+         aria-label="Написать в WhatsApp, {{ cfg.reply_promise }}"
+         onclick="try{ym({{ cfg.metrika_id }},'reachGoal','{{ cfg.goal_wa }}')}catch(e){}">
+        {{ m.wa_badge('head') }}<span>WhatsApp</span></a>
     </div>
   </div>
 </header>
@@ -92,8 +92,8 @@
       <div>
         <h3>Контакты</h3>
         <p><a href="{{ cfg.phone_href }}" onclick="try{ym({{ cfg.metrika_id }},'reachGoal','{{ cfg.goal_contact }}')}catch(e){}">{{ cfg.phone }}</a><br><small>{{ cfg.hours }}</small></p>
-        <p><a href="{{ cfg.wa_url }}" target="_blank" rel="noopener" onclick="try{ym({{ cfg.metrika_id }},'reachGoal','{{ cfg.goal_wa }}')}catch(e){}">Написать в WhatsApp</a></p>
         <p><a href="{{ cfg.max_url }}" target="_blank" rel="noopener" onclick="try{ym({{ cfg.metrika_id }},'reachGoal','{{ cfg.goal_contact }}')}catch(e){}">Написать в MAX</a></p>
+        <p><a href="{{ cfg.wa_url }}" target="_blank" rel="noopener" onclick="try{ym({{ cfg.metrika_id }},'reachGoal','{{ cfg.goal_wa }}')}catch(e){}">Написать в WhatsApp</a></p>
         <p><a href="mailto:{{ cfg.email }}">{{ cfg.email }}</a></p>
         <p><a href="/dostavka/kontakty/">Контакты, адрес и реквизиты</a><br>
         <small>{{ cfg.city }}, {{ cfg.street }}</small></p>
@@ -117,8 +117,8 @@
    висел отдельным кружком: два канала в двух разных местах экрана.
    Теперь оба канала стоят рядом, третьей идёт цена. #}
 {% if not no_cta %}<div class="d-mobilebar">
-  <a class="wa" href="{{ cfg.wa_url }}" target="_blank" rel="noopener" aria-label="Написать в WhatsApp" onclick="try{ym({{ cfg.metrika_id }},'reachGoal','{{ cfg.goal_wa }}')}catch(e){}">{{ m.wa_icon() }}<span>WhatsApp</span></a>
-  <a class="max" href="{{ cfg.max_url }}" target="_blank" rel="noopener" aria-label="Написать в MAX" onclick="try{ym({{ cfg.metrika_id }},'reachGoal','{{ cfg.goal_contact }}')}catch(e){}">{{ m.max_icon() }}<span>MAX</span></a>
+  <a class="max" href="{{ cfg.max_url }}" target="_blank" rel="noopener" aria-label="Написать в MAX, {{ cfg.reply_promise }}" onclick="try{ym({{ cfg.metrika_id }},'reachGoal','{{ cfg.goal_contact }}')}catch(e){}">{{ m.max_icon() }}<span>MAX</span></a>
+  <a class="wa" href="{{ cfg.wa_url }}" target="_blank" rel="noopener" aria-label="Написать в WhatsApp, {{ cfg.reply_promise }}" onclick="try{ym({{ cfg.metrika_id }},'reachGoal','{{ cfg.goal_wa }}')}catch(e){}">{{ m.wa_icon() }}<span>WhatsApp</span></a>
   <a class="call" href="{{ form_anchor|default('#zayavka') }}">Узнать цену</a>
 </div>
 {% endif %}

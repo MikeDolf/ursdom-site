@@ -107,17 +107,22 @@
       под него.
 
    На узком экране остаются два кружка с иконками, подписи уходят
-   в aria-label. #}
+   в aria-label.
+
+   MAX стоит первым, а обещание ответа у обеих кнопок одно: владелец
+   говорит, что пишут в основном в MAX и отвечает он там за те же пять
+   минут. Прежний разнобой («за 5 минут» против «в рабочее время»)
+   и ширину кнопок разводил, и понижал MAX до запасного канала. #}
 {% macro float_block(cfg) -%}
 <div class="d-float" aria-label="Написать нам">
-  <a class="d-float-btn" href="{{ cfg.wa_url }}" target="_blank" rel="noopener"
-     aria-label="Написать в WhatsApp, {{ cfg.wa_promise }}"
-     onclick="try{ym({{ cfg.metrika_id }},'reachGoal','{{ cfg.goal_wa }}')}catch(e){}">
-    {{ wa_badge('float') }}<span>WhatsApp<b>{{ cfg.wa_promise }}</b></span></a>
   <a class="d-float-btn" href="{{ cfg.max_url }}" target="_blank" rel="noopener"
-     aria-label="Написать в MAX"
+     aria-label="Написать в MAX, {{ cfg.reply_promise }}"
      onclick="try{ym({{ cfg.metrika_id }},'reachGoal','{{ cfg.goal_contact }}')}catch(e){}">
-    {{ max_badge('float') }}<span>MAX<b>ответим в рабочее время</b></span></a>
+    {{ max_badge('float') }}<span>MAX<b>{{ cfg.reply_promise }}</b></span></a>
+  <a class="d-float-btn" href="{{ cfg.wa_url }}" target="_blank" rel="noopener"
+     aria-label="Написать в WhatsApp, {{ cfg.reply_promise }}"
+     onclick="try{ym({{ cfg.metrika_id }},'reachGoal','{{ cfg.goal_wa }}')}catch(e){}">
+    {{ wa_badge('float') }}<span>WhatsApp<b>{{ cfg.reply_promise }}</b></span></a>
 </div>
 {%- endmacro %}
 
@@ -206,9 +211,9 @@
 <div class="d-callblock">
   <h3>Написать напрямую</h3>
   <p>Напишите материал, объём и адрес, посчитаем стоимость с доставкой и {{ cfg.callback_promise }}.</p>
-  <a class="d-bigmax" href="{{ cfg.wa_url }}" target="_blank" rel="noopener" onclick="try{ym({{ cfg.metrika_id }},'reachGoal','{{ cfg.goal_wa }}')}catch(e){}">Написать в WhatsApp, {{ cfg.wa_promise }}</a>
+  <a class="d-bigmax" href="{{ cfg.max_url }}" target="_blank" rel="noopener" onclick="try{ym({{ cfg.metrika_id }},'reachGoal','{{ cfg.goal_contact }}')}catch(e){}">Написать в MAX, {{ cfg.reply_promise }}</a>
   <div class="d-cta-row d-center-row">
-    <a class="d-btn d-btn-ghost" href="{{ cfg.max_url }}" target="_blank" rel="noopener" onclick="try{ym({{ cfg.metrika_id }},'reachGoal','{{ cfg.goal_contact }}')}catch(e){}">Написать в MAX</a>
+    <a class="d-btn d-btn-ghost" href="{{ cfg.wa_url }}" target="_blank" rel="noopener" onclick="try{ym({{ cfg.metrika_id }},'reachGoal','{{ cfg.goal_wa }}')}catch(e){}">Написать в WhatsApp</a>
     <a class="d-btn d-btn-ghost" href="#zayavka">Узнать цену с доставкой</a>
   </div>
   <p class="d-note d-note-light">{{ cfg.hours }}. {{ cfg.payment }}</p>
@@ -241,14 +246,15 @@
    сайта и не понимал, куда писать. Владелец просил оба канала, значит
    оба стоят везде, где вообще есть кнопка мессенджера.
 
-   Порядок: WhatsApp латунью как главное действие, потому что именно
-   у него обещано время ответа, MAX контуром рядом. Цели в Метрике
-   разные, поэтому видно, какой канал работает. Третья кнопка
-   необязательна и задаётся вызывающим. #}
+   Порядок: MAX латунью как главное действие, WhatsApp контуром рядом.
+   Раньше было наоборот, потому что время ответа обещал только WhatsApp;
+   теперь обещание общее, а владелец говорит, что пишут в основном в MAX.
+   Цели в Метрике разные, поэтому видно, какой канал работает. Третья
+   кнопка необязательна и задаётся вызывающим. #}
 {% macro channels(cfg, third_href=None, third_text=None, center=False) -%}
 <div class="d-cta-row{% if center %} d-center-row{% endif %}">
-  <a class="d-btn d-btn-max" href="{{ cfg.wa_url }}" target="_blank" rel="noopener" onclick="try{ym({{ cfg.metrika_id }},'reachGoal','{{ cfg.goal_wa }}')}catch(e){}">Написать в WhatsApp</a>
-  <a class="d-btn d-btn-ghost" href="{{ cfg.max_url }}" target="_blank" rel="noopener" onclick="try{ym({{ cfg.metrika_id }},'reachGoal','{{ cfg.goal_contact }}')}catch(e){}">Написать в MAX</a>
+  <a class="d-btn d-btn-max" href="{{ cfg.max_url }}" target="_blank" rel="noopener" onclick="try{ym({{ cfg.metrika_id }},'reachGoal','{{ cfg.goal_contact }}')}catch(e){}">Написать в MAX</a>
+  <a class="d-btn d-btn-ghost" href="{{ cfg.wa_url }}" target="_blank" rel="noopener" onclick="try{ym({{ cfg.metrika_id }},'reachGoal','{{ cfg.goal_wa }}')}catch(e){}">Написать в WhatsApp</a>
 {% if third_href %}  <a class="d-btn d-btn-ghost" href="{{ third_href }}">{{ third_text }}</a>
 {% endif %}</div>
 {%- endmacro %}

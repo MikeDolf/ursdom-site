@@ -650,8 +650,12 @@ table td:only-child,table td:first-child:last-child{font-weight:400}
    первого экрана и дальше стоит: прежняя версия пряталась от блоков
    связи, и это читалось как поломка. Перекрытие снято отступом,
    а не миганием (см. .d-callblock ниже). */
+/* align-items:stretch, а не flex-end: колонка получает ширину самой
+   широкой кнопки, и обе тянутся до неё. Иначе «MAX» и «WhatsApp» дают
+   разную длину строки, и две кнопки друг под другом выходят разной
+   ширины - это и было видно на экране у владельца. */
 .d-float{position:fixed;right:16px;bottom:16px;z-index:60;
-  display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+  display:flex;flex-direction:column;align-items:stretch;gap:8px}
 .d-float-btn{display:inline-flex;align-items:center;gap:11px;
   min-height:52px;padding:0 20px 0 14px;text-decoration:none;
   background:var(--d-paper);color:var(--d-ink);
@@ -817,8 +821,10 @@ footer strong{color:#fff}
 .d-mobilebar svg{width:19px;height:19px;fill:currentColor;flex:none}
 /* Мессенджеры занимают по одной доле, цена полторы: она длиннее словом
    и остаётся главным действием для тех, кто не пишет в мессенджеры. */
-.d-mobilebar .wa{background:var(--d-brass);color:var(--d-steel)}
-.d-mobilebar .max{background:var(--d-steel-2);color:var(--d-on-steel)}
+/* Латунь достаётся MAX, а не WhatsApp: по словам владельца пишут
+   в основном в MAX, и главным действием в панели должен быть он. */
+.d-mobilebar .max{background:var(--d-brass);color:var(--d-steel)}
+.d-mobilebar .wa{background:var(--d-steel-2);color:var(--d-on-steel)}
 .d-mobilebar .call{background:var(--d-steel);color:var(--d-on-steel);flex:1.5}
 @media(max-width:760px){.d-mobilebar{display:flex}body{padding-bottom:56px}}
 @media(max-width:400px){

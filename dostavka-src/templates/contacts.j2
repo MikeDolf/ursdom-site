@@ -7,7 +7,7 @@
   <p>{{ hero_sub }}</p>
   <div class="d-cta-row">
     <a class="d-btn d-btn-max" href="{{ cfg.phone_href }}" onclick="try{ym({{ cfg.metrika_id }},'reachGoal','{{ cfg.goal_contact }}')}catch(e){}">{{ cfg.phone }}</a>
-    <a class="d-btn d-btn-ghost" href="{{ cfg.wa_url }}" target="_blank" rel="noopener" onclick="try{ym({{ cfg.metrika_id }},'reachGoal','{{ cfg.goal_wa }}')}catch(e){}">Написать в WhatsApp</a>
+    <a class="d-btn d-btn-ghost" href="{{ cfg.max_url }}" target="_blank" rel="noopener" onclick="try{ym({{ cfg.metrika_id }},'reachGoal','{{ cfg.goal_contact }}')}catch(e){}">Написать в MAX</a>
   </div>
   </div>
   {{ m.hero_panel("щебень 20-40 мм") }}
@@ -25,8 +25,8 @@
       <tr><th scope="row">Наименование</th><td>{{ cfg.legal_name }}</td></tr>
       <tr><th scope="row">Адрес базы</th><td>{{ cfg.city }}, {{ cfg.street }}</td></tr>
       <tr><th scope="row">Телефон</th><td><a href="{{ cfg.phone_href }}" onclick="try{ym({{ cfg.metrika_id }},'reachGoal','{{ cfg.goal_contact }}')}catch(e){}">{{ cfg.phone }}</a></td></tr>
-      <tr><th scope="row">WhatsApp</th><td><a href="{{ cfg.wa_url }}" target="_blank" rel="noopener" onclick="try{ym({{ cfg.metrika_id }},'reachGoal','{{ cfg.goal_wa }}')}catch(e){}">Написать, {{ cfg.wa_promise }}</a></td></tr>
-      <tr><th scope="row">MAX</th><td><a href="{{ cfg.max_url }}" target="_blank" rel="noopener" onclick="try{ym({{ cfg.metrika_id }},'reachGoal','{{ cfg.goal_contact }}')}catch(e){}">Написать в MAX</a></td></tr>
+      <tr><th scope="row">MAX</th><td><a href="{{ cfg.max_url }}" target="_blank" rel="noopener" onclick="try{ym({{ cfg.metrika_id }},'reachGoal','{{ cfg.goal_contact }}')}catch(e){}">Написать, {{ cfg.reply_promise }}</a></td></tr>
+      <tr><th scope="row">WhatsApp</th><td><a href="{{ cfg.wa_url }}" target="_blank" rel="noopener" onclick="try{ym({{ cfg.metrika_id }},'reachGoal','{{ cfg.goal_wa }}')}catch(e){}">Написать, {{ cfg.reply_promise }}</a></td></tr>
       <tr><th scope="row">Почта</th><td><a href="mailto:{{ cfg.email }}">{{ cfg.email }}</a></td></tr>
       <tr><th scope="row">Режим работы</th><td>{{ cfg.hours }}</td></tr>
       <tr><th scope="row">Оплата</th><td>{{ cfg.payment }}</td></tr>
