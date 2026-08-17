@@ -80,6 +80,7 @@
 <main id="content">
 {% block body %}{% endblock %}
 </main>
+{% if not no_cta %}{{ m.fleet_strip(fleet_photos) }}{% endif %}
 <footer class="d-footer">
   <div class="wrap">
     <div class="d-foot-grid">

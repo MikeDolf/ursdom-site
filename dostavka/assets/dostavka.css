@@ -726,6 +726,22 @@ table td:only-child,table td:first-child:last-child{font-weight:400}
 .d-author p{margin:3px 0 0;font-size:13.5px;color:var(--d-ink-2);line-height:1.45}
 
 /* ---------------------------------------------------- фото */
+/* Полоса доверия. Узкая лента, а не сетка: на 157 страницах
+   полноразмерная галерея повторялась бы слишком навязчиво. Прокрутка
+   вбок на телефоне, обычный ряд на широком экране. */
+.d-fleet{padding:26px 0}
+.d-fleet h2{margin:0 0 14px}
+.d-fleet-row{display:flex;gap:14px;overflow-x:auto;padding-bottom:4px;
+  scrollbar-width:thin}
+.d-fleet-row figure{margin:0;flex:0 0 220px;display:flex;flex-direction:column;gap:8px}
+.d-fleet-row img{width:220px;height:150px;object-fit:cover;
+  background:var(--d-enamel-2);border:1px solid var(--d-rule)}
+.d-fleet-row figcaption{font-size:13px;line-height:1.4;color:var(--d-ink-2)}
+@media(max-width:560px){
+  .d-fleet-row figure{flex:0 0 72vw}
+  .d-fleet-row img{width:100%;height:auto;aspect-ratio:3/2}
+}
+
 .d-photos{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
   gap:18px;margin:22px 0 28px}
 .d-photos figure{margin:0;display:flex;flex-direction:column;gap:10px}

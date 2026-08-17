@@ -114,6 +114,34 @@
 {% endif %}
 {%- endmacro %}
 
+{# Полоса доверия внизу каждой страницы сайта. Не галерея материала,
+   а витрина техники и базы: один и тот же набор снимков подключён
+   централизованно в base.j2, поэтому даже 3-4 годных кадра парка
+   получают выход сразу на все страницы, а не на одну.
+
+   Строка, а не сетка: на 157 страницах полноразмерная галерея
+   повторялась бы слишком навязчиво. Здесь снимки идут узкой лентой
+   под текстом, скорее подпись «вот с кем вы работаете», чем раздел
+   для чтения. Список сознательно короткий: макрос ничего не рендерит
+   при пустом items, поэтому пока снимков нет, страница не меняется. #}
+{% macro fleet_strip(items) -%}
+{% if items %}<section class="d-fleet"><div class="wrap">
+  <h2>Наша техника и база</h2>
+  <div class="d-fleet-row">
+{% for ph in items %}    <figure>
+      <picture>
+{% if ph.webp %}        <source type="image/webp" srcset="{{ ph.webp }}" sizes="(max-width: 700px) 45vw, 220px">
+{% endif %}        <img src="{{ ph.src }}" srcset="{{ ph.jpg }}" sizes="(max-width: 700px) 45vw, 220px"
+             alt="{{ ph.alt }}" width="{{ ph.w }}" height="{{ ph.h }}"
+             loading="lazy" decoding="async">
+      </picture>
+      <figcaption>{{ ph.cap }}</figcaption>
+    </figure>
+{% endfor %}  </div>
+</div></section>
+{% endif %}
+{%- endmacro %}
+
 {% macro lead_form(cfg, subject) -%}
 <form class="d-form" action="https://api.web3forms.com/submit" method="POST">
   <input type="hidden" name="access_key" value="{{ cfg.web3forms_key }}">

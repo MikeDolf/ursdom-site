@@ -348,6 +348,16 @@ PHOTOS = {
          "объём считают по паспортной вместимости кузова, а не по тому, сколько насыпали "
          "с горкой. Горка при первом же торможении осядет и уедет по дороге."),
     ],
+    # Полоса доверия внизу КАЖДОЙ страницы (см. fleet_photos в BASE_CTX
+    # и m.fleet_strip в _macros.j2). Смысл именно здесь, а не в обычной
+    # галерее по одной странице на снимок: владелец прислал за раз
+    # почти столько же брака, сколько годных кадров, и большая часть
+    # присланного это как раз техника и база. Одна полоса, подключённая
+    # централизованно в base.j2, даёт этим немногим годным снимкам
+    # выход на все 157 страниц вместо одной, и не плодит отдельных
+    # галерей под каждый будущий кадр.
+    "fleet": [
+    ],
     "stati/kladochnaya-smes-dlya-pechey": [
         ("terrakot-20kg-etiketka.jpg",
          "Мешок кладочной глино-шамотной жаростойкой смеси Терракот, 20 кг, этикетка с рабочей температурой 1300 градусов",
@@ -423,7 +433,10 @@ def _photo_ctx(slug, items, default_head=None):
                 photos_intro=meta.get("intro"))
 
 
+FLEET_PHOTOS = photos_for("fleet")
+
 BASE_CTX = dict(cfg=SITE, advantages=ADVANTAGES, guarantees=GUARANTEES,
+                fleet_photos=FLEET_PHOTOS,
                 per_cube=PER_CUBE_LIST, price_note=PRICE_NOTE, delivery_note=DELIVERY_NOTE,
                 extra=EXTRA, calc_rows=CALC_ROWS, catalog=CATALOG, sieve=SIEVE,
                 cities=[dict(slug=cs, prep=CITY_FACTS[cs]["prep"],
