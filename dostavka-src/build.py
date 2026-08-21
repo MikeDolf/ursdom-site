@@ -32,7 +32,8 @@ from calc import calc_for, PER_PAGE as _CALC_ON
 # материалами и объёмами: два списка в двух файлах разошлись бы
 # при первом же добавлении страницы.
 from conversion import PRICE_SETS, FAM, ORDER_STEPS, OBJECTIONS
-from prices import PER_CUBE, PRICE_NOTE, DELIVERY_NOTE, CATALOG, SIEVE, HERO_CELL, HERO_FRAC
+from prices import (PER_CUBE, PRICE_NOTE, DELIVERY_NOTE, CATALOG, SIEVE,
+                    HERO_CELL, HERO_FRAC, LOTS, LOTS_HEAD, LOTS_NOTE)
 from cities import CITIES, PESOK_CITIES
 from longreads import LONGREADS, AUTHOR_FULL, UPDATED
 from longreads_core import CORE_LONGREADS
@@ -72,9 +73,8 @@ PER_CUBE_LIST = list(PER_CUBE.items())
 # потому что по названию материал не вычислить: «Отсев 0-5» и «ПГС»
 # не содержат слова, по которому их можно сгруппировать.
 HERO_PRICE_KEYS = {
-    "shcheben": ["Щебень гранитный 5-20", "Щебень гранитный 20-40",
-                 "Щебень известняковый 20-40", "Щебень гравийный 20-40",
-                 "Щебень вторичный (бой)"],
+    "shcheben": ["Щебень 5-20", "Щебень 20-40", "Щебень 40-70",
+                 "Щебень 70-120", "Щебень вторичный (бой)"],
     "pesok": ["Песок карьерный", "Песок речной (мытый)"],
     "otsev": ["Отсев 0-5"],
     "pgs": ["ПГС"],
@@ -822,6 +822,10 @@ for slug, mc in money_cfg.items():
         specs=mat.get("specs"), specs_head=mat.get("specs_head"),
         packs=mat.get("packs"), packs_head=mat.get("packs_head"),
         quick=mat.get("quick"), hero_price=hero_price_for(slug),
+        # Готовые объёмы пока только по щебню: прайс партнёра даёт их
+        # именно для него, а придумывать те же числа под песок нельзя.
+        lots=(LOTS if slug == "shcheben" else None),
+        lots_head=LOTS_HEAD, lots_note=LOTS_NOTE,
         faq=mat["faq"], hero_cell=HERO_CELL.get(slug, 34),
         **_photo_ctx(slug, _ph, "Как выглядит " + mc["mat_vin"]),
         hero_frac=HERO_FRAC.get(slug, "щебень 20-40 мм"),

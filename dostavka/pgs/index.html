@@ -372,13 +372,13 @@
 <section><div class="wrap d-prose">
   <h2 id="ceny">Цены на ПГС с доставкой</h2>
   <div class="d-table-wrap"><table>
-    <caption>Цены ориентировочные по рынку Свердловской области, точную стоимость с доставкой на ваш адрес называем по заявке.</caption>
+    <caption>Цена за материал без доставки, самовывозом. Доставку считаем отдельно по объёму и плечу: готовые объёмы с доставкой в таблице ниже.</caption>
     <thead><tr><th>Материал</th><th>Цена за куб, руб</th></tr></thead>
     <tbody>
-      <tr><td>Щебень гранитный 5-20</td><td>от 1500</td></tr>
-      <tr><td>Щебень гранитный 20-40</td><td>от 1400</td></tr>
-      <tr><td>Щебень известняковый 20-40</td><td>от 900</td></tr>
-      <tr><td>Щебень гравийный 20-40</td><td>от 1100</td></tr>
+      <tr><td>Щебень 5-20</td><td>от 1150</td></tr>
+      <tr><td>Щебень 20-40</td><td>от 770</td></tr>
+      <tr><td>Щебень 40-70</td><td>от 770</td></tr>
+      <tr><td>Щебень 70-120</td><td>от 920</td></tr>
       <tr><td>Щебень вторичный (бой)</td><td>от 600</td></tr>
       <tr><td>Отсев 0-5</td><td>от 500</td></tr>
       <tr><td>Песок карьерный</td><td>от 350</td></tr>
@@ -388,6 +388,9 @@
     </tbody>
   </table></div>
   <p class="d-note">Стоимость доставки зависит от объёма, материала и расстояния до объекта. Чем больше объём за одну машину, тем ниже цена за куб.</p>
+
+
+
 
 
 
@@ -505,9 +508,9 @@
     <div class="d-calc-row">
       <label for="calc-mat">Материал</label>
       <select id="calc-mat">
-        <option value="1400">Щебень гранитный 20-40, 1400 руб/м³</option>
-        <option value="1500">Щебень гранитный 5-20, 1500 руб/м³</option>
-        <option value="900">Щебень известняковый 20-40, 900 руб/м³</option>
+        <option value="770">Щебень 20-40, 770 руб/м³</option>
+        <option value="1150">Щебень 5-20, 1150 руб/м³</option>
+        <option value="770">Щебень 40-70, 770 руб/м³</option>
         <option value="500">Отсев 0-5, 500 руб/м³</option>
         <option value="350">Песок карьерный, 350 руб/м³</option>
         <option value="700">Песок речной мытый, 700 руб/м³</option>
@@ -543,9 +546,9 @@
     </div>
     <output class="d-calc-out" id="calc-out" aria-live="polite">
       <table class="d-calc-table"><tbody>
-        <tr><th scope="row">Материал</th><td class="d-calc-formula">10 м³ × 1 400 руб</td><td>14 000 руб</td></tr>
+        <tr><th scope="row">Материал</th><td class="d-calc-formula">10 м³ × 770 руб</td><td>7 700 руб</td></tr>
         <tr><th scope="row">Доставка</th><td class="d-calc-formula">1 рейс × 25 км × 95 руб</td><td>2 375 руб</td></tr>
-        <tr class="d-calc-total"><th scope="row" colspan="2">Итого предварительно</th><td>16 375 руб</td></tr>
+        <tr class="d-calc-total"><th scope="row" colspan="2">Итого предварительно</th><td>10 075 руб</td></tr>
       </tbody></table>
       <p class="d-note">Кузов 10 м³. Расчёт предварительный,
       точную сумму называем по заявке.</p>
