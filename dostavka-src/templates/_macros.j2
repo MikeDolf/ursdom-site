@@ -142,11 +142,17 @@
    Из двух строк с числами разницу между 20-40 и 40-70 не узнать,
    и её уходят выяснять на другой сайт.
 
-   Шапка карточки: настоящий снимок там, где он у нас есть, и сетка сита
-   в масштабе своей фракции там, где нет. Второе не заглушка. На странице
-   про размер зерна ячейка, нарисованная по формуле от миллиметров,
-   говорит о материале точнее любого стокового камня, а стоковых у нас
-   и не бывает - все снимки на сайте свои.
+   Шапка карточки - настоящий снимок; стоковых на сайте не бывает,
+   все кадры свои. Позиции без снимка рендерятся вовсе без шапки:
+   пустой тёмный прямоугольник хуже, чем карточка пониже соседних,
+   и заметнее - на него сразу хочется найти фотографию.
+
+   Здесь была сетка сита вместо недостающего снимка, и она честно
+   отработала два дня, пока владелец не прислал кадры скалы и щебня
+   70-120 - последних двух позиций без фото. Держать написанные стили
+   ради ветки, в которую больше не заходят, проверка проекта не даёт
+   и правильно делает: вернуть шесть строк из истории дешевле,
+   чем носить мёртвый код.
 
    Ссылка на имени НЕ растянута на карточку псевдоэлементом, в отличие
    от плиток каталога на хабе: здесь внутри есть вторая цель, кнопка
@@ -155,15 +161,15 @@
 {% if head %}  <h2 id="ceny">{{ head }}</h2>
 {% endif %}  <div class="d-shelf">
 {% for r in rows %}    <article class="d-shelf-item">
-      <div class="d-shelf-ph" style="--cell:{{ r.cell }}px">
-{% if r.img %}        <picture>
+{% if r.img %}      <div class="d-shelf-ph">
+        <picture>
           <source type="image/webp" srcset="{{ r.img.webp }}" sizes="(max-width:700px) 50vw, 300px">
           <img src="{{ r.img.src }}" srcset="{{ r.img.jpg }}" sizes="(max-width:700px) 50vw, 300px"
                alt="{{ r.alt }}" width="{{ r.img.w }}" height="{{ r.img.h }}"
                loading="lazy" decoding="async">
         </picture>
-{% else %}        <span class="d-shelf-mesh" aria-hidden="true">{{ stone(1) }}{{ stone(2) }}{{ stone(3) }}</span>
-{% endif %}      </div>
+      </div>
+{% endif %}
       <div class="d-shelf-in">
         <h3 class="d-shelf-name">{% if r.href %}<a href="{{ r.href }}">{{ r.name }}</a>{% else %}{{ r.name }}{% endif %}</h3>
         <p class="d-shelf-use">{{ r.use }}</p>
@@ -218,14 +224,15 @@
 {% if rows %}  <h2>{{ head }}</h2>
   <div class="d-shelf d-shelf-cross">
 {% for r in rows %}    <article class="d-shelf-item">
-      <div class="d-shelf-ph">
-{% if r.img %}        <picture>
+{% if r.img %}      <div class="d-shelf-ph">
+        <picture>
           <source type="image/webp" srcset="{{ r.img.webp }}" sizes="(max-width:700px) 50vw, 260px">
           <img src="{{ r.img.src }}" srcset="{{ r.img.jpg }}" sizes="(max-width:700px) 50vw, 260px"
                alt="{{ r.alt }}" width="{{ r.img.w }}" height="{{ r.img.h }}"
                loading="lazy" decoding="async">
         </picture>
-{% endif %}      </div>
+      </div>
+{% endif %}
       <div class="d-shelf-in">
         <h3 class="d-shelf-name"><a href="{{ r.href }}">{{ r.name }}</a></h3>
         <p class="d-shelf-use">{{ r.use }}</p>

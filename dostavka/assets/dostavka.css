@@ -545,19 +545,6 @@ section{padding:38px 0}
 .d-shelf-ph{height:146px;overflow:hidden;background:#151d26;position:relative;
   border-bottom:1px solid var(--d-rule)}
 .d-shelf-ph img{width:100%;height:100%;object-fit:cover;display:block}
-/* Сетка сита вместо снимка там, где снимка нет. Тот же рисунок, что
-   в герое и в стопке сит, и тот же шаг --cell от реальных миллиметров:
-   карточка 70-120 крупноячеистая, карточка песка почти сплошная. */
-.d-shelf-mesh{position:absolute;inset:0;display:block;
-  border-left:4px solid var(--d-brass);
-  background-image:
-    repeating-linear-gradient(90deg,var(--d-wire-dark) 0 1px,transparent 1px var(--cell,34px)),
-    repeating-linear-gradient(0deg,var(--d-wire-dark) 0 1px,transparent 1px var(--cell,34px));
-  background-position:4px 0,4px 0}
-.d-shelf-mesh .d-sieve-stone{width:calc(var(--cell,34px) * 1.35)}
-.d-shelf-mesh .d-sieve-stone:nth-of-type(1){left:16%;top:20%}
-.d-shelf-mesh .d-sieve-stone:nth-of-type(2){left:52%;top:52%;fill:var(--d-graph)}
-.d-shelf-mesh .d-sieve-stone:nth-of-type(3){left:30%;top:74%;opacity:.68}
 .d-shelf-in{padding:15px 17px 17px;display:flex;flex-direction:column;flex:1}
 .d-shelf-name{margin:0;font-size:16.5px;font-weight:750;letter-spacing:-.022em}
 .d-shelf-name a{color:var(--d-ink);text-decoration:none}
