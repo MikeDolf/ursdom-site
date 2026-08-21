@@ -586,6 +586,12 @@ table td:only-child,table td:first-child:last-child{font-weight:400}
   .d-kv td{border:none;padding:0;font-size:16.5px}
 }
 
+/* Значение в таблице характеристик: моноширинные цифры того же набора,
+   что и все числа на сайте, чтобы столбец читался колонкой, а не текстом. */
+.d-spec-val{font-family:"Mono Num",ui-monospace,monospace;
+  font-size:14.5px;white-space:nowrap;color:var(--d-ink)}
+@media (max-width:560px){.d-spec-val{white-space:normal}}
+
 /* ---------------------------------------------------- материал под задачу
    Разворот таблицы фракций в сторону запроса: «щебень для фундамента»
    вместо «20-40 - фундаменты». Набран не карточками, а колонками
