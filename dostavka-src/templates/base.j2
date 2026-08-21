@@ -71,7 +71,8 @@
 <div class="d-topbar"><div class="wrap">
   <span class="d-topbar-geo">{{ cfg.region }}</span>
   <span class="d-topbar-sep" aria-hidden="true"></span>
-  <span>{{ cfg.hours }}</span>
+  <span class="d-topbar-hours">{{ cfg.hours }}</span>
+  <span class="d-topbar-sale">{{ cfg.discounts }}</span>
   <span class="d-topbar-right">
     <a href="{{ cfg.phone_href }}"
        onclick="try{ym({{ cfg.metrika_id }},'reachGoal','{{ cfg.goal_contact }}')}catch(e){}">{{ cfg.phone }}</a>
@@ -138,10 +139,17 @@
 {# Липкая панель на телефоне. Раньше в ней был только MAX, а WhatsApp
    висел отдельным кружком: два канала в двух разных местах экрана.
    Теперь оба канала стоят рядом, третьей идёт цена. #}
+{# Липкая панель внизу телефона. Здесь были ещё две кнопки, MAX
+   и WhatsApp, и владелец справедливо сказал, что всё дублируется:
+   на одном экране те же два канала стояли трижды - в липкой шапке,
+   в всплывающих кружках справа и здесь. Причём здесь значки были
+   плоские белые, а в шапке и в кружках цветные, то есть один сервис
+   выглядел двумя разными знаками.
+
+   Оставлен один призыв во всю ширину. Мессенджеры никуда не делись:
+   цветные кружки висят прямо над этой панелью и в шапке. #}
 {% if not no_cta %}<div class="d-mobilebar">
-  <a class="max" href="{{ cfg.max_url }}" target="_blank" rel="noopener" aria-label="Написать в MAX, {{ cfg.reply_promise }}" onclick="try{ym({{ cfg.metrika_id }},'reachGoal','{{ cfg.goal_contact }}')}catch(e){}">{{ m.max_icon() }}<span>MAX</span></a>
-  <a class="wa" href="{{ cfg.wa_url }}" target="_blank" rel="noopener" aria-label="Написать в WhatsApp, {{ cfg.reply_promise }}" onclick="try{ym({{ cfg.metrika_id }},'reachGoal','{{ cfg.goal_wa }}')}catch(e){}">{{ m.wa_icon() }}<span>WhatsApp</span></a>
-  <a class="call" href="{{ form_anchor|default('#zayavka') }}">Узнать цену</a>
+  <a class="call" href="{{ form_anchor|default('#zayavka') }}">Узнать цену<b>{{ cfg.discounts }}</b></a>
 </div>
 {% endif %}
 {# Всплывающее окно .d-pop удалено при ревью интерфейса.

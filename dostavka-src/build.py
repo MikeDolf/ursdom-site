@@ -605,7 +605,7 @@ def img_one(rel):
     with Image.open(path) as im:
         w, h = im.size
     webp, jpg = [], []
-    for wd in (800, 1600):
+    for wd in (320, 800, 1600):
         cand = "%s-%d.webp" % (base, wd)
         if os.path.exists(os.path.join(d, cand)):
             webp.append("/dostavka/assets/img/%s/%s %dw" % (sub, cand, wd))
@@ -615,6 +615,117 @@ def img_one(rel):
     jpg.append("/dostavka/assets/img/%s/%s %dw" % (sub, f, w))
     return dict(src="/dostavka/assets/img/%s/%s" % (sub, f), w=w, h=h,
                 webp=", ".join(webp), jpg=", ".join(jpg))
+
+
+# Снимок в боковую панель первого экрана. Раньше там была нарисованная
+# сетка сита: владелец сказал прямо, что схематичные картинки доверия
+# не вызывают, и он прав - на коммерческой странице рисунок вместо
+# товара читается как «фотографии у них нет».
+#
+# Подпись под панелью называет то, что НА СНИМКЕ, а не то, о чём
+# страница. Для страниц без своего материала (ЖБИ, бетон, плитка)
+# снимка материала нет и не будет, поэтому туда идёт техника: она
+# честно относится к доставке любого из них.
+HERO_PHOTO = {
+    "shcheben":           ("shcheben/granit-20-40-shtabel.jpg", "щебень 20-40 мм"),
+    "pesok":              ("pesok/karyernyy-shtabel.jpg", "карьерный песок"),
+    "otsev":              ("otsev/otsev-shtabel.jpg", "отсев 0-5 мм"),
+    "pgs":                ("pgs/pgs-kucha-karyer.jpg", "ПГС"),
+    "keramzit":           ("keramzit/keramzit-nasyp.jpg", "керамзит 5-20 мм"),
+    "graviy":             ("graviy/graviy-hand.jpg", "гравий 20-40 мм"),
+    "skalnyy-grunt":      ("skalnyy-grunt/skala-shtabel.jpg", "скальный грунт"),
+    "butovyy-kamen":      ("shcheben/granit-70-120-shtabel.jpg", "камень 70-120 мм"),
+    "shchps":             ("pgs/pgs-kucha-karyer.jpg", "щебёночно-песчаная смесь"),
+    "asfaltovaya-kroshka": ("bitum-i-asfalt/vygruzka-goryachey-smesi.jpg", "выгрузка смеси"),
+    "granitnaya-kroshka": ("shcheben/granit-5-20-tape.jpg", "гранит 5-20 мм"),
+}
+# Для остальных страниц - по куску слага. Ищется вхождение, а не начало:
+# бетон живёт и в /beton/, и в /stati/marki-betona/, и в /stati/ves-kuba-betona/,
+# а начало слага у них общее только со «stati». Порядок в списке и есть
+# приоритет: первое совпадение выигрывает.
+HERO_PHOTO_PART = [
+    ("plitk",    ("stati/ukladka-trotuarnoy-plitki/podstilayushchiy-sloy.jpg",
+                  "основание под плиткой")),
+    ("beton",    ("fleet/betonomeshalka-sitrak.jpg", "миксер на объекте")),
+    ("asfalt",   ("bitum-i-asfalt/vygruzka-goryachey-smesi.jpg", "выгрузка смеси")),
+    ("bitum",    ("bitum-i-asfalt/vygruzka-goryachey-smesi.jpg", "выгрузка смеси")),
+    ("dresva",   ("skalnyy-grunt/skala-shtabel.jpg", "скальный грунт")),
+    ("skal",     ("skalnyy-grunt/skala-shtabel.jpg", "скальный грунт")),
+    ("pesok",    ("pesok/karyernyy-shtabel.jpg", "карьерный песок")),
+    ("otsev",    ("otsev/otsev-shtabel.jpg", "отсев 0-5 мм")),
+    ("kamaz",    ("stati/skolko-shchebnya-v-kamaze/samosval-karyer.jpg",
+                  "самосвал под погрузкой")),
+    ("dorozhk",  ("stati/dorozhki-na-uchastke/graviynaya-dorozhka-bruschatka.jpg",
+                  "дорожка из гравия")),
+    ("otsyp",    ("stati/chem-otsypat-uchastok/otsypka-dvora-gotovo.jpg",
+                  "отсыпанный двор")),
+    ("shcheben", ("shcheben/granit-20-40-shtabel.jpg", "щебень 20-40 мм")),
+    # ЖБИ и штучные изделия. Самосвал тут был бы неправдой в мелочи,
+    # которую заказчик замечает сразу: кольца, плиты и бордюр не сваливают
+    # кузовом, их снимают манипулятором. Заодно это разводит полсотни
+    # страниц, на которых иначе стоял бы один и тот же кадр выгрузки.
+    ("kolca", ("fleet/manipulyator-zagruzka.jpg", "разгрузка манипулятором")),
+    ("lotk", ("fleet/manipulyator-zagruzka.jpg", "разгрузка манипулятором")),
+    ("plit", ("fleet/manipulyator-zagruzka.jpg", "разгрузка манипулятором")),
+    ("blok", ("fleet/manipulyator-zagruzka.jpg", "разгрузка манипулятором")),
+    ("bordyur", ("fleet/manipulyator-zagruzka.jpg", "разгрузка манипулятором")),
+    ("stupeni", ("fleet/manipulyator-zagruzka.jpg", "разгрузка манипулятором")),
+    ("zabor", ("fleet/manipulyator-zagruzka.jpg", "разгрузка манипулятором")),
+    ("opory", ("fleet/manipulyator-zagruzka.jpg", "разгрузка манипулятором")),
+    ("lyuk", ("fleet/manipulyator-zagruzka.jpg", "разгрузка манипулятором")),
+    ("zhbi", ("fleet/manipulyator-zagruzka.jpg", "разгрузка манипулятором")),
+    ("formy", ("fleet/manipulyator-zagruzka.jpg", "разгрузка манипулятором")),
+    ("dozhdepriemnik", ("fleet/manipulyator-zagruzka.jpg", "разгрузка манипулятором")),
+    ("reshetk", ("fleet/manipulyator-zagruzka.jpg", "разгрузка манипулятором")),
+    # Склад и база: рубричные хабы и всё, что про ассортимент целиком.
+    ("smesi", ("fleet/baza-s-vozduha.jpg", "наша база в Екатеринбурге")),
+    ("himiya", ("fleet/baza-s-vozduha.jpg", "наша база в Екатеринбурге")),
+    ("cement", ("fleet/baza-s-vozduha.jpg", "наша база в Екатеринбурге")),
+    ("blagoustroystvo", ("fleet/baza-s-vozduha.jpg", "наша база в Екатеринбурге")),
+    ("vodootvod", ("fleet/manipulyator-zagruzka.jpg", "разгрузка манипулятором")),
+]
+HERO_PHOTO_DEFAULT = ("fleet/samosval-vygruzka.jpg", "выгрузка самосвалом")
+
+
+def hero_photo_for(slug):
+    """(img, подпись) для панели первого экрана.
+
+    Подпись называет то, что НА СНИМКЕ. Для страницы без своего
+    материала - бетонных колец, плитки, статьи про марки бетона -
+    честного снимка товара у нас нет и не будет, поэтому туда идёт
+    техника: она относится к доставке любого из них и ничего
+    не обещает сверх правды.
+    """
+    pair = HERO_PHOTO.get(slug)
+    if pair is None:
+        for part, p in HERO_PHOTO_PART:
+            if part in slug:
+                pair = p
+                break
+    if pair is None:
+        pair = HERO_PHOTO_DEFAULT
+    path, cap = pair
+    return img_one(path), cap
+
+
+def sieve_rows():
+    """Строки стопки фракций с разобранным снимком.
+
+    В SIEVE лежит путь строкой, а шаблону нужен словарь с srcset.
+    Без этого шага в разметку уезжал сам путь, и вместо снимка
+    страница показывала alt - ровно это и случилось при первой сборке.
+    """
+    out = []
+    for mm, cell, frac, name, use, price, href, photo in SIEVE:
+        out.append((mm, cell, frac, name, use, price, href,
+                    img_one(photo) if photo else None))
+    return out
+
+
+def hero_ctx(slug):
+    """Снимок и подпись для боковой панели первого экрана, одним куском."""
+    img, cap = hero_photo_for(slug)
+    return dict(hero_img=img, hero_cap=cap)
 
 
 def catalog_for(slug):
@@ -725,7 +836,7 @@ FLEET_PHOTOS = photos_for("fleet")
 BASE_CTX = dict(cfg=SITE, advantages=ADVANTAGES, guarantees=GUARANTEES,
                 fleet_photos=FLEET_PHOTOS,
                 per_cube=PER_CUBE_LIST, price_note=PRICE_NOTE, delivery_note=DELIVERY_NOTE,
-                extra=EXTRA, calc_rows=CALC_ROWS, catalog=CATALOG, sieve=SIEVE,
+                extra=EXTRA, calc_rows=CALC_ROWS, catalog=CATALOG, sieve=sieve_rows(),
                 cities=[dict(slug=cs, prep=CITY_FACTS[cs]["prep"],
                              loc=CITY_FACTS[cs]["loc"],
                              name=CITY_FACTS[cs]["name"],
@@ -1017,7 +1128,7 @@ for slug, mc in money_cfg.items():
         quarries_head=PESOK_QUARRIES_HEAD, quarries_note=PESOK_QUARRIES_NOTE,
         faq=mat["faq"], hero_cell=HERO_CELL.get(slug, 34),
         **_photo_ctx(slug, _ph, "Как выглядит " + mc["mat_vin"]),
-        hero_frac=HERO_FRAC.get(slug, "щебень 20-40 мм"),
+        **hero_ctx(slug),
         related_links=list(dict.fromkeys(rel + [(f"/dostavka/shcheben/{o['slug']}/", f"Доставка щебня {o['prep']}") for o in CITIES[:6]]))[:14])
     pages.append((url, htmlp, "money"))
 
@@ -1064,7 +1175,7 @@ for c in CITIES:
            ("/dostavka/otsev/", "Отсев 0-5"),
            ("/dostavka/stati/cena-kuba-s-dostavkoy/", "Цена за куб с доставкой")] + others
     htmlp = env.get_template("geo.j2").render(
-        **BASE_CTX, city=c, canonical=DOMAIN + url, crumbs_html=crumbs(crumb_items), jsonld=jl,
+        **BASE_CTX, **hero_ctx("shcheben"), city=c, canonical=DOMAIN + url, crumbs_html=crumbs(crumb_items), jsonld=jl,
         title=f"Доставка щебня {c['prep']}: цена за куб самосвалом",
         desc=f"Доставка щебня {c['prep']} и в район ({c['dist']}). Гранит, известняк, фракции 20-40, 40-70. Цена за куб, оплата после выгрузки.",
         h1=f"Доставка щебня {c['prep']}",
@@ -1093,7 +1204,7 @@ for c in PESOK_CITIES:
                    f"Принимаете машину на объекте и проверяете объём. {SITE['payment']}"]},
     ]
     htmlp = env.get_template("geoplus.j2").render(
-        **BASE_CTX, place=c, canonical=DOMAIN + url, crumbs_html=crumbs(crumb_items), jsonld=jl,
+        **BASE_CTX, **hero_ctx("pesok"), place=c, canonical=DOMAIN + url, crumbs_html=crumbs(crumb_items), jsonld=jl,
         title=f"Доставка песка {c['prep']}: цена за куб, карьерный и речной",
         desc=f"Доставка песка {c['prep']} и в район ({c['dist']}). Карьерный под отсыпку, речной мытый под бетон. Цена за куб, оплата после выгрузки.",
         h1=f"Доставка песка {c['prep']}",
@@ -1207,7 +1318,7 @@ for a in LONGREADS:
         **BASE_CTX, author=AUTHOR_FULL, updated=UPDATED,
         canonical=DOMAIN + url, crumbs_html=crumbs(crumb_items), jsonld=jl,
         hero_cell=LR_HERO.get(a["slug"], (34, None))[0],
-        hero_frac=LR_HERO.get(a["slug"], (34, "щебень 20-40 мм"))[1],
+        **hero_ctx(a["slug"]),
         title=a["title"], desc=a["desc"], h1=a["h1"], hero_sub=a["hero_sub"], lead=a["lead"],
         sections=a["sections"], faq=a["faq"], subject=a["subject"], form_head=a["form_head"],
         cta_after=a["cta_after"], cta_head=a["cta_head"], cta_text=a["cta_text"],
@@ -1246,7 +1357,7 @@ for slug, mc in MONEY_CFG_EXT.items():
         intro=mat["intro"], types=mat["types"], fractions=mat.get("fractions"),
         faq=mat["faq"], related_links=list(dict.fromkeys(rel))[:14], hero_cell=HERO_CELL.get(slug, 34),
         **_photo_ctx(slug, photos_for(slug), "Как выглядит " + mc["mat_vin"]),
-        hero_frac=HERO_FRAC.get(slug, "щебень 20-40 мм"))
+        **hero_ctx(slug))
     pages.append((url, htmlp, "money-ext"))
 
 # ---- ТОВАРНЫЕ СТРАНИЦЫ ПОД КОММЕРЧЕСКИЙ СПРОС БЕЗ СВОЕГО ТОВАРА ----
@@ -1314,7 +1425,7 @@ for slug, mc in _ZHBI_ALL.items():
         # позиций, макрос в этом случае не рендерит ничего.
         **_photo_ctx(slug, photos_for(slug)),
         related_links=list(dict.fromkeys(rel))[:14],
-        hero_cell=ZHBI_CELL.get(slug, 34), hero_frac=ZHBI_FRAC.get(slug, "щебень 20-40 мм"),
+        hero_cell=ZHBI_CELL.get(slug, 34), **hero_ctx(slug),
         price_note="Цены ориентировочные по рынку Свердловской области. "
                    "Товар есть в наличии: размер и срок отгрузки подтверждаем по заявке.",
         delivery_note="Доставку считаем отдельно: она зависит от веса, габарита и плеча. "
@@ -1483,7 +1594,7 @@ for city_slug, mats in MATRIX.items():
     # (см. _lsi_places в geo_matrix). Отдельного списка посёлков в текст
     # не добавляем: facts["areas"] уже перечисляет их в блоке «Куда возим».
     htmlp = env.get_template("geo2.j2").render(
-        **BASE_CTX, canonical=DOMAIN + url, crumbs_html=crumbs(crumb_items),
+        **BASE_CTX, **hero_ctx("shcheben"), canonical=DOMAIN + url, crumbs_html=crumbs(crumb_items),
         jsonld=jl, title=title, desc=desc, h1=h1, hero_sub=hero,
         **_lsi, ground_tag=_ground_tag,
         city=dict(facts, dist=dist), dist=dist, mat_blocks=mat_blocks,
@@ -1510,7 +1621,7 @@ for hb in HUBS:
                      "url": DOMAIN + it["href"], "name": it["name"]}
                     for i, it in enumerate(hb["items"])]})
     htmlp = env.get_template("hub_rubric.j2").render(
-        **BASE_CTX, canonical=canonical(url), crumbs_html=crumbs(crumb_items),
+        **BASE_CTX, **hero_ctx(""), canonical=canonical(url), crumbs_html=crumbs(crumb_items),
         jsonld=jl, title=hb["title"], desc=hb["desc"], h1=hb["h1"],
         hero_sub=hb["hero_sub"], lead=hb["lead"], anchor=hb["anchor"],
         items_head=hb["items_head"], items=hb["items"],
@@ -1594,7 +1705,9 @@ _c_sections = [
 ]
 jl = graph(localbusiness(), bc_schema(crumb_items), faq_schema(_c_faq))
 htmlp = env.get_template("contacts.j2").render(
-    **BASE_CTX, canonical=canonical(url), crumbs_html=crumbs(crumb_items), jsonld=jl,
+    # На контактах в панели база с воздуха: страница про то, где мы стоим.
+    **BASE_CTX, hero_img=img_one("fleet/baza-s-vozduha.jpg"),
+    hero_cap="наша база в Екатеринбурге", canonical=canonical(url), crumbs_html=crumbs(crumb_items), jsonld=jl,
     title="Контакты Щебень-Урал в Екатеринбурге: адрес, телефон, режим работы",
     desc=("Контакты %s: база в Екатеринбурге, %s, телефон %s, режим работы %s. "
           "Честный объём по кузову, оплата после выгрузки."

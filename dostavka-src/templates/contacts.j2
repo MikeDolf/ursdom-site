@@ -10,7 +10,7 @@
     <a class="d-btn d-btn-ghost" href="{{ cfg.max_url }}" target="_blank" rel="noopener" onclick="try{ym({{ cfg.metrika_id }},'reachGoal','{{ cfg.goal_contact }}')}catch(e){}">Написать в MAX</a>
   </div>
   </div>
-  {{ m.hero_panel("щебень 20-40 мм") }}
+  {{ m.hero_panel(hero_cap|default("выгрузка самосвалом", true), hero_img|default(none, true)) }}
 </div></section>
 
 {# Реквизиты и адрес в семантической разметке. Микроформат h-card

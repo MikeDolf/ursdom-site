@@ -14,7 +14,7 @@
 {% endif %}
   {{ m.channels(cfg, "#zayavka", "Рассчитать заявку") }}
   </div>
-  {{ m.hero_panel(hero_frac|default("щебень 20-40 мм")) }}
+  {{ m.hero_panel(hero_cap|default("щебень 20-40 мм", true), hero_img|default(none, true)) }}
 </div></section>
 
 {# Быстрые ссылки. Человек с готовым запросом («мне нужен 20-40»)

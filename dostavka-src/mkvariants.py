@@ -31,10 +31,14 @@ with Image.open(SRC) as im:
                        progressive=True)
     fit(im, 1200).save(DST + "-1200.jpg", "JPEG", quality=82, optimize=True,
                        progressive=True)
+    # 320 - для миниатюр: стопка сит на хабе показывает снимок
+    # шириной 104 пикселя, и 800-й вариант там весит вдесятеро больше
+    # нужного, да ещё в первом экране.
+    fit(im, 320).save(DST + "-320.webp", "WEBP", quality=80, method=6)
     fit(im, 800).save(DST + "-800.webp", "WEBP", quality=78, method=6)
     fit(im, 1600).save(DST + "-1600.webp", "WEBP", quality=78, method=6)
 
-for suf in (".jpg", "-1200.jpg", "-800.webp", "-1600.webp"):
+for suf in (".jpg", "-1200.jpg", "-320.webp", "-800.webp", "-1600.webp"):
     p = DST + suf
     with Image.open(p) as v:
         print("%-22s %-11s %5d КБ" % (os.path.basename(p), "%dx%d" % v.size,

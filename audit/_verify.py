@@ -396,12 +396,21 @@ if os.path.exists(_rob):
 # всё выглядит правильно. Проверяем каждый URL из srcset на диске.
 # Пиксель Метрики исключён: у него нет размеров и не должно быть lazy,
 # отложенная загрузка счётчика means отложенная статистика.
+#
+# loading проверяется на наличие ЯВНОГО значения, а не на строгий lazy.
+# Раньше требовался именно lazy, и это было верно, пока все снимки лежали
+# в галереях ниже первого экрана. Теперь снимок есть и в самом первом
+# экране - в боковой панели героя и в стопке фракций на хабе, - а lazy
+# на видимой сразу картинке откладывает то, что и есть LCP страницы.
+# Поэтому: либо lazy, либо eager, но выбор должен быть сделан руками.
 for _u, _h in pages.items():
     for _m in re.finditer(r"<img\b[^>]*>", _h):
         _tag = _m.group(0)
         if "mc.yandex.ru" in _tag:
             continue
-        for _attr in ('loading="lazy"', 'decoding="async"', "width=", "height=", "alt="):
+        if 'loading="lazy"' not in _tag and 'loading="eager"' not in _tag:
+            bad(_u, "картинки", "у <img> нет loading (lazy или eager): %s" % _tag[:90])
+        for _attr in ('decoding="async"', "width=", "height=", "alt="):
             if _attr not in _tag:
                 bad(_u, "картинки", "у <img> нет %s: %s" % (_attr, _tag[:90]))
     for _m in re.finditer(r'srcset="([^"]+)"', _h):
