@@ -192,6 +192,36 @@ section ul:not(.d-list):not(.d-related ul):not(.d-steps) li::before{
 /* Цифры выравниваются в колонку везде, где их сравнивают. */
 table,.d-sieve,.d-cat-price{font-variant-numeric:tabular-nums}
 
+/* ---------------------------------------------------- служебная полоса
+   Тонкая строка над шапкой: регион, режим, телефон, почта. Набрана
+   на стали-2, чтобы читалась как часть корпуса, а не как ещё один
+   блок содержимого, и мельче шапки - это справка, а не действие.
+
+   Не липкая, в отличие от шапки: прилипать должно то, чем пользуются
+   на любом экране, а адрес почты нужен один раз. */
+.d-topbar{background:var(--d-steel-2);border-bottom:1px solid var(--d-steel-3);
+  font-size:13px;color:var(--d-on-steel-2)}
+.d-topbar .wrap{display:flex;align-items:center;gap:14px;
+  padding:0 22px;min-height:48px;flex-wrap:wrap}
+.d-topbar-geo{color:var(--d-on-steel);font-weight:650}
+.d-topbar-sep{width:1px;height:13px;background:var(--d-steel-3);flex:0 0 auto}
+.d-topbar-right{margin-left:auto;display:flex;align-items:center;gap:16px}
+/* Ссылки тянутся на всю высоту полосы. Аудит отрисовки поймал их
+   на 20 пикселях: строка выглядела как подпись, а была телефоном,
+   по которому звонят с телефона же. Отсюда и высота полосы 48 -
+   она задана не полосой, а тем, что в ней нажимают. */
+.d-topbar a{color:var(--d-on-steel-2);text-decoration:none;
+  display:inline-flex;align-items:center;min-height:48px}
+.d-topbar a:hover{color:var(--d-brass)}
+/* Телефон на узком экране остаётся, почта уходит: адрес почты в одну
+   строку с остальным не влезает и переносом ломает полосу на три ряда,
+   а написать письмо с телефона хотят единицы - для них есть подвал. */
+@media(max-width:720px){
+  .d-topbar .wrap{gap:10px;font-size:12.5px}
+  .d-topbar-geo,.d-topbar-sep{display:none}
+  .d-topbar-right a[href^="mailto"]{display:none}
+}
+
 /* ---------------------------------------------------- шапка */
 .d-header{background:var(--d-steel);position:sticky;top:0;z-index:40;
   border-bottom:1px solid var(--d-steel-3)}
@@ -487,6 +517,74 @@ section{padding:38px 0}
   border-right:2px solid currentColor;border-top:2px solid currentColor;
   transform:rotate(45deg);transition:transform .16s ease}
 .d-cat-card:hover .d-cat-go::after{transform:rotate(45deg) translate(2px,-2px)}
+
+/* ---------------------------------------------------- витрина прайса
+   Прайс, у которого есть лицо. Раньше здесь стояла таблица из двух
+   колонок: она отвечала на «сколько стоит» и молчала на «мне такой
+   или другой», а именно со вторым вопросом человек и приходит.
+
+   Геометрия та же, что у плиток каталога на хабе: разлиновка вместо
+   зазора, светлая бумага на графитовой сетке, нулевые скругления.
+   Карточка не парит и тени не отбрасывает - в этом мире ничего
+   не парит, лотки утоплены в корпус.
+
+   Шапка карточки одной высоты у всех: снимок обрезается по object-fit,
+   а сетка сита рисуется на ту же высоту. Без фиксированной высоты
+   ряд карточек с разными пропорциями снимков идёт лесенкой. */
+/* Разлиновка нарисована кольцом на самой карточке, а не заливкой
+   контейнера под зазором. Заливка проще, но позиций в прайсе десять,
+   а колонок четыре: последний ряд оставался с двумя пустыми клетками,
+   и они светились серым прямоугольником - дыра на месте товара.
+   Кольца соседних карточек смыкаются в зазоре в одну линию, а там,
+   где карточки нет, нет и линии. */
+.d-shelf{display:grid;grid-template-columns:repeat(auto-fill,minmax(238px,1fr));
+  gap:1px;margin:0 0 20px}
+.d-shelf-item{background:var(--d-paper);display:flex;flex-direction:column;
+  box-shadow:0 0 0 1px var(--d-rule);transition:background .16s ease}
+.d-shelf-item:hover{background:#fff}
+.d-shelf-ph{height:146px;overflow:hidden;background:#151d26;position:relative;
+  border-bottom:1px solid var(--d-rule)}
+.d-shelf-ph img{width:100%;height:100%;object-fit:cover;display:block}
+/* Сетка сита вместо снимка там, где снимка нет. Тот же рисунок, что
+   в герое и в стопке сит, и тот же шаг --cell от реальных миллиметров:
+   карточка 70-120 крупноячеистая, карточка песка почти сплошная. */
+.d-shelf-mesh{position:absolute;inset:0;display:block;
+  border-left:4px solid var(--d-brass);
+  background-image:
+    repeating-linear-gradient(90deg,var(--d-wire-dark) 0 1px,transparent 1px var(--cell,34px)),
+    repeating-linear-gradient(0deg,var(--d-wire-dark) 0 1px,transparent 1px var(--cell,34px));
+  background-position:4px 0,4px 0}
+.d-shelf-mesh .d-sieve-stone{width:calc(var(--cell,34px) * 1.35)}
+.d-shelf-mesh .d-sieve-stone:nth-of-type(1){left:16%;top:20%}
+.d-shelf-mesh .d-sieve-stone:nth-of-type(2){left:52%;top:52%;fill:var(--d-graph)}
+.d-shelf-mesh .d-sieve-stone:nth-of-type(3){left:30%;top:74%;opacity:.68}
+.d-shelf-in{padding:15px 17px 17px;display:flex;flex-direction:column;flex:1}
+.d-shelf-name{margin:0;font-size:16.5px;font-weight:750;letter-spacing:-.022em}
+.d-shelf-name a{color:var(--d-ink);text-decoration:none}
+.d-shelf-item:hover .d-shelf-name a{color:var(--d-brass-text);
+  text-decoration:underline}
+.d-shelf-use{margin:7px 0 0;font-size:14px;color:var(--d-ink-2);line-height:1.45}
+/* Цена прижата к низу колонки: у карточек разной длины текста числа
+   выстраиваются в одну линию по ряду, а не пляшут по вертикали. */
+.d-shelf-price{margin:13px 0 0!important;padding-top:12px;margin-top:auto!important;
+  border-top:1px solid var(--d-rule);
+  font-size:23px;font-weight:800;letter-spacing:-.035em;color:var(--d-ink);
+  line-height:1.05;font-variant-numeric:tabular-nums}
+.d-shelf-price small{font-size:12.5px;font-weight:650;color:var(--d-ink-2);
+  letter-spacing:0;margin-left:5px}
+.d-shelf-buy{margin-top:11px;text-align:center;padding:12px 14px;font-size:15px}
+
+@media(max-width:700px){
+  /* Две колонки, а не одна: карточки здесь короткие, и в один столбец
+     десять строк прайса растягиваются на четыре экрана. */
+  .d-shelf{grid-template-columns:1fr 1fr}
+  .d-shelf-ph{height:112px}
+  .d-shelf-in{padding:12px 13px 14px}
+  .d-shelf-name{font-size:15px}
+  .d-shelf-use{font-size:13px}
+  .d-shelf-price{font-size:20px}
+}
+@media(max-width:380px){.d-shelf{grid-template-columns:1fr}}
 
 /* ---------------------------------------------------- таблицы
    Ведомость показаний. Шапка стальная, разлиновка тонкая,
@@ -798,14 +896,94 @@ table td:only-child,table td:first-child:last-child{font-weight:400}
 
 /* Шаги пронумерованы, потому что порядок здесь и есть содержание:
    пока не назван объём, нельзя назвать цену. */
-.d-steps{counter-reset:s;list-style:none;padding:0;margin:0 0 20px;
-  border-top:1px solid var(--d-rule)}
-.d-steps li{counter-increment:s;position:relative;padding:13px 0 13px 42px;
-  font-size:16px;border-bottom:1px solid var(--d-rule)}
-.d-steps li::before{content:counter(s);position:absolute;left:0;top:13px;
-  width:26px;height:26px;background:var(--d-steel);color:var(--d-brass);
-  font-size:13.5px;font-weight:750;display:flex;align-items:center;
-  justify-content:center}
+/* Порядок заказа лентой, а не столбцом. В столбце четыре шага читались
+   как ещё один список на странице, где списков и без того много,
+   и «как это вообще происходит» приходилось вычитывать. Лентой видно
+   сразу: шагов четыре, они короткие, деньги в конце.
+
+   Номер стоит над текстом, а не слева от него: в четырёх узких колонках
+   боковой номер съедает треть ширины строки. На узком экране лента
+   складывается обратно в столбец с номером слева - там это уместно. */
+.d-steps{counter-reset:s;list-style:none;padding:0;margin:0 0 22px;
+  display:grid;grid-template-columns:repeat(4,1fr);gap:1px;
+  background:var(--d-rule);border:1px solid var(--d-rule)}
+.d-steps li{counter-increment:s;position:relative;background:var(--d-paper);
+  padding:17px 17px 18px;font-size:15px;line-height:1.5}
+.d-steps li::before{content:counter(s);display:flex;align-items:center;
+  justify-content:center;width:30px;height:30px;margin-bottom:11px;
+  background:var(--d-steel);color:var(--d-brass);
+  font-size:14.5px;font-weight:750}
+/* Латунная кромка сверху: полоса читается как шкала прибора, а колонки
+   на ней - как деления. Без неё четыре светлых прямоугольника
+   не отличаются от блока преимуществ этажом ниже. */
+.d-steps li::after{content:"";position:absolute;left:0;right:0;top:0;height:3px;
+  background:var(--d-brass);opacity:.28}
+.d-steps li:first-child::after{opacity:1}
+
+@media(max-width:900px){.d-steps{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){
+  .d-steps{grid-template-columns:1fr}
+  .d-steps li{padding:13px 15px 14px 52px}
+  .d-steps li::before{position:absolute;left:15px;top:14px;margin:0;
+    width:26px;height:26px}
+  .d-steps li::after{display:none}
+}
+
+/* ---------------------------------------------------- оплата
+   «Как платить» на этом рынке спрашивают раньше, чем «сколько»:
+   за вопросом стоит страх предоплаты незнакомой конторе. Раньше
+   ответ был одной строкой в условиях доставки и там терялся. */
+.d-pay{list-style:none!important;padding:0!important;margin:0 0 26px!important;
+  display:grid;grid-template-columns:repeat(4,1fr);gap:1px;
+  background:var(--d-rule);border:1px solid var(--d-rule)}
+.d-pay-item{background:var(--d-paper);padding:17px 18px 18px;
+  margin:0!important;padding-left:18px!important}
+/* Ромб-маркер общего списка тут не нужен: у карточки своя кромка. */
+.d-pay-item::before{display:none!important}
+.d-pay-item strong{display:block;font-size:15.5px;font-weight:750;
+  letter-spacing:-.02em;border-left:3px solid var(--d-brass);
+  padding-left:11px;margin-bottom:9px}
+.d-pay-item span{display:block;font-size:14px;color:var(--d-ink-2);line-height:1.5}
+@media(max-width:900px){.d-pay{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.d-pay{grid-template-columns:1fr}}
+
+/* ---------------------------------------------------- зоны доставки
+   Вместо карты области - то, что на карте ищут: своё направление,
+   плечо в километрах и что оно значит для объёма заказа. Города
+   ссылками, поэтому блок работает и списком населённых пунктов,
+   отсортированным по признаку, который двигает цену. */
+.d-zones{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;
+  background:var(--d-rule);border:1px solid var(--d-rule);margin:0 0 22px}
+.d-zone{background:var(--d-paper);padding:16px 17px 18px;min-width:0}
+.d-zone-h{margin:0 0 3px!important;font-size:15.5px;font-weight:750;
+  letter-spacing:-.022em}
+.d-zone-band{display:block;margin-top:3px;font-size:19px;font-weight:800;
+  letter-spacing:-.03em;color:var(--d-brass-text);
+  font-variant-numeric:tabular-nums}
+.d-zone-note{margin:9px 0 12px!important;font-size:13.5px;color:var(--d-ink-2);
+  line-height:1.45;padding-bottom:12px;border-bottom:1px solid var(--d-rule)}
+.d-zone-list{list-style:none!important;margin:0!important;padding:0!important}
+.d-zone-list li{margin:0!important;padding:0!important;
+  display:flex;align-items:center;justify-content:space-between;gap:10px}
+.d-zone-list li::before{display:none!important}
+/* 48 пикселей высоты на строку города: это список ссылок, по которому
+   тычут пальцем с телефона, а не оглавление для чтения глазами.
+   Колонка выходит высокой, и это правильная цена за попадание. */
+.d-zone-list a{font-size:14.5px;text-decoration:none;color:var(--d-ink);
+  flex:1 1 auto;display:flex;align-items:center;min-height:48px}
+.d-zone-list a:hover{color:var(--d-brass-text);text-decoration:underline}
+/* Километраж моноширинными: колонка чисел выравнивается сама. */
+.d-zone-list i{font-style:normal;font-size:12.5px;color:var(--d-ink-2);
+  font-variant-numeric:tabular-nums;flex:0 0 auto;white-space:nowrap}
+@media(max-width:900px){.d-zones{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.d-zones{grid-template-columns:1fr}}
+
+/* Перекрёстная витрина в конце страницы: та же карточка, но без кнопки
+   и потому ниже - это выход со страницы, а не покупка на ней. */
+.d-shelf-cross{grid-template-columns:repeat(4,1fr)}
+.d-shelf-cross .d-shelf-ph{height:124px}
+.d-shelf-cross .d-shelf-price{font-size:20px}
+@media(max-width:900px){.d-shelf-cross{grid-template-columns:1fr 1fr}}
 
 /* ---------------------------------------------------- автор */
 .d-author{display:flex;gap:15px;align-items:center;background:var(--d-paper);

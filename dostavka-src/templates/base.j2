@@ -62,6 +62,22 @@
   carrying its provenance.
 -->
 <a class="d-skip" href="#content">К содержимому</a>
+{# Служебная полоса. Три факта, которые человек ищет глазами в первую
+   секунду и которые до этого лежали только в подвале: где мы работаем,
+   когда работаем и куда писать письмом. Полоса не липкая - она
+   уезжает вместе со страницей, а прилипает ниже сама шапка, где
+   действие. Телефон здесь намеренно повторён: владелец просил
+   держать его на виду, а в шапке место занято мессенджерами. #}
+<div class="d-topbar"><div class="wrap">
+  <span class="d-topbar-geo">{{ cfg.region }}</span>
+  <span class="d-topbar-sep" aria-hidden="true"></span>
+  <span>{{ cfg.hours }}</span>
+  <span class="d-topbar-right">
+    <a href="{{ cfg.phone_href }}"
+       onclick="try{ym({{ cfg.metrika_id }},'reachGoal','{{ cfg.goal_contact }}')}catch(e){}">{{ cfg.phone }}</a>
+    <a href="mailto:{{ cfg.email }}">{{ cfg.email }}</a>
+  </span>
+</div></div>
 <header class="d-header">
   <div class="wrap">
     <a class="d-logo" href="/dostavka/">Щебень<span>-Урал</span></a>

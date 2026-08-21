@@ -11,7 +11,7 @@ ROOT = os.path.dirname(HERE)
 OUT = os.path.join(ROOT, "dostavka")
 sys.path.insert(0, os.path.join(HERE, "data"))
 
-from site_config import SITE, ADVANTAGES, GUARANTEES
+from site_config import SITE, ADVANTAGES, GUARANTEES, PAYMENT
 from products import MATERIALS, EXTRA
 from products_ext import MATERIALS_EXT, MONEY_CFG_EXT
 from products_zhbi import MATERIALS_ZHBI, MONEY_CFG_ZHBI
@@ -34,6 +34,7 @@ from calc import calc_for, PER_PAGE as _CALC_ON
 from conversion import PRICE_SETS, FAM, ORDER_STEPS, OBJECTIONS
 from prices import (PER_CUBE, PRICE_NOTE, DELIVERY_NOTE, CATALOG, SIEVE,
                     HERO_CELL, HERO_FRAC, LOTS, LOTS_HEAD, LOTS_NOTE,
+                    CATALOG_META, CATALOG_FIRST, CROSS,
                     PESOK_QUARRIES, PESOK_QUARRIES_HEAD, PESOK_QUARRIES_NOTE)
 from cities import CITIES, PESOK_CITIES
 from longreads import LONGREADS, AUTHOR_FULL, UPDATED
@@ -531,6 +532,121 @@ def photos_for(slug):
     return out
 
 
+def img_one(rel):
+    """Один снимок по пути вида «shcheben/granit-20-40-macro.jpg».
+
+    Отличается от photos_for тем, что берёт файл по прямому пути, а не
+    из реестра PHOTOS по слагу страницы: витрина прайса на странице песка
+    показывает и щебень, то есть снимки из чужих папок.
+
+    Варианты подставляются, только если файл действительно лежит рядом,
+    по тому же правилу, что и в photos_for: ссылка на несуществующий
+    вариант в srcset ломает картинку молча.
+    """
+    sub, f = rel.split("/", 1)
+    base = os.path.splitext(f)[0]
+    d = os.path.join(OUT, "assets", "img", sub)
+    path = os.path.join(d, f)
+    if not os.path.exists(path):
+        return None
+    with Image.open(path) as im:
+        w, h = im.size
+    webp, jpg = [], []
+    for wd in (800, 1600):
+        cand = "%s-%d.webp" % (base, wd)
+        if os.path.exists(os.path.join(d, cand)):
+            webp.append("/dostavka/assets/img/%s/%s %dw" % (sub, cand, wd))
+    cand = "%s-1200.jpg" % base
+    if os.path.exists(os.path.join(d, cand)):
+        jpg.append("/dostavka/assets/img/%s/%s 1200w" % (sub, cand))
+    jpg.append("/dostavka/assets/img/%s/%s %dw" % (sub, f, w))
+    return dict(src="/dostavka/assets/img/%s/%s" % (sub, f), w=w, h=h,
+                webp=", ".join(webp), jpg=", ".join(jpg))
+
+
+def catalog_for(slug):
+    """Витрина прайса карточками: цена, снимок, применение, кнопка.
+
+    Цена берётся из PER_CUBE и здесь не дублируется, остальное
+    из CATALOG_META по тому же ключу. Строка без метаданных
+    в витрину не попадает - это видно сразу и лечится ключом,
+    а не молчаливым пропуском цены.
+
+    Порядок: сначала строки материала этой страницы, потом все
+    остальные. Человек, пришедший за песком, видит песок первым.
+    """
+    first = CATALOG_FIRST.get(slug, ())
+    rows = []
+    for name, price in PER_CUBE.items():
+        meta = CATALOG_META.get(name)
+        if not meta:
+            continue
+        photo, href, cell, use = meta
+        rows.append(dict(name=name, price=price, href=href, cell=cell, use=use,
+                         own=any(name.startswith(p) for p in first),
+                         img=img_one(photo) if photo else None,
+                         alt=("%s, фотография материала" % name) if photo else None))
+    rows.sort(key=lambda r: not r["own"])
+    return rows
+
+
+# Зоны доставки. Конкурент рисует на этом месте карту области с закрашенными
+# районами; карту мы не рисуем, потому что честная её версия требует
+# границ и проверки, а нечестная - это картинка ради картинки.
+#
+# Вместо карты то, что человек на ней и ищет: своё направление, плечо
+# в километрах и что это значит для заказа. Заодно блок заменяет собой
+# алфавитный список населённых пунктов - он и есть список, только
+# отсортированный по тому признаку, который двигает цену.
+#
+# Города берутся из CITY_FACTS и разложены по километражу оттуда же:
+# отдельного списка здесь нет и разъехаться ему не с чем.
+ZONE_BANDS = [
+    (0, 40, "Ближняя зона", "до 40 км",
+     "Возим от 5 кубов, часто в день заявки."),
+    (40, 90, "Среднее плечо", "40-90 км",
+     "Выгоднее от 10 кубов: плечо уже заметно в цене за куб."),
+    (90, 150, "Дальнее плечо", "90-150 км",
+     "Оптимум 10-20 кубов, машину ставим в график на сутки-двое."),
+    (150, 10000, "Север и восток области", "от 150 км",
+     "Разумно брать 20 кубов за рейс: дробить заказ на таком плече дороже всего."),
+]
+
+
+def zones_for():
+    """Города по зонам доставки, ссылками на их страницы."""
+    out = []
+    for lo, hi, head, band, note in ZONE_BANDS:
+        items = sorted(((v["km"], v["name"], k) for k, v in CITY_FACTS.items()
+                        if lo < v["km"] <= hi or (lo == 0 and v["km"] <= hi)),
+                       key=lambda t: t[0])
+        if not items:
+            continue
+        out.append(dict(head=head, band=band, note=note,
+                        cities=[dict(name=n, km=km,
+                                     href="%sshcheben/%s/" % (SITE["base"], sl))
+                                for km, n, sl in items]))
+    return out
+
+
+def cross_for(slug, limit=4):
+    """Перекрёстная витрина: четыре соседних материала со снимками.
+
+    Текущий материал вычитается: страница, предлагающая саму себя,
+    выглядит как ошибка сборки, потому что ей и является.
+    """
+    out = []
+    for key, name, href, photo, price, use in CROSS:
+        if key == slug:
+            continue
+        img = img_one(photo)
+        out.append(dict(name=name, href=href, price=price, use=use, img=img,
+                        alt="%s, фотография материала" % name))
+        if len(out) == limit:
+            break
+    return out
+
+
 def _photo_ctx(slug, items, default_head=None):
     """Три переменные галереи одним куском.
 
@@ -595,6 +711,9 @@ htmlp = env.get_template("hub.j2").render(
     canonical=DOMAIN + url, h1="Доставка щебня, песка и нерудных материалов по " + SITE["region_dat"],
     crumbs_html=crumbs(crumb_items), jsonld=jl,
     faq=MATERIALS["shcheben"]["faq"][:4],
+    # Хаб показывает тот же прайс витриной, что и товарные страницы.
+    # Своего материала у хаба нет, поэтому порядок строк обычный.
+    shelf_rows=catalog_for(None), payment=PAYMENT,
     related_links=[("/dostavka/shcheben/", "Доставка щебня: фракции и цены"),
                    ("/dostavka/shcheben/frakciya-20-40/", "Щебень 20-40: характеристики и расчёт"),
                    ("/dostavka/pesok/", "Доставка песка"),
@@ -827,6 +946,8 @@ for slug, mc in money_cfg.items():
         specs=mat.get("specs"), specs_head=mat.get("specs_head"),
         packs=mat.get("packs"), packs_head=mat.get("packs_head"),
         quick=mat.get("quick"), hero_price=hero_price_for(slug),
+        shelf_rows=catalog_for(slug),
+        cross=cross_for(slug), payment=PAYMENT, zones=zones_for(),
         # Готовые объёмы пока только по щебню: прайс партнёра даёт их
         # именно для него, а придумывать те же числа под песок нельзя.
         #

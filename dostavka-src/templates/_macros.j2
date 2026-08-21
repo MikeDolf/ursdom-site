@@ -136,6 +136,106 @@
 
    loading=lazy стоит на всех снимках галереи: она всегда ниже первого
    экрана. На первом экране lazy ставить нельзя, там он замедляет показ. #}
+{# Витрина прайса. Раньше на этом месте стояла таблица «материал - цена»:
+   она честно отвечала на вопрос «сколько стоит» и никак - на вопрос
+   «мне такой или другой», с которым человек на самом деле приходит.
+   Из двух строк с числами разницу между 20-40 и 40-70 не узнать,
+   и её уходят выяснять на другой сайт.
+
+   Шапка карточки: настоящий снимок там, где он у нас есть, и сетка сита
+   в масштабе своей фракции там, где нет. Второе не заглушка. На странице
+   про размер зерна ячейка, нарисованная по формуле от миллиметров,
+   говорит о материале точнее любого стокового камня, а стоковых у нас
+   и не бывает - все снимки на сайте свои.
+
+   Ссылка на имени НЕ растянута на карточку псевдоэлементом, в отличие
+   от плиток каталога на хабе: здесь внутри есть вторая цель, кнопка
+   заказа, и растянутая ссылка накрыла бы её собой. #}
+{% macro shelf(rows, head=None, note=None) -%}
+{% if head %}  <h2 id="ceny">{{ head }}</h2>
+{% endif %}  <div class="d-shelf">
+{% for r in rows %}    <article class="d-shelf-item">
+      <div class="d-shelf-ph" style="--cell:{{ r.cell }}px">
+{% if r.img %}        <picture>
+          <source type="image/webp" srcset="{{ r.img.webp }}" sizes="(max-width:700px) 50vw, 300px">
+          <img src="{{ r.img.src }}" srcset="{{ r.img.jpg }}" sizes="(max-width:700px) 50vw, 300px"
+               alt="{{ r.alt }}" width="{{ r.img.w }}" height="{{ r.img.h }}"
+               loading="lazy" decoding="async">
+        </picture>
+{% else %}        <span class="d-shelf-mesh" aria-hidden="true">{{ stone(1) }}{{ stone(2) }}{{ stone(3) }}</span>
+{% endif %}      </div>
+      <div class="d-shelf-in">
+        <h3 class="d-shelf-name">{% if r.href %}<a href="{{ r.href }}">{{ r.name }}</a>{% else %}{{ r.name }}{% endif %}</h3>
+        <p class="d-shelf-use">{{ r.use }}</p>
+        <p class="d-shelf-price">{{ r.price }} <small>руб/м³</small></p>
+        <a class="d-btn d-shelf-buy" href="#zayavka">Заказать</a>
+      </div>
+    </article>
+{% endfor %}  </div>
+{% if note %}  <p class="d-note">{{ note }}</p>
+{% endif %}
+{%- endmacro %}
+
+{# Способы оплаты. Вопрос «как платить» человек на этом рынке задаёт
+   раньше вопроса «сколько», потому что за ним стоит страх предоплаты
+   незнакомой конторе. Раньше ответ был одной строкой в блоке условий
+   и терялся среди остального. #}
+{% macro payways(items) -%}
+  <ul class="d-pay">
+{% for head, text in items %}    <li class="d-pay-item">
+      <strong>{{ head }}</strong>
+      <span>{{ text }}</span>
+    </li>
+{% endfor %}  </ul>
+{%- endmacro %}
+
+{# Зоны доставки. У конкурента здесь карта области с закрашенными
+   районами; мы показываем то, что на карте и ищут: своё направление,
+   плечо в километрах и что оно значит для объёма заказа.
+
+   Города со ссылками, поэтому блок работает ещё и списком населённых
+   пунктов - только отсортированным по признаку, который двигает цену,
+   а не по алфавиту. #}
+{% macro zones(items, head, note=None) -%}
+  <h2 id="zony">{{ head }}</h2>
+{% if note %}  <p>{{ note }}</p>
+{% endif %}  <div class="d-zones">
+{% for z in items %}    <section class="d-zone">
+      <h3 class="d-zone-h">{{ z.head }}<span class="d-zone-band">{{ z.band }}</span></h3>
+      <p class="d-zone-note">{{ z.note }}</p>
+      <ul class="d-zone-list">
+{% for c in z.cities %}        <li><a href="{{ c.href }}">{{ c.name }}</a><i>{{ c.km }} км</i></li>
+{% endfor %}      </ul>
+    </section>
+{% endfor %}  </div>
+{%- endmacro %}
+
+{# Перекрёстная витрина в конце страницы. Отличается от «Смотрите также»
+   тем, что это товар, а не чтение: снимок, цена и вход в каталог.
+   Текущий материал вычитается на сборке, поэтому страница не предлагает
+   саму себя. #}
+{% macro crossshelf(rows, head) -%}
+{% if rows %}  <h2>{{ head }}</h2>
+  <div class="d-shelf d-shelf-cross">
+{% for r in rows %}    <article class="d-shelf-item">
+      <div class="d-shelf-ph">
+{% if r.img %}        <picture>
+          <source type="image/webp" srcset="{{ r.img.webp }}" sizes="(max-width:700px) 50vw, 260px">
+          <img src="{{ r.img.src }}" srcset="{{ r.img.jpg }}" sizes="(max-width:700px) 50vw, 260px"
+               alt="{{ r.alt }}" width="{{ r.img.w }}" height="{{ r.img.h }}"
+               loading="lazy" decoding="async">
+        </picture>
+{% endif %}      </div>
+      <div class="d-shelf-in">
+        <h3 class="d-shelf-name"><a href="{{ r.href }}">{{ r.name }}</a></h3>
+        <p class="d-shelf-use">{{ r.use }}</p>
+{% if r.price %}        <p class="d-shelf-price">{{ r.price }} <small>руб/м³</small></p>
+{% endif %}      </div>
+    </article>
+{% endfor %}  </div>
+{% endif %}
+{%- endmacro %}
+
 {% macro photos(items, head=None, intro=None) -%}
 {% if items %}{% if head %}  <h2 id="foto">{{ head }}</h2>
 {% endif %}{% if intro %}  <p>{{ intro }}</p>

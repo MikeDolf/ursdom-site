@@ -48,16 +48,18 @@
 {% endfor %}  </ul>
 </div></section>
 
+{# Тот же прайс витриной, что и на товарных страницах. Раньше здесь
+   стояла таблица «материал - цена», а на товарной уже витрина:
+   один и тот же прайс выглядел на двух страницах по-разному, и это
+   читалось как две разные цены. #}
 <section><div class="wrap">
-  <h2>Ориентировочные цены</h2>
-  <div class="d-table-wrap"><table>
-    <caption>{{ price_note }}</caption>
-    <thead><tr><th>Материал</th><th>Цена за куб, руб</th></tr></thead>
-    <tbody>
-{% for name,price in per_cube %}      <tr><td>{{ name }}</td><td>{{ price }}</td></tr>
-{% endfor %}    </tbody>
-  </table></div>
+  {{ m.shelf(shelf_rows, "Ориентировочные цены", price_note) }}
   <p class="d-note">{{ delivery_note }}</p>
+</div></section>
+
+<section><div class="wrap">
+  <h2 id="oplata">Как можно заплатить</h2>
+  {{ m.payways(payment) }}
 </div></section>
 
 <section id="zayavka"><div class="wrap">
