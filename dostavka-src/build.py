@@ -33,7 +33,8 @@ from calc import calc_for, PER_PAGE as _CALC_ON
 # при первом же добавлении страницы.
 from conversion import PRICE_SETS, FAM, ORDER_STEPS, OBJECTIONS
 from prices import (PER_CUBE, PRICE_NOTE, DELIVERY_NOTE, CATALOG, SIEVE,
-                    HERO_CELL, HERO_FRAC, LOTS, LOTS_HEAD, LOTS_NOTE)
+                    HERO_CELL, HERO_FRAC, LOTS, LOTS_HEAD, LOTS_NOTE,
+                    PESOK_QUARRIES, PESOK_QUARRIES_HEAD, PESOK_QUARRIES_NOTE)
 from cities import CITIES, PESOK_CITIES
 from longreads import LONGREADS, AUTHOR_FULL, UPDATED
 from longreads_core import CORE_LONGREADS
@@ -49,8 +50,9 @@ from longreads_smesi import SMESI_LONGREADS
 from longreads_skala import SKALA_LONGREADS
 from longreads_rev import REV_LONGREADS
 from longreads_brendy import BRENDY_LONGREADS
+from longreads_pesok import PESOK_LONGREADS
 from tags import TAG_LONGREADS
-LONGREADS = LONGREADS + CORE_LONGREADS + BETON_LONGREADS + ZADACHI_LONGREADS + SMEZH_LONGREADS + BETON2_LONGREADS + GAP_LONGREADS + GAP2_LONGREADS + PLITKA_LONGREADS + BETON3_LONGREADS + SMESI_LONGREADS + SKALA_LONGREADS + REV_LONGREADS + BRENDY_LONGREADS + TAG_LONGREADS
+LONGREADS = LONGREADS + CORE_LONGREADS + BETON_LONGREADS + ZADACHI_LONGREADS + SMEZH_LONGREADS + BETON2_LONGREADS + GAP_LONGREADS + GAP2_LONGREADS + PLITKA_LONGREADS + BETON3_LONGREADS + SMESI_LONGREADS + SKALA_LONGREADS + REV_LONGREADS + BRENDY_LONGREADS + PESOK_LONGREADS + TAG_LONGREADS
 from legal import legal_sections, LEGAL_UPDATED
 
 env = Environment(loader=FileSystemLoader(os.path.join(HERE, "templates")),
@@ -75,7 +77,7 @@ PER_CUBE_LIST = list(PER_CUBE.items())
 HERO_PRICE_KEYS = {
     "shcheben": ["Щебень 5-20", "Щебень 20-40", "Щебень 40-70",
                  "Щебень 70-120", "Щебень вторичный (бой)"],
-    "pesok": ["Песок карьерный", "Песок речной (мытый)"],
+    "pesok": ["Песок карьерный (сеяный)", "Песок мытый (речной)"],
     "otsev": ["Отсев 0-5"],
     "pgs": ["ПГС"],
 }
@@ -769,7 +771,7 @@ MAT_ART = {'shcheben': [('/dostavka/stati/podushka-pod-fundament/', 'Подуш�
     'granitnaya-kroshka': [('/dostavka/stati/otsev-gde-primenyat/', 'Отсев 0-5: где применяют')],
     'asfaltovaya-kroshka': [('/dostavka/stati/skalnyy-grunt-dresva-but/', 'Чем отсыпать дёшево')]}
 
-MONEY_LOW_PRICE = {"shcheben": "600", "pesok": "350", "otsev": "500", "pgs": "500"}
+MONEY_LOW_PRICE = {"shcheben": "600", "pesok": "990", "otsev": "500", "pgs": "500"}
 
 for slug, mc in money_cfg.items():
     mat = MATERIALS[slug]
@@ -818,14 +820,27 @@ for slug, mc in money_cfg.items():
         **BASE_CTX, **mc, calc=_calc, has_calc=bool(_calc),
         canonical=DOMAIN + url, crumbs_html=crumbs(crumb_items), jsonld=jl,
         intro=mat["intro"], types=mat["types"], fractions=mat.get("fractions"),
+        fractions_head=mat.get("fractions_head"),
+        fractions_caption=mat.get("fractions_caption"),
+        fractions_col1=mat.get("fractions_col1"),
         tasks=mat.get("tasks"), tasks_head=mat.get("tasks_head"),
         specs=mat.get("specs"), specs_head=mat.get("specs_head"),
         packs=mat.get("packs"), packs_head=mat.get("packs_head"),
         quick=mat.get("quick"), hero_price=hero_price_for(slug),
         # Готовые объёмы пока только по щебню: прайс партнёра даёт их
         # именно для него, а придумывать те же числа под песок нельзя.
+        #
+        # По песку такие строки в прайсе есть, но снять их со скриншота
+        # не вышло: разбивка по объёмам не сходится с уже опубликованной
+        # по щебню (доставка восьми кубов выходит то 1840 рублей, то 4680),
+        # а числа этого порядка не публикуются по догадке. Ждём прайс файлом.
         lots=(LOTS if slug == "shcheben" else None),
         lots_head=LOTS_HEAD, lots_note=LOTS_NOTE,
+        # Таблица карьеров пока только у песка: происхождение влияет
+        # на цену и на выбор именно здесь, у щебня в прайсе партнёра
+        # порода и карьер по строкам не разнесены.
+        quarries=(PESOK_QUARRIES if slug == "pesok" else None),
+        quarries_head=PESOK_QUARRIES_HEAD, quarries_note=PESOK_QUARRIES_NOTE,
         faq=mat["faq"], hero_cell=HERO_CELL.get(slug, 34),
         **_photo_ctx(slug, _ph, "Как выглядит " + mc["mat_vin"]),
         hero_frac=HERO_FRAC.get(slug, "щебень 20-40 мм"),
@@ -947,6 +962,20 @@ def CONV_FOR(slug):
 
 
 
+# Ячейка сита для лонгридов. Раньше все они рисовали 34 пикселя
+# и подписывались «щебень 20-40 мм»: на странице карьерного песка
+# прибор показывал чужой материал, а подпись называла его щебнем.
+# Здесь перечислены страницы песка, остальные остаются на умолчании.
+LR_HERO = {
+    "pesok/karyernyy":            (6, "песок до 2,5 мм"),
+    "pesok/rechnoy":              (6, "песок до 2,5 мм"),
+    "pesok/peskostruynyy":        (6, "абразив 0,5-2,5 мм"),
+    "stati/kakoy-pesok-vybrat":   (6, "песок до 2,5 мм"),
+    "stati/klassy-peska":         (6, "песок до 2,5 мм"),
+    "stati/modul-krupnosti-peska": (6, "песок до 2,5 мм"),
+    "stati/pesok-pod-plitku":     (8, "песок и отсев 0-5 мм"),
+}
+
 # ---- ЛОНГРИДЫ (низкоконкурентные ключи Мутагена) ----
 for a in LONGREADS:
     url = SITE["base"] + a["slug"] + "/"
@@ -1003,6 +1032,8 @@ for a in LONGREADS:
         **_photo_ctx(a["slug"], photos_for(a["slug"])),
         **BASE_CTX, author=AUTHOR_FULL, updated=UPDATED,
         canonical=DOMAIN + url, crumbs_html=crumbs(crumb_items), jsonld=jl,
+        hero_cell=LR_HERO.get(a["slug"], (34, None))[0],
+        hero_frac=LR_HERO.get(a["slug"], (34, "щебень 20-40 мм"))[1],
         title=a["title"], desc=a["desc"], h1=a["h1"], hero_sub=a["hero_sub"], lead=a["lead"],
         sections=a["sections"], faq=a["faq"], subject=a["subject"], form_head=a["form_head"],
         cta_after=a["cta_after"], cta_head=a["cta_head"], cta_text=a["cta_text"],

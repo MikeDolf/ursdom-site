@@ -54,6 +54,26 @@
   </table></div>
 {% endif %}
 
+{# Песок по карьерам. Стоит вплотную к цене, потому что отвечает
+   на вопрос, который цена и порождает: почему у одного песка 990,
+   а у другого 1200, и что я за эту разницу получаю.
+
+   Колонка с единицей обязательна: мытый песок на этом рынке продают
+   тоннами, карьерный кубами. Без неё человек читает 990 как цену куба
+   и планирует бюджет в полтора раза меньше реального.
+
+   Блок необязательный: материалы без ключа quarries не рендерят ничего. #}
+{% if quarries %}
+  <h2 id="karyery">{{ quarries_head }}</h2>
+  <div class="d-table-wrap"><table>
+    <caption>{{ quarries_note }}</caption>
+    <thead><tr><th>Карьер</th><th>Вид</th><th>Цена</th><th>Чем отличается</th></tr></thead>
+    <tbody>
+{% for pit, kind, price, unit, note in quarries %}      <tr><td>{{ pit }}</td><td>{{ kind }}</td><td class="d-spec-val">{{ price }}{% if unit %} <span class="d-unit">{{ unit }}</span>{% endif %}</td><td>{{ note }}</td></tr>
+{% endfor %}    </tbody>
+  </table></div>
+{% endif %}
+
 {# Блок «под задачу» стоит сразу после цен, а не в конце страницы.
    Порядок здесь и есть суть перестройки: человек сначала видит цену,
    потом сразу получает ответ «а мне какой», и только потом читает
@@ -101,10 +121,10 @@
 {% for t,d in types %}    <div class="d-card"><strong>{{ t }}</strong><p>{{ d }}</p></div>
 {% endfor %}  </div>
 {% if fractions %}
-  <h2 id="frakcii">{{ fractions_head|default("Фракции и применение") }}</h2>
+  <h2 id="frakcii">{{ fractions_head|default("Фракции и применение", true) }}</h2>
   <div class="d-table-wrap"><table>
-    <caption>{{ fractions_caption|default("Какая фракция " ~ mat_rod ~ " под какую задачу") }}</caption>
-    <thead><tr><th>{{ fractions_col1|default("Фракция") }}</th><th>{{ fractions_col2|default("Где применяют") }}</th></tr></thead>
+    <caption>{{ fractions_caption|default("Какая фракция " ~ mat_rod ~ " под какую задачу", true) }}</caption>
+    <thead><tr><th>{{ fractions_col1|default("Фракция", true) }}</th><th>{{ fractions_col2|default("Где применяют", true) }}</th></tr></thead>
     <tbody>
 {% for f,use in fractions %}      <tr><td>{{ f }}</td><td>{{ use }}</td></tr>
 {% endfor %}    </tbody>

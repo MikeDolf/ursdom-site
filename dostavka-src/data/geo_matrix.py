@@ -381,7 +381,7 @@ MAT_FORMS = {
     "shcheben": dict(name="Щебень", vin="щебень", rod="щебня", tvor="щебнем",
                      low="600", url="shcheben"),
     "pesok":    dict(name="Песок", vin="песок", rod="песка", tvor="песком",
-                     low="350", url="pesok"),
+                     low="990", url="pesok"),
     "otsev":    dict(name="Отсев", vin="отсев", rod="отсева", tvor="отсевом",
                      low="500", url="otsev"),
     "keramzit": dict(name="Керамзит", vin="керамзит", rod="керамзита",

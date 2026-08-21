@@ -51,23 +51,23 @@ PRICE_SETS = {
 
 "nerud": dict(
  head="Материалы под эту задачу с доставкой",
- anchor="Щебень от 600 руб за куб, песок от 350, отсев от 500 с доставкой по области.",
+ anchor="Щебень от 600 руб за куб, песок от 990, отсев от 500 с доставкой по области.",
  rows=[
   ("Щебень 20-40", "от 770 руб/м³", "/dostavka/shcheben/frakciya-20-40/"),
   ("Щебень 5-20", "от 1150 руб/м³", "/dostavka/shcheben/frakciya-5-20/"),
   ("Щебень 40-70", "от 770 руб/м³", "/dostavka/shcheben/frakciya-40-70/"),
   ("Отсев 0-5", "от 500 руб/м³", "/dostavka/otsev/"),
-  ("Песок карьерный", "от 350 руб/м³", "/dostavka/pesok/karyernyy/"),
+  ("Песок карьерный", "от 990 руб/м³", "/dostavka/pesok/karyernyy/"),
   ("ПГС", "от 500 руб/м³", "/dostavka/pgs/"),
   ("Скальный грунт", "от 400 руб/м³", "/dostavka/skalnyy-grunt/"),
  ]),
 
 "pesok": dict(
  head="Песок и смеси с доставкой",
- anchor="Песок карьерный от 350 руб за куб, речной мытый от 700, отсев от 500 с доставкой.",
+ anchor="Песок карьерный от 990 руб за куб, речной мытый от 1450, отсев от 500 с доставкой.",
  rows=[
-  ("Песок карьерный", "от 350 руб/м³", "/dostavka/pesok/karyernyy/"),
-  ("Песок речной мытый", "от 700 руб/м³", "/dostavka/pesok/rechnoy/"),
+  ("Песок карьерный", "от 990 руб/м³", "/dostavka/pesok/karyernyy/"),
+  ("Песок речной мытый", "от 1450 руб/м³", "/dostavka/pesok/rechnoy/"),
   ("Отсев 0-5", "от 500 руб/м³", "/dostavka/otsev/"),
   ("ПГС", "от 500 руб/м³", "/dostavka/pgs/"),
   ("ЩПС", "от 550 руб/м³", "/dostavka/shchps/"),
@@ -109,7 +109,7 @@ PRICE_SETS = {
   ("Бордюр тротуарный БР 100.30.15", "от 520 руб/шт", "/dostavka/bordyur/"),
   ("Бордюр дорожный БР 100.30.18", "от 640 руб/шт", "/dostavka/bordyur/"),
   ("Щебень 20-40 под ложе", "от 770 руб/м³", "/dostavka/shcheben/frakciya-20-40/"),
-  ("Песок карьерный под подсыпку", "от 350 руб/м³", "/dostavka/pesok/karyernyy/"),
+  ("Песок карьерный под подсыпку", "от 990 руб/м³", "/dostavka/pesok/karyernyy/"),
  ]),
 
 "vodootvod": dict(
@@ -145,7 +145,7 @@ PRICE_SETS = {
   ("Арболитовый блок 500×300×200", "от 175 руб/шт", "/dostavka/stenovye-bloki/"),
   ("Полистиролбетонный блок 600×300×200", "от 195 руб/шт", "/dostavka/stenovye-bloki/"),
   ("Цемент М500, мешок 50 кг", "от 470 руб/мешок", "/dostavka/cement-i-smesi/"),
-  ("Песок карьерный под раствор", "от 350 руб/м³", "/dostavka/pesok/karyernyy/"),
+  ("Песок карьерный под раствор", "от 990 руб/м³", "/dostavka/pesok/karyernyy/"),
  ]),
 
 "smesi": dict(
@@ -157,7 +157,7 @@ PRICE_SETS = {
   ("Кладочная смесь, мешок 25 кг", "от 240 руб/мешок", "/dostavka/cement-i-smesi/"),
   ("Печная и жаростойкая смесь", "по запросу", "/dostavka/pechnye-smesi/"),
   ("Гидроизоляция и пропитки", "по запросу", "/dostavka/stroitelnaya-himiya/"),
-  ("Песок речной мытый под раствор", "от 700 руб/м³", "/dostavka/pesok/rechnoy/"),
+  ("Песок речной мытый под раствор", "от 1450 руб/м³", "/dostavka/pesok/rechnoy/"),
  ]),
 
 "zhbi": dict(
@@ -218,6 +218,7 @@ FAM = {
  "shcheben/v-meshkah": "nerud",
  "pesok/karyernyy": "pesok",
  "pesok/rechnoy": "pesok",
+ "pesok/peskostruynyy": "pesok",
  # песок
  "stati/kakoy-pesok-vybrat": "pesok",
  "stati/klassy-peska": "pesok",
