@@ -26,7 +26,8 @@ from geo_matrix import (CITY_FACTS, MATRIX, ALREADY, MAT_FORMS,
 import autolink
 from hubs import HUBS
 from canonical import canonical
-from calc import calc_for, PER_PAGE as _CALC_ON
+from calc import calc_for, PER_PAGE as _CALC_ON, PER_PAGE, MATERIALS as CALC_MATERIALS, trips as calc_trips
+from calc_pages import CALC_PAGES, CALC_BY_SLUG, CALC_OWN
 
 # Список страниц с калькулятором живёт в data/calc.py вместе с их
 # материалами и объёмами: два списка в двух файлах разошлись бы
@@ -34,7 +35,7 @@ from calc import calc_for, PER_PAGE as _CALC_ON
 from conversion import PRICE_SETS, FAM, ORDER_STEPS, OBJECTIONS
 from prices import (PER_CUBE, PRICE_NOTE, DELIVERY_NOTE, CATALOG, SIEVE,
                     HERO_CELL, HERO_FRAC, LOTS, LOTS_HEAD, LOTS_NOTE,
-                    CATALOG_META, CATALOG_FIRST, CROSS,
+                    CATALOG_META, CATALOG_FIRST, CROSS, FLOOR,
                     PESOK_QUARRIES, PESOK_QUARRIES_HEAD, PESOK_QUARRIES_NOTE)
 from cities import CITIES, PESOK_CITIES
 from longreads import LONGREADS, AUTHOR_FULL, UPDATED
@@ -75,6 +76,77 @@ PER_CUBE_LIST = list(PER_CUBE.items())
 # ниже, и разойтись с ней баннер не имеет права. Ключи перечислены явно,
 # потому что по названию материал не вычислить: «Отсев 0-5» и «ПГС»
 # не содержат слова, по которому их можно сгруппировать.
+# ---------------------------------------------------------------------------
+# СВЕРКА ЦЕН НА СБОРКЕ.
+#
+# Появилась после вычитки, которая нашла восемь разошедшихся копий одной
+# и той же цены: калькулятор считал песок по 350 при 990 в прайсе,
+# речной по 700 при 1450, щебень 40-70 по 1300 при 770. Каждая копия
+# была верна в день, когда её писали, и устарела в день, когда правили
+# прайс. Человек видел на одном экране две цены и уходил.
+#
+# Ловить это глазами нельзя: числа лежат в разных файлах и на страницу
+# попадают из разных мест. Поэтому сверка стоит на сборке и валит её,
+# а не печатает предупреждение в конец лога, где его не читают.
+_PRICE_ALIAS = {
+    "Щебень 20-40": "Щебень 20-40", "Щебень 5-20": "Щебень 5-20",
+    "Щебень 40-70": "Щебень 40-70", "Щебень 70-120": "Щебень 70-120",
+    "Отсев 0-5": "Отсев 0-5", "ПГС": "ПГС", "ЩПС": "ЩПС",
+    "Песок карьерный": "Песок карьерный (сеяный)",
+    "Песок речной мытый": "Песок мытый (речной)",
+    "Песок мытый": "Песок мытый (речной)",
+    "Скальный грунт": "Скальный грунт (скала)",
+    "Асфальтовая крошка": "Асфальтовая крошка",
+    "Гравий": "Гравий", "Керамзит": "Керамзит",
+    "Бутовый камень": "Бутовый камень",
+    "Гранитная крошка": "Гранитная крошка", "Дресва": "Дресва",
+}
+
+
+def _rub(v):
+    d = re.sub(r"[^\d]", "", str(v))
+    return int(d) if d else None
+
+
+def check_prices():
+    """Одна цена на материал во всех источниках. Возвращает список бед."""
+    bad = []
+
+    def cmp(where, label, value):
+        key = _PRICE_ALIAS.get(label)
+        if key is None:
+            return
+        got, want = _rub(value), FLOOR[key]
+        if got is not None and got != want:
+            bad.append("%s: %s = %s, а в прайсе %s" % (where, label, got, want))
+
+    for fam, d in PRICE_SETS.items():
+        for row in d.get("rows", []):
+            lab = row[0]
+            # хвосты вида «под ложе», «на обсыпку» отрезаем по первому
+            # совпадению с известной подписью
+            for a in _PRICE_ALIAS:
+                if lab == a or lab.startswith(a + " "):
+                    cmp("конверсионный блок [%s]" % fam, a, row[1])
+                    break
+    for label, price in CALC_MATERIALS:
+        cmp("калькулятор, список", label, price)
+    for slug in PER_PAGE:
+        c = calc_for(slug)
+        cmp("калькулятор на /%s/" % slug, PER_PAGE[slug][0], c["default_price"])
+    return bad
+
+
+_price_bad = check_prices()
+if _price_bad:
+    for _b in _price_bad:
+        print("ЦЕНЫ РАСХОДЯТСЯ  " + _b)
+    raise SystemExit("сборка остановлена: цены расходятся между источниками")
+
+# Корень раздела калькуляторов. Объявлен рано: на него ссылаются
+# товарные страницы, которые собираются раньше самого раздела.
+CALCHUB_URL = SITE["base"] + "kalkulyator/"
+
 HERO_PRICE_KEYS = {
     "shcheben": ["Щебень 5-20", "Щебень 20-40", "Щебень 40-70",
                  "Щебень 70-120", "Щебень вторичный (бой)"],
@@ -728,6 +800,72 @@ def hero_ctx(slug):
     return dict(hero_img=img, hero_cap=cap)
 
 
+def _fmt(x):
+    """Число по-русски: без хвостовых нулей, запятая вместо точки."""
+    r = round(x, 1)
+    if abs(r - round(r)) < 0.05:
+        return str(int(round(r)))
+    return ("%.1f" % r).replace(".", ",")
+
+
+def _dens(x):
+    """Плотность двумя знаками: 1,35 и 1,40 при округлении до одного
+    знака превращались в «1,4-1,4», и диапазон переставал быть диапазоном."""
+    return ("%.2f" % x).replace(".", ",")
+
+
+def _truck(vol):
+    n, cap = calc_trips(vol)
+    if n == 1:
+        return "самосвал %d м³" % cap
+    return "%d рейса по %d м³" % (n, cap) if n < 5 else "%d рейсов по %d м³" % (n, cap)
+
+
+# Объёмы и подпись под таблицу зависят от пояса, в котором стоит город.
+# Не ради разнообразия: на плече в двадцать километров осмысленно везти
+# пять кубов, на плече в двести пятьдесят - нет, там рейс съедает всю
+# экономию, и таблица с пятью кубами вводила бы в заблуждение.
+#
+# Побочный и полезный эффект: соседние города попадают в разные пояса,
+# и страницы перестают совпадать текстом. Пара Камышлов - Талица
+# упиралась в порог похожести именно из-за одинаковых блоков.
+CITY_BANDS = [
+    (40,  (5, 8, 10),
+     "На таком плече рейс стоит недорого, поэтому заказывать по пять "
+     "кубов имеет смысл: переплата за куб небольшая."),
+    (90,  (8, 10, 15),
+     "Плечо уже заметно в цене куба. Выгоднее собрать заказ от десяти "
+     "кубов, чем возить дважды по пять."),
+    (150, (10, 15, 20),
+     "Дробить заказ на этом плече дороже всего: доставка оплачивается "
+     "за каждый рейс. Разумный минимум - десять кубов, оптимум двадцать."),
+    (10000, (15, 20, 25),
+     "Сюда рейс планируется на конкретный день и оплачивается целиком. "
+     "Меньше пятнадцати кубов везти невыгодно: доставка перевесит "
+     "стоимость самого материала."),
+]
+
+
+def city_lots(km, price_key="Щебень 20-40"):
+    """Готовые суммы «материал плюс доставка» под плечо конкретного города.
+
+    Считает тем же estimate, что и калькулятор: расходиться им нельзя,
+    иначе на соседних страницах сайта два разных ответа на один вопрос.
+    Возвращает (строки, подпись пояса).
+    """
+    from calc import estimate
+    price = FLOOR[price_key]
+    vols, note = next((v, n) for lim, v, n in CITY_BANDS if km <= lim)
+    out = []
+    for v in vols:
+        e = estimate(v, price, km)
+        out.append(dict(vol=v, truck=_truck(v),
+                        material="%d" % e["material"],
+                        delivery="%d" % e["delivery"],
+                        total="%d" % e["total"]))
+    return out, note
+
+
 def catalog_for(slug):
     """Витрина прайса карточками: цена, снимок, применение, кнопка.
 
@@ -1097,7 +1235,12 @@ for slug, mc in money_cfg.items():
                ("/dostavka/stati/skolko-vesit-kub/", "Сколько весит куб песка"),
                ("/dostavka/pesok/bogdanovich/", "Доставка песка в Богданович"),
                ("/dostavka/pesok/irbit/", "Доставка песка в Ирбит")]
-    rel = MAT_ART.get(slug, []) + (PESOK_GEO if slug == "pesok" else []) + (SREDNEURALSK if slug == "shcheben" else []) + rel
+    # Ссылка в раздел калькуляторов первой строкой: страница расчёта
+    # продолжает товарную, а не конкурирует с ней, и человек, который
+    # ещё не знает объём, уходит считать к нам, а не на чужой сайт.
+    _calcrel = ([(CALCHUB_URL + slug + "/", "Калькулятор " + CALC_BY_SLUG[slug]["name"])]
+                if slug in CALC_BY_SLUG else [])
+    rel = _calcrel + MAT_ART.get(slug, []) + (PESOK_GEO if slug == "pesok" else []) + (SREDNEURALSK if slug == "shcheben" else []) + rel
     _calc = calc_for(slug)
     htmlp = env.get_template("money.j2").render(
         **BASE_CTX, **mc, calc=_calc, has_calc=bool(_calc),
@@ -1176,6 +1319,9 @@ for c in CITIES:
            ("/dostavka/stati/cena-kuba-s-dostavkoy/", "Цена за куб с доставкой")] + others
     htmlp = env.get_template("geo.j2").render(
         **BASE_CTX, **hero_ctx("shcheben"), city=c, canonical=DOMAIN + url, crumbs_html=crumbs(crumb_items), jsonld=jl,
+        lots=(city_lots(CITY_FACTS[c["slug"]]["km"])[0] if c["slug"] in CITY_FACTS else None),
+        lots_note=(city_lots(CITY_FACTS[c["slug"]]["km"])[1] if c["slug"] in CITY_FACTS else None),
+        plecho_km=CITY_FACTS.get(c["slug"], {}).get("km"),
         title=f"Доставка щебня {c['prep']}: цена за куб самосвалом",
         desc=f"Доставка щебня {c['prep']} и в район ({c['dist']}). Гранит, известняк, фракции 20-40, 40-70. Цена за куб, оплата после выгрузки.",
         h1=f"Доставка щебня {c['prep']}",
@@ -1330,6 +1476,215 @@ for a in LONGREADS:
         related_links=list(dict.fromkeys(rel))[:14])
     pages.append((url, htmlp, "longread"))
 
+# ---- РАЗДЕЛ КАЛЬКУЛЯТОРОВ ----
+#
+# Отдельный раздел, а не блок внизу товарной. Калькулятор доставки жил
+# в подвале товарных страниц и отвечал на один вопрос - сколько отдать.
+# А приходят с другим: «сколько кубов на площадку 6 на 4» и «сколько это
+# тонн». Человек считал это в уме или на чужом сайте и на чужом оставался.
+#
+# Все числа - из наших же статей: плотности из «сколько весит куб»,
+# коэффициенты из «коэффициента уплотнения», цена из прайса. Ни одного
+# нового числа: два калькулятора, считающие один материал по-разному,
+# обнуляют доверие к обоим.
+
+def calcpage_ctx(c):
+    """Данные калькулятора объёма и перевода тонн для одной страницы."""
+    k = max(c["compact"]) if c["compact"] else 1.0
+    dens = c["density"]
+    price = FLOOR[c["price_key"]]
+    rows = []
+    for task, ln, wd, layer in c["tasks"]:
+        geom = ln * wd * layer / 100.0
+        vol = geom * k
+        rows.append(dict(
+            task=task, size="%s × %s м" % (_fmt(ln), _fmt(wd)), layer=layer,
+            vol=_fmt(vol),
+            tons=("%s-%s" % (_fmt(vol * dens[0]), _fmt(vol * dens[1]))) if dens else "",
+            truck=_truck(vol)))
+    tons_rows = []
+    if dens:
+        mid = (dens[0] + dens[1]) / 2.0
+        for m3, t in zip((1, 5, 10, 20), (1, 5, 10, 20)):
+            tons_rows.append((_fmt(m3), _fmt(m3 * mid), _fmt(t), _fmt(t / mid)))
+    lead = ("Введите размеры площадки и толщину слоя. "
+            + ("Объём считается с запасом на уплотнение: коэффициент %s, "
+               "то есть привезти надо больше, чем ляжет в готовый слой. "
+               % _fmt(k) if k > 1 else
+               "Запаса на уплотнение здесь нет: в наших материалах "
+               "коэффициента для этого материала не написано, а выдумывать "
+               "его нельзя. ")
+            + ("Вес считается по насыпной плотности %s т/м³."
+               % ("%s-%s" % (_dens(dens[0]), _dens(dens[1]))) if dens else
+               "Вес не показываем: насыпной плотности этого материала "
+               "в наших материалах нет."))
+    note = ("Расчёт ориентировочный. Точный объём зависит от того, "
+            "насколько ровное основание и как трамбуется слой: на рыхлом "
+            "грунте нижняя часть отсыпки уходит в него и объём растёт. "
+            "Посчитаем под ваш объект по размерам и фотографии участка.")
+    return dict(
+        k=k, price=price, name=c["name"], layer=c["layer"], l=6, w=4,
+        dens_lo=dens[0] if dens else None, dens_hi=dens[1] if dens else None,
+        dens_s=("%s-%s" % (_dens(dens[0]), _dens(dens[1]))) if dens else "",
+        dens_note=c.get("dens_note"),
+        lead=lead, note=note, rows=rows, tons_rows=tons_rows,
+        caption="Готовые расчёты: сколько %s уходит на типовые задачи" % c["name"])
+
+
+CALC_METHOD = [
+    ("Объём отсыпки",
+     ["Объём считается как площадь на толщину слоя: длина умножается "
+      "на ширину и на толщину в метрах. Площадка шесть на четыре метра "
+      "со слоем двадцать сантиметров это 6 × 4 × 0,2, то есть 4,8 кубометра "
+      "в готовом слое.",
+      "Дальше вступает уплотнение, и именно на этом шаге чаще всего "
+      "ошибаются. Материал в кузове лежит рыхло, а в слое его трамбуют, "
+      "и он занимает меньше места. Поэтому привезти надо больше, чем "
+      "получилось по геометрии."]),
+    ("Коэффициент уплотнения",
+     ["Коэффициент показывает, во сколько раз рыхлый объём больше "
+      "уплотнённого. У песка это 1,10-1,15, у щебня 20-40 доходит до 1,30. "
+      "В расчёте берётся верхняя граница диапазона: недосыпать слой хуже, "
+      "чем привезти лишний куб, который всегда есть куда деть.",
+      "Полная таблица коэффициентов по материалам разобрана в отдельной "
+      "статье, вместе с тем, откуда эти числа берутся и почему у щебня "
+      "разброс шире, чем у песка."]),
+]
+
+CALC_FAQ_COMMON = [
+    ("Насколько точен расчёт калькулятора?",
+     "Он даёт объём с запасом на уплотнение и ориентировочную стоимость. "
+     "Точный объём зависит от того, насколько ровное основание: на рыхлом "
+     "или неровном грунте нижняя часть отсыпки уходит в него, и материала "
+     "нужно больше. Пришлите размеры и фотографию участка, посчитаем точнее."),
+    ("Почему объём получается больше, чем я посчитал?",
+     "Из-за коэффициента уплотнения. В кузове материал лежит рыхло, "
+     "в слое его трамбуют, и он занимает меньше места. Разница у щебня "
+     "доходит до тридцати процентов: на десять кубов готового слоя "
+     "приходится заказывать тринадцать."),
+    ("Заказывать в кубах или в тоннах?",
+     "В кубах предсказуемее. Вес зависит от влажности: после дождя тот же "
+     "объём весит на десять-двадцать процентов больше, и по тоннам вы "
+     "заплатите за воду. Объём же меряется по паспорту кузова и не меняется "
+     "от погоды."),
+    ("Что делать, если объём получился между машинами?",
+     "Округлять вверх, если материал ещё где-то пригодится, и вниз, если "
+     "нет. Половина кузова стоит почти как целый: рейс оплачивается "
+     "целиком. Позвоните, подберём машину под ваш объём."),
+]
+
+
+_calc_quick = [(("Калькулятор " + c["name"]).replace("Калькулятор ПГС", "ПГС")
+                .replace("Калькулятор ЩПС", "ЩПС"),
+                CALCHUB_URL + c["slug"] + "/") for c in CALC_PAGES]
+
+for _ci, _c in enumerate(CALC_PAGES):
+    url = CALCHUB_URL + _c["slug"] + "/"
+    autolink.reset(url)
+    vc = calcpage_ctx(_c)
+    _name = _c["name"]
+    h1 = "Калькулятор %s: объём, вес и цена с доставкой" % _name
+    crumb_items = [("Главная", "/"), ("Доставка материалов", SITE["base"]),
+                   ("Калькуляторы", CALCHUB_URL), (h1, None)]
+    # Свои вопросы идут первыми, общий - один и последним. С четырьмя
+    # общими вопросами страницы раздела совпадали на 81-84 процента
+    # при пороге 80: общий текст перевешивал таблицу задач, которая
+    # у каждого материала своя.
+    _own_h, _own_p, _own_faq = CALC_OWN[_c["slug"]]
+    _faq = [
+        ("Сколько %s нужно на площадку?" % _name,
+         "Считается как площадь на толщину слоя плюс запас на уплотнение. "
+         "Введите длину, ширину и толщину в калькуляторе выше: он покажет "
+         "объём с запасом, вес и подходящую машину."),
+    ] + _own_faq + CALC_FAQ_COMMON[:1]
+    jl = graph(localbusiness(), bc_schema(crumb_items), faq_schema(_faq),
+               product_schema("Доставка %s" % _name,
+                              "Расчёт объёма и стоимости %s с доставкой по %s."
+                              % (_name, SITE["region_dat"]),
+                              str(vc["price"]), url))
+    rel = ([(_c["product"], "Доставка %s: цены и фракции" % _name),
+            (CALCHUB_URL, "Все калькуляторы")]
+           # Список соседей крутится от текущей страницы, а не от начала.
+           # Со срезом [:6] от начала ссылки доставались одним и тем же
+           # шести калькуляторам, а хвост списка - дресва, бут, крошка -
+           # получал по одной входящей на весь сайт. Ровно эта же ошибка
+           # уже ловилась на лонгридах, см. комментарий там.
+           + [(CALCHUB_URL + o["slug"] + "/", "Калькулятор " + o["name"])
+              for o in (CALC_PAGES[_ci + 1:] + CALC_PAGES[:_ci])][:6]
+           + [("/dostavka/stati/koefficient-uplotneniya/", "Коэффициент уплотнения"),
+              ("/dostavka/stati/skolko-vesit-kub/", "Сколько весит куб материала"),
+              ("/dostavka/stati/skolko-shchebnya-v-kamaze/", "Сколько кубов в КамАЗе"),
+              ("/dostavka/", "Все города и материалы")])
+    htmlp = env.get_template("calcpage.j2").render(
+        **BASE_CTX, **hero_ctx(_c["slug"]),
+        canonical=DOMAIN + url, crumbs_html=crumbs(crumb_items), jsonld=jl,
+        title="Калькулятор %s онлайн: объём, вес, цена с доставкой" % _name,
+        desc=("Калькулятор %s: посчитайте объём по размерам площадки с запасом "
+              "на уплотнение, переведите кубы в тонны и узнайте цену с доставкой "
+              "по %s." % (_name, SITE["region_dat"])),
+        h1=h1,
+        hero_sub=("Три расчёта на одной странице: объём по размерам площадки, "
+                  "перевод кубометров в тонны и стоимость с доставкой. "
+                  "Числа те же, что в наших статьях и в прайсе."),
+        hero_price="от %d" % vc["price"], hero_cell=HERO_CELL.get(_c["slug"], 34),
+        vc=vc, calc=calc_for(_c["slug"]), has_calc=bool(calc_for(_c["slug"])),
+        method=CALC_METHOD + [(_own_h, _own_p)], faq=_faq,
+        mat_order="доставку %s" % _name,
+        subject="расчёт %s, %s" % (_name, SITE["region_short"]),
+        quick=[q for q in _calc_quick if not q[1].endswith("/%s/" % _c["slug"])][:7],
+        related_links=list(dict.fromkeys(rel))[:14])
+    pages.append((url, htmlp, "calc-page"))
+
+# Хаб раздела
+_hub_url = CALCHUB_URL
+autolink.reset(_hub_url)
+_hub_crumbs = [("Главная", "/"), ("Доставка материалов", SITE["base"]),
+               ("Калькуляторы", None)]
+_hub_faq = CALC_FAQ_COMMON + [
+    ("Для каких материалов есть калькулятор?",
+     "Для щебня, песка, отсева, ПГС, ЩПС, скального грунта, керамзита, "
+     "гравия, асфальтовой крошки, дресвы, бутового камня и гранитной крошки. "
+     "У каждого свой коэффициент уплотнения и своя насыпная плотность, "
+     "поэтому один общий калькулятор считал бы всё одинаково и неверно."),
+    ("Почему у бута и гранитной крошки не показывается вес?",
+     "Потому что насыпной плотности этих материалов нет в наших же "
+     "статьях, а подставлять правдоподобное число мы не будем: это тот "
+     "вид ошибки, который вскрывается на весах при приёмке. Вес по "
+     "конкретной партии скажем по заявке."),
+]
+_cards = []
+for _c in CALC_PAGES:
+    _img = img_one(HERO_PHOTO.get(_c["slug"], (None, None))[0]) \
+        if HERO_PHOTO.get(_c["slug"]) else None
+    _cards.append(dict(name="Калькулятор " + _c["name"],
+                       href=CALCHUB_URL + _c["slug"] + "/", img=_img,
+                       alt="%s, фотография материала" % _c["vin"],
+                       price="от %d" % FLOOR[_c["price_key"]],
+                       use="Объём по размерам, вес в тоннах, цена с доставкой."))
+htmlp = env.get_template("calchub.j2").render(
+    **BASE_CTX, **hero_ctx("shcheben"),
+    canonical=DOMAIN + _hub_url, crumbs_html=crumbs(_hub_crumbs),
+    jsonld=graph(localbusiness(), bc_schema(_hub_crumbs), faq_schema(_hub_faq)),
+    title="Калькуляторы нерудных материалов: объём, вес и цена с доставкой",
+    desc=("Калькуляторы щебня, песка, отсева, ПГС и других материалов. "
+          "Объём по размерам площадки с запасом на уплотнение, перевод кубов "
+          "в тонны, стоимость с доставкой по " + SITE["region_dat"] + "."),
+    h1="Калькуляторы объёма, веса и стоимости",
+    hero_sub=("Двенадцать материалов, у каждого своя насыпная плотность "
+              "и свой коэффициент уплотнения. Считаем по тем же числам, "
+              "что стоят в наших статьях и в прайсе."),
+    cards=_cards, method=CALC_METHOD, faq=_hub_faq,
+    subject="расчёт материала, " + SITE["region_short"],
+    related_links=[("/dostavka/shcheben/", "Доставка щебня"),
+                   ("/dostavka/pesok/", "Доставка песка"),
+                   ("/dostavka/otsev/", "Отсев 0-5"),
+                   ("/dostavka/pgs/", "ПГС и ОПГС"),
+                   ("/dostavka/stati/koefficient-uplotneniya/", "Коэффициент уплотнения"),
+                   ("/dostavka/stati/skolko-vesit-kub/", "Сколько весит куб материала"),
+                   ("/dostavka/stati/skolko-shchebnya-nuzhno/", "Сколько щебня нужно"),
+                   ("/dostavka/", "Все города и материалы")])
+pages.append((_hub_url, htmlp, "calc-hub"))
+
 # ---- НОВЫЕ ТОВАРНЫЕ СТРАНИЦЫ (керамзит, гравий, крошка, скала, ЩПС, бут) ----
 for slug, mc in MONEY_CFG_EXT.items():
     mat = MATERIALS_EXT[slug]
@@ -1338,7 +1693,12 @@ for slug, mc in MONEY_CFG_EXT.items():
                    (mat["name"], None)]
     jl = graph(localbusiness(), bc_schema(crumb_items), faq_schema(mat["faq"]),
                product_schema(mat["name"], mc["desc"], mc["low"], url))
-    rel = [("/dostavka/shcheben/", "Доставка щебня"),
+    # Соседние материалы идут ПЕРВЫМИ, а не после общих ссылок.
+    # Со срезом rel[:14] они частью не помещались, и гранитная крошка
+    # осталась с двумя входящими на весь сайт при норме от трёх.
+    rel = [("/dostavka/" + o + "/", MATERIALS_EXT[o]["name"] + " с доставкой")
+           for o in MONEY_CFG_EXT if o != slug]
+    rel += [("/dostavka/shcheben/", "Доставка щебня"),
            ("/dostavka/pesok/", "Доставка песка"),
            ("/dostavka/otsev/", "Отсев 0-5"),
            ("/dostavka/pgs/", "ПГС и ОПГС"),
@@ -1347,7 +1707,12 @@ for slug, mc in MONEY_CFG_EXT.items():
            ("/dostavka/", "Все города и материалы")]
     rel += [("/dostavka/" + o + "/", MATERIALS_EXT[o]["name"] + " с доставкой")
             for o in MONEY_CFG_EXT if o != slug]
-    rel = MAT_ART.get(slug, []) + (PESOK_GEO if slug == "pesok" else []) + (SREDNEURALSK if slug == "shcheben" else []) + rel
+    # Ссылка в раздел калькуляторов первой строкой: страница расчёта
+    # продолжает товарную, а не конкурирует с ней, и человек, который
+    # ещё не знает объём, уходит считать к нам, а не на чужой сайт.
+    _calcrel = ([(CALCHUB_URL + slug + "/", "Калькулятор " + CALC_BY_SLUG[slug]["name"])]
+                if slug in CALC_BY_SLUG else [])
+    rel = _calcrel + MAT_ART.get(slug, []) + (PESOK_GEO if slug == "pesok" else []) + (SREDNEURALSK if slug == "shcheben" else []) + rel
     _calc = calc_for(slug)
     htmlp = env.get_template("money.j2").render(
         **BASE_CTX, calc=_calc, has_calc=bool(_calc), canonical=DOMAIN + url, crumbs_html=crumbs(crumb_items),
@@ -1598,6 +1963,8 @@ for city_slug, mats in MATRIX.items():
         jsonld=jl, title=title, desc=desc, h1=h1, hero_sub=hero,
         **_lsi, ground_tag=_ground_tag,
         city=dict(facts, dist=dist), dist=dist, mat_blocks=mat_blocks,
+        lots=city_lots(facts["km"])[0], lots_note=city_lots(facts["km"])[1],
+        plecho_km=facts["km"],
         p_plecho=p_plecho, p_econ=p_econ, p_kuda=p_kuda, p_grunt=p_grunt,
         p_sroki=p_sroki, p_minv=pl["minv"], p_local=LOCAL[city_slug],
         faq=cfaq, related_links=rel[:12])

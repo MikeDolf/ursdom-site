@@ -20,7 +20,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preload" href="/dostavka/assets/fonts/golos-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/dostavka/assets/fonts/mono-num.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/dostavka/assets/dostavka.css?v=94d53c88">
+<link rel="stylesheet" href="/dostavka/assets/dostavka.css?v=b315b80f">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <script type="application/ld+json">
 {
@@ -641,11 +641,14 @@
         <option value="770">Щебень 20-40, 770 руб/м³</option>
         <option value="1150">Щебень 5-20, 1150 руб/м³</option>
         <option value="770">Щебень 40-70, 770 руб/м³</option>
+        <option value="920">Щебень 70-120, 920 руб/м³</option>
         <option value="500">Отсев 0-5, 500 руб/м³</option>
-        <option value="350">Песок карьерный, 350 руб/м³</option>
-        <option value="700">Песок речной мытый, 700 руб/м³</option>
+        <option value="990">Песок карьерный, 990 руб/м³</option>
+        <option value="1450">Песок мытый, 1450 руб/м³</option>
         <option value="500">ПГС, 500 руб/м³</option>
         <option value="400">Скальный грунт, 400 руб/м³</option>
+        <option value="900">Гравий, 900 руб/м³</option>
+        <option value="1500">Керамзит, 1500 руб/м³</option>
       </select>
     </div>
     <div class="d-calc-row">
@@ -692,23 +695,23 @@
 
   <div class="d-calc-static">
     <div class="d-table-wrap"><table>
-      <caption>Примеры расчёта: Щебень гранитный 40-70 по 1300 руб/м³,
+      <caption>Примеры расчёта: Щебень 40-70 по 770 руб/м³,
       доставка 95 руб/км</caption>
       <thead><tr><th>Объём</th><th>Куда</th><th>Плечо</th><th>Рейсы</th>
       <th>Материал, руб</th><th>Доставка, руб</th><th>Итого, руб</th></tr></thead>
       <tbody>
-        <tr><td>10 м³</td><td>Екатеринбург</td><td>25 км</td><td>1 × 10 м³</td><td>13 000</td><td>2 375</td><td>15 375</td></tr>
-        <tr><td>10 м³</td><td>Первоуральск</td><td>45 км</td><td>1 × 10 м³</td><td>13 000</td><td>4 275</td><td>17 275</td></tr>
-        <tr><td>10 м³</td><td>Нижний Тагил</td><td>140 км</td><td>1 × 10 м³</td><td>13 000</td><td>13 300</td><td>26 300</td></tr>
-        <tr><td>20 м³</td><td>Екатеринбург</td><td>25 км</td><td>1 × 20 м³</td><td>26 000</td><td>2 375</td><td>28 375</td></tr>
-        <tr><td>20 м³</td><td>Первоуральск</td><td>45 км</td><td>1 × 20 м³</td><td>26 000</td><td>4 275</td><td>30 275</td></tr>
-        <tr><td>20 м³</td><td>Нижний Тагил</td><td>140 км</td><td>1 × 20 м³</td><td>26 000</td><td>13 300</td><td>39 300</td></tr>
-        <tr><td>30 м³</td><td>Екатеринбург</td><td>25 км</td><td>2 × 20 м³</td><td>39 000</td><td>4 750</td><td>43 750</td></tr>
-        <tr><td>30 м³</td><td>Первоуральск</td><td>45 км</td><td>2 × 20 м³</td><td>39 000</td><td>8 550</td><td>47 550</td></tr>
-        <tr><td>30 м³</td><td>Нижний Тагил</td><td>140 км</td><td>2 × 20 м³</td><td>39 000</td><td>26 600</td><td>65 600</td></tr>
-        <tr><td>50 м³</td><td>Екатеринбург</td><td>25 км</td><td>3 × 20 м³</td><td>65 000</td><td>7 125</td><td>72 125</td></tr>
-        <tr><td>50 м³</td><td>Первоуральск</td><td>45 км</td><td>3 × 20 м³</td><td>65 000</td><td>12 825</td><td>77 825</td></tr>
-        <tr><td>50 м³</td><td>Нижний Тагил</td><td>140 км</td><td>3 × 20 м³</td><td>65 000</td><td>39 900</td><td>104 900</td></tr>
+        <tr><td>10 м³</td><td>Екатеринбург</td><td>25 км</td><td>1 × 10 м³</td><td>7 700</td><td>2 375</td><td>10 075</td></tr>
+        <tr><td>10 м³</td><td>Первоуральск</td><td>45 км</td><td>1 × 10 м³</td><td>7 700</td><td>4 275</td><td>11 975</td></tr>
+        <tr><td>10 м³</td><td>Нижний Тагил</td><td>140 км</td><td>1 × 10 м³</td><td>7 700</td><td>13 300</td><td>21 000</td></tr>
+        <tr><td>20 м³</td><td>Екатеринбург</td><td>25 км</td><td>1 × 20 м³</td><td>15 400</td><td>2 375</td><td>17 775</td></tr>
+        <tr><td>20 м³</td><td>Первоуральск</td><td>45 км</td><td>1 × 20 м³</td><td>15 400</td><td>4 275</td><td>19 675</td></tr>
+        <tr><td>20 м³</td><td>Нижний Тагил</td><td>140 км</td><td>1 × 20 м³</td><td>15 400</td><td>13 300</td><td>28 700</td></tr>
+        <tr><td>30 м³</td><td>Екатеринбург</td><td>25 км</td><td>2 × 20 м³</td><td>23 100</td><td>4 750</td><td>27 850</td></tr>
+        <tr><td>30 м³</td><td>Первоуральск</td><td>45 км</td><td>2 × 20 м³</td><td>23 100</td><td>8 550</td><td>31 650</td></tr>
+        <tr><td>30 м³</td><td>Нижний Тагил</td><td>140 км</td><td>2 × 20 м³</td><td>23 100</td><td>26 600</td><td>49 700</td></tr>
+        <tr><td>50 м³</td><td>Екатеринбург</td><td>25 км</td><td>3 × 20 м³</td><td>38 500</td><td>7 125</td><td>45 625</td></tr>
+        <tr><td>50 м³</td><td>Первоуральск</td><td>45 км</td><td>3 × 20 м³</td><td>38 500</td><td>12 825</td><td>51 325</td></tr>
+        <tr><td>50 м³</td><td>Нижний Тагил</td><td>140 км</td><td>3 × 20 м³</td><td>38 500</td><td>39 900</td><td>78 400</td></tr>
       </tbody>
     </table></div>
     <p class="d-note">Объём сверх 20 м³ везётся несколькими рейсами,
@@ -878,6 +881,7 @@
         <h3>Материалы</h3>
         <p><a href="/dostavka/shcheben/">Доставка щебня</a><br>
         <a href="/dostavka/pesok/">Доставка песка</a><br>
+        <a href="/dostavka/kalkulyator/">Калькуляторы объёма и веса</a><br>
         <a href="/dostavka/">Все города и материалы</a><br>
         <a href="/dostavka/politika/">Обработка данных</a></p>
       </div>
@@ -885,8 +889,9 @@
     <p class="d-copy">© 2026 Щебень-Урал. Доставка нерудных материалов по Екатеринбургу и Свердловской области. Цены на сайте ориентировочные, точную стоимость называем по заявке.</p>
   </div>
 </footer>
-<script src="/dostavka/assets/wa.js?v=94d53c88" defer></script>
-<script src="/dostavka/assets/calc.js?v=94d53c88" defer></script>
+<script src="/dostavka/assets/wa.js?v=b315b80f" defer></script>
+<script src="/dostavka/assets/calc.js?v=b315b80f" defer></script>
+
 
 <div class="d-float" aria-label="Написать нам">
   <a class="d-float-btn" href="https://max.ru/u/f9LHodD0cOIgiq2N2buCj7oU32e1sbUDdW834GzM718dViUBpco7KXS8n10" target="_blank" rel="noopener"

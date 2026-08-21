@@ -234,7 +234,8 @@
    Текущий материал вычитается на сборке, поэтому страница не предлагает
    саму себя. #}
 {% macro crossshelf(rows, head) -%}
-{% if rows %}  <h2>{{ head }}</h2>
+{% if rows %}{% if head %}  <h2>{{ head }}</h2>
+{% endif %}
   <div class="d-shelf d-shelf-cross">
 {% for r in rows %}    <article class="d-shelf-item">
 {% if r.img %}      <div class="d-shelf-ph">
@@ -502,6 +503,97 @@
 </section>
 {%- endmacro %}
 
+{# Калькулятор объёма по размерам площадки.
+
+   Отвечает на вопрос, с которым на этот рынок и приходят: «сколько кубов
+   надо на площадку 6 на 4». Раньше человек считал это в уме или на чужом
+   сайте, и на чужом же оставался.
+
+   Устроен как калькулятор доставки: на сборке рендерится настоящая
+   таблица готовых расчётов, скрипт только надстраивает над ней поля.
+   Без JavaScript блок остаётся рабочим и попадает в индекс.
+
+   Коэффициент уплотнения берётся верхней границей диапазона: слой
+   недосыпать хуже, чем пересыпать. Материалы, у которых коэффициента
+   в наших текстах нет, считаются без запаса, и это сказано вслух. #}
+{% macro volcalc(cfg, v) -%}
+<section class="d-vc" id="obem"
+         data-k="{{ v.k }}" data-dens-lo="{{ v.dens_lo or '' }}"
+         data-dens-hi="{{ v.dens_hi or '' }}" data-price="{{ v.price }}">
+  <h2>Сколько {{ v.name }} нужно: расчёт по размерам</h2>
+  <p class="d-calc-lead">{{ v.lead }}</p>
+
+  <div class="d-vc-ui" hidden>
+    <div class="d-vc-form">
+      <div class="d-vc-field">
+        <label for="vc-l">Длина, м</label>
+        <input id="vc-l" type="text" inputmode="decimal" autocomplete="off" value="{{ v.l }}">
+      </div>
+      <div class="d-vc-field">
+        <label for="vc-w">Ширина, м</label>
+        <input id="vc-w" type="text" inputmode="decimal" autocomplete="off" value="{{ v.w }}">
+      </div>
+      <div class="d-vc-field">
+        <label for="vc-h">Толщина слоя, см</label>
+        <input id="vc-h" type="text" inputmode="numeric" autocomplete="off" value="{{ v.layer }}">
+      </div>
+    </div>
+    <output class="d-vc-out" id="vc-out" aria-live="polite"></output>
+    {{ channels(cfg, "#zayavka", "Заказать этот объём") }}
+  </div>
+
+  <div class="d-vc-static">
+    <div class="d-table-wrap"><table>
+      <caption>{{ v.caption }}</caption>
+      <thead><tr><th>Задача</th><th>Размеры</th><th>Слой</th><th>Объём{% if v.k > 1 %} с запасом{% endif %}</th>{% if v.dens_lo %}<th>Вес</th>{% endif %}<th>Машина</th></tr></thead>
+      <tbody>
+{% for r in v.rows %}        <tr><td>{{ r.task }}</td><td class="d-spec-val">{{ r.size }}</td><td class="d-spec-val">{{ r.layer }} см</td><td class="d-spec-val">{{ r.vol }} м³</td>{% if v.dens_lo %}<td class="d-spec-val">{{ r.tons }} т</td>{% endif %}<td>{{ r.truck }}</td></tr>
+{% endfor %}      </tbody>
+    </table></div>
+  </div>
+  <p class="d-note">{{ v.note }}</p>
+</section>
+{%- endmacro %}
+
+{# Перевод тонн в кубы и обратно. Отдельный блок, потому что это отдельный
+   вопрос: материал заказывают кубами, а взвешивают тоннами, и на этом
+   расхождении чаще всего и спорят при приёмке.
+
+   Показывается только там, где насыпная плотность есть в наших же
+   текстах. Подставить «примерно полторы тонны» было бы проще, но это
+   ровно тот вид вранья, который вскрывается на весах. #}
+{% macro tonscalc(v) -%}
+{% if v.dens_lo %}<section class="d-tc" id="ves"
+         data-dens-lo="{{ v.dens_lo }}" data-dens-hi="{{ v.dens_hi }}">
+  <h2>Перевести тонны в кубы и обратно</h2>
+  <p class="d-calc-lead">Насыпная плотность {{ v.dens_s }} тонны на кубометр.
+  {% if v.dens_note %}{{ v.dens_note }}{% endif %}</p>
+  <div class="d-tc-ui" hidden>
+    <div class="d-vc-form">
+      <div class="d-vc-field">
+        <label for="tc-m3">Кубометры</label>
+        <input id="tc-m3" type="text" inputmode="decimal" autocomplete="off" value="10">
+      </div>
+      <div class="d-vc-field">
+        <label for="tc-t">Тонны</label>
+        <input id="tc-t" type="text" inputmode="decimal" autocomplete="off" value="">
+      </div>
+    </div>
+    <output class="d-tc-out" id="tc-out" aria-live="polite"></output>
+  </div>
+  <div class="d-tc-static">
+    <div class="d-table-wrap"><table>
+      <caption>Готовый перевод по насыпной плотности {{ v.dens_s }} т/м³</caption>
+      <thead><tr><th>Кубометры</th><th>Тонны</th><th>Тонны</th><th>Кубометры</th></tr></thead>
+      <tbody>
+{% for a,b,c,d in v.tons_rows %}        <tr><td class="d-spec-val">{{ a }}</td><td class="d-spec-val">{{ b }}</td><td class="d-spec-val">{{ c }}</td><td class="d-spec-val">{{ d }}</td></tr>
+{% endfor %}      </tbody>
+    </table></div>
+  </div>
+</section>
+{% endif %}
+{%- endmacro %}
+
 {% macro author_block(author, updated) -%}
 <div class="d-author">
   <div class="d-ava" aria-hidden="true">{{ author.initials }}</div>
@@ -539,6 +631,18 @@
 {% endfor %}{% if sb.ul %}  <ul>
 {% for i in sb.ul %}    <li>{{ i|xlink }}</li>
 {% endfor %}  </ul>
+{% endif %}{# Таблица внутри подраздела. Появилась при вычитке: пропорции
+   бетона на цементе М500 были записаны прописью в одну строку -
+   «М100 это один к пять восемь к восемь одному» - потому что таблицу
+   сюда положить было некуда. Читать это невозможно, а данные ровно
+   табличные, и в соседнем разделе они уже стоят таблицей. #}
+{% if sb.table %}  <div class="d-table-wrap"><table>
+    <caption>{{ sb.table.caption }}</caption>
+    <thead><tr>{% for th in sb.table.head %}<th>{{ th }}</th>{% endfor %}</tr></thead>
+    <tbody>
+{% for row in sb.table.rows %}      <tr>{% for cell in row %}<td>{{ cell }}</td>{% endfor %}</tr>
+{% endfor %}    </tbody>
+  </table></div>
 {% endif %}{% endfor %}{% endif %}
 {%- if s.after %}{% for para in s.after %}  <p>{{ para|xlink }}</p>
 {% endfor %}{% endif %}

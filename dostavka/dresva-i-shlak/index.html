@@ -20,7 +20,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preload" href="/dostavka/assets/fonts/golos-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/dostavka/assets/fonts/mono-num.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/dostavka/assets/dostavka.css?v=94d53c88">
+<link rel="stylesheet" href="/dostavka/assets/dostavka.css?v=b315b80f">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <script type="application/ld+json">
 {
@@ -331,6 +331,25 @@
 
 
 
+
+<section><div class="wrap d-prose">
+  <nav class="d-toc" aria-label="Содержание страницы"><strong>Что на этой странице</strong>
+    <ol>
+      <li><a href="#ceny">Цены на дресву и шлаковый щебень</a></li>
+      <li><a href="#kak-zakazat">Как заказать</a></li>
+      <li><a href="#vidy">Что возим</a></li>
+      <li><a href="#frakcii">Фракции и вес</a></li>
+      <li><a href="#skolko">Сколько нужно на типовые задачи</a></li>
+      <li><a href="#kalkulyator">Калькулятор доставки</a></li>
+      <li><a href="#oplata">Как можно заплатить</a></li>
+      <li><a href="#zony">Куда возим</a></li>
+      <li><a href="#zayavka">Оставить заявку</a></li>
+      <li><a href="#faq">Частые вопросы</a></li>
+    </ol>
+  </nav>
+</div></section>
+
+
 <section><div class="wrap">
     <h2 id="ceny">Цены на дресву и шлаковый щебень с доставкой</h2>
   <div class="d-shelf">
@@ -444,11 +463,14 @@
         <option value="770">Щебень 20-40, 770 руб/м³</option>
         <option value="1150">Щебень 5-20, 1150 руб/м³</option>
         <option value="770">Щебень 40-70, 770 руб/м³</option>
+        <option value="920">Щебень 70-120, 920 руб/м³</option>
         <option value="500">Отсев 0-5, 500 руб/м³</option>
-        <option value="350">Песок карьерный, 350 руб/м³</option>
-        <option value="700">Песок речной мытый, 700 руб/м³</option>
+        <option value="990">Песок карьерный, 990 руб/м³</option>
+        <option value="1450">Песок мытый, 1450 руб/м³</option>
         <option value="500">ПГС, 500 руб/м³</option>
         <option value="400">Скальный грунт, 400 руб/м³</option>
+        <option value="900">Гравий, 900 руб/м³</option>
+        <option value="1500">Керамзит, 1500 руб/м³</option>
       </select>
     </div>
     <div class="d-calc-row">
@@ -495,23 +517,23 @@
 
   <div class="d-calc-static">
     <div class="d-table-wrap"><table>
-      <caption>Примеры расчёта: Дресва по 450 руб/м³,
+      <caption>Примеры расчёта: Дресва по 400 руб/м³,
       доставка 95 руб/км</caption>
       <thead><tr><th>Объём</th><th>Куда</th><th>Плечо</th><th>Рейсы</th>
       <th>Материал, руб</th><th>Доставка, руб</th><th>Итого, руб</th></tr></thead>
       <tbody>
-        <tr><td>10 м³</td><td>Екатеринбург</td><td>25 км</td><td>1 × 10 м³</td><td>4 500</td><td>2 375</td><td>6 875</td></tr>
-        <tr><td>10 м³</td><td>Первоуральск</td><td>45 км</td><td>1 × 10 м³</td><td>4 500</td><td>4 275</td><td>8 775</td></tr>
-        <tr><td>10 м³</td><td>Нижний Тагил</td><td>140 км</td><td>1 × 10 м³</td><td>4 500</td><td>13 300</td><td>17 800</td></tr>
-        <tr><td>25 м³</td><td>Екатеринбург</td><td>25 км</td><td>2 × 20 м³</td><td>11 250</td><td>4 750</td><td>16 000</td></tr>
-        <tr><td>25 м³</td><td>Первоуральск</td><td>45 км</td><td>2 × 20 м³</td><td>11 250</td><td>8 550</td><td>19 800</td></tr>
-        <tr><td>25 м³</td><td>Нижний Тагил</td><td>140 км</td><td>2 × 20 м³</td><td>11 250</td><td>26 600</td><td>37 850</td></tr>
-        <tr><td>40 м³</td><td>Екатеринбург</td><td>25 км</td><td>2 × 20 м³</td><td>18 000</td><td>4 750</td><td>22 750</td></tr>
-        <tr><td>40 м³</td><td>Первоуральск</td><td>45 км</td><td>2 × 20 м³</td><td>18 000</td><td>8 550</td><td>26 550</td></tr>
-        <tr><td>40 м³</td><td>Нижний Тагил</td><td>140 км</td><td>2 × 20 м³</td><td>18 000</td><td>26 600</td><td>44 600</td></tr>
-        <tr><td>60 м³</td><td>Екатеринбург</td><td>25 км</td><td>3 × 20 м³</td><td>27 000</td><td>7 125</td><td>34 125</td></tr>
-        <tr><td>60 м³</td><td>Первоуральск</td><td>45 км</td><td>3 × 20 м³</td><td>27 000</td><td>12 825</td><td>39 825</td></tr>
-        <tr><td>60 м³</td><td>Нижний Тагил</td><td>140 км</td><td>3 × 20 м³</td><td>27 000</td><td>39 900</td><td>66 900</td></tr>
+        <tr><td>10 м³</td><td>Екатеринбург</td><td>25 км</td><td>1 × 10 м³</td><td>4 000</td><td>2 375</td><td>6 375</td></tr>
+        <tr><td>10 м³</td><td>Первоуральск</td><td>45 км</td><td>1 × 10 м³</td><td>4 000</td><td>4 275</td><td>8 275</td></tr>
+        <tr><td>10 м³</td><td>Нижний Тагил</td><td>140 км</td><td>1 × 10 м³</td><td>4 000</td><td>13 300</td><td>17 300</td></tr>
+        <tr><td>25 м³</td><td>Екатеринбург</td><td>25 км</td><td>2 × 20 м³</td><td>10 000</td><td>4 750</td><td>14 750</td></tr>
+        <tr><td>25 м³</td><td>Первоуральск</td><td>45 км</td><td>2 × 20 м³</td><td>10 000</td><td>8 550</td><td>18 550</td></tr>
+        <tr><td>25 м³</td><td>Нижний Тагил</td><td>140 км</td><td>2 × 20 м³</td><td>10 000</td><td>26 600</td><td>36 600</td></tr>
+        <tr><td>40 м³</td><td>Екатеринбург</td><td>25 км</td><td>2 × 20 м³</td><td>16 000</td><td>4 750</td><td>20 750</td></tr>
+        <tr><td>40 м³</td><td>Первоуральск</td><td>45 км</td><td>2 × 20 м³</td><td>16 000</td><td>8 550</td><td>24 550</td></tr>
+        <tr><td>40 м³</td><td>Нижний Тагил</td><td>140 км</td><td>2 × 20 м³</td><td>16 000</td><td>26 600</td><td>42 600</td></tr>
+        <tr><td>60 м³</td><td>Екатеринбург</td><td>25 км</td><td>3 × 20 м³</td><td>24 000</td><td>7 125</td><td>31 125</td></tr>
+        <tr><td>60 м³</td><td>Первоуральск</td><td>45 км</td><td>3 × 20 м³</td><td>24 000</td><td>12 825</td><td>36 825</td></tr>
+        <tr><td>60 м³</td><td>Нижний Тагил</td><td>140 км</td><td>3 × 20 м³</td><td>24 000</td><td>39 900</td><td>63 900</td></tr>
       </tbody>
     </table></div>
     <p class="d-note">Объём сверх 20 м³ везётся несколькими рейсами,
@@ -594,7 +616,7 @@
 </div></section>
 
 <section><div class="wrap">
-  <h2>Частые вопросы</h2>
+  <h2 id="faq">Частые вопросы</h2>
   <div class="d-faq">
   <details><summary>Что такое дресва?</summary><div><p>Рыхлый продукт выветривания скальной породы с зерном от 2 до 40 миллиметров. По поведению это нечто среднее между крупным песком и мелким щебнем: раскидывается лопатой, трамбуется плотно, но несущей способности щебня не даёт.</p></div></details>
   <details><summary>Сколько весит куб дресвы?</summary><div><p>От 1,5 до 1,7 тонны в зависимости от доли мелочи и влажности. Двадцатикубовый самосвал везёт около тридцати двух тонн.</p></div></details>
@@ -704,6 +726,7 @@
         <h3>Материалы</h3>
         <p><a href="/dostavka/shcheben/">Доставка щебня</a><br>
         <a href="/dostavka/pesok/">Доставка песка</a><br>
+        <a href="/dostavka/kalkulyator/">Калькуляторы объёма и веса</a><br>
         <a href="/dostavka/">Все города и материалы</a><br>
         <a href="/dostavka/politika/">Обработка данных</a></p>
       </div>
@@ -711,8 +734,9 @@
     <p class="d-copy">© 2026 Щебень-Урал. Доставка нерудных материалов по Екатеринбургу и Свердловской области. Цены на сайте ориентировочные, точную стоимость называем по заявке.</p>
   </div>
 </footer>
-<script src="/dostavka/assets/wa.js?v=94d53c88" defer></script>
-<script src="/dostavka/assets/calc.js?v=94d53c88" defer></script>
+<script src="/dostavka/assets/wa.js?v=b315b80f" defer></script>
+<script src="/dostavka/assets/calc.js?v=b315b80f" defer></script>
+
 
 <div class="d-float" aria-label="Написать нам">
   <a class="d-float-btn" href="https://max.ru/u/f9LHodD0cOIgiq2N2buCj7oU32e1sbUDdW834GzM718dViUBpco7KXS8n10" target="_blank" rel="noopener"

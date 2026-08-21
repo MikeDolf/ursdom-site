@@ -1,0 +1,46 @@
+{% extends "base.j2" %}
+{% import "_macros.j2" as m %}
+{% block body %}
+<section class="d-hero" style="--cell:34px"><div class="wrap d-hero-grid">
+  <div class="d-hero-main">
+  <h1>{{ h1 }}</h1>
+  <p>{{ hero_sub }}</p>
+  {{ m.channels(cfg, "#vse", "Выбрать материал") }}
+  </div>
+  {{ m.hero_panel(hero_cap|default("щебень 20-40 мм", true), hero_img|default(none, true)) }}
+</div></section>
+
+<section><div class="wrap">
+  <h2 id="vse">Калькулятор по материалу</h2>
+  <p>На каждой странице три расчёта: объём по размерам площадки с запасом
+  на уплотнение, перевод кубов в тонны и стоимость с доставкой на ваш адрес.</p>
+  {{ m.crossshelf(cards, None) }}
+</div></section>
+
+<section><div class="wrap d-prose">
+  <h2 id="metodika">По каким формулам считаем</h2>
+{% for h, p in method %}  <h3>{{ h }}</h3>
+{% for line in p %}  <p>{{ line }}</p>
+{% endfor %}{% endfor %}
+</div></section>
+
+<section id="zayavka"><div class="wrap">
+  <h2>Посчитаем под ваш объект</h2>
+  <div class="d-two">
+  <div>{{ m.callblock(cfg) }}</div>
+  <div>
+    <h3>Заявка на расчёт</h3>
+    {{ m.lead_form(cfg, subject) }}
+  </div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <h2>Частые вопросы</h2>
+  {{ m.faq(faq) }}
+</div></section>
+
+<section><div class="wrap">
+  {{ m.related(related_links) }}
+</div></section>
+{% endblock %}

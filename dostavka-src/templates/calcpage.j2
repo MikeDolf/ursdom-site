@@ -1,0 +1,62 @@
+{% extends "base.j2" %}
+{% import "_macros.j2" as m %}
+{% block body %}
+<section class="d-hero" style="--cell:{{ hero_cell|default(34) }}px"><div class="wrap d-hero-grid">
+  <div class="d-hero-main">
+  <h1>{{ h1 }}</h1>
+  <p>{{ hero_sub }}</p>
+{% if hero_price %}  <p class="d-hero-price"><b>{{ hero_price }}</b><span>руб за куб, доставка считается отдельно</span></p>
+{% endif %}
+  {{ m.channels(cfg, "#obem", "Посчитать объём") }}
+  </div>
+  {{ m.hero_panel(hero_cap|default("щебень 20-40 мм", true), hero_img|default(none, true)) }}
+</div></section>
+
+{% if quick %}
+<nav class="d-quick" aria-label="Другие калькуляторы"><div class="wrap">
+  <span class="d-quick-lab">Считаем ещё</span>
+{% for label, href in quick %}  <a href="{{ href }}">{{ label }}</a>
+{% endfor %}</div></nav>
+{% endif %}
+
+<section><div class="wrap">
+  {{ m.volcalc(cfg, vc) }}
+</div></section>
+
+<section><div class="wrap">
+  {{ m.tonscalc(vc) }}
+</div></section>
+
+{% if calc %}
+<section><div class="wrap">
+  {{ m.calculator(cfg, calc) }}
+</div></section>
+{% endif %}
+
+<section><div class="wrap d-prose">
+  <h2 id="metodika">Как мы считаем</h2>
+{% for h, p in method %}  <h3>{{ h }}</h3>
+{% for line in p %}  <p>{{ line }}</p>
+{% endfor %}{% endfor %}
+</div></section>
+
+<section id="zayavka"><div class="wrap">
+  <h2>Посчитаем под ваш объект</h2>
+  <div class="d-two">
+  <div>{{ m.callblock(cfg) }}</div>
+  <div>
+    <h3>Заявка на {{ mat_order }}</h3>
+    {{ m.lead_form(cfg, subject) }}
+  </div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <h2>Частые вопросы о расчёте</h2>
+  {{ m.faq(faq) }}
+</div></section>
+
+<section><div class="wrap">
+  {{ m.related(related_links) }}
+</div></section>
+{% endblock %}

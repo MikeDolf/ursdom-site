@@ -33,6 +33,25 @@
 </div></section>
 
 <section><div class="wrap d-prose">
+{# Готовые суммы под этот город. Раньше плечо называлось словами
+   («около 140 км»), а во сколько это обходится, человек досчитывал сам
+   или уходил считать в другое место. Числа считаются от километража
+   именно этого города, поэтому таблица у каждой страницы своя. #}
+{% if lots %}
+  <h2 id="skolko-mashina">Сколько стоит машина {{ city.prep }}</h2>
+  <div class="d-table-wrap"><table>
+    <caption>Предварительный расчёт для плеча {{ plecho_km }} км: материал плюс доставка.
+    Точную сумму называем по заявке.</caption>
+    <thead><tr><th>Объём</th><th>Машина</th><th>Материал</th><th>Доставка</th><th>Итого</th></tr></thead>
+    <tbody>
+{% for r in lots %}      <tr><td class="d-spec-val">{{ r.vol }} м³</td><td>{{ r.truck }}</td><td class="d-spec-val">{{ r.material }} руб</td><td class="d-spec-val">{{ r.delivery }} руб</td><td class="d-spec-val">{{ r.total }} руб</td></tr>
+{% endfor %}    </tbody>
+  </table></div>
+  <p class="d-note">{{ lots_note }} Расчёт по щебню 20-40; другой материал
+  и другой объём посчитает <a href="/dostavka/kalkulyator/shcheben/">калькулятор</a>,
+  там же считается объём по размерам площадки.</p>
+{% endif %}
+
   <h2 id="plecho">Доставка щебня {{ city.prep }}: плечо и цена</h2>
   <p>{{ city.block }}</p>
 

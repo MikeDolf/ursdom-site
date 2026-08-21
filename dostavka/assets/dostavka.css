@@ -741,6 +741,45 @@ table td:only-child,table td:first-child:last-child{font-weight:400}
    собственный бегунок, поэтому он набран латунью как действие, а дорожка
    графитом как разлиновка. Цель нажатия бегунка 28px: меньше её
    не поймать пальцем на ходу. */
+/* ------------------------------------------- калькуляторы раздела
+   Объём по размерам и перевод тонн в кубы. Корпус тот же, что
+   у калькулятора доставки: бумажный лоток в графитовой рамке.
+   Разница только в органах управления - здесь поля с числами,
+   а не ползунок: размеры площадки человек знает точно и вводит
+   их, а не подбирает.
+
+   Поля в ряд по три: длина, ширина, толщина читаются как одна
+   формула, а не как анкета из трёх вопросов. */
+.d-vc,.d-tc{background:var(--d-paper);border:1px solid var(--d-rule);
+  padding:24px;margin:30px 0}
+.d-vc h2,.d-tc h2{margin-top:0}
+.d-vc-ui[hidden],.d-tc-ui[hidden],
+.d-vc-static[hidden],.d-tc-static[hidden]{display:none}
+.d-vc-form{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:14px;margin:0 0 20px;max-width:34rem}
+.d-tc .d-vc-form{grid-template-columns:repeat(2,minmax(0,1fr))}
+.d-vc-field label{display:block;font-size:14px;font-weight:700;
+  letter-spacing:.02em;color:var(--d-ink-2);margin-bottom:7px}
+/* Моноширинные цифры и в поле ввода: число под пальцем не должно
+   менять ширину, пока его набирают. */
+.d-vc-field input{width:100%;padding:11px 12px;font:inherit;font-size:17px;
+  color:var(--d-ink);background:#fff;border:1px solid var(--d-rule-2);
+  min-height:48px;font-variant-numeric:tabular-nums}
+.d-vc-field input:focus{border-color:var(--d-brass-text)}
+.d-vc-out{display:block;margin:20px 0}
+.d-tc-out{display:block;margin:16px 0 0;font-size:16px;color:var(--d-ink);
+  border-left:3px solid var(--d-brass);padding-left:13px;line-height:1.5}
+.d-tc-out:empty{display:none}
+@media (max-width:560px){
+  .d-vc,.d-tc{padding:18px 16px}
+  /* На телефоне три поля в ряд дают по сто пикселей на каждое,
+     и подпись «Толщина слоя, см» переносится в три строки. */
+  .d-vc-form{grid-template-columns:1fr 1fr}
+  .d-vc-field:last-child{grid-column:1 / -1}
+  .d-tc .d-vc-form{grid-template-columns:1fr}
+  .d-tc .d-vc-field:last-child{grid-column:auto}
+}
+
 .d-calc{background:var(--d-paper);border:1px solid var(--d-rule);
   padding:24px;margin:30px 0}
 .d-calc h2{margin-top:0}

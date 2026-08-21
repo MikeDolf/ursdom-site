@@ -125,6 +125,7 @@
         <h3>Материалы</h3>
         <p><a href="/dostavka/shcheben/">Доставка щебня</a><br>
         <a href="/dostavka/pesok/">Доставка песка</a><br>
+        <a href="/dostavka/kalkulyator/">Калькуляторы объёма и веса</a><br>
         <a href="/dostavka/">Все города и материалы</a><br>
         <a href="/dostavka/politika/">Обработка данных</a></p>
       </div>
@@ -134,6 +135,7 @@
 </footer>
 <script src="/dostavka/assets/wa.js?v={{ cfg.css_version }}" defer></script>
 {% if has_calc %}<script src="/dostavka/assets/calc.js?v={{ cfg.css_version }}" defer></script>{% endif %}
+{% if vc %}<script src="/dostavka/assets/calcpage.js?v={{ cfg.css_version }}" defer></script>{% endif %}
 
 {{ m.float_block(cfg) }}
 {# Липкая панель на телефоне. Раньше в ней был только MAX, а WhatsApp
