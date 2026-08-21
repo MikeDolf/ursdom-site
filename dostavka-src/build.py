@@ -66,6 +66,36 @@ DOMAIN = SITE["domain"]
 TODAY = "2026-07-28"
 PER_CUBE_LIST = list(PER_CUBE.items())
 
+# Минимальная цена материала для баннера в первом экране. Считается
+# из PER_CUBE, а не пишется руками: таблица цен стоит на той же странице
+# ниже, и разойтись с ней баннер не имеет права. Ключи перечислены явно,
+# потому что по названию материал не вычислить: «Отсев 0-5» и «ПГС»
+# не содержат слова, по которому их можно сгруппировать.
+HERO_PRICE_KEYS = {
+    "shcheben": ["Щебень гранитный 5-20", "Щебень гранитный 20-40",
+                 "Щебень известняковый 20-40", "Щебень гравийный 20-40",
+                 "Щебень вторичный (бой)"],
+    "pesok": ["Песок карьерный", "Песок речной (мытый)"],
+    "otsev": ["Отсев 0-5"],
+    "pgs": ["ПГС"],
+}
+
+
+def hero_price_for(slug):
+    """«от N» по самой дешёвой позиции материала. None, если позиций нет."""
+    keys = HERO_PRICE_KEYS.get(slug)
+    if not keys:
+        return None
+    nums = []
+    for k in keys:
+        raw = PER_CUBE.get(k)
+        if not raw:
+            continue
+        digits = re.sub(r"[^\d]", "", raw)
+        if digits:
+            nums.append(int(digits))
+    return ("от %d" % min(nums)) if nums else None
+
 # готовые расчёты объёма: помогают заказчику прикинуть кубы до заявки (конверсия)
 CALC_ROWS = [
     ("Заезд 3 на 8 м, слой 20 см", "около 6 м³", "Самосвал 5-6,5 м³"),
@@ -791,6 +821,7 @@ for slug, mc in money_cfg.items():
         tasks=mat.get("tasks"), tasks_head=mat.get("tasks_head"),
         specs=mat.get("specs"), specs_head=mat.get("specs_head"),
         packs=mat.get("packs"), packs_head=mat.get("packs_head"),
+        quick=mat.get("quick"), hero_price=hero_price_for(slug),
         faq=mat["faq"], hero_cell=HERO_CELL.get(slug, 34),
         **_photo_ctx(slug, _ph, "Как выглядит " + mc["mat_vin"]),
         hero_frac=HERO_FRAC.get(slug, "щебень 20-40 мм"),

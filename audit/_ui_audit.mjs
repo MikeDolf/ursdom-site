@@ -98,7 +98,11 @@ const PROBE = () => {
     }
 
     if (r.right > window.innerWidth + 2 && cs.overflowX !== 'auto' && cs.overflowX !== 'scroll') {
-      const p = el.closest('[style*="overflow"], .d-table-wrap, .d-fleet-row');
+      // .d-quick .wrap - полоса быстрых ссылок под первым экраном.
+      // На телефоне она намеренно уезжает в горизонтальную прокрутку:
+      // семь ссылок в три строки отодвигали бы контент вниз сильнее,
+      // чем помогали. Как и у .d-fleet-row, это не вылет, а лента.
+      const p = el.closest('[style*="overflow"], .d-table-wrap, .d-fleet-row, .d-quick .wrap');
       if (!p) out.overflow.push({ el: sel(el), right: Math.round(r.right), win: window.innerWidth });
     }
   }

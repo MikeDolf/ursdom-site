@@ -257,6 +257,38 @@ table,.d-sieve,.d-cat-price{font-variant-numeric:tabular-nums}
    не даёт длинному заголовку переноситься и распирает колонку,
    съедая панель справа. */
 .d-hero-main{min-width:0}
+/* Цена в первом экране. Латунная кромка слева, как у ценового якоря
+   и у блоков «под задачу»: это тот же приём, а не новый элемент.
+   Число моноширинными того же набора, что и все цифры на сайте. */
+.d-hero-price{display:flex;align-items:baseline;flex-wrap:wrap;gap:0 10px;
+  margin:0 0 20px;padding:9px 0 9px 15px;border-left:3px solid var(--d-brass)}
+.d-hero-price b{font-family:"Mono Num",ui-monospace,monospace;
+  font-size:29px;font-weight:700;line-height:1;color:var(--d-brass);
+  letter-spacing:-.01em}
+.d-hero-price span{font-size:14px;color:var(--d-on-steel-2)}
+@media (max-width:560px){.d-hero-price b{font-size:25px}}
+
+/* Полоса быстрых ссылок под первым экраном. Сидит на эмали, как крошки,
+   и читается продолжением навигации, а не блоком контента. На телефоне
+   уезжает в горизонтальную прокрутку: переносить восемь ссылок в три
+   строки хуже, чем дать их одной лентой. */
+.d-quick{background:var(--d-enamel-2);border-bottom:1px solid var(--d-rule)}
+.d-quick .wrap{display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+  padding-top:11px;padding-bottom:11px}
+.d-quick-lab{font-size:12px;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--d-ink-2);margin-right:4px}
+/* 48px, а не 34: рендер-аудит поймал цель нажатия ниже нормы. Порог
+   на этом сайте поднят с 44 (WCAG 2.5.5) до 48 по Material и Lighthouse,
+   и полоса ссылок не исключение, хотя визуально это мелкие чипсы. */
+.d-quick a{display:inline-flex;align-items:center;min-height:48px;
+  padding:0 14px;background:var(--d-paper);border:1px solid var(--d-rule);
+  font-size:14px;color:var(--d-ink);text-decoration:none;white-space:nowrap}
+.d-quick a:hover{border-color:var(--d-brass);color:var(--d-brass-text)}
+@media (max-width:700px){
+  .d-quick .wrap{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .d-quick-lab{display:none}
+}
+
 .d-hero-panel{display:flex;flex-direction:column;margin-top:6px}
 .d-hero-mesh{display:block;position:relative;height:214px;overflow:hidden;
   background-color:#151d26;border-left:4px solid var(--d-brass);
