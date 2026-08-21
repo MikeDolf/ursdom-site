@@ -37,19 +37,19 @@
 
    Список собирается теми же условиями, что и сами разделы, поэтому
    пункта на несуществующий блок в нём быть не может. #}
-{% set toc = [("ceny", "Цены на " ~ mat_vin)]
-   + ([("obemy", lots_head)] if lots else [])
-   + ([("karyery", quarries_head)] if quarries else [])
-   + ([("pod-zadachu", tasks_head|default(mat_vin|capitalize ~ " под задачу", true))] if tasks else [])
-   + [("kak-zakazat", "Как заказать")]
-   + ([("foto", photos_head)] if photos and photos_head else [])
-   + [("vidy", types_head|default("Виды " ~ mat_rod))]
-   + ([("frakcii", fractions_head|default("Фракции и применение", true))] if fractions else [])
-   + ([("fasovka", packs_head|default("Фасовка и объём", true))] if packs else [])
-   + ([("harakteristiki", specs_head|default("Характеристики " ~ mat_rod, true))] if specs else [])
-   + [("skolko", calc_head|default("Сколько нужно на типовые задачи"))]
+{% set toc = [("ceny", "Цены и наличие")]
+   + ([("obemy", "Готовые объёмы с доставкой")] if lots else [])
+   + ([("karyery", "Карьеры и происхождение")] if quarries else [])
+   + ([("pod-zadachu", "Что взять под задачу")] if tasks else [])
+   + [("kak-zakazat", "Порядок заказа")]
+   + ([("foto", "Как выглядит на самом деле")] if photos and photos_head else [])
+   + [("vidy", "Виды и чем отличаются")]
+   + ([("frakcii", "Размер зерна и применение")] if fractions else [])
+   + ([("fasovka", "Фасовка: навал, мешки, биг-бэги")] if packs else [])
+   + ([("harakteristiki", "Числовые характеристики")] if specs else [])
+   + [("skolko", "Сколько нужно на типовые задачи")]
    + ([("kalkulyator", "Калькулятор доставки")] if calc else [])
-   + [("oplata", "Как можно заплатить"), ("zony", "Куда возим"),
+   + [("oplata", "Способы оплаты"), ("zony", "Зоны доставки и города"),
       ("zayavka", "Оставить заявку"), ("faq", "Частые вопросы")] %}
 <section><div class="wrap d-prose">
   <nav class="d-toc" aria-label="Содержание страницы"><strong>Что на этой странице</strong>
