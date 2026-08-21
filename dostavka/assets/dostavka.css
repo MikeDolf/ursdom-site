@@ -586,6 +586,35 @@ table td:only-child,table td:first-child:last-child{font-weight:400}
   .d-kv td{border:none;padding:0;font-size:16.5px}
 }
 
+/* ---------------------------------------------------- материал под задачу
+   Разворот таблицы фракций в сторону запроса: «щебень для фундамента»
+   вместо «20-40 - фундаменты». Набран не карточками, а колонками
+   с латунной кромкой слева, как ценовой якорь: в дизайн-коде нет
+   мягких плашек, и заводить их ради одного блока незачем.
+
+   Фракция набрана моноширинными цифрами того же набора, что и все числа
+   на сайте, и уведена в верхний регистр меткой: это подпись к заголовку,
+   а не отдельная мысль. */
+.d-tasks{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:0 34px;margin:0 0 26px}
+.d-task{padding:16px 0 14px 15px;border-left:3px solid var(--d-brass);
+  border-bottom:1px solid var(--d-rule)}
+.d-task h3{margin:0 0 6px;font-size:17px;font-weight:750;letter-spacing:-.02em;
+  color:var(--d-ink)}
+.d-task-frac{margin:0 0 8px;font-family:"Mono Num",ui-monospace,monospace;
+  font-size:13px;letter-spacing:.04em;text-transform:uppercase;
+  color:var(--d-brass-text)}
+.d-task p{margin:0 0 8px;font-size:15.5px;line-height:1.5}
+.d-task p:last-child{margin-bottom:0}
+@media (max-width:700px){
+  /* На телефоне колонка одна, и кромка слева остаётся единственным
+     разделителем: нижняя линейка при одной колонке читается как разрыв
+     мысли, а не как граница блока. */
+  .d-tasks{grid-template-columns:1fr;gap:0}
+  .d-task{border-bottom:none}
+  .d-task+.d-task{margin-top:2px}
+}
+
 /* ---------------------------------------------------- калькулятор
    Прибор на эмалевом поддоне: та же логика, что у стопки сит. Ползунок
    это единственный элемент управления в дизайн-коде, у которого есть

@@ -727,6 +727,7 @@ for slug, mc in money_cfg.items():
         **BASE_CTX, **mc, calc=_calc, has_calc=bool(_calc),
         canonical=DOMAIN + url, crumbs_html=crumbs(crumb_items), jsonld=jl,
         intro=mat["intro"], types=mat["types"], fractions=mat.get("fractions"),
+        tasks=mat.get("tasks"), tasks_head=mat.get("tasks_head"),
         faq=mat["faq"], hero_cell=HERO_CELL.get(slug, 34),
         **_photo_ctx(slug, _ph, "Как выглядит " + mc["mat_vin"]),
         hero_frac=HERO_FRAC.get(slug, "щебень 20-40 мм"),
