@@ -24,13 +24,13 @@ from products_gap import MATERIALS_GAP, MONEY_CFG_GAP
 from products_gap2 import MATERIALS_GAP2, MONEY_CFG_GAP2
 from products_gap3 import MATERIALS_GAP3, MONEY_CFG_GAP3
 from products_rev import MATERIALS_REV, MONEY_CFG_REV
-from geo_matrix import (CITY_FACTS, MATRIX, ALREADY, MAT_FORMS,
+from geo_matrix import (CITY_FACTS, MATRIX, MAT_FORMS,
                         ANGLE, LOCAL, MAT_TASK, example_for, plecho,
                         lsi_for)
 import autolink
 from hubs import HUBS
 from canonical import canonical
-from calc import calc_for, PER_PAGE as _CALC_ON, PER_PAGE, MATERIALS as CALC_MATERIALS, trips as calc_trips
+from calc import calc_for, PER_PAGE, MATERIALS as CALC_MATERIALS, trips as calc_trips
 from calc_pages import CALC_PAGES, CALC_BY_SLUG, CALC_OWN
 
 # Список страниц с калькулятором живёт в data/calc.py вместе с их
@@ -38,7 +38,7 @@ from calc_pages import CALC_PAGES, CALC_BY_SLUG, CALC_OWN
 # при первом же добавлении страницы.
 from conversion import PRICE_SETS, FAM, ORDER_STEPS, OBJECTIONS
 from prices import (PER_CUBE, PRICE_NOTE, DELIVERY_NOTE, CATALOG, SIEVE,
-                    HERO_CELL, HERO_FRAC, LOTS, LOTS_HEAD, LOTS_NOTE,
+                    HERO_CELL, LOTS, LOTS_HEAD, LOTS_NOTE,
                     CATALOG_META, CATALOG_FIRST, CROSS, FLOOR,
                     PESOK_QUARRIES, PESOK_QUARRIES_HEAD, PESOK_QUARRIES_NOTE)
 from cities import CITIES, PESOK_CITIES
@@ -2407,6 +2407,11 @@ AUDIT = os.path.join(ROOT, "audit")
 os.makedirs(AUDIT, exist_ok=True)
 with open(os.path.join(AUDIT, "dostavka-urls.txt"), "w", encoding="utf-8") as fh:
     for url, h, fam in pages:
+        # Страница благодарности закрыта от индексации, как и в карте сайта.
+        # Отправлять её на переобход значит просить робота зайти туда,
+        # откуда его же и выгоняют метатегом.
+        if fam == "thanks":
+            continue
         fh.write(DOMAIN + url + "\n")
 
 print(f"Собрано страниц: {len(pages)}")
