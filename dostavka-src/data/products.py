@@ -22,6 +22,7 @@ MATERIALS = {
             ("Щебень 5-20", "/dostavka/shcheben/frakciya-5-20/"),
             ("Щебень 20-40", "/dostavka/shcheben/frakciya-20-40/"),
             ("Щебень 40-70", "/dostavka/shcheben/frakciya-40-70/"),
+            ("Щебень 70-120", "/dostavka/shcheben/frakciya-70-120/"),
             ("Щебень в мешках", "/dostavka/shcheben/v-meshkah/"),
             ("Калькулятор щебня", "/dostavka/kalkulyator/shcheben/"),
             ("Все фракции", "#frakcii"),
@@ -228,7 +229,7 @@ MATERIALS = {
                 "quick": [
             ("Карьерный песок", "/dostavka/pesok/karyernyy/"),
             ("Речной мытый", "/dostavka/pesok/rechnoy/"),
-            ("Песок в мешках", "#fasovka"),
+            ("Песок в мешках", "/dostavka/pesok/v-meshkah/"),
             ("Калькулятор песка", "/dostavka/kalkulyator/pesok/"),
             ("По карьерам", "#karyery"),
             ("Модуль крупности", "#frakcii"),

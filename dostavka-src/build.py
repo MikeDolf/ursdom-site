@@ -2,7 +2,11 @@
 # -*- coding: utf-8 -*-
 """Сборка раздела доставки в /dostavka/. Изолирован от ursdom.
 Зависимости: Python 3 + jinja2. Вывод: статические index.html + sitemap раздела."""
-import os, sys, json, re, difflib
+import os
+import io
+import json
+import hashlib
+import datetime, sys, re, difflib
 from PIL import Image
 from jinja2 import Environment, FileSystemLoader
 
@@ -69,6 +73,9 @@ if os.path.exists(_css):
     SITE["css_version"] = hashlib.md5(open(_css, "rb").read()).hexdigest()[:8]
 DOMAIN = SITE["domain"]
 TODAY = "2026-07-28"
+# Дата, до которой цена в разметке считается действующей.
+PRICE_VALID_UNTIL = (datetime.date.today()
+                     + datetime.timedelta(days=90)).isoformat()
 PER_CUBE_LIST = list(PER_CUBE.items())
 
 # Минимальная цена материала для баннера в первом экране. Считается
@@ -147,6 +154,20 @@ if _price_bad:
 # товарные страницы, которые собираются раньше самого раздела.
 CALCHUB_URL = SITE["base"] + "kalkulyator/"
 
+# Ссылки из таблицы фракций на посадочные по фракциям. Ключ - точная
+# подпись строки таблицы: промах по строке просто оставит её текстом,
+# а не уведёт ссылку не туда.
+FRAC_HREF = {
+    "5-10 мм": "/dostavka/shcheben/frakciya-5-10/",
+    "5-20 мм": "/dostavka/shcheben/frakciya-5-20/",
+    "10-20 мм": "/dostavka/shcheben/frakciya-10-20/",
+    "20-40 мм": "/dostavka/shcheben/frakciya-20-40/",
+    "40-70 мм": "/dostavka/shcheben/frakciya-40-70/",
+    "70-120 мм": "/dostavka/shcheben/frakciya-70-120/",
+    "70-150 мм": "/dostavka/shcheben/frakciya-70-150/",
+    "Отсев 0-5 мм": "/dostavka/otsev/",
+}
+
 HERO_PRICE_KEYS = {
     "shcheben": ["Щебень 5-20", "Щебень 20-40", "Щебень 40-70",
                  "Щебень 70-120", "Щебень вторичный (бой)"],
@@ -204,7 +225,6 @@ def localbusiness():
         "description": SITE["tagline"] + " по " + SITE["region_dat"],
         "url": DOMAIN + SITE["base"],
         "email": SITE["email"],
-        "areaServed": SITE["region"],
         "openingHours": "Mo-Su 00:00-23:59",   # круглосуточно: у schema.org
                                                # нет отдельного знака «24/7»,
                                                # сутки записываются интервалом
@@ -275,6 +295,11 @@ def product_schema(name, desc, low_price, url, images=None):
             "lowPrice": low_price,
             "priceCurrency": "RUB",
             "availability": "https://schema.org/InStock",
+            # Срок действия цены. Без него Гугл помечает предложение как
+            # устаревшее и может перестать показывать цену в результатах.
+            # Ставим квартал вперёд: прайс партнёра пересматривается
+            # примерно с этой частотой.
+            "priceValidUntil": PRICE_VALID_UNTIL,
             "unitText": "кубометр",
             "areaServed": SITE["region"],
             "seller": {"@id": DOMAIN + SITE["base"] + "#business"},
@@ -710,6 +735,23 @@ HERO_PHOTO = {
     "shchps":             ("pgs/pgs-kucha-karyer.jpg", "щебёночно-песчаная смесь"),
     "asfaltovaya-kroshka": ("bitum-i-asfalt/vygruzka-goryachey-smesi.jpg", "выгрузка смеси"),
     "granitnaya-kroshka": ("shcheben/granit-5-20-tape.jpg", "гранит 5-20 мм"),
+    # Страницы фракций. Без явных строк они попадали под правило
+    # «shcheben» и все показывали кадр 20-40: на странице про камень
+    # размером с кулак стоял снимок щебёнки с монету.
+    #
+    # Подпись называет фракцию НА СНИМКЕ, а не фракцию страницы.
+    # Своих кадров у 5-10, 10-20 и 70-150 нет, им поставлен ближайший,
+    # и подпись говорит правду о том, что видно.
+    "shcheben/frakciya-5-10": ("shcheben/granit-5-20-tape.jpg", "щебень 5-20 мм"),
+    "shcheben/frakciya-5-20": ("shcheben/granit-5-20-tape.jpg", "щебень 5-20 мм"),
+    "shcheben/frakciya-10-20": ("shcheben/granit-5-20-tape.jpg", "щебень 5-20 мм"),
+    "shcheben/frakciya-20-40": ("shcheben/granit-20-40-macro.jpg", "щебень 20-40 мм"),
+    "shcheben/frakciya-40-70": ("shcheben/granit-40-70-hand.jpg", "щебень 40-70 мм"),
+    "shcheben/frakciya-70-120": ("shcheben/granit-70-120-shtabel.jpg", "щебень 70-120 мм"),
+    "shcheben/frakciya-70-150": ("shcheben/granit-70-120-shtabel.jpg", "щебень 70-120 мм"),
+    "shcheben/v-meshkah": ("shcheben/granit-20-40-shtabel.jpg", "щебень 20-40 мм"),
+    "pesok/v-meshkah": ("pesok/karyernyy-shtabel.jpg", "карьерный песок"),
+    "pesok/peskostruynyy": ("pesok/peregruzka-greyfer.jpg", "перевалка песка"),
 }
 # Для остальных страниц - по куску слага. Ищется вхождение, а не начало:
 # бетон живёт и в /beton/, и в /stati/marki-betona/, и в /stati/ves-kuba-betona/,
@@ -792,6 +834,22 @@ def sieve_rows():
         out.append((mm, cell, frac, name, use, price, href,
                     img_one(photo) if photo else None))
     return out
+
+
+def product_images(slug):
+    """Снимки для разметки товара: свои, а если их нет - кадр из первого
+    экрана этой же страницы.
+
+    Без запасного варианта картинку получали одиннадцать товарных узлов
+    из ста двадцати шести: своя галерея есть далеко не у каждой страницы.
+    Снимок первого экрана относится к странице по определению - он на ней
+    и стоит, - поэтому подставить его честно.
+    """
+    own = [x["src"] for x in photos_for(slug)]
+    if own:
+        return own
+    img, _cap = hero_photo_for(slug)
+    return [img["src"]] if img else None
 
 
 def hero_ctx(slug):
@@ -1180,7 +1238,9 @@ ZHBI_ART = {
 MAT_ART = {'shcheben': [('/dostavka/stati/podushka-pod-fundament/', 'Подушка под фундамент: щебень или песок'),
                  ('/dostavka/stati/materialy-na-dom-po-etapam/', 'Материалы на дом по этапам'),
                  ('/dostavka/stati/frakcii-shchebnya/', 'Фракции щебня: какая под какую задачу'), ('/dostavka/stati/gost-na-shcheben-i-pesok/', 'ГОСТ на щебень и песок: что спрашивать')],
-    'pesok': [('/dostavka/stati/modul-krupnosti-peska/', 'Модуль крупности песка'), ('/dostavka/stati/gost-na-shcheben-i-pesok/', 'ГОСТ на щебень и песок: что спрашивать')],
+    'pesok': [('/dostavka/pesok/v-meshkah/', 'Песок в мешках и биг-бэгах'),
+              ('/dostavka/pesok/peskostruynyy/', 'Пескоструйный песок'),
+              ('/dostavka/stati/modul-krupnosti-peska/', 'Модуль крупности песка'), ('/dostavka/stati/gost-na-shcheben-i-pesok/', 'ГОСТ на щебень и песок: что спрашивать')],
     'otsev': [('/dostavka/stati/otsev-gde-primenyat/', 'Отсев 0-5: где применяют и чем заменить'), ('/dostavka/stati/frakcii-shchebnya/', 'Фракции щебня: какая под какую задачу')],
     'pgs': [('/dostavka/stati/pgs-ili-opgs/', 'ПГС и ОПГС: чем отличаются'), ('/dostavka/stati/skalnyy-grunt-dresva-but/', 'Скальный грунт, дресва и бут')],
     'keramzit': [('/dostavka/stati/keramzit-frakcii-i-ves/', 'Керамзит: фракции, вес и где выгоден')],
@@ -1201,7 +1261,7 @@ for slug, mc in money_cfg.items():
     _ph = photos_for(slug)
     jl = graph(localbusiness(), bc_schema(crumb_items), faq_schema(mat["faq"]),
                product_schema(mat["name"], mc["desc"], MONEY_LOW_PRICE[slug], url,
-                              images=[x["src"] for x in _ph]))
+                              images=product_images(slug)))
     if slug == "shcheben":
         rel = [("/dostavka/shcheben/frakciya-20-40/", "Щебень 20-40: характеристики, расчёт, цена"),
                ("/dostavka/shcheben/v-meshkah/", "Щебень в мешках: фасовка и когда это выгодно"),
@@ -1249,6 +1309,7 @@ for slug, mc in money_cfg.items():
         fractions_head=mat.get("fractions_head"),
         fractions_caption=mat.get("fractions_caption"),
         fractions_col1=mat.get("fractions_col1"),
+        frac_href=(FRAC_HREF if slug == "shcheben" else None),
         tasks=mat.get("tasks"), tasks_head=mat.get("tasks_head"),
         specs=mat.get("specs"), specs_head=mat.get("specs_head"),
         packs=mat.get("packs"), packs_head=mat.get("packs_head"),
@@ -1330,6 +1391,122 @@ for c in CITIES:
         faq=cfaq, related_links=rel[:12])
     pages.append((url, htmlp, "geo"))
 
+# ---- ГЕО: песок × город, генерация по матрице ----
+#
+# Страниц песка по городам было три против тридцати трёх у щебня, хотя
+# в матрице материалов песок стоит у двадцати двух городов. Запрос
+# «песок с доставкой в Ревду» уходил на общую страницу материала
+# или на городскую страницу щебня, где песок - один блок из пяти.
+#
+# Три готовые страницы (Богданович, Ирбит, Невьянск) написаны руками
+# и подробнее генерируемых, поэтому они остаются как есть: генератор
+# их пропускает. Остальные собираются из той же фактуры, что и городские
+# страницы щебня - CITY_FACTS, MAT_TASK по типу города, LOCAL, plecho
+# и example_for. Ничего нового не выдумывается.
+_PESOK_DONE = {c["slug"] for c in PESOK_CITIES}
+PESOK_GEN = [cs for cs, mats in MATRIX.items()
+             if "pesok" in mats and cs not in _PESOK_DONE and cs in CITY_FACTS]
+PESOK_GEN.sort(key=lambda cs: CITY_FACTS[cs]["km"])
+
+for _cs in PESOK_GEN:
+    f = CITY_FACTS[_cs]
+    url = SITE["base"] + "pesok/" + _cs + "/"
+    autolink.reset(url)
+    pl = plecho(f["km"])
+    ex = example_for("pesok", _cs, f["km"])
+    dist = "около %d км от Екатеринбурга" % f["km"]
+    place = dict(slug=_cs, name=f["name"], prep=f["prep"], loc=f["loc"], dist=dist,
+                 terms="Машину ставим в график %s" % pl["term"],
+                 min_note=pl["minv"])
+    crumb_items = [("Главная", "/"), ("Доставка материалов", SITE["base"]),
+                   ("Песок", SITE["base"] + "pesok/"), (f["name"], None)]
+    cfaq = geo_faq(place, "песка", "песок")
+    cfaq = cfaq[:4] + [
+        ("Какой песок берут %s?" % f["loc"],
+         MAT_TASK[("pesok", f["kind"])]),
+        ("Сколько песка войдёт в машину %s?" % f["prep"],
+         "Самосвалы от пяти до двадцати кубов. Песок тяжёлый, около полутора "
+         "тонн на куб, поэтому на дальнем плече объём машины ограничен не "
+         "кузовом, а разрешённой нагрузкой на ось. %s" % pl["minv"]),
+    ]
+    jl = graph(localbusiness(), bc_schema(crumb_items), faq_schema(cfaq),
+               product_schema("Доставка песка %s" % f["prep"],
+                              "Карьерный и мытый песок с доставкой %s, %s."
+                              % (f["prep"], dist),
+                              str(FLOOR["Песок карьерный (сеяный)"]), url,
+                              images=product_images("pesok")))
+    sections = [
+        {"id": "plecho", "h": "Доставка песка %s: плечо и цена" % f["prep"],
+         "p": ["Возим песок %s по %s, %s. %s %s"
+               % (f["prep"], f["tract"], dist, pl["econ"], pl["minv"]),
+               "Срок подачи машины %s. Точную сумму с доставкой на ваш адрес "
+               "называем по заявке: она зависит от объёма и от того, куда именно "
+               "заезжать." % pl["term"]]},
+        {"id": "kuda", "h": "Куда возим %s и в район" % f["prep"],
+         "p": ["Доставляем в %s. По дальним адресам района считаем километраж "
+               "отдельно и стараемся совместить с попутным рейсом." % f["areas"]]},
+        {"id": "chto", "h": "Какой песок берут %s" % f["loc"],
+         "p": [MAT_TASK[("pesok", f["kind"])],
+               "Чаще всего это %s." % ANGLE[("pesok", f["kind"])]]},
+        {"id": "raschet", "h": "Пример расчёта %s" % f["loc"],
+         "p": ["Типовая задача %s это %s. На %s это %s кубометра по геометрии; "
+               "с коэффициентом уплотнения %s выходит %s. %s Повезёт %s."
+               % (f["loc"], ex["task"], ex["dims"], ex["geom"], ex["k"],
+                  ex["real"], ex["note"], ex["truck"])],
+         "after": ["Свой объём посчитайте в калькуляторе песка: он считает "
+                   "по размерам площадки, переводит кубы в тонны и показывает "
+                   "цену с доставкой."]},
+        {"id": "mestnoe", "h": "Местные особенности %s" % f["loc"],
+         "p": [LOCAL[_cs],
+               "Грунты здесь это %s, и от них зависит, сколько песка уйдёт "
+               "в основание сверх расчёта." % f["ground"]]},
+        {"id": "kak-zakazat", "h": "Как заказать песок %s" % f["prep"],
+         "steps": ["Скажите вид песка (карьерный или мытый) и объём в кубах.",
+                   "Назовите адрес %s и опишите заезд: ширина ворот и место "
+                   "для разворота." % f["loc"],
+                   "Получите точную цену с доставкой. %s."
+                   % SITE["callback_promise"].capitalize(),
+                   "Принимаете машину на объекте и проверяете объём. %s"
+                   % SITE["payment"]]},
+    ]
+    _lots, _lnote = city_lots(f["km"], "Песок карьерный (сеяный)")
+    _rel = ([("/dostavka/pesok/", "Доставка песка: виды и цены"),
+             ("/dostavka/kalkulyator/pesok/", "Калькулятор песка"),
+             ("/dostavka/pesok/karyernyy/", "Карьерный песок"),
+             ("/dostavka/pesok/rechnoy/", "Речной мытый песок"),
+             ("/dostavka/shcheben/%s/" % _cs, "Доставка щебня %s" % f["prep"])]
+            + [("/dostavka/pesok/%s/" % o, "Доставка песка %s" % CITY_FACTS[o]["prep"])
+               for o in (PESOK_GEN[PESOK_GEN.index(_cs) + 1:]
+                         + PESOK_GEN[:PESOK_GEN.index(_cs)])][:5]
+            + [x for x in PESOK_GEO if x[0] != url]
+            + [("/dostavka/otsev/", "Отсев 0-5"),
+               ("/dostavka/pgs/", "ПГС и ОПГС"),
+               ("/dostavka/stati/kakoy-pesok-vybrat/", "Какой песок выбрать под задачу"),
+               ("/dostavka/", "Все города и материалы")])
+    htmlp = env.get_template("geoplus.j2").render(
+        **BASE_CTX, **hero_ctx("pesok"), place=place,
+        canonical=DOMAIN + url, crumbs_html=crumbs(crumb_items), jsonld=jl,
+        title="Доставка песка %s: цена за куб, карьерный и мытый" % f["prep"],
+        desc=("Доставка песка %s и в район (%s). Карьерный под отсыпку, мытый "
+              "под бетон. Цена от %d руб за куб, оплата после выгрузки."
+              % (f["prep"], dist, FLOOR["Песок карьерный (сеяный)"])),
+        h1="Доставка песка %s" % f["prep"],
+        hero_sub=("Карьерный и мытый песок с доставкой %s и в район. %s. "
+                  "Самосвалы от 5 кубов, %s"
+                  % (f["prep"], ucfirst(dist), SITE["payment_short"])),
+        lead=("Возим песок %s и по району, %s. Карьерный идёт под отсыпку "
+              "и обратную засыпку, мытый под бетон и кладку. Цену считаем "
+              "за кубометр с доставкой на ваш адрес, %s"
+              % (f["prep"], dist, SITE["payment_short"])),
+        sections=sections, cta_after=3,
+        lots=_lots, lots_note=_lnote, plecho_km=f["km"],
+        cta_head="Посчитаем объём песка %s" % f["loc"],
+        cta_text=("Назовите размеры участка работ и адрес, подберём вид песка "
+                  "и машину, назовём итоговую цену с доставкой."),
+        subject="песок, %s" % f["name"], faq=cfaq,
+        related_links=list(dict.fromkeys(_rel))[:14])
+    pages.append((url, htmlp, "geo-pesok"))
+
 # ---- ГЕО: песок × город (ключи Мутагена конк 1) ----
 for c in PESOK_CITIES:
     url = SITE["base"] + "pesok/" + c["slug"] + "/"
@@ -1360,6 +1537,11 @@ for c in PESOK_CITIES:
              f"обратную засыпку, речной мытый под бетон и кладку. Цену считаем за кубометр "
              f"с доставкой на ваш адрес, {SITE['payment_short']}",
         sections=sections, cta_after=3,
+        lots=(city_lots(CITY_FACTS[c["slug"]]["km"], "Песок карьерный (сеяный)")[0]
+              if c["slug"] in CITY_FACTS else None),
+        lots_note=(city_lots(CITY_FACTS[c["slug"]]["km"], "Песок карьерный (сеяный)")[1]
+                   if c["slug"] in CITY_FACTS else None),
+        plecho_km=CITY_FACTS.get(c["slug"], {}).get("km"),
         cta_head=f"Посчитаем объём песка {c['loc']}",
         cta_text="Назовите размеры участка работ и адрес, подберём вид песка и машину, "
                  "назовём итоговую цену с доставкой.",
@@ -1430,7 +1612,8 @@ for a in LONGREADS:
     if a["kind"] == "article":
         nodes.append(article_schema(url, a["title"], a["desc"], AUTHOR_FULL))
     if a.get("low_price"):
-        nodes.append(product_schema(a["h1"], a["desc"], a["low_price"], url))
+        nodes.append(product_schema(a["h1"], a["desc"], a["low_price"], url,
+                                    images=product_images(a["slug"])))
     jl = graph(*nodes)
     # Сначала явно заданные связи, потом остальные лонгриды.
     # Без этого rel[:12] отрезал всё, что не поместилось: список
@@ -1601,7 +1784,8 @@ for _ci, _c in enumerate(CALC_PAGES):
                product_schema("Доставка %s" % _name,
                               "Расчёт объёма и стоимости %s с доставкой по %s."
                               % (_name, SITE["region_dat"]),
-                              str(vc["price"]), url))
+                              str(vc["price"]), url,
+                              images=product_images(_c["slug"])))
     rel = ([(_c["product"], "Доставка %s: цены и фракции" % _name),
             (CALCHUB_URL, "Все калькуляторы")]
            # Список соседей крутится от текущей страницы, а не от начала.
@@ -1692,7 +1876,8 @@ for slug, mc in MONEY_CFG_EXT.items():
     crumb_items = [("Главная", "/"), ("Доставка материалов", SITE["base"]),
                    (mat["name"], None)]
     jl = graph(localbusiness(), bc_schema(crumb_items), faq_schema(mat["faq"]),
-               product_schema(mat["name"], mc["desc"], mc["low"], url))
+               product_schema(mat["name"], mc["desc"], mc["low"], url,
+                              images=product_images(slug)))
     # Соседние материалы идут ПЕРВЫМИ, а не после общих ссылок.
     # Со срезом rel[:14] они частью не помещались, и гранитная крошка
     # осталась с двумя входящими на весь сайт при норме от трёх.
@@ -1750,7 +1935,8 @@ for slug, mc in _ZHBI_ALL.items():
     crumb_items = [("Главная", "/"), ("Доставка материалов", SITE["base"]),
                    (mat["name"], None)]
     jl = graph(localbusiness(), bc_schema(crumb_items), faq_schema(mat["faq"]),
-               product_schema(mat["name"], mc["desc"], mc["low"], url))
+               product_schema(mat["name"], mc["desc"], mc["low"], url,
+                              images=product_images(slug)))
     # Список соседей крутится от текущей страницы, а не от начала.
     # Иначе при обрезке на 14 последние товарные страницы не получают
     # ни одной входящей ссылки: ровно та же ошибка, что уже была
@@ -1925,7 +2111,8 @@ for city_slug, mats in MATRIX.items():
                    ("Щебень", SITE["base"] + "shcheben/"), (facts["name"], None)]
     cfaq = geo_city_faq(facts, mats, pl, dist)
     jl = graph(localbusiness(), bc_schema(crumb_items), faq_schema(cfaq),
-               product_schema(h1, desc, MAT_FORMS[mats[0]]["low"], url))
+               product_schema(h1, desc, MAT_FORMS[mats[0]]["low"], url,
+                              images=product_images(MAT_FORMS[mats[0]]["url"])))
 
     rel = [("/dostavka/shcheben/", "Щебень: все виды и цены"),
            ("/dostavka/stati/skolko-vesit-kub/", "Сколько весит куб материала"),
@@ -2162,7 +2349,46 @@ written = []
 for url, h, fam in pages:
     written.append((write(url, h), url, fam))
 
+def visible(hs):
+    """Видимый текст страницы без разметки и скриптов."""
+    hs = re.sub(r"<script.*?</script>", " ", hs, flags=re.S)
+    return re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", hs)).strip()
+
+
 # ---- SITEMAP раздела ----
+#
+# lastmod у КАЖДОЙ страницы свой и меняется только когда меняется её текст.
+# Раньше здесь стояла одна дата на все страницы, вписанная константой:
+# она устаревала между правками, а в день сборки сообщала поисковику,
+# что обновились разом все сто девяносто пять адресов. Это ровно та
+# ситуация, в которой lastmod перестают учитывать.
+#
+# Считается по отпечатку видимого текста, не всей разметки: правка
+# в шапке или подвале задевает все страницы сразу и датой обновления
+# страницы не является. Отпечатки лежат в audit/lastmod.json и живут
+# между сборками - без них дата сбрасывалась бы на сегодняшнюю каждый раз.
+_LM_PATH = os.path.join(ROOT, "audit", "lastmod.json")
+try:
+    _lastmod = json.load(io.open(_LM_PATH, encoding="utf-8"))
+except Exception:
+    _lastmod = {}
+
+_today = datetime.date.today().isoformat()
+_lm_new = {}
+for url, h, fam in pages:
+    _fp = hashlib.sha1(visible(h).encode("utf-8")).hexdigest()[:16]
+    _prev = _lastmod.get(url)
+    if _prev and _prev.get("fp") == _fp:
+        _lm_new[url] = _prev                      # текст не менялся, дату храним
+    else:
+        _lm_new[url] = {"fp": _fp, "date": _today}
+os.makedirs(os.path.dirname(_LM_PATH), exist_ok=True)
+json.dump(_lm_new, io.open(_LM_PATH, "w", encoding="utf-8"),
+          ensure_ascii=False, indent=1, sort_keys=True)
+_touched = sum(1 for u, v in _lm_new.items()
+               if _lastmod.get(u, {}).get("fp") != v["fp"])
+print("lastmod: текст изменился у %d из %d страниц" % (_touched, len(_lm_new)))
+
 sm = ['<?xml version="1.0" encoding="UTF-8"?>',
       '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
 # Страница благодарности закрыта от индексации, поэтому в карту не идёт:
@@ -2170,7 +2396,8 @@ sm = ['<?xml version="1.0" encoding="UTF-8"?>',
 for url, h, fam in pages:
     if fam == "thanks":
         continue
-    sm.append(f"  <url>\n    <loc>{DOMAIN}{url}</loc>\n    <lastmod>{TODAY}</lastmod>\n  </url>")
+    sm.append(f"  <url>\n    <loc>{DOMAIN}{url}</loc>"
+              f"\n    <lastmod>{_lm_new[url]['date']}</lastmod>\n  </url>")
 sm.append("</urlset>\n")
 open(os.path.join(OUT, "sitemap.xml"), "w", encoding="utf-8").write("\n".join(sm))
 
@@ -2188,30 +2415,30 @@ for p, url, fam in written:
 
 
 # ---- ПРОВЕРКА ДУБЛЕЙ (anti-doorway, ratio < 0.80) ----
-def visible(hs):
-    import re
-    hs = re.sub(r"<script.*?</script>", " ", hs, flags=re.S)
-    return re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", hs)).strip()
-
-
 # Сравниваем ВСЕ гео-страницы между собой, а не внутри семейства.
 # Раньше проверка шла по семействам, и пара "щебень в Реже" против
 # "отсев в Реже" вообще не сравнивалась, хотя это тоже дорвейная ось.
+# Порог поднят с 0,80 до 0,92 по решению владельца. На шаблонных
+# городских страницах 0,80 это нормальная плотность общего каркаса:
+# совпадают шапка, подвал, оплата и порядок заказа - то есть ровно то,
+# что и должно совпадать. Настоящий дубль начинается там, где совпадает
+# уже сам текст, и вот его печать ниже и ловит.
+SIM_LIMIT = 0.92
 grp = [(u, visible(h)) for u, h, f in pages if f.startswith("geo")]
-print(f"\nПохожесть гео-страниц, все пары (порог < 0.80): {len(grp)} страниц")
+print(f"\nПохожесть гео-страниц, все пары (порог < {SIM_LIMIT}): {len(grp)} страниц")
 mx, worst, high = 0, None, []
 for i in range(len(grp)):
     for j in range(i + 1, len(grp)):
         r = difflib.SequenceMatcher(None, grp[i][1], grp[j][1]).ratio()
         if r > mx:
             mx, worst = r, (grp[i][0], grp[j][0])
-        if r >= 0.80:
+        if r >= SIM_LIMIT:
             high.append((r, grp[i][0], grp[j][0]))
 high.sort(reverse=True)
 for r, a, b in high:
     print(f"  ВЫСОКАЯ {r:.2f}: {a} vs {b}")
 print(f"  пар выше порога: {len(high)}")
-print(f"  максимум {mx:.2f} ({worst[0]} vs {worst[1]})  {'OK' if mx < 0.80 else 'ПРЕВЫШЕНО'}")
+print(f"  максимум {mx:.2f} ({worst[0]} vs {worst[1]})  {'OK' if mx < SIM_LIMIT else 'ПРЕВЫШЕНО'}")
 
 if _NOFAM:
     print("\nБЕЗ СЕМЕЙСТВА ПРАЙСА, ушли в nerud по умолчанию:")

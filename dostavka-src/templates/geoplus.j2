@@ -20,6 +20,23 @@
 {% endfor %}
 </div></section>
 
+{% if lots %}
+<section><div class="wrap">
+  <h2 id="skolko-mashina">Сколько стоит машина {{ place.prep }}</h2>
+  <div class="d-table-wrap"><table>
+    <caption>Предварительный расчёт для плеча {{ plecho_km }} км: материал плюс доставка.
+    Точную сумму называем по заявке.</caption>
+    <thead><tr><th>Объём</th><th>Машина</th><th>Материал</th><th>Доставка</th><th>Итого</th></tr></thead>
+    <tbody>
+{% for r in lots %}      <tr><td class="d-spec-val">{{ r.vol }} м³</td><td>{{ r.truck }}</td><td class="d-spec-val">{{ r.material }} руб</td><td class="d-spec-val">{{ r.delivery }} руб</td><td class="d-spec-val">{{ r.total }} руб</td></tr>
+{% endfor %}    </tbody>
+  </table></div>
+  <p class="d-note">{{ lots_note }} Расчёт по карьерному песку; другой вид и другой объём
+  посчитает <a href="/dostavka/kalkulyator/pesok/">калькулятор</a>,
+  там же считается объём по размерам площадки.</p>
+</div></section>
+{% endif %}
+
 <section><div class="wrap">
   <h2>Ориентировочные цены на материалы {{ place.loc }}</h2>
   <div class="d-table-wrap"><table>

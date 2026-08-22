@@ -167,7 +167,7 @@
     <caption>{{ fractions_caption|default("Какая фракция " ~ mat_rod ~ " под какую задачу", true) }}</caption>
     <thead><tr><th>{{ fractions_col1|default("Фракция", true) }}</th><th>{{ fractions_col2|default("Где применяют", true) }}</th></tr></thead>
     <tbody>
-{% for f,use in fractions %}      <tr><td>{{ f }}</td><td>{{ use }}</td></tr>
+{% for f,use in fractions %}      <tr><td>{% if frac_href and frac_href.get(f) %}<a href="{{ frac_href[f] }}">{{ f }}</a>{% else %}{{ f }}{% endif %}</td><td>{{ use }}</td></tr>
 {% endfor %}    </tbody>
   </table></div>
 {% endif %}
