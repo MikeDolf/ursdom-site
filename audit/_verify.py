@@ -321,14 +321,14 @@ sys.path.insert(0, os.path.join(ROOT, "dostavka-src", "data"))
 try:
     from calc import estimate as _est, RATE_PER_KM as _RATE, trips as _trips
     ARITH += [
-        ("калькулятор: 10 м³ x 1400 + 45 км x 95", _est(10, 1400, 45)["total"], 18275, 0.01),
-        ("калькулятор: 5 м³ x 350 + 25 км x 95", _est(5, 350, 25)["total"], 4125, 0.01),
+        ("калькулятор: 10 м³ x 1400 + 45 км x 2 x 95", _est(10, 1400, 45)["total"], 22550, 0.01),
+        ("калькулятор: 5 м³ x 350 + 25 км x 2 x 95", _est(5, 350, 25)["total"], 6500, 0.01),
         ("калькулятор: 30 м³ это 2 рейса по 20", _trips(30)[0], 2, 0.01),
-        ("калькулятор: 30 м³ x 500 + 2 рейса x 140 км x 95", _est(30, 500, 140)["total"], 41600, 0.01),
+        ("калькулятор: 30 м³ x 500 + 2 рейса x 140 км x 2 x 95", _est(30, 500, 140)["total"], 68200, 0.01),
         ("тариф в конфиге 95 руб/км", _RATE, 95, 0.01),
     ]
     _js = io.open(os.path.join(DIR, "assets", "calc.js"), encoding="utf-8").read()
-    for _need in ("TRUCKS = [5, 10, 20]", "Math.ceil(v / big)", "v * price", "t.n * km * RATE"):
+    for _need in ("TRUCKS = [5, 10, 20]", "Math.ceil(v / big)", "v * price", "t.n * km * TRIP * RATE"):
         if _need not in _js:
             bad("(калькулятор)", "арифметика",
                 "формула в calc.js разошлась с calc.py: нет %r" % _need)
