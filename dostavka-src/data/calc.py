@@ -24,8 +24,16 @@ from prices import PER_CUBE, FLOOR
 from geo_matrix import CITY_FACTS
 from cities import CITIES
 
-# Тариф доставки за километр плеча. Назван владельцем ориентировочно.
+# Тариф доставки за километр. Назван владельцем ориентировочно.
 RATE_PER_KM = 95
+
+# Плечо оплачивается В ОБЕ СТОРОНЫ: машина едет к вам и возвращается
+# порожняком, и обратный ход оплачивается так же, как прямой. Владелец
+# поправил это прямо. Раньше считалось в одну сторону, и расчёт занижал
+# доставку ровно вдвое - на дальнем плече это десятки тысяч рублей
+# разницы между тем, что человек увидел на сайте, и тем, что услышал
+# по телефону.
+ROUND_TRIP = 2
 
 # Плечо в пределах Екатеринбурга от склада под городом. ОРИЕНТИР:
 # заменить на фактическое, когда будет известно точное расположение базы.
@@ -102,7 +110,7 @@ def estimate(volume, price_per_cube, km):
     """Предварительный расчёт. Возвращает словарь со всеми слагаемыми."""
     n, cap = trips(volume)
     material = volume * price_per_cube
-    delivery = n * km * RATE_PER_KM
+    delivery = n * km * ROUND_TRIP * RATE_PER_KM
     return {
         "volume": volume, "trips": n, "capacity": cap,
         "material": material, "delivery": delivery,
@@ -185,6 +193,7 @@ def calc_for(slug):
     price = FLOOR[key]
     return {
         "rate": RATE_PER_KM,
+        "round_trip": ROUND_TRIP,
         "min_volume": MIN_VOLUME,
         "trucks": TRUCKS,
         "materials": MATERIALS,

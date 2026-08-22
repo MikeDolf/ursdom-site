@@ -1391,121 +1391,150 @@ for c in CITIES:
         faq=cfaq, related_links=rel[:12])
     pages.append((url, htmlp, "geo"))
 
-# ---- ГЕО: песок × город, генерация по матрице ----
+# ---- ГЕО: материал × город, генерация по матрице ----
 #
-# Страниц песка по городам было три против тридцати трёх у щебня, хотя
-# в матрице материалов песок стоит у двадцати двух городов. Запрос
-# «песок с доставкой в Ревду» уходил на общую страницу материала
-# или на городскую страницу щебня, где песок - один блок из пяти.
+# Страниц песка по городам было три против тридцати трёх у щебня,
+# а у отсева, керамзита, гравия и ПГС - ни одной, хотя в матрице
+# материалов они стоят у восемнадцати, двенадцати, трёх и одного города.
+# Запрос «отсев с доставкой в Ревду» уходил на общую страницу материала
+# или на городскую страницу щебня, где отсев - один блок из пяти.
 #
-# Три готовые страницы (Богданович, Ирбит, Невьянск) написаны руками
-# и подробнее генерируемых, поэтому они остаются как есть: генератор
-# их пропускает. Остальные собираются из той же фактуры, что и городские
-# страницы щебня - CITY_FACTS, MAT_TASK по типу города, LOCAL, plecho
+# Страницы, написанные руками, генератор пропускает: они подробнее.
+# Остальные собираются из той же фактуры, что и городские страницы
+# щебня - CITY_FACTS, MAT_TASK по типу города, LOCAL, plecho
 # и example_for. Ничего нового не выдумывается.
-_PESOK_DONE = {c["slug"] for c in PESOK_CITIES}
-PESOK_GEN = [cs for cs, mats in MATRIX.items()
-             if "pesok" in mats and cs not in _PESOK_DONE and cs in CITY_FACTS]
-PESOK_GEN.sort(key=lambda cs: CITY_FACTS[cs]["km"])
+GEO_MAT = [
+    # (ключ матрицы, ключ прайса, родительный, винительный, слаг калькулятора)
+    ("pesok",    "Песок карьерный (сеяный)", "песка",    "песок",    "pesok"),
+    ("otsev",    "Отсев 0-5",                "отсева",   "отсев",    "otsev"),
+    ("keramzit", "Керамзит",                 "керамзита", "керамзит", "keramzit"),
+    ("graviy",   "Гравий",                   "гравия",   "гравий",   "graviy"),
+    ("pgs",      "ПГС",                      "ПГС",      "ПГС",      "pgs"),
+]
+_HAND_MADE = {("pesok", c["slug"]) for c in PESOK_CITIES}
 
-for _cs in PESOK_GEN:
-    f = CITY_FACTS[_cs]
-    url = SITE["base"] + "pesok/" + _cs + "/"
-    autolink.reset(url)
-    pl = plecho(f["km"])
-    ex = example_for("pesok", _cs, f["km"])
-    dist = "около %d км от Екатеринбурга" % f["km"]
-    place = dict(slug=_cs, name=f["name"], prep=f["prep"], loc=f["loc"], dist=dist,
-                 terms="Машину ставим в график %s" % pl["term"],
-                 min_note=pl["minv"])
-    crumb_items = [("Главная", "/"), ("Доставка материалов", SITE["base"]),
-                   ("Песок", SITE["base"] + "pesok/"), (f["name"], None)]
-    cfaq = geo_faq(place, "песка", "песок")
-    cfaq = cfaq[:4] + [
-        ("Какой песок берут %s?" % f["loc"],
-         MAT_TASK[("pesok", f["kind"])]),
-        ("Сколько песка войдёт в машину %s?" % f["prep"],
-         "Самосвалы от пяти до двадцати кубов. Песок тяжёлый, около полутора "
-         "тонн на куб, поэтому на дальнем плече объём машины ограничен не "
-         "кузовом, а разрешённой нагрузкой на ось. %s" % pl["minv"]),
-    ]
-    jl = graph(localbusiness(), bc_schema(crumb_items), faq_schema(cfaq),
-               product_schema("Доставка песка %s" % f["prep"],
-                              "Карьерный и мытый песок с доставкой %s, %s."
-                              % (f["prep"], dist),
-                              str(FLOOR["Песок карьерный (сеяный)"]), url,
-                              images=product_images("pesok")))
-    sections = [
-        {"id": "plecho", "h": "Доставка песка %s: плечо и цена" % f["prep"],
-         "p": ["Возим песок %s по %s, %s. %s %s"
-               % (f["prep"], f["tract"], dist, pl["econ"], pl["minv"]),
-               "Срок подачи машины %s. Точную сумму с доставкой на ваш адрес "
-               "называем по заявке: она зависит от объёма и от того, куда именно "
-               "заезжать." % pl["term"]]},
-        {"id": "kuda", "h": "Куда возим %s и в район" % f["prep"],
-         "p": ["Доставляем в %s. По дальним адресам района считаем километраж "
-               "отдельно и стараемся совместить с попутным рейсом." % f["areas"]]},
-        {"id": "chto", "h": "Какой песок берут %s" % f["loc"],
-         "p": [MAT_TASK[("pesok", f["kind"])],
-               "Чаще всего это %s." % ANGLE[("pesok", f["kind"])]]},
-        {"id": "raschet", "h": "Пример расчёта %s" % f["loc"],
-         "p": ["Типовая задача %s это %s. На %s это %s кубометра по геометрии; "
-               "с коэффициентом уплотнения %s выходит %s. %s Повезёт %s."
-               % (f["loc"], ex["task"], ex["dims"], ex["geom"], ex["k"],
-                  ex["real"], ex["note"], ex["truck"])],
-         "after": ["Свой объём посчитайте в калькуляторе песка: он считает "
-                   "по размерам площадки, переводит кубы в тонны и показывает "
-                   "цену с доставкой."]},
-        {"id": "mestnoe", "h": "Местные особенности %s" % f["loc"],
-         "p": [LOCAL[_cs],
-               "Грунты здесь это %s, и от них зависит, сколько песка уйдёт "
-               "в основание сверх расчёта." % f["ground"]]},
-        {"id": "kak-zakazat", "h": "Как заказать песок %s" % f["prep"],
-         "steps": ["Скажите вид песка (карьерный или мытый) и объём в кубах.",
-                   "Назовите адрес %s и опишите заезд: ширина ворот и место "
-                   "для разворота." % f["loc"],
-                   "Получите точную цену с доставкой. %s."
-                   % SITE["callback_promise"].capitalize(),
-                   "Принимаете машину на объекте и проверяете объём. %s"
-                   % SITE["payment"]]},
-    ]
-    _lots, _lnote = city_lots(f["km"], "Песок карьерный (сеяный)")
-    _rel = ([("/dostavka/pesok/", "Доставка песка: виды и цены"),
-             ("/dostavka/kalkulyator/pesok/", "Калькулятор песка"),
-             ("/dostavka/pesok/karyernyy/", "Карьерный песок"),
-             ("/dostavka/pesok/rechnoy/", "Речной мытый песок"),
-             ("/dostavka/shcheben/%s/" % _cs, "Доставка щебня %s" % f["prep"])]
-            + [("/dostavka/pesok/%s/" % o, "Доставка песка %s" % CITY_FACTS[o]["prep"])
-               for o in (PESOK_GEN[PESOK_GEN.index(_cs) + 1:]
-                         + PESOK_GEN[:PESOK_GEN.index(_cs)])][:5]
-            + [x for x in PESOK_GEO if x[0] != url]
-            + [("/dostavka/otsev/", "Отсев 0-5"),
-               ("/dostavka/pgs/", "ПГС и ОПГС"),
-               ("/dostavka/stati/kakoy-pesok-vybrat/", "Какой песок выбрать под задачу"),
-               ("/dostavka/", "Все города и материалы")])
-    htmlp = env.get_template("geoplus.j2").render(
-        **BASE_CTX, **hero_ctx("pesok"), place=place,
-        canonical=DOMAIN + url, crumbs_html=crumbs(crumb_items), jsonld=jl,
-        title="Доставка песка %s: цена за куб, карьерный и мытый" % f["prep"],
-        desc=("Доставка песка %s и в район (%s). Карьерный под отсыпку, мытый "
-              "под бетон. Цена от %d руб за куб, оплата после выгрузки."
-              % (f["prep"], dist, FLOOR["Песок карьерный (сеяный)"])),
-        h1="Доставка песка %s" % f["prep"],
-        hero_sub=("Карьерный и мытый песок с доставкой %s и в район. %s. "
-                  "Самосвалы от 5 кубов, %s"
-                  % (f["prep"], ucfirst(dist), SITE["payment_short"])),
-        lead=("Возим песок %s и по району, %s. Карьерный идёт под отсыпку "
-              "и обратную засыпку, мытый под бетон и кладку. Цену считаем "
-              "за кубометр с доставкой на ваш адрес, %s"
-              % (f["prep"], dist, SITE["payment_short"])),
-        sections=sections, cta_after=3,
-        lots=_lots, lots_note=_lnote, plecho_km=f["km"],
-        cta_head="Посчитаем объём песка %s" % f["loc"],
-        cta_text=("Назовите размеры участка работ и адрес, подберём вид песка "
-                  "и машину, назовём итоговую цену с доставкой."),
-        subject="песок, %s" % f["name"], faq=cfaq,
-        related_links=list(dict.fromkeys(_rel))[:14])
-    pages.append((url, htmlp, "geo-pesok"))
+# Какие материалы вообще имеют городскую страницу в каждом городе.
+# Считается заранее, до отрисовки: ссылка «в этом же городе» должна
+# вести на существующий адрес, а не на предполагаемый.
+CITY_HAS = {}
+for _mk, _pk, _rod, _vin, _cs in []:
+    pass
+_GEO_MAT_PRE = [("pesok", "песка"), ("otsev", "отсева"), ("keramzit", "керамзита"),
+                ("graviy", "гравия"), ("pgs", "ПГС")]
+for _mk, _rod in _GEO_MAT_PRE:
+    for _cs, _mats in MATRIX.items():
+        if _mk in _mats and _cs in CITY_FACTS:
+            CITY_HAS.setdefault(_cs, []).append((_mk, _rod))
+
+
+def gen_mat_city(mkey, price_key, rod, vin, calc_slug):
+    """Городские страницы одного материала по матрице."""
+    forms = MAT_FORMS[mkey]
+    base = SITE["base"] + forms["url"] + "/"
+    low = FLOOR[price_key]
+    cities = [cs for cs, mats in MATRIX.items()
+              if mkey in mats and (mkey, cs) not in _HAND_MADE and cs in CITY_FACTS]
+    cities.sort(key=lambda cs: CITY_FACTS[cs]["km"])
+    for i, cs in enumerate(cities):
+        f = CITY_FACTS[cs]
+        url = base + cs + "/"
+        autolink.reset(url)
+        pl = plecho(f["km"])
+        ex = example_for(mkey, cs, f["km"])
+        dist = "около %d км от Екатеринбурга" % f["km"]
+        place = dict(slug=cs, name=f["name"], prep=f["prep"], loc=f["loc"], dist=dist,
+                     terms="Машину ставим в график %s" % pl["term"],
+                     min_note=pl["minv"])
+        crumb_items = [("Главная", "/"), ("Доставка материалов", SITE["base"]),
+                       (forms["name"], base), (f["name"], None)]
+        cfaq = geo_faq(place, rod, vin)[:4] + [
+            ("Какой %s берут %s?" % (rod, f["loc"]), MAT_TASK[(mkey, f["kind"])]),
+            ("Сколько %s войдёт в машину %s?" % (rod, f["prep"]),
+             "Самосвалы от пяти до двадцати кубов. %s" % pl["minv"]),
+        ]
+        jl = graph(localbusiness(), bc_schema(crumb_items), faq_schema(cfaq),
+                   product_schema("Доставка %s %s" % (rod, f["prep"]),
+                                  "%s с доставкой %s, %s."
+                                  % (forms["name"], f["prep"], dist),
+                                  str(low), url, images=product_images(forms["url"])))
+        sections = [
+            {"id": "plecho", "h": "Доставка %s %s: плечо и цена" % (rod, f["prep"]),
+             "p": ["Возим %s %s по %s, %s. %s %s"
+                   % (vin, f["prep"], f["tract"], dist, pl["econ"], pl["minv"]),
+                   "Срок подачи машины %s. Плечо оплачивается в обе стороны: "
+                   "машина едет к вам и возвращается порожняком. Точную сумму "
+                   "называем по заявке." % pl["term"]]},
+            {"id": "kuda", "h": "Куда возим %s и в район" % f["prep"],
+             "p": ["Доставляем в %s. По дальним адресам района считаем километраж "
+                   "отдельно и стараемся совместить с попутным рейсом." % f["areas"]]},
+            {"id": "chto", "h": "Какой %s берут %s" % (rod, f["loc"]),
+             "p": [MAT_TASK[(mkey, f["kind"])],
+                   "Чаще всего это %s." % ANGLE[(mkey, f["kind"])]]},
+            {"id": "raschet", "h": "Пример расчёта %s" % f["loc"],
+             "p": ["Типовая задача %s это %s. На %s это %s кубометра по геометрии; "
+                   "с коэффициентом уплотнения %s выходит %s. %s Повезёт %s."
+                   % (f["loc"], ex["task"], ex["dims"], ex["geom"], ex["k"],
+                      ex["real"], ex["note"], ex["truck"])],
+             "after": ["Свой объём посчитайте в калькуляторе: он считает по размерам "
+                       "площадки, переводит кубы в тонны и показывает цену с доставкой."]},
+            {"id": "mestnoe", "h": "Местные особенности %s" % f["loc"],
+             "p": [LOCAL[cs],
+                   "Грунты здесь это %s, и от них зависит, сколько материала уйдёт "
+                   "в основание сверх расчёта." % f["ground"]]},
+            {"id": "kak-zakazat", "h": "Как заказать %s %s" % (vin, f["prep"]),
+             "steps": ["Скажите фракцию и объём в кубах.",
+                       "Назовите адрес %s и опишите заезд: ширина ворот и место "
+                       "для разворота." % f["loc"],
+                       "Получите точную цену с доставкой. %s."
+                       % SITE["callback_promise"].capitalize(),
+                       "Принимаете машину на объекте и проверяете объём. %s"
+                       % SITE["payment"]]},
+        ]
+        _lots, _lnote = city_lots(f["km"], price_key)
+        nbrs = cities[i + 1:] + cities[:i]
+        rel = ([(base, "Доставка %s: виды и цены" % rod),
+                (CALCHUB_URL + calc_slug + "/", "Калькулятор %s" % rod),
+                ("/dostavka/shcheben/%s/" % cs, "Доставка щебня %s" % f["prep"])]
+               + [(base + o + "/", "Доставка %s %s" % (rod, CITY_FACTS[o]["prep"]))
+                  for o in nbrs][:4]
+               # В этом же городе: остальные материалы, у которых страница
+               # по нему есть. Для гравия это единственный источник входящих
+               # ссылок кроме соседей - городов с гравием всего три.
+               + [("%s%s/%s/" % (SITE["base"], MAT_FORMS[m]["url"], cs),
+                   "Доставка %s %s" % (r, f["prep"]))
+                  for m, r in CITY_HAS.get(cs, []) if m != mkey]
+               + [("/dostavka/shcheben/", "Доставка щебня"),
+                  ("/dostavka/pesok/", "Доставка песка"),
+                  ("/dostavka/otsev/", "Отсев 0-5"),
+                  ("/dostavka/pgs/", "ПГС и ОПГС"),
+                  ("/dostavka/stati/cena-kuba-s-dostavkoy/", "Цена за куб с доставкой"),
+                  ("/dostavka/", "Все города и материалы")])
+        htmlp = env.get_template("geoplus.j2").render(
+            **BASE_CTX, **hero_ctx(forms["url"]), place=place,
+            canonical=DOMAIN + url, crumbs_html=crumbs(crumb_items), jsonld=jl,
+            title="Доставка %s %s: цена за куб самосвалом" % (rod, f["prep"]),
+            desc=("Доставка %s %s и в район (%s). Цена от %d руб за куб, "
+                  "самосвалы от 5 кубов, оплата после выгрузки."
+                  % (rod, f["prep"], dist, low)),
+            h1="Доставка %s %s" % (rod, f["prep"]),
+            hero_sub=("%s с доставкой %s и в район. %s. Самосвалы от 5 кубов, %s"
+                      % (forms["name"], f["prep"], ucfirst(dist), SITE["payment_short"])),
+            lead=("Возим %s %s и по району, %s. Цену считаем за кубометр "
+                  "с доставкой на ваш адрес, %s"
+                  % (vin, f["prep"], dist, SITE["payment_short"])),
+            sections=sections, cta_after=3,
+            lots=_lots, lots_note=_lnote, plecho_km=f["km"],
+            calc_slug=calc_slug, calc_rod=rod,
+            cta_head="Посчитаем объём %s" % f["loc"],
+            cta_text=("Назовите размеры участка работ и адрес, подберём фракцию "
+                      "и машину, назовём итоговую цену с доставкой."),
+            subject="%s, %s" % (vin, f["name"]), faq=cfaq,
+            related_links=list(dict.fromkeys(rel))[:14])
+        pages.append((url, htmlp, "geo-" + mkey))
+
+
+for _mk, _pk, _rod, _vin, _cslug in GEO_MAT:
+    gen_mat_city(_mk, _pk, _rod, _vin, _cslug)
 
 # ---- ГЕО: песок × город (ключи Мутагена конк 1) ----
 for c in PESOK_CITIES:
@@ -1905,6 +1934,18 @@ for slug, mc in MONEY_CFG_EXT.items():
         hero_sub=mc["hero_sub"], mat_vin=mc["mat_vin"], mat_rod=mc["mat_rod"],
         mat_order=mc["mat_order"], subject=mc["mat_vin"] + ", " + SITE["region_short"],
         intro=mat["intro"], types=mat["types"], fractions=mat.get("fractions"),
+        # Задачи, характеристики и фасовка появились у этих материалов
+        # после разбора: без них страница была на полторы тысячи слов
+        # против трёх у щебня, и разница приходилась ровно на те блоки,
+        # которые отвечают на «мне такой или другой» и «сколько весит».
+        tasks=mat.get("tasks"), tasks_head=mat.get("tasks_head"),
+        specs=mat.get("specs"), specs_head=mat.get("specs_head"),
+        packs=mat.get("packs"), packs_head=mat.get("packs_head"),
+        quick=mat.get("quick"), shelf_rows=catalog_for(slug),
+        cross=cross_for(slug), payment=PAYMENT, zones=zones_for(),
+        quarries=None, lots=None, lots_head=LOTS_HEAD, lots_note=LOTS_NOTE,
+        hero_price=("от %d" % FLOOR[CALC_BY_SLUG[slug]["price_key"]]
+                    if slug in CALC_BY_SLUG else None),
         faq=mat["faq"], related_links=list(dict.fromkeys(rel))[:14], hero_cell=HERO_CELL.get(slug, 34),
         **_photo_ctx(slug, photos_for(slug), "Как выглядит " + mc["mat_vin"]),
         **hero_ctx(slug))

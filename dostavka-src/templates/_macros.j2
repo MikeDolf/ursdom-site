@@ -449,12 +449,13 @@
    Результат везде подписан как предварительный. Тариф назван владельцем
    как «очень примерно», и калькулятор обязан говорить это вслух,
    а не выдавать цифру за счёт. #}
-{% macro calculator(cfg, calc) -%}
+{% macro calculator(cfg, calc, lots=None) -%}
 <section class="d-calc" id="kalkulyator"
-         data-rate="{{ calc.rate }}" data-min="{{ calc.min_volume }}">
+         data-rate="{{ calc.rate }}" data-trip="{{ calc.round_trip }}" data-min="{{ calc.min_volume }}">
   <h2>Калькулятор доставки</h2>
   <p class="d-calc-lead">Считает материал, число рейсов и плечо доставки по тарифу
-  {{ calc.rate }} рублей за километр. Расчёт предварительный: тариф зависит от сезона,
+  {{ calc.rate }} рублей за километр. Плечо считается в обе стороны: машина едет к вам
+  и возвращается порожняком. Расчёт предварительный: тариф зависит от сезона,
   заезда и загрузки машин, точную сумму называем по заявке.</p>
 
   <div class="d-calc-ui" hidden>
@@ -477,19 +478,24 @@
     <output class="d-calc-out" id="calc-out" aria-live="polite">
       <table class="d-calc-table"><tbody>
         <tr><th scope="row">Материал</th><td class="d-calc-formula">{{ calc.start.vol }} м³ × {{ calc.start.price_s }} руб</td><td>{{ calc.start.material_s }} руб</td></tr>
-        <tr><th scope="row">Доставка</th><td class="d-calc-formula">{{ calc.start.trips }} рейс × {{ calc.start.km }} км × {{ calc.rate }} руб</td><td>{{ calc.start.delivery_s }} руб</td></tr>
+        <tr><th scope="row">Доставка</th><td class="d-calc-formula">{{ calc.start.trips }} рейс × {{ calc.start.km * calc.round_trip }} км × {{ calc.rate }} руб</td><td>{{ calc.start.delivery_s }} руб</td></tr>
         <tr class="d-calc-total"><th scope="row" colspan="2">Итого предварительно</th><td>{{ calc.start.total_s }} руб</td></tr>
       </tbody></table>
       <p class="d-note">Кузов {{ calc.start.capacity }} м³. Расчёт предварительный,
       точную сумму называем по заявке.</p>
     </output>
     {{ channels(cfg, "#zayavka", "Оставить заявку") }}
-  </div>
+{% if lots %}    <p class="d-note">На ходовые объёмы по Екатеринбургу выше есть
+    <a href="#obemy">фиксированная цена за машину</a>, и она выгоднее этого расчёта:
+    там доставка входит в стоимость загрузки, а здесь считается по километражу.
+    Калькулятор нужен для нестандартных объёмов и для доставки за город.</p>
+{% endif %}  </div>
 
   <div class="d-calc-static">
     <div class="d-table-wrap"><table>
       <caption>Примеры расчёта: {{ calc.examples.material }} по {{ calc.examples.price }} руб/м³,
-      доставка {{ calc.rate }} руб/км</caption>
+      доставка {{ calc.rate }} руб/км в обе стороны. В колонке «Плечо» расстояние
+      в одну сторону, оплачивается путь туда и обратно.</caption>
       <thead><tr><th>Объём</th><th>Куда</th><th>Плечо</th><th>Рейсы</th>
       <th>Материал, руб</th><th>Доставка, руб</th><th>Итого, руб</th></tr></thead>
       <tbody>

@@ -396,10 +396,11 @@
 
 <section><div class="wrap">
   <section class="d-calc" id="kalkulyator"
-         data-rate="95" data-min="5">
+         data-rate="95" data-trip="2" data-min="5">
   <h2>Калькулятор доставки</h2>
   <p class="d-calc-lead">Считает материал, число рейсов и плечо доставки по тарифу
-  95 рублей за километр. Расчёт предварительный: тариф зависит от сезона,
+  95 рублей за километр. Плечо считается в обе стороны: машина едет к вам
+  и возвращается порожняком. Расчёт предварительный: тариф зависит от сезона,
   заезда и загрузки машин, точную сумму называем по заявке.</p>
 
   <div class="d-calc-ui" hidden>
@@ -448,8 +449,8 @@
     <output class="d-calc-out" id="calc-out" aria-live="polite">
       <table class="d-calc-table"><tbody>
         <tr><th scope="row">Материал</th><td class="d-calc-formula">10 м³ × 770 руб</td><td>7 700 руб</td></tr>
-        <tr><th scope="row">Доставка</th><td class="d-calc-formula">1 рейс × 25 км × 95 руб</td><td>2 375 руб</td></tr>
-        <tr class="d-calc-total"><th scope="row" colspan="2">Итого предварительно</th><td>10 075 руб</td></tr>
+        <tr><th scope="row">Доставка</th><td class="d-calc-formula">1 рейс × 50 км × 95 руб</td><td>4 750 руб</td></tr>
+        <tr class="d-calc-total"><th scope="row" colspan="2">Итого предварительно</th><td>12 450 руб</td></tr>
       </tbody></table>
       <p class="d-note">Кузов 10 м³. Расчёт предварительный,
       точную сумму называем по заявке.</p>
@@ -464,22 +465,23 @@
   <div class="d-calc-static">
     <div class="d-table-wrap"><table>
       <caption>Примеры расчёта: ЩПС по 700 руб/м³,
-      доставка 95 руб/км</caption>
+      доставка 95 руб/км в обе стороны. В колонке «Плечо» расстояние
+      в одну сторону, оплачивается путь туда и обратно.</caption>
       <thead><tr><th>Объём</th><th>Куда</th><th>Плечо</th><th>Рейсы</th>
       <th>Материал, руб</th><th>Доставка, руб</th><th>Итого, руб</th></tr></thead>
       <tbody>
-        <tr><td>8 м³</td><td>Екатеринбург</td><td>25 км</td><td>1 × 10 м³</td><td>5 600</td><td>2 375</td><td>7 975</td></tr>
-        <tr><td>8 м³</td><td>Первоуральск</td><td>45 км</td><td>1 × 10 м³</td><td>5 600</td><td>4 275</td><td>9 875</td></tr>
-        <tr><td>8 м³</td><td>Нижний Тагил</td><td>140 км</td><td>1 × 10 м³</td><td>5 600</td><td>13 300</td><td>18 900</td></tr>
-        <tr><td>16 м³</td><td>Екатеринбург</td><td>25 км</td><td>1 × 20 м³</td><td>11 200</td><td>2 375</td><td>13 575</td></tr>
-        <tr><td>16 м³</td><td>Первоуральск</td><td>45 км</td><td>1 × 20 м³</td><td>11 200</td><td>4 275</td><td>15 475</td></tr>
-        <tr><td>16 м³</td><td>Нижний Тагил</td><td>140 км</td><td>1 × 20 м³</td><td>11 200</td><td>13 300</td><td>24 500</td></tr>
-        <tr><td>25 м³</td><td>Екатеринбург</td><td>25 км</td><td>2 × 20 м³</td><td>17 500</td><td>4 750</td><td>22 250</td></tr>
-        <tr><td>25 м³</td><td>Первоуральск</td><td>45 км</td><td>2 × 20 м³</td><td>17 500</td><td>8 550</td><td>26 050</td></tr>
-        <tr><td>25 м³</td><td>Нижний Тагил</td><td>140 км</td><td>2 × 20 м³</td><td>17 500</td><td>26 600</td><td>44 100</td></tr>
-        <tr><td>35 м³</td><td>Екатеринбург</td><td>25 км</td><td>2 × 20 м³</td><td>24 500</td><td>4 750</td><td>29 250</td></tr>
-        <tr><td>35 м³</td><td>Первоуральск</td><td>45 км</td><td>2 × 20 м³</td><td>24 500</td><td>8 550</td><td>33 050</td></tr>
-        <tr><td>35 м³</td><td>Нижний Тагил</td><td>140 км</td><td>2 × 20 м³</td><td>24 500</td><td>26 600</td><td>51 100</td></tr>
+        <tr><td>8 м³</td><td>Екатеринбург</td><td>25 км</td><td>1 × 10 м³</td><td>5 600</td><td>4 750</td><td>10 350</td></tr>
+        <tr><td>8 м³</td><td>Первоуральск</td><td>45 км</td><td>1 × 10 м³</td><td>5 600</td><td>8 550</td><td>14 150</td></tr>
+        <tr><td>8 м³</td><td>Нижний Тагил</td><td>140 км</td><td>1 × 10 м³</td><td>5 600</td><td>26 600</td><td>32 200</td></tr>
+        <tr><td>16 м³</td><td>Екатеринбург</td><td>25 км</td><td>1 × 20 м³</td><td>11 200</td><td>4 750</td><td>15 950</td></tr>
+        <tr><td>16 м³</td><td>Первоуральск</td><td>45 км</td><td>1 × 20 м³</td><td>11 200</td><td>8 550</td><td>19 750</td></tr>
+        <tr><td>16 м³</td><td>Нижний Тагил</td><td>140 км</td><td>1 × 20 м³</td><td>11 200</td><td>26 600</td><td>37 800</td></tr>
+        <tr><td>25 м³</td><td>Екатеринбург</td><td>25 км</td><td>2 × 20 м³</td><td>17 500</td><td>9 500</td><td>27 000</td></tr>
+        <tr><td>25 м³</td><td>Первоуральск</td><td>45 км</td><td>2 × 20 м³</td><td>17 500</td><td>17 100</td><td>34 600</td></tr>
+        <tr><td>25 м³</td><td>Нижний Тагил</td><td>140 км</td><td>2 × 20 м³</td><td>17 500</td><td>53 200</td><td>70 700</td></tr>
+        <tr><td>35 м³</td><td>Екатеринбург</td><td>25 км</td><td>2 × 20 м³</td><td>24 500</td><td>9 500</td><td>34 000</td></tr>
+        <tr><td>35 м³</td><td>Первоуральск</td><td>45 км</td><td>2 × 20 м³</td><td>24 500</td><td>17 100</td><td>41 600</td></tr>
+        <tr><td>35 м³</td><td>Нижний Тагил</td><td>140 км</td><td>2 × 20 м³</td><td>24 500</td><td>53 200</td><td>77 700</td></tr>
       </tbody>
     </table></div>
     <p class="d-note">Объём сверх 20 м³ везётся несколькими рейсами,

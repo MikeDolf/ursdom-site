@@ -31,9 +31,9 @@
 {% for r in lots %}      <tr><td class="d-spec-val">{{ r.vol }} м³</td><td>{{ r.truck }}</td><td class="d-spec-val">{{ r.material }} руб</td><td class="d-spec-val">{{ r.delivery }} руб</td><td class="d-spec-val">{{ r.total }} руб</td></tr>
 {% endfor %}    </tbody>
   </table></div>
-  <p class="d-note">{{ lots_note }} Расчёт по карьерному песку; другой вид и другой объём
-  посчитает <a href="/dostavka/kalkulyator/pesok/">калькулятор песка</a>,
-  там же считается объём по размерам площадки.</p>
+  <p class="d-note">{{ lots_note }} Другой объём посчитает
+  <a href="/dostavka/kalkulyator/{{ calc_slug|default('pesok', true) }}/">калькулятор {{ calc_rod|default('песка', true) }}</a>,
+  там же считается объём по размерам площадки и перевод кубов в тонны.</p>
 </div></section>
 {% endif %}
 

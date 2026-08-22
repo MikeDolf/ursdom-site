@@ -25,6 +25,10 @@
   if (!ui || !mat || !vol || !dest || !out) return;
 
   var RATE = parseInt(root.getAttribute("data-rate"), 10) || 95;
+  /* Плечо оплачивается в обе стороны: машина едет к вам и возвращается
+     порожняком. Множитель приходит из разметки, чтобы формула здесь
+     и в data/calc.py не разъехались. */
+  var TRIP = parseInt(root.getAttribute("data-trip"), 10) || 2;
   var MIN = parseInt(root.getAttribute("data-min"), 10) || 5;
   var TRUCKS = [5, 10, 20];
 
@@ -55,7 +59,7 @@
     var km = parseInt(dest.value, 10);
     var t = trips(v);
     var material = v * price;
-    var delivery = t.n * km * RATE;
+    var delivery = t.n * km * TRIP * RATE;
     var total = material + delivery;
 
     volOut.textContent = v;
@@ -63,7 +67,7 @@
     var lines = [
       ["Материал", v + " м³ × " + money(price) + " руб", money(material) + " руб"],
       ["Доставка", t.n + " " + plural(t.n, "рейс", "рейса", "рейсов") +
-        " × " + km + " км × " + RATE + " руб", money(delivery) + " руб"],
+        " × " + (km * TRIP) + " км × " + RATE + " руб", money(delivery) + " руб"],
       ["Итого предварительно", "", money(total) + " руб"]
     ];
 
