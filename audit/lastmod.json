@@ -416,8 +416,8 @@
   "fp": "17a5bb5ee39d6a17"
  },
  "/dostavka/pesok/peskostruynyy/": {
-  "date": "2026-08-22",
-  "fp": "ed00ef685ae833dd"
+  "date": "2026-08-23",
+  "fp": "3a75162c7b08b9e5"
  },
  "/dostavka/pesok/polevskoy/": {
   "date": "2026-08-22",
@@ -436,8 +436,8 @@
   "fp": "0edd782c1e80185b"
  },
  "/dostavka/pesok/v-meshkah/": {
-  "date": "2026-08-22",
-  "fp": "9ebf7d72529fb461"
+  "date": "2026-08-23",
+  "fp": "cac0f41d62ce1e65"
  },
  "/dostavka/pesok/verhnee-dubrovo/": {
   "date": "2026-08-22",
@@ -659,6 +659,14 @@
   "date": "2026-08-22",
   "fp": "838d2c440fdd6081"
  },
+ "/dostavka/stati/beton-iz-otseva-i-pgs/": {
+  "date": "2026-08-23",
+  "fp": "bedf2c7cf62b5de9"
+ },
+ "/dostavka/stati/butovanie-stolbov/": {
+  "date": "2026-08-23",
+  "fp": "9a1a2dcba07c9048"
+ },
  "/dostavka/stati/cement-m400-i-m500/": {
   "date": "2026-08-22",
   "fp": "890bf5873eac5d53"
@@ -668,12 +676,24 @@
   "fp": "ebc5e5c02479c51c"
  },
  "/dostavka/stati/chem-otsypat-uchastok/": {
-  "date": "2026-08-22",
-  "fp": "6b10b6ca8f823c40"
+  "date": "2026-08-23",
+  "fp": "9511d57394f220be"
  },
  "/dostavka/stati/cvet-trotuarnoy-plitki/": {
   "date": "2026-08-22",
   "fp": "fc073fb2756b4219"
+ },
+ "/dostavka/stati/dekorativnaya-otsypka/": {
+  "date": "2026-08-23",
+  "fp": "2674aba96f2db453"
+ },
+ "/dostavka/stati/doroga-k-uchastku/": {
+  "date": "2026-08-23",
+  "fp": "551d090378283352"
+ },
+ "/dostavka/stati/dorozhka-iz-shchebnya/": {
+  "date": "2026-08-23",
+  "fp": "c433c45599ae4543"
  },
  "/dostavka/stati/dorozhki-na-uchastke/": {
   "date": "2026-08-22",
@@ -683,6 +703,14 @@
   "date": "2026-08-22",
   "fp": "a3ce78d05f813c11"
  },
+ "/dostavka/stati/drenazh-uchastka/": {
+  "date": "2026-08-23",
+  "fp": "5b290de237f4fcc1"
+ },
+ "/dostavka/stati/drenazhnyy-kolodec/": {
+  "date": "2026-08-23",
+  "fp": "8e1fb000da834535"
+ },
  "/dostavka/stati/formy-dlya-plitki/": {
   "date": "2026-08-22",
   "fp": "c2dae4f606482a48"
@@ -690,6 +718,10 @@
  "/dostavka/stati/frakcii-shchebnya/": {
   "date": "2026-08-22",
   "fp": "6a6faf83e2f90e3c"
+ },
+ "/dostavka/stati/geotekstil-pod-shcheben/": {
+  "date": "2026-08-23",
+  "fp": "833a02b1d21fcc7e"
  },
  "/dostavka/stati/gidroizolyaciya-betona/": {
   "date": "2026-08-22",
@@ -704,8 +736,8 @@
   "fp": "decd66ebc5a94b17"
  },
  "/dostavka/stati/holodnyy-asfalt/": {
-  "date": "2026-08-22",
-  "fp": "f4f96e953f20c6a3"
+  "date": "2026-08-23",
+  "fp": "583c4c25babd294b"
  },
  "/dostavka/stati/kakoy-pesok-vybrat/": {
   "date": "2026-08-22",
@@ -719,9 +751,13 @@
   "date": "2026-08-22",
   "fp": "2efabd0f4f4c01e1"
  },
+ "/dostavka/stati/keramzit-v-styazhke/": {
+  "date": "2026-08-23",
+  "fp": "e26e3c5ccf72b71d"
+ },
  "/dostavka/stati/kladochnaya-smes-dlya-pechey/": {
-  "date": "2026-08-22",
-  "fp": "7b9ea741bcca09e4"
+  "date": "2026-08-23",
+  "fp": "02c19d16ff132329"
  },
  "/dostavka/stati/kladochnaya-smes/": {
   "date": "2026-08-22",
@@ -755,9 +791,33 @@
   "date": "2026-08-22",
   "fp": "c2789120e283064d"
  },
+ "/dostavka/stati/myagkaya-otmostka/": {
+  "date": "2026-08-23",
+  "fp": "c4edfa7a560e7580"
+ },
  "/dostavka/stati/nalivnoy-pol/": {
   "date": "2026-08-22",
   "fp": "e2e01886e3161b4e"
+ },
+ "/dostavka/stati/nasypnaya-plotnost/": {
+  "date": "2026-08-23",
+  "fp": "dea51b33667696b8"
+ },
+ "/dostavka/stati/obratnaya-zasypka/": {
+  "date": "2026-08-23",
+  "fp": "730af1b6678a3a09"
+ },
+ "/dostavka/stati/osnovanie-pod-basseyn/": {
+  "date": "2026-08-23",
+  "fp": "744f6a03d7842adc"
+ },
+ "/dostavka/stati/osnovanie-pod-krylco/": {
+  "date": "2026-08-23",
+  "fp": "bc959b3d96f27817"
+ },
+ "/dostavka/stati/osnovanie-pod-teplicu/": {
+  "date": "2026-08-23",
+  "fp": "498b5f15ebd4162d"
  },
  "/dostavka/stati/otmostka-vokrug-doma/": {
   "date": "2026-08-22",
@@ -767,9 +827,21 @@
   "date": "2026-08-22",
   "fp": "c727195bc36e0806"
  },
+ "/dostavka/stati/otsypka-mogily/": {
+  "date": "2026-08-23",
+  "fp": "a473c203231232ee"
+ },
+ "/dostavka/stati/parkovka-iz-shchebnya/": {
+  "date": "2026-08-23",
+  "fp": "1dd4bb2b00c6e2a2"
+ },
  "/dostavka/stati/pechnoy-rastvor/": {
   "date": "2026-08-22",
   "fp": "667bf3d6b3aa2c11"
+ },
+ "/dostavka/stati/pesok-pod-gazon/": {
+  "date": "2026-08-23",
+  "fp": "00c2d469d578cabb"
  },
  "/dostavka/stati/pesok-pod-plitku/": {
   "date": "2026-08-22",
@@ -783,17 +855,29 @@
   "date": "2026-08-22",
   "fp": "531445eaf39f8eb3"
  },
+ "/dostavka/stati/plitka-na-betonnoe-osnovanie/": {
+  "date": "2026-08-23",
+  "fp": "67eb5242cf56b6ec"
+ },
  "/dostavka/stati/plitka-svoimi-rukami/": {
   "date": "2026-08-22",
   "fp": "9a006809154f9a5e"
  },
  "/dostavka/stati/podushka-pod-fundament/": {
-  "date": "2026-08-22",
-  "fp": "1b1ec0d485400154"
+  "date": "2026-08-23",
+  "fp": "e2955121ae519608"
+ },
+ "/dostavka/stati/pol-v-bane/": {
+  "date": "2026-08-23",
+  "fp": "6486c73842a7484f"
+ },
+ "/dostavka/stati/pol-v-garazhe/": {
+  "date": "2026-08-23",
+  "fp": "7b40ca1f9deb3c50"
  },
  "/dostavka/stati/proizvoditeli-trotuarnoy-plitki/": {
-  "date": "2026-08-22",
-  "fp": "6359aae4b960d472"
+  "date": "2026-08-23",
+  "fp": "39ce96516383cdcf"
  },
  "/dostavka/stati/pronikayushchaya-gidroizolyaciya/": {
   "date": "2026-08-22",
@@ -802,6 +886,10 @@
  "/dostavka/stati/propitki-dlya-betona/": {
   "date": "2026-08-22",
   "fp": "5551fca6afaae0ad"
+ },
+ "/dostavka/stati/rashod-na-m2/": {
+  "date": "2026-08-23",
+  "fp": "e9a8b8d1e387ca0d"
  },
  "/dostavka/stati/rastvor-proporcii/": {
   "date": "2026-08-22",
@@ -818,6 +906,10 @@
  "/dostavka/stati/sadovyy-bordyur/": {
   "date": "2026-08-22",
   "fp": "5f771612174693da"
+ },
+ "/dostavka/stati/septik-iz-kolec/": {
+  "date": "2026-08-23",
+  "fp": "2c663e91c0137d33"
  },
  "/dostavka/stati/shcheben-ili-graviy/": {
   "date": "2026-08-22",
@@ -864,12 +956,16 @@
   "fp": "a7f498be869e1aa2"
  },
  "/dostavka/stati/ukladka-trotuarnoy-plitki/": {
-  "date": "2026-08-22",
-  "fp": "9375cbf230ce7e4c"
+  "date": "2026-08-23",
+  "fp": "417a0f4347a07b11"
  },
  "/dostavka/stati/ustanovka-bordyura/": {
   "date": "2026-08-22",
   "fp": "ac89f46ebc012614"
+ },
+ "/dostavka/stati/uteplenie-keramzitom/": {
+  "date": "2026-08-23",
+  "fp": "2166b2e3f567a99a"
  },
  "/dostavka/stati/uzory-plitki/": {
   "date": "2026-08-22",
@@ -886,6 +982,10 @@
  "/dostavka/stati/zames-betona-vedrami/": {
   "date": "2026-08-22",
   "fp": "cf3b51326c9d90b3"
+ },
+ "/dostavka/stati/zasypka-podpola/": {
+  "date": "2026-08-23",
+  "fp": "3a97372838a7a313"
  },
  "/dostavka/stenovye-bloki/": {
   "date": "2026-08-22",
