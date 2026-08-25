@@ -7,12 +7,13 @@
 
 Запуск: python3 audit/_verify.py
 """
-import io, json, os, re, sys, glob, collections, difflib
+import io, json, os, re, sys, glob, collections, difflib, datetime
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DIR = os.path.join(ROOT, "dostavka")
 
 problems = []
+_TODAY_ISO = datetime.date.today().isoformat()
 
 
 def bad(page, kind, detail):
@@ -513,6 +514,43 @@ for _u, _h in pages.items():
                 bad(_u, "числа",
                     "бетон %s на цементе %s: %s кг, а в таблице расхода %s"
                     % (grade, cem, got, want))
+
+# --- 25. один и тот же вопрос дважды на странице
+# Три статьи прожили с задвоенным вопросом и разными ответами в них:
+# «Сколько весит кольцо ЖБИ?» отвечал 600 кг в одном месте и 640 в другом.
+# Дубли появлялись при дописывании FAQ пачкой, без взгляда на то,
+# что уже есть. Глазами это не видно - вопросы расходятся на десяток
+# экранов, - а в разметке FAQPage такая пара выглядит как две сущности
+# с одним именем.
+for _u, _h in pages.items():
+    _qs = re.findall(r'<summary[^>]*>(.*?)</summary>', _h, re.S)
+    _qs = [re.sub(r"\s+", " ", re.sub(r"<[^>]+>", "", q)).strip().lower() for q in _qs]
+    for _q, _n in collections.Counter(_qs).items():
+        if _n > 1 and _q:
+            bad(_u, "дубль вопроса", "«%s» встречается %d раза" % (_q[:80], _n))
+
+# --- 26. дата в разметке Article
+# datePublished и dateModified раньше брались из одной константы: все статьи
+# заявляли одну дату, включая написанные месяцем позже. Проверяем, что даты
+# не из будущего, что изменение не раньше публикации и что даты не совпали
+# у всех страниц разом.
+_pub = collections.Counter()
+for _u, _h in pages.items():
+    _m = re.search(r'"datePublished":\s*"([\d-]+)",\s*"dateModified":\s*"([\d-]+)"', _h)
+    if not _m:
+        continue
+    _p, _mo = _m.group(1), _m.group(2)
+    _pub[_p] += 1
+    if _p > _TODAY_ISO:
+        bad(_u, "дата", "datePublished в будущем: %s" % _p)
+    if _mo < _p:
+        bad(_u, "дата", "dateModified %s раньше datePublished %s" % (_mo, _p))
+    if _mo > _TODAY_ISO:
+        bad(_u, "дата", "dateModified в будущем: %s" % _mo)
+if _pub and len(_pub) == 1 and sum(_pub.values()) > 20:
+    bad("(разметка)", "дата",
+        "у всех %d статей одна дата публикации %s - похоже на константу"
+        % (sum(_pub.values()), list(_pub)[0]))
 
 # ------------------------------------------------------------------ вывод
 by_kind = collections.Counter(k for _, k, _ in problems)

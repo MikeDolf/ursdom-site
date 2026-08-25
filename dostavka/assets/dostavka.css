@@ -1165,3 +1165,10 @@ footer strong{color:#fff}
   .d-form,.d-callblock,.d-midcta{padding:20px 18px}
   th,td,caption{padding-left:14px;padding-right:14px}
 }
+
+/* Нумерованный список внутри статьи. Появился, когда обнаружилось, что
+   раздел с ключом ol рендерился в пустоту: макрос про такой список
+   не знал, и семь пунктов текста не доезжали до страницы. */
+.d-ol{margin:0 0 22px;padding:0 0 0 24px}
+.d-ol li{margin:0 0 12px;line-height:1.62;padding-left:4px}
+.d-ol li::marker{color:var(--d-ink-2);font-weight:600}

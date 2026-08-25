@@ -620,6 +620,10 @@
 {% for i in s.ul %}    <li>{{ i|xlink }}</li>
 {% endfor %}  </ul>
 {% endif %}
+{%- if s.ol %}  <ol class="d-ol">
+{% for i in s.ol %}    <li>{{ i|xlink }}</li>
+{% endfor %}  </ol>
+{% endif %}
 {%- if s.steps %}  <ol class="d-steps">
 {% for i in s.steps %}    <li>{{ i }}</li>
 {% endfor %}  </ol>

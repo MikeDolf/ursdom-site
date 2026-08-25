@@ -271,10 +271,12 @@ def faq_schema(faq):
          "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in faq]}
 
 
-def article_schema(url, title, desc, author=None):
+def article_schema(url, title, desc, author=None, published=None, modified=None):
+    published = published or TODAY
+    modified = modified or published
     a = author or AUTHOR_FULL
     return {"@type": "Article", "headline": title, "description": desc,
-            "inLanguage": "ru-RU", "datePublished": TODAY, "dateModified": TODAY,
+            "inLanguage": "ru-RU", "datePublished": published, "dateModified": modified,
             "mainEntityOfPage": DOMAIN + url,
             "author": {"@type": "Person", "name": a["name"], "jobTitle": a["role"]},
             "publisher": {"@type": "Organization", "name": SITE["brand"]}}
@@ -1619,6 +1621,89 @@ LR_HERO = {
     "stati/pesok-pod-plitku":     (8, "песок и отсев 0-5 мм"),
 }
 
+# Заголовки всех страниц раздела, на которые может ссылаться поле related.
+# Раньше карта строилась только по лонгридам, и ссылка на товарную страницу
+# молча выбрасывалась: слот доставался ротационному запасному списку,
+# а подобранная руками связь исчезала без единого сообщения. Сорок семь
+# таких ссылок так и не доехали до вёрстки. Теперь карта включает товарные
+# страницы, а неизвестный slug останавливает сборку.
+RELATED_TITLE = {}
+for _o in LONGREADS:
+    RELATED_TITLE[_o["slug"]] = _o["h1"]
+# Заголовок товарной страницы лежит не в описании материала, а в конфиге
+# денежной страницы: MATERIALS_* хранит содержание, MONEY_CFG_* - обёртку.
+for _src in (money_cfg, MONEY_CFG_EXT, MONEY_CFG_ZHBI, MONEY_CFG_BETON,
+             MONEY_CFG_GAP, MONEY_CFG_GAP2, MONEY_CFG_GAP3, MONEY_CFG_REV):
+    for _k, _v in _src.items():
+        if isinstance(_v, dict) and _v.get("h1"):
+            RELATED_TITLE.setdefault(_k, _v["h1"])
+for _hb in HUBS:
+    if _hb.get("slug") and _hb.get("h1"):
+        RELATED_TITLE.setdefault(_hb["slug"], _hb["h1"])
+
+_bad_rel = {}
+for _a in LONGREADS:
+    for _sl in _a.get("related", []):
+        if _sl not in RELATED_TITLE:
+            _bad_rel.setdefault(_sl, []).append(_a["slug"])
+if _bad_rel:
+    print("ОШИБКА: related ссылается на несуществующие страницы:")
+    for _sl, _who in sorted(_bad_rel.items()):
+        print("  %-44s из %s" % (_sl, ", ".join(_who[:3])))
+    raise SystemExit(1)
+
+# Даты статей для разметки Article. Раньше и datePublished, и dateModified
+# брались из константы TODAY: все статьи заявляли одну и ту же дату,
+# включая написанные позже. Для поисковика это ложный сигнал свежести.
+# Отпечаток считается по исходным данным статьи, а не по готовой вёрстке:
+# перерисовка шаблона не должна выглядеть как правка текста.
+_AD_PATH = os.path.join(ROOT, "audit", "article-dates.json")
+try:
+    _adates = json.load(io.open(_AD_PATH, encoding="utf-8"))
+except Exception:
+    _adates = {}
+_ad_today = datetime.date.today().isoformat()
+ARTICLE_DATES = {}
+for _a in LONGREADS:
+    _src = json.dumps([_a.get(k) for k in ("h1", "lead", "sections", "faq")],
+                      ensure_ascii=False, sort_keys=True)
+    _fp = hashlib.sha1(_src.encode("utf-8")).hexdigest()[:16]
+    _prev = _adates.get(_a["slug"])
+    if _prev and _prev.get("fp") == _fp:
+        ARTICLE_DATES[_a["slug"]] = _prev
+    else:
+        ARTICLE_DATES[_a["slug"]] = {
+            "fp": _fp,
+            "published": (_prev or {}).get("published", _ad_today),
+            "modified": _ad_today,
+        }
+os.makedirs(os.path.dirname(_AD_PATH), exist_ok=True)
+json.dump(ARTICLE_DATES, io.open(_AD_PATH, "w", encoding="utf-8"),
+          ensure_ascii=False, indent=1, sort_keys=True)
+
+# Ключи разделов, которые умеет рисовать макрос blocks(). Раздел
+# «Что проверять в партии независимо от завода» прожил на сайте с ключом ol,
+# которого макрос не знал: заголовок печатался, семь пунктов текста - нет.
+# Молчаливая потеря содержания страшнее падения сборки, поэтому теперь падаем.
+_SEC_KEYS = {"id", "h", "p", "ul", "ol", "steps", "table", "sub", "after",
+             "callout", "callout_warn"}
+_SUB_KEYS = {"h3", "p", "ul", "table"}
+_unknown = {}
+for _a in LONGREADS:
+    for _s in _a["sections"]:
+        for _k in _s:
+            if _k not in _SEC_KEYS:
+                _unknown.setdefault(_k, []).append(_a["slug"])
+        for _sb in _s.get("sub", []):
+            for _k in _sb:
+                if _k not in _SUB_KEYS:
+                    _unknown.setdefault("sub." + _k, []).append(_a["slug"])
+if _unknown:
+    print("ОШИБКА: макрос не умеет рисовать ключи разделов:")
+    for _k, _who in sorted(_unknown.items()):
+        print("  %-16s в %s" % (_k, ", ".join(sorted(set(_who))[:3])))
+    raise SystemExit(1)
+
 # ---- ЛОНГРИДЫ (низкоконкурентные ключи Мутагена) ----
 for a in LONGREADS:
     url = SITE["base"] + a["slug"] + "/"
@@ -1640,7 +1725,9 @@ for a in LONGREADS:
         if _pl:
             nodes.append(_pl)
     if a["kind"] == "article":
-        nodes.append(article_schema(url, a["title"], a["desc"], AUTHOR_FULL))
+        _ad = ARTICLE_DATES[a["slug"]]
+        nodes.append(article_schema(url, a["title"], a["desc"], AUTHOR_FULL,
+                                    _ad["published"], _ad["modified"]))
     if a.get("low_price"):
         nodes.append(product_schema(a["h1"], a["desc"], a["low_price"], url,
                                     images=product_images(a["slug"])))
@@ -1649,12 +1736,11 @@ for a in LONGREADS:
     # Без этого rel[:12] отрезал всё, что не поместилось: список
     # вырос до 23 статей, и новые становились сиротами - на них
     # не вело ни одной ссылки со всего сайта.
-    by_slug = {o["slug"]: o for o in LONGREADS}
     rel = []
     for sl in a.get("related", []):
-        o = by_slug.get(sl)
-        if o:
-            rel.append((SITE["base"] + sl + "/", o["h1"]))
+        t = RELATED_TITLE.get(sl)
+        if t:
+            rel.append((SITE["base"] + sl + "/", t))
     rel += [("/dostavka/shcheben/", "Доставка щебня: все фракции и цены"),
             ("/dostavka/pesok/", "Доставка песка"),
             ("/dostavka/otsev/", "Отсев 0-5"),
