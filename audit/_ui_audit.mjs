@@ -90,7 +90,16 @@ const PROBE = () => {
       // минимум WCAG 2.5.5 (AAA), 48 это рекомендация Material и
       // Lighthouse: под неё же проверяет мобильный аудит Google.
       // Галка остаётся на 24 по WCAG 2.5.8 (AA): у неё своя норма.
-      const need = el.tagName === 'INPUT' ? 24 : 48;
+      // Текстовая ссылка в строке прозы, в подвале, в хлебных крошках
+      // или в списке - не орган управления, а слово в тексте. Для неё
+      // норма 24px по WCAG 2.5.8 (AA), и ровно её проверяет Lighthouse.
+      // Раньше такие ссылки просто выпадали из проверки как display:inline;
+      // после увеличения зоны нажатия они стали inline-block, и мерить их
+      // по 48px было бы неверно: до этой высоты строку текста не растянуть,
+      // не сломав вёрстку. Кнопки и крупные цели остаются на 48.
+      const inlineLink = el.tagName === 'A' &&
+        !!el.closest('.d-foot-grid, .d-crumbs, .d-cat-name, .d-shelf-name, p, li, td');
+      const need = (el.tagName === 'INPUT' || inlineLink) ? 24 : 48;
       if (!offscreen && cs.display !== 'inline' && r.height > 0
           && (box.height < need - 0.5 || box.width < 24)) {
         out.tap.push({ el: sel(el), w: Math.round(box.width), h: Math.round(box.height), need });

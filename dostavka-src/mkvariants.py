@@ -34,11 +34,17 @@ with Image.open(SRC) as im:
     # 320 - для миниатюр: стопка сит на хабе показывает снимок
     # шириной 104 пикселя, и 800-й вариант там весит вдесятеро больше
     # нужного, да ещё в первом экране.
-    fit(im, 320).save(DST + "-320.webp", "WEBP", quality=80, method=6)
+    # 160 - для карточек каталога: там снимок показывается шириной
+    # 64-66 CSS-пикселей, то есть 132 физических на телефоне с DPR 2.
+    # Без этого варианта самым мелким в srcset был 320-й, и браузер
+    # тянул вдвое больше нужного. Качество ниже: на такой площади
+    # разница не видна, а вес падает втрое.
+    fit(im, 160).save(DST + "-160.webp", "WEBP", quality=72, method=6)
+    fit(im, 320).save(DST + "-320.webp", "WEBP", quality=76, method=6)
     fit(im, 800).save(DST + "-800.webp", "WEBP", quality=78, method=6)
     fit(im, 1600).save(DST + "-1600.webp", "WEBP", quality=78, method=6)
 
-for suf in (".jpg", "-1200.jpg", "-320.webp", "-800.webp", "-1600.webp"):
+for suf in (".jpg", "-1200.jpg", "-160.webp", "-320.webp", "-800.webp", "-1600.webp"):
     p = DST + suf
     with Image.open(p) as v:
         print("%-22s %-11s %5d КБ" % (os.path.basename(p), "%dx%d" % v.size,

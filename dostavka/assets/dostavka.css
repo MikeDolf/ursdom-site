@@ -1172,3 +1172,20 @@ footer strong{color:#fff}
 .d-ol{margin:0 0 22px;padding:0 0 0 24px}
 .d-ol li{margin:0 0 12px;line-height:1.62;padding-left:4px}
 .d-ol li::marker{color:var(--d-ink-2);font-weight:600}
+
+/* Размер зоны нажатия. Lighthouse требует 24x24 CSS-пикселя, а строчные
+   ссылки в карточках, витрине, подвале и хлебных крошках имели высоту
+   16-18px по метрике шрифта. Падинг с компенсирующим отрицательным
+   отступом увеличивает саму зону, не сдвигая вёрстку: строка остаётся
+   на прежнем месте, растёт только область попадания пальцем.
+   У .d-cat-name зона и раньше была во всю карточку через ::after,
+   но проверка меряет бокс самой ссылки, поэтому правило общее. */
+/* Кнопки исключены через :not, а не сброшены через revert: revert
+   отменяет и их собственный padding, из-за чего кнопки садились
+   с 44 до 27 пикселей. Поймал внутренний аудит отрисовки. */
+p a:not([class*="d-btn"]),
+li a:not([class*="d-btn"]),
+td a:not([class*="d-btn"]),
+dd a:not([class*="d-btn"]),
+.d-cat-name a, .d-shelf-name a, .d-crumbs a{
+  display:inline-block;padding-block:4px;margin-block:-4px}

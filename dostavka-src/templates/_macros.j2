@@ -308,7 +308,12 @@
   <input type="hidden" name="redirect" value="{{ cfg.domain }}{{ cfg.base }}spasibo/">
   <input type="hidden" name="subject" value="Заявка: {{ subject }}">
   <input type="hidden" name="from_name" value="{{ cfg.brand }}, сайт">
-  <input type="text" name="botcheck" class="d-hp" tabindex="-1" autocomplete="off">
+  {# Ловушка для ботов. Скрыта уводом за экран, а не display:none: часть
+     ботов такие поля пропускает. Для скринридера её быть не должно,
+     поэтому aria-hidden и tabindex="-1": без них Lighthouse справедливо
+     ругался на поле формы без подписи. #}
+  <input type="text" name="botcheck" class="d-hp" tabindex="-1" autocomplete="off"
+         aria-hidden="true" aria-label="Оставьте это поле пустым">
   <label for="lf-name">Ваше имя</label>
   <input id="lf-name" type="text" name="Имя" required>
   <label for="lf-phone">Телефон для связи</label>

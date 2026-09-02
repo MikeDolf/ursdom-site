@@ -74,6 +74,16 @@ _css = os.path.join(OUT, "assets", "dostavka.css")
 if os.path.exists(_css):
     import hashlib
     SITE["css_version"] = hashlib.md5(open(_css, "rb").read()).hexdigest()[:8]
+    # Отдаём минифицированную копию, редактируем читаемый исходник.
+    # Версия по-прежнему считается от исходника: он и есть источник правды.
+    from mincss import minify as _minify
+    _src = open(_css, encoding="utf-8").read()
+    _min = _minify(_src)
+    with open(os.path.join(OUT, "assets", "dostavka.min.css"), "w",
+              encoding="utf-8") as _f:
+        _f.write(_min)
+    print("CSS: %d -> %d байт (-%.0f%%)"
+          % (len(_src), len(_min), 100 * (1 - len(_min) / len(_src))))
 DOMAIN = SITE["domain"]
 TODAY = "2026-07-28"
 # Дата, до которой цена в разметке считается действующей.
@@ -707,7 +717,7 @@ def img_one(rel):
     with Image.open(path) as im:
         w, h = im.size
     webp, jpg = [], []
-    for wd in (320, 800, 1600):
+    for wd in (160, 320, 800, 1600):
         cand = "%s-%d.webp" % (base, wd)
         if os.path.exists(os.path.join(d, cand)):
             webp.append("/dostavka/assets/img/%s/%s %dw" % (sub, cand, wd))
