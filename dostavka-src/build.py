@@ -1715,6 +1715,28 @@ if _unknown:
         print("  %-16s в %s" % (_k, ", ".join(sorted(set(_who))[:3])))
     raise SystemExit(1)
 
+# Ключи, по которым макрос ИТЕРИРУЕТ. Строка вместо списка не падает,
+# а тихо печатается по одной букве в абзац: так на новой странице мытого
+# песка появилось десять пустых <p> из пробелов между словами. Поймал это
+# верификатор, но заметить в вёрстке такое трудно, поэтому останавливаем
+# сборку прямо здесь.
+_LIST_KEYS = ("p", "ul", "ol", "steps", "after")
+_notlist = []
+for _a in LONGREADS:
+    for _s in _a["sections"]:
+        for _k in _LIST_KEYS:
+            if isinstance(_s.get(_k), str):
+                _notlist.append((_a["slug"], _s.get("id", "?"), _k))
+        for _sb in _s.get("sub", []):
+            for _k in ("p", "ul"):
+                if isinstance(_sb.get(_k), str):
+                    _notlist.append((_a["slug"], _s.get("id", "?"), "sub." + _k))
+if _notlist:
+    print("ОШИБКА: строка вместо списка - макрос напечатает её по буквам:")
+    for _sl, _sid, _k in _notlist:
+        print("  %s раздел %s ключ %s" % (_sl, _sid, _k))
+    raise SystemExit(1)
+
 # ---- ЛОНГРИДЫ (низкоконкурентные ключи Мутагена) ----
 for a in LONGREADS:
     url = SITE["base"] + a["slug"] + "/"
