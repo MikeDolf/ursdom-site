@@ -1,11 +1,11 @@
 {
  "/dostavka/": {
-  "date": "2026-08-22",
-  "fp": "2921eb7ff9b60a7f"
+  "date": "2026-09-02",
+  "fp": "4e301ab99db01fc2"
  },
  "/dostavka/asfaltovaya-kroshka/": {
-  "date": "2026-08-22",
-  "fp": "06ba5f84f194bdd1"
+  "date": "2026-09-02",
+  "fp": "b754d3b50f71d4a5"
  },
  "/dostavka/beton/": {
   "date": "2026-08-22",
@@ -76,8 +76,8 @@
   "fp": "d37da95fc7d1c5c8"
  },
  "/dostavka/butovyy-kamen/": {
-  "date": "2026-08-22",
-  "fp": "b7b316a2d1de1bc4"
+  "date": "2026-09-02",
+  "fp": "b13db228f2a5d279"
  },
  "/dostavka/cement-i-smesi/": {
   "date": "2026-08-22",
@@ -100,24 +100,24 @@
   "fp": "83677967745c46a7"
  },
  "/dostavka/granitnaya-kroshka/": {
-  "date": "2026-08-22",
-  "fp": "7d2d53c1dd29533c"
+  "date": "2026-09-02",
+  "fp": "5432f2ac6901d286"
  },
  "/dostavka/graviy/": {
-  "date": "2026-08-22",
-  "fp": "ef7dc2c2da8d8533"
+  "date": "2026-09-02",
+  "fp": "446c96be46bcc841"
  },
  "/dostavka/graviy/krasnoufimsk/": {
-  "date": "2026-08-22",
-  "fp": "d67d717367e600cc"
+  "date": "2026-09-02",
+  "fp": "558a765522ef0d3a"
  },
  "/dostavka/graviy/mihaylovsk/": {
-  "date": "2026-08-22",
-  "fp": "7ade3c5e6959712f"
+  "date": "2026-09-02",
+  "fp": "bef718b3ef008f11"
  },
  "/dostavka/graviy/nizhniy-tagil/": {
-  "date": "2026-08-22",
-  "fp": "c0dbddbb33c65d4b"
+  "date": "2026-09-02",
+  "fp": "114fba365d0e0eef"
  },
  "/dostavka/kalkulyator/": {
   "date": "2026-08-22",
@@ -172,56 +172,56 @@
   "fp": "86dfaf0b376abd71"
  },
  "/dostavka/keramzit/": {
-  "date": "2026-08-22",
-  "fp": "ebf7b58bcdea31ce"
+  "date": "2026-09-02",
+  "fp": "4338fb9a48d3ab44"
  },
  "/dostavka/keramzit/asbest/": {
-  "date": "2026-08-22",
-  "fp": "c8bf2da84eff6575"
+  "date": "2026-09-02",
+  "fp": "f0706c50f745f5db"
  },
  "/dostavka/keramzit/irbit/": {
-  "date": "2026-08-22",
-  "fp": "1ed4bbc4b2bbba1d"
+  "date": "2026-09-02",
+  "fp": "8bd2747a40274108"
  },
  "/dostavka/keramzit/kamensk-uralskiy/": {
-  "date": "2026-08-22",
-  "fp": "d8f378a86192fbcd"
+  "date": "2026-09-02",
+  "fp": "978837bdf7bca588"
  },
  "/dostavka/keramzit/kushva/": {
-  "date": "2026-08-22",
-  "fp": "85327407a80e91f0"
+  "date": "2026-09-02",
+  "fp": "549cd52f2c6ac7c3"
  },
  "/dostavka/keramzit/nizhniy-tagil/": {
-  "date": "2026-08-22",
-  "fp": "8754f2c81a84bdac"
+  "date": "2026-09-02",
+  "fp": "3b61835a8abe1d20"
  },
  "/dostavka/keramzit/novouralsk/": {
-  "date": "2026-08-22",
-  "fp": "88432375422c73e1"
+  "date": "2026-09-02",
+  "fp": "87f70223a593383e"
  },
  "/dostavka/keramzit/pervouralsk/": {
-  "date": "2026-08-22",
-  "fp": "94572215534d02f2"
+  "date": "2026-09-02",
+  "fp": "27edfe3b7733b9c9"
  },
  "/dostavka/keramzit/polevskoy/": {
-  "date": "2026-08-22",
-  "fp": "3c03f4d2099e6f0e"
+  "date": "2026-09-02",
+  "fp": "7f2610bb03e9bb43"
  },
  "/dostavka/keramzit/revda/": {
-  "date": "2026-08-22",
-  "fp": "4771882c21db197d"
+  "date": "2026-09-02",
+  "fp": "a5445d99c83c410a"
  },
  "/dostavka/keramzit/rezh/": {
-  "date": "2026-08-22",
-  "fp": "a26ad637fcf7a404"
+  "date": "2026-09-02",
+  "fp": "99b68b0946ad078d"
  },
  "/dostavka/keramzit/serov/": {
-  "date": "2026-08-22",
-  "fp": "ed3308311bde7cf0"
+  "date": "2026-09-02",
+  "fp": "2859efdd47552b23"
  },
  "/dostavka/keramzit/suhoy-log/": {
-  "date": "2026-08-22",
-  "fp": "dd8d7d3728ce5414"
+  "date": "2026-09-02",
+  "fp": "a5895bb72027e04e"
  },
  "/dostavka/kolca-kanalizacionnye/": {
   "date": "2026-08-22",
@@ -256,80 +256,80 @@
   "fp": "e0a89ade4e1ce4e9"
  },
  "/dostavka/otsev/": {
-  "date": "2026-08-22",
-  "fp": "318f32e3a665e992"
+  "date": "2026-09-02",
+  "fp": "7c40257be656bad4"
  },
  "/dostavka/otsev/aramil/": {
-  "date": "2026-08-22",
-  "fp": "0f4e1b5343f11b16"
+  "date": "2026-09-02",
+  "fp": "1e22b52ee23c6228"
  },
  "/dostavka/otsev/asbest/": {
-  "date": "2026-08-22",
-  "fp": "aff7719152b90b81"
+  "date": "2026-09-02",
+  "fp": "6a1d1762a22bf314"
  },
  "/dostavka/otsev/beloyarskiy/": {
-  "date": "2026-08-22",
-  "fp": "3b841e2cfe82b05e"
+  "date": "2026-09-02",
+  "fp": "063c2e6768b5120c"
  },
  "/dostavka/otsev/berezovskiy/": {
-  "date": "2026-08-22",
-  "fp": "084734032e25a389"
+  "date": "2026-09-02",
+  "fp": "cd5b83f413f068e8"
  },
  "/dostavka/otsev/bogdanovich/": {
-  "date": "2026-08-22",
-  "fp": "43d82287caeb20f3"
+  "date": "2026-09-02",
+  "fp": "2904cf70c44d7fc2"
  },
  "/dostavka/otsev/gornyy-shchit/": {
-  "date": "2026-08-22",
-  "fp": "6a6385b55e0bcab1"
+  "date": "2026-09-02",
+  "fp": "40fb766702b40c71"
  },
  "/dostavka/otsev/irbit/": {
-  "date": "2026-08-22",
-  "fp": "632fb76dc0832498"
+  "date": "2026-09-02",
+  "fp": "000a5ffe9518ac1e"
  },
  "/dostavka/otsev/kachkanar/": {
-  "date": "2026-08-22",
-  "fp": "f12aeb415a2e1282"
+  "date": "2026-09-02",
+  "fp": "4376768c980b80f1"
  },
  "/dostavka/otsev/kamensk-uralskiy/": {
-  "date": "2026-08-22",
-  "fp": "03003111a480b098"
+  "date": "2026-09-02",
+  "fp": "d0889beec0fede75"
  },
  "/dostavka/otsev/mihaylovsk/": {
-  "date": "2026-08-22",
-  "fp": "96626139b7fa6b11"
+  "date": "2026-09-02",
+  "fp": "0957401aebab7352"
  },
  "/dostavka/otsev/nizhniy-tagil/": {
-  "date": "2026-08-22",
-  "fp": "7a4101fdd28c12c6"
+  "date": "2026-09-02",
+  "fp": "b00ec00f6bd06b4a"
  },
  "/dostavka/otsev/novouralsk/": {
-  "date": "2026-08-22",
-  "fp": "af85b89993c58924"
+  "date": "2026-09-02",
+  "fp": "24494c703f066306"
  },
  "/dostavka/otsev/pervouralsk/": {
-  "date": "2026-08-22",
-  "fp": "e23a84feab89feca"
+  "date": "2026-09-02",
+  "fp": "d0f38904ea1dd707"
  },
  "/dostavka/otsev/polevskoy/": {
-  "date": "2026-08-22",
-  "fp": "4b4a57d8f0aabf2c"
+  "date": "2026-09-02",
+  "fp": "5ee328638a5e8424"
  },
  "/dostavka/otsev/revda/": {
-  "date": "2026-08-22",
-  "fp": "4db8b2d139ef222a"
+  "date": "2026-09-02",
+  "fp": "e9ede4854f5dc522"
  },
  "/dostavka/otsev/rezh/": {
-  "date": "2026-08-22",
-  "fp": "8ee08750c6a2e132"
+  "date": "2026-09-02",
+  "fp": "b877265227e6860b"
  },
  "/dostavka/otsev/verhnyaya-pyshma/": {
-  "date": "2026-08-22",
-  "fp": "994c84b13cf3730e"
+  "date": "2026-09-02",
+  "fp": "bae1ef6e07afca9c"
  },
  "/dostavka/otsev/verhnyaya-salda/": {
-  "date": "2026-08-22",
-  "fp": "165a5f649995ee6a"
+  "date": "2026-09-02",
+  "fp": "85002eb3746d5b07"
  },
  "/dostavka/pechnye-smesi/": {
   "date": "2026-08-22",
@@ -344,120 +344,120 @@
   "fp": "2fc91b44c8de4358"
  },
  "/dostavka/pesok/": {
-  "date": "2026-08-22",
-  "fp": "b28c1643a33eaf6f"
+  "date": "2026-09-02",
+  "fp": "23f19dfdcab2f93c"
  },
  "/dostavka/pesok/aramil/": {
-  "date": "2026-08-22",
-  "fp": "458c628e16d4c7d9"
+  "date": "2026-09-02",
+  "fp": "071ad6b6dbaf3299"
  },
  "/dostavka/pesok/asbest/": {
-  "date": "2026-08-22",
-  "fp": "c5c3267cb996cb4d"
+  "date": "2026-09-02",
+  "fp": "40c46ff1ac90a009"
  },
  "/dostavka/pesok/beloyarskiy/": {
-  "date": "2026-08-22",
-  "fp": "d5b2027da7748384"
+  "date": "2026-09-02",
+  "fp": "5dd7e759d42867eb"
  },
  "/dostavka/pesok/berezovskiy/": {
-  "date": "2026-08-22",
-  "fp": "b1b02cc3c8f24194"
+  "date": "2026-09-02",
+  "fp": "a7e51cebbb7407ba"
  },
  "/dostavka/pesok/bogdanovich/": {
-  "date": "2026-08-22",
-  "fp": "f44dbd3d6c3b6b5b"
+  "date": "2026-09-02",
+  "fp": "0098c1781fbb7b2b"
  },
  "/dostavka/pesok/irbit/": {
-  "date": "2026-08-22",
-  "fp": "066ffff554f71454"
+  "date": "2026-09-02",
+  "fp": "9a3669c67f1ae83b"
  },
  "/dostavka/pesok/kamensk-uralskiy/": {
-  "date": "2026-08-22",
-  "fp": "d4a4640aecfa9312"
+  "date": "2026-09-02",
+  "fp": "cdd68a727f7f22b8"
  },
  "/dostavka/pesok/kamyshlov/": {
-  "date": "2026-08-22",
-  "fp": "3a7aab2e96fb929a"
+  "date": "2026-09-02",
+  "fp": "9db5015214b57c25"
  },
  "/dostavka/pesok/karyernyy/": {
   "date": "2026-08-22",
   "fp": "7c2fff26344625d4"
  },
  "/dostavka/pesok/krasnoturinsk/": {
-  "date": "2026-08-22",
-  "fp": "54a1a65b538bc14c"
+  "date": "2026-09-02",
+  "fp": "a7772e7c3cd9fb1c"
  },
  "/dostavka/pesok/krasnoufimsk/": {
-  "date": "2026-08-22",
-  "fp": "27d2833782e13315"
+  "date": "2026-09-02",
+  "fp": "33f1a4b29306e8e0"
  },
  "/dostavka/pesok/kushva/": {
-  "date": "2026-08-22",
-  "fp": "d5a7527f1dcbcdbd"
+  "date": "2026-09-02",
+  "fp": "53f3f8c546c4ac12"
  },
  "/dostavka/pesok/mihaylovsk/": {
-  "date": "2026-08-22",
-  "fp": "4205fee195e44388"
+  "date": "2026-09-02",
+  "fp": "217a257d01b69bce"
  },
  "/dostavka/pesok/nevyansk/": {
-  "date": "2026-08-22",
-  "fp": "d48d40b52168c5bd"
+  "date": "2026-09-02",
+  "fp": "ec645250bdcb2108"
  },
  "/dostavka/pesok/nizhniy-tagil/": {
-  "date": "2026-08-22",
-  "fp": "7b6464b40244fd43"
+  "date": "2026-09-02",
+  "fp": "57677f4dd93671bc"
  },
  "/dostavka/pesok/novouralsk/": {
-  "date": "2026-08-22",
-  "fp": "e63bf63576927490"
+  "date": "2026-09-02",
+  "fp": "de52b4f4f6f86530"
  },
  "/dostavka/pesok/pervouralsk/": {
-  "date": "2026-08-22",
-  "fp": "17a5bb5ee39d6a17"
+  "date": "2026-09-02",
+  "fp": "60427224f8c47e76"
  },
  "/dostavka/pesok/peskostruynyy/": {
   "date": "2026-08-23",
   "fp": "3a75162c7b08b9e5"
  },
  "/dostavka/pesok/polevskoy/": {
-  "date": "2026-08-22",
-  "fp": "237b9933dda5100b"
+  "date": "2026-09-02",
+  "fp": "661e6840b0482441"
  },
  "/dostavka/pesok/rechnoy/": {
   "date": "2026-08-22",
   "fp": "7a8889f562d848c0"
  },
  "/dostavka/pesok/revda/": {
-  "date": "2026-08-22",
-  "fp": "b6bf684e31e6dfa7"
+  "date": "2026-09-02",
+  "fp": "932d5a55ac3bb329"
  },
  "/dostavka/pesok/sysert/": {
-  "date": "2026-08-22",
-  "fp": "0edd782c1e80185b"
+  "date": "2026-09-02",
+  "fp": "c845430c735773a5"
  },
  "/dostavka/pesok/v-meshkah/": {
   "date": "2026-08-23",
   "fp": "cac0f41d62ce1e65"
  },
  "/dostavka/pesok/verhnee-dubrovo/": {
-  "date": "2026-08-22",
-  "fp": "42e4113ef261b56a"
+  "date": "2026-09-02",
+  "fp": "8977c8e9bfbd48bd"
  },
  "/dostavka/pesok/verhnyaya-pyshma/": {
-  "date": "2026-08-22",
-  "fp": "a8fb9c6e1529641b"
+  "date": "2026-09-02",
+  "fp": "ff29a5854628fa4e"
  },
  "/dostavka/pesok/zarechnyy/": {
-  "date": "2026-08-22",
-  "fp": "c89b3e7059555972"
+  "date": "2026-09-02",
+  "fp": "4d76e0e43161bba1"
  },
  "/dostavka/pgs/": {
-  "date": "2026-08-22",
-  "fp": "5e7b256fa489fe32"
+  "date": "2026-09-02",
+  "fp": "2bc2ca194c1ae57e"
  },
  "/dostavka/pgs/mihaylovsk/": {
-  "date": "2026-08-22",
-  "fp": "707c7a2a6611a510"
+  "date": "2026-09-02",
+  "fp": "e88af1f88b898301"
  },
  "/dostavka/plitka-osobaya/": {
   "date": "2026-08-22",
@@ -472,40 +472,40 @@
   "fp": "f5a797a476c8497a"
  },
  "/dostavka/shcheben/": {
-  "date": "2026-08-22",
-  "fp": "7e7cca882fd33604"
+  "date": "2026-09-02",
+  "fp": "8c9698322c08f690"
  },
  "/dostavka/shcheben/aramil/": {
-  "date": "2026-08-22",
-  "fp": "6b80129b7fcccae2"
+  "date": "2026-09-02",
+  "fp": "5224092215479fe4"
  },
  "/dostavka/shcheben/artemovskiy/": {
-  "date": "2026-08-22",
-  "fp": "9adcf484f5c9590c"
+  "date": "2026-09-02",
+  "fp": "d6902906dab8a88f"
  },
  "/dostavka/shcheben/asbest/": {
-  "date": "2026-08-22",
-  "fp": "354f848ad1e2a58f"
+  "date": "2026-09-02",
+  "fp": "cc264e171283c850"
  },
  "/dostavka/shcheben/beloyarskiy/": {
-  "date": "2026-08-22",
-  "fp": "5552733f98cb492e"
+  "date": "2026-09-02",
+  "fp": "515835246db0a156"
  },
  "/dostavka/shcheben/berezovskiy/": {
-  "date": "2026-08-22",
-  "fp": "f03eaebf1203b133"
+  "date": "2026-09-02",
+  "fp": "7ddafe75b463b667"
  },
  "/dostavka/shcheben/bilimbay/": {
-  "date": "2026-08-22",
-  "fp": "f3997ff674645e9d"
+  "date": "2026-09-02",
+  "fp": "64d58aa997a0fbd8"
  },
  "/dostavka/shcheben/bogdanovich/": {
-  "date": "2026-08-22",
-  "fp": "7962fc194235dda0"
+  "date": "2026-09-02",
+  "fp": "16f00fe67538424d"
  },
  "/dostavka/shcheben/degtyarsk/": {
-  "date": "2026-08-22",
-  "fp": "ba4f1aabd19142f7"
+  "date": "2026-09-02",
+  "fp": "c1009d1db5612ee1"
  },
  "/dostavka/shcheben/frakciya-10-20/": {
   "date": "2026-08-22",
@@ -524,8 +524,8 @@
   "fp": "9fbf28f9e5a5b680"
  },
  "/dostavka/shcheben/frakciya-5-20/": {
-  "date": "2026-08-22",
-  "fp": "65e6a7bd58ab4532"
+  "date": "2026-09-02",
+  "fp": "4a696ab3a3858453"
  },
  "/dostavka/shcheben/frakciya-70-120/": {
   "date": "2026-08-25",
@@ -536,116 +536,116 @@
   "fp": "890bfdc338f070a3"
  },
  "/dostavka/shcheben/gornyy-shchit/": {
-  "date": "2026-08-22",
-  "fp": "3e0edca1c1b598b8"
+  "date": "2026-09-02",
+  "fp": "84f01faf901d581c"
  },
  "/dostavka/shcheben/irbit/": {
-  "date": "2026-08-22",
-  "fp": "e72f8f0750d8465c"
+  "date": "2026-09-02",
+  "fp": "6c839db8d52b60d9"
  },
  "/dostavka/shcheben/kachkanar/": {
-  "date": "2026-08-22",
-  "fp": "b162df11776e7a6d"
+  "date": "2026-09-02",
+  "fp": "8b3b93e5a2b12637"
  },
  "/dostavka/shcheben/kamensk-uralskiy/": {
-  "date": "2026-08-22",
-  "fp": "16154e434a2dea85"
+  "date": "2026-09-02",
+  "fp": "e9ee06605fd66dd6"
  },
  "/dostavka/shcheben/kamyshlov/": {
-  "date": "2026-08-22",
-  "fp": "7e305c3cca967752"
+  "date": "2026-09-02",
+  "fp": "0237fcd9c2784fd7"
  },
  "/dostavka/shcheben/krasnoturinsk/": {
-  "date": "2026-08-22",
-  "fp": "954cc827cfb086bc"
+  "date": "2026-09-02",
+  "fp": "28878da935bd865d"
  },
  "/dostavka/shcheben/krasnoufimsk/": {
-  "date": "2026-08-22",
-  "fp": "775225d2f0857d1f"
+  "date": "2026-09-02",
+  "fp": "49b30ca7399d88aa"
  },
  "/dostavka/shcheben/kushva/": {
-  "date": "2026-08-22",
-  "fp": "5d5024c3f6764b0f"
+  "date": "2026-09-02",
+  "fp": "7bfcac03d1e2cc8a"
  },
  "/dostavka/shcheben/mihaylovsk/": {
-  "date": "2026-08-22",
-  "fp": "c41ed3b4e2ea47e0"
+  "date": "2026-09-02",
+  "fp": "a265b9798bef7ae6"
  },
  "/dostavka/shcheben/nevyansk/": {
-  "date": "2026-08-22",
-  "fp": "352063ee3b012af1"
+  "date": "2026-09-02",
+  "fp": "2758d5a41d892c4d"
  },
  "/dostavka/shcheben/nizhniy-tagil/": {
-  "date": "2026-08-22",
-  "fp": "f1c900fc51859f34"
+  "date": "2026-09-02",
+  "fp": "75d49fbab417f6f0"
  },
  "/dostavka/shcheben/novouralsk/": {
-  "date": "2026-08-22",
-  "fp": "f9712cdaf24cfda4"
+  "date": "2026-09-02",
+  "fp": "36487187116fad2e"
  },
  "/dostavka/shcheben/pervouralsk/": {
-  "date": "2026-08-22",
-  "fp": "fbadaf56f69e4e2f"
+  "date": "2026-09-02",
+  "fp": "3c9410b2088dd4c3"
  },
  "/dostavka/shcheben/polevskoy/": {
-  "date": "2026-08-22",
-  "fp": "d7b25a3b32a93550"
+  "date": "2026-09-02",
+  "fp": "9070595a2aac12fd"
  },
  "/dostavka/shcheben/revda/": {
-  "date": "2026-08-22",
-  "fp": "52e21a6095b97128"
+  "date": "2026-09-02",
+  "fp": "9c1cd88ecb645622"
  },
  "/dostavka/shcheben/rezh/": {
-  "date": "2026-08-22",
-  "fp": "ece1b2bde9894dc2"
+  "date": "2026-09-02",
+  "fp": "ea89828e368a7290"
  },
  "/dostavka/shcheben/serov/": {
-  "date": "2026-08-22",
-  "fp": "31171d78c8a19602"
+  "date": "2026-09-02",
+  "fp": "3536103a19d00c2d"
  },
  "/dostavka/shcheben/sredneuralsk/": {
-  "date": "2026-08-22",
-  "fp": "5259b57158f95a04"
+  "date": "2026-09-02",
+  "fp": "9f038a067f9ef3df"
  },
  "/dostavka/shcheben/suhoy-log/": {
-  "date": "2026-08-22",
-  "fp": "e4686890f695f45e"
+  "date": "2026-09-02",
+  "fp": "e6be7d7ddec01021"
  },
  "/dostavka/shcheben/sysert/": {
-  "date": "2026-08-22",
-  "fp": "13b8da5fada23435"
+  "date": "2026-09-02",
+  "fp": "48a8db374aec0f35"
  },
  "/dostavka/shcheben/talica/": {
-  "date": "2026-08-22",
-  "fp": "73e2fc05242af5a2"
+  "date": "2026-09-02",
+  "fp": "b59e671530045d33"
  },
  "/dostavka/shcheben/v-meshkah/": {
   "date": "2026-08-22",
   "fp": "e73a38af3c76b2a4"
  },
  "/dostavka/shcheben/verhnee-dubrovo/": {
-  "date": "2026-08-22",
-  "fp": "85c91998f9b4136c"
+  "date": "2026-09-02",
+  "fp": "cdff9343af36acaf"
  },
  "/dostavka/shcheben/verhnyaya-pyshma/": {
-  "date": "2026-08-22",
-  "fp": "b9ec39c9144a6444"
+  "date": "2026-09-02",
+  "fp": "3c4e1bc0d75778cd"
  },
  "/dostavka/shcheben/verhnyaya-salda/": {
-  "date": "2026-08-22",
-  "fp": "8b99a10da91087d4"
+  "date": "2026-09-02",
+  "fp": "d3c3af2c0bb72ad1"
  },
  "/dostavka/shcheben/zarechnyy/": {
-  "date": "2026-08-22",
-  "fp": "153ca9f919c009f5"
+  "date": "2026-09-02",
+  "fp": "5a5630ff6133cc39"
  },
  "/dostavka/shchps/": {
-  "date": "2026-08-22",
-  "fp": "97fd7ddb399b999c"
+  "date": "2026-09-02",
+  "fp": "034d55f41a985632"
  },
  "/dostavka/skalnyy-grunt/": {
-  "date": "2026-08-22",
-  "fp": "97bac025b4419295"
+  "date": "2026-09-02",
+  "fp": "23ec17401f420c4b"
  },
  "/dostavka/spasibo/": {
   "date": "2026-08-22",
@@ -672,8 +672,8 @@
   "fp": "890bf5873eac5d53"
  },
  "/dostavka/stati/cena-kuba-s-dostavkoy/": {
-  "date": "2026-08-22",
-  "fp": "ebc5e5c02479c51c"
+  "date": "2026-09-02",
+  "fp": "9e7cbf3997d807c1"
  },
  "/dostavka/stati/chem-otsypat-uchastok/": {
   "date": "2026-08-23",
@@ -940,8 +940,8 @@
   "fp": "3f63a8f6779cd4d2"
  },
  "/dostavka/stati/skolko-shchebnya-v-kamaze/": {
-  "date": "2026-08-25",
-  "fp": "47cbf58e24ca3b0e"
+  "date": "2026-09-02",
+  "fp": "b4c777e89499412d"
  },
  "/dostavka/stati/skolko-vesit-kub/": {
   "date": "2026-08-22",

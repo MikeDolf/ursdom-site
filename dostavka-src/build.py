@@ -40,7 +40,8 @@ from conversion import PRICE_SETS, FAM, ORDER_STEPS, OBJECTIONS
 from prices import (PER_CUBE, PRICE_NOTE, DELIVERY_NOTE, CATALOG, SIEVE,
                     HERO_CELL, LOTS, LOTS_HEAD, LOTS_NOTE,
                     CATALOG_META, CATALOG_FIRST, CROSS, FLOOR,
-                    PESOK_QUARRIES, PESOK_QUARRIES_HEAD, PESOK_QUARRIES_NOTE)
+                    PESOK_QUARRIES, PESOK_QUARRIES_HEAD, PESOK_QUARRIES_NOTE,
+                    ton_note)
 from cities import CITIES, PESOK_CITIES
 from longreads import LONGREADS, AUTHOR_FULL, UPDATED
 from longreads_core import CORE_LONGREADS
@@ -1088,14 +1089,14 @@ pages.append((url, htmlp, "hub"))
 money_cfg = {
     "shcheben": dict(hero_sub="Гранитный, известняковый, гравийный и вторичный щебень с доставкой по " + SITE["region_dat"] + ". Весь ряд фракций от 5-10 до 70-150 и отсев, навалом и в фасовке, оплата после выгрузки.",
                      mat_vin="щебень", mat_rod="щебня", mat_order="доставку щебня", subject="доставка щебня, " + SITE["region_short"],
-                     title="Доставка щебня в Екатеринбурге и области: цена за куб, фракции",
-                     desc="Доставка щебня по Екатеринбургу и Свердловской области: гранит, известняк, все фракции от 5-10 до 70-150. Навалом, в мешках и биг-бэгах. Цена за куб, оплата после выгрузки.",
-                     h1="Доставка щебня по Екатеринбургу и Свердловской области"),
+                     title="Купить щебень в Екатеринбурге с доставкой: цена за куб и фракции",
+                     desc="Купить щебень с доставкой по Екатеринбургу и Свердловской области: гранит, известняк, все фракции от 5-10 до 70-150. Цена за куб и за тонну, КамАЗ целиком, оплата после выгрузки.",
+                     h1="Щебень с доставкой по Екатеринбургу и Свердловской области"),
     "pesok": dict(hero_sub="Карьерный и речной песок с доставкой по " + SITE["region_dat"] + ". Под отсыпку, подушку фундамента, бетон и кладку. Самосвалы от 5 кубов, оплата после выгрузки.",
                   mat_vin="песок", mat_rod="песка", mat_order="доставку песка", subject="доставка песка, " + SITE["region_short"],
-                  title="Доставка песка в Екатеринбурге и области: карьерный, речной",
-                  desc="Доставка песка по Екатеринбургу и Свердловской области: карьерный для отсыпки, речной мытый для бетона. Цена за куб, самосвалы от 5 кубов, оплата после выгрузки.",
-                  h1="Доставка песка по Екатеринбургу и Свердловской области"),
+                  title="Купить песок в Екатеринбурге с доставкой: карьерный и речной",
+                  desc="Купить песок с доставкой по Екатеринбургу и Свердловской области: карьерный для отсыпки, речной мытый для бетона. Цена за куб и за тонну, КамАЗ целиком, оплата после выгрузки.",
+                  h1="Песок с доставкой по Екатеринбургу и Свердловской области"),
     "otsev": dict(hero_sub="Гранитный, известняковый и вторичный отсев 0-5 с доставкой по " + SITE["region_dat"] + ". Под тротуарную плитку, расклинцовку и планировку участка.",
                   mat_vin="отсев", mat_rod="отсева", mat_order="доставку отсева", subject="доставка отсева, " + SITE["region_short"],
                   title="Отсев с доставкой в Екатеринбурге: купить щебёночный отсев",
@@ -1305,8 +1306,14 @@ for slug, mc in money_cfg.items():
                 if slug in CALC_BY_SLUG else [])
     rel = _calcrel + MAT_ART.get(slug, []) + (PESOK_GEO if slug == "pesok" else []) + (SREDNEURALSK if slug == "shcheben" else []) + rel
     _calc = calc_for(slug)
+    # Пересчёт в тонну дописывается к общей сноске под прайсом там, где
+    # у материала есть насыпная плотность. Где её нет, строки не будет.
+    _tn = ton_note(slug)
+    _ctx = dict(BASE_CTX)
+    if _tn:
+        _ctx["price_note"] = _ctx["price_note"] + " " + _tn
     htmlp = env.get_template("money.j2").render(
-        **BASE_CTX, **mc, calc=_calc, has_calc=bool(_calc),
+        **_ctx, **mc, calc=_calc, has_calc=bool(_calc),
         canonical=DOMAIN + url, crumbs_html=crumbs(crumb_items), jsonld=jl,
         intro=mat["intro"], types=mat["types"], fractions=mat.get("fractions"),
         fractions_head=mat.get("fractions_head"),
