@@ -222,8 +222,10 @@ FAM = {
  "shcheben/v-meshkah": "nerud",
  "pesok/karyernyy": "pesok",
  "pesok/rechnoy": "pesok",
+ "pesok/mytyy": "pesok",
  "pesok/peskostruynyy": "pesok",
  "pesok/v-meshkah": "pesok",
+ "otsev/v-meshkah": "nerud",
  # песок
  "stati/kakoy-pesok-vybrat": "pesok",
  "stati/klassy-peska": "pesok",

@@ -41,7 +41,11 @@ TERMS = [
  (r'щебн[ея]\w*\s+5-20|щеб(?:ень|ня|нем|нём)\s+5-20', '/dostavka/shcheben/frakciya-5-20/'),
  (r'скальн\w+\s+грунт\w*', '/dostavka/skalnyy-grunt/'),
  (r'бутов\w+\s+кам(?:ень|ня|нем|нём)', '/dostavka/butovyy-kamen/'),
- (r'речн\w+\s+пес(?:ок|ка|ком)|мыт\w+\s+пес(?:ок|ка|ком)', '/dostavka/pesok/rechnoy/'),
+ # «Мытый» и «речной» разведены по своим страницам: до появления
+ # /pesok/mytyy/ оба слова вели на речной, и запрос про обработку
+ # попадал на страницу про происхождение.
+ (r'мыт\w+\s+пес(?:ок|ка|ком)', '/dostavka/pesok/mytyy/'),
+ (r'речн\w+\s+пес(?:ок|ка|ком)', '/dostavka/pesok/rechnoy/'),
  (r'карьерн\w+\s+пес(?:ок|ка|ком)', '/dostavka/pesok/karyernyy/'),
  (r'асфальтов\w+\s+крошк\w+', '/dostavka/asfaltovaya-kroshka/'),
  (r'\bкерамзит(?:а|ом|е|у|ы)?\b', '/dostavka/keramzit/'),

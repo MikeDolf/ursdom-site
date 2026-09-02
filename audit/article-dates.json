@@ -54,10 +54,20 @@
   "modified": "2026-08-16",
   "published": "2026-08-16"
  },
+ "otsev/v-meshkah": {
+  "fp": "184a218bb31a94ea",
+  "modified": "2026-09-02",
+  "published": "2026-09-02"
+ },
  "pesok/karyernyy": {
   "fp": "7b2448d8bd72b0a7",
   "modified": "2026-07-28",
   "published": "2026-07-28"
+ },
+ "pesok/mytyy": {
+  "fp": "ce094d4a33ccc34b",
+  "modified": "2026-09-02",
+  "published": "2026-09-02"
  },
  "pesok/peskostruynyy": {
   "fp": "7a373f71cbecb91d",
@@ -65,8 +75,8 @@
   "published": "2026-08-21"
  },
  "pesok/rechnoy": {
-  "fp": "b20f6f4d4544e7af",
-  "modified": "2026-07-28",
+  "fp": "667187c3fbd4720d",
+  "modified": "2026-09-02",
   "published": "2026-07-28"
  },
  "pesok/v-meshkah": {

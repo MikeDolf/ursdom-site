@@ -59,8 +59,9 @@ from longreads_rev import REV_LONGREADS
 from longreads_brendy import BRENDY_LONGREADS
 from longreads_pesok import PESOK_LONGREADS
 from longreads_prim import PRIM_LONGREADS
+from longreads_tovar import TOVAR_LONGREADS
 from tags import TAG_LONGREADS
-LONGREADS = LONGREADS + CORE_LONGREADS + BETON_LONGREADS + ZADACHI_LONGREADS + SMEZH_LONGREADS + BETON2_LONGREADS + GAP_LONGREADS + GAP2_LONGREADS + PLITKA_LONGREADS + BETON3_LONGREADS + SMESI_LONGREADS + SKALA_LONGREADS + REV_LONGREADS + BRENDY_LONGREADS + PESOK_LONGREADS + PRIM_LONGREADS + TAG_LONGREADS
+LONGREADS = LONGREADS + CORE_LONGREADS + BETON_LONGREADS + ZADACHI_LONGREADS + SMEZH_LONGREADS + BETON2_LONGREADS + GAP_LONGREADS + GAP2_LONGREADS + PLITKA_LONGREADS + BETON3_LONGREADS + SMESI_LONGREADS + SKALA_LONGREADS + REV_LONGREADS + BRENDY_LONGREADS + PESOK_LONGREADS + PRIM_LONGREADS + TOVAR_LONGREADS + TAG_LONGREADS
 from legal import legal_sections, LEGAL_UPDATED
 
 env = Environment(loader=FileSystemLoader(os.path.join(HERE, "templates")),
@@ -1242,10 +1243,12 @@ ZHBI_ART = {
 MAT_ART = {'shcheben': [('/dostavka/stati/podushka-pod-fundament/', 'Подушка под фундамент: щебень или песок'),
                  ('/dostavka/stati/materialy-na-dom-po-etapam/', 'Материалы на дом по этапам'),
                  ('/dostavka/stati/frakcii-shchebnya/', 'Фракции щебня: какая под какую задачу'), ('/dostavka/stati/gost-na-shcheben-i-pesok/', 'ГОСТ на щебень и песок: что спрашивать')],
-    'pesok': [('/dostavka/pesok/v-meshkah/', 'Песок в мешках и биг-бэгах'),
+    'pesok': [('/dostavka/pesok/mytyy/', 'Мытый песок: карьеры и цена за тонну'),
+              ('/dostavka/pesok/v-meshkah/', 'Песок в мешках и биг-бэгах'),
               ('/dostavka/pesok/peskostruynyy/', 'Пескоструйный песок'),
               ('/dostavka/stati/modul-krupnosti-peska/', 'Модуль крупности песка'), ('/dostavka/stati/gost-na-shcheben-i-pesok/', 'ГОСТ на щебень и песок: что спрашивать')],
-    'otsev': [('/dostavka/stati/otsev-gde-primenyat/', 'Отсев 0-5: где применяют и чем заменить'), ('/dostavka/stati/frakcii-shchebnya/', 'Фракции щебня: какая под какую задачу')],
+    'otsev': [('/dostavka/otsev/v-meshkah/', 'Отсев в мешках и биг-бэгах'),
+              ('/dostavka/stati/otsev-gde-primenyat/', 'Отсев 0-5: где применяют и чем заменить'), ('/dostavka/stati/frakcii-shchebnya/', 'Фракции щебня: какая под какую задачу')],
     'pgs': [('/dostavka/stati/pgs-ili-opgs/', 'ПГС и ОПГС: чем отличаются'), ('/dostavka/stati/skalnyy-grunt-dresva-but/', 'Скальный грунт, дресва и бут')],
     'keramzit': [('/dostavka/stati/keramzit-frakcii-i-ves/', 'Керамзит: фракции, вес и где выгоден')],
     'skalnyy-grunt': [('/dostavka/stati/skalnyy-grunt-klassifikaciya/', 'Скальный грунт: классификация и разработка'),
@@ -1621,6 +1624,7 @@ def CONV_FOR(slug):
 LR_HERO = {
     "pesok/karyernyy":            (6, "песок до 2,5 мм"),
     "pesok/rechnoy":              (6, "песок до 2,5 мм"),
+    "pesok/mytyy":                (6, "песок до 2,5 мм"),
     "pesok/peskostruynyy":        (6, "абразив 0,5-2,5 мм"),
     "stati/kakoy-pesok-vybrat":   (6, "песок до 2,5 мм"),
     "stati/klassy-peska":         (6, "песок до 2,5 мм"),

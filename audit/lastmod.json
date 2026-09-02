@@ -257,7 +257,7 @@
  },
  "/dostavka/otsev/": {
   "date": "2026-09-02",
-  "fp": "db12a41552d57b6c"
+  "fp": "bacd4699706f4527"
  },
  "/dostavka/otsev/aramil/": {
   "date": "2026-09-02",
@@ -323,6 +323,10 @@
   "date": "2026-09-02",
   "fp": "b877265227e6860b"
  },
+ "/dostavka/otsev/v-meshkah/": {
+  "date": "2026-09-02",
+  "fp": "c1aceea45cf8f301"
+ },
  "/dostavka/otsev/verhnyaya-pyshma/": {
   "date": "2026-09-02",
   "fp": "bae1ef6e07afca9c"
@@ -345,7 +349,7 @@
  },
  "/dostavka/pesok/": {
   "date": "2026-09-02",
-  "fp": "448271786842bcd6"
+  "fp": "c2e40bb26acb48e4"
  },
  "/dostavka/pesok/aramil/": {
   "date": "2026-09-02",
@@ -399,6 +403,10 @@
   "date": "2026-09-02",
   "fp": "217a257d01b69bce"
  },
+ "/dostavka/pesok/mytyy/": {
+  "date": "2026-09-02",
+  "fp": "835ac49c0a52432d"
+ },
  "/dostavka/pesok/nevyansk/": {
   "date": "2026-09-02",
   "fp": "ec645250bdcb2108"
@@ -424,8 +432,8 @@
   "fp": "661e6840b0482441"
  },
  "/dostavka/pesok/rechnoy/": {
-  "date": "2026-08-22",
-  "fp": "7a8889f562d848c0"
+  "date": "2026-09-02",
+  "fp": "ea64bad92de82bae"
  },
  "/dostavka/pesok/revda/": {
   "date": "2026-09-02",
@@ -684,8 +692,8 @@
   "fp": "cfee2447547a1bb7"
  },
  "/dostavka/stati/dekorativnaya-otsypka/": {
-  "date": "2026-08-25",
-  "fp": "80d2af0f6f1879b4"
+  "date": "2026-09-02",
+  "fp": "ed3103409c6b0466"
  },
  "/dostavka/stati/doroga-k-uchastku/": {
   "date": "2026-08-23",
@@ -812,12 +820,12 @@
   "fp": "744f6a03d7842adc"
  },
  "/dostavka/stati/osnovanie-pod-krylco/": {
-  "date": "2026-08-23",
-  "fp": "bc959b3d96f27817"
+  "date": "2026-09-02",
+  "fp": "e3f4184c500e83c4"
  },
  "/dostavka/stati/osnovanie-pod-teplicu/": {
-  "date": "2026-08-23",
-  "fp": "498b5f15ebd4162d"
+  "date": "2026-09-02",
+  "fp": "35a5e755d0b167c6"
  },
  "/dostavka/stati/otmostka-vokrug-doma/": {
   "date": "2026-08-22",
@@ -840,8 +848,8 @@
   "fp": "d04f5b60ac9a83ac"
  },
  "/dostavka/stati/pesok-pod-gazon/": {
-  "date": "2026-08-23",
-  "fp": "00c2d469d578cabb"
+  "date": "2026-09-02",
+  "fp": "7f27ee283ff61978"
  },
  "/dostavka/stati/pesok-pod-plitku/": {
   "date": "2026-08-22",
