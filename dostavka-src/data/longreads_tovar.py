@@ -212,9 +212,10 @@ TOVAR_LONGREADS = [
    "Скажите адрес - посчитаем по нескольким карьерам сразу."),
   ("Какой минимальный объём можно заказать?",
    "Возим от 5 кубов. Если нужно меньше, разумно совместить рейс "
-   "с доставкой другого материала на тот же объект."),
+   "с доставкой другого материала на тот же объект, либо взять "
+   "фасованный мытый песок в мешках - без минимального объёма."),
  ],
- "related": ["pesok", "pesok/rechnoy", "pesok/karyernyy",
+ "related": ["pesok", "pesok/rechnoy", "pesok/karyernyy", "pesok/v-meshkah",
              "stati/kakoy-pesok-vybrat", "stati/klassy-peska",
              "stati/modul-krupnosti-peska", "stati/skolko-vesit-kub"],
 },
