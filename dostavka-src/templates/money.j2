@@ -68,7 +68,19 @@
    разворачивает сетку карточек в две колонки вместо четырёх и оставляет
    треть широкого экрана пустой. Это сетка, а не проза. #}
 <section><div class="wrap">
+{% if shelf_rows %}
   {{ m.shelf(shelf_rows, "Цены на " ~ mat_vin ~ " с доставкой", price_note) }}
+{% elif price_rows %}
+  <h2 id="ceny">Цены на {{ mat_vin }} с доставкой</h2>
+  <div class="d-table-wrap"><table>
+    <caption>Цены и наличие</caption>
+    <thead><tr><th>{{ price_col1|default("Позиция", true) }}</th><th>{{ price_col2|default("Цена, руб", true) }}</th></tr></thead>
+    <tbody>
+{% for name, price in price_rows %}      <tr><td>{{ name }}</td><td class="d-spec-val">{{ price }}</td></tr>
+{% endfor %}    </tbody>
+  </table></div>
+{% if price_note %}  <p class="d-note">{{ price_note }}</p>
+{% endif %}{% endif %}
   <p class="d-note">{{ delivery_note }}</p>
 </div></section>
 

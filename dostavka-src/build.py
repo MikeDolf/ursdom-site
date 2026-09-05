@@ -23,6 +23,7 @@ from products_beton import MATERIALS_BETON, MONEY_CFG_BETON
 from products_gap import MATERIALS_GAP, MONEY_CFG_GAP
 from products_gap2 import MATERIALS_GAP2, MONEY_CFG_GAP2
 from products_gap3 import MATERIALS_GAP3, MONEY_CFG_GAP3
+from products_gap4 import MATERIALS_GAP4, MONEY_CFG_GAP4
 from products_rev import MATERIALS_REV, MONEY_CFG_REV
 from geo_matrix import (CITY_FACTS, MATRIX, MAT_FORMS,
                         ANGLE, LOCAL, MAT_TASK, example_for, plecho,
@@ -296,8 +297,12 @@ def article_schema(url, title, desc, author=None, published=None, modified=None)
 
 def product_schema(name, desc, low_price, url, images=None):
     """Product + AggregateOffer с честной ценой 'от N'. lowPrice отражает
-    минимальную цену за куб по прайсу, поэтому разметка не расходится со страницей."""
-    return {
+    минимальную цену за куб по прайсу, поэтому разметка не расходится со страницей.
+
+    low_price может быть None - для позиций, где цены нет вовсе и вся
+    таблица "по запросу". Публиковать offers с пустой или выдуманной
+    ценой хуже, чем не публиковать их: Product без offers валиден."""
+    out = {
         "@type": "Product",
         "name": name,
         "description": desc,
@@ -305,7 +310,9 @@ def product_schema(name, desc, low_price, url, images=None):
         "url": DOMAIN + url,
         **({"image": [DOMAIN + i for i in images]} if images else {}),
         "brand": {"@type": "Brand", "name": SITE["brand"]},
-        "offers": {
+    }
+    if low_price:
+        out["offers"] = {
             "@type": "AggregateOffer",
             "lowPrice": low_price,
             "priceCurrency": "RUB",
@@ -318,8 +325,8 @@ def product_schema(name, desc, low_price, url, images=None):
             "unitText": "кубометр",
             "areaServed": SITE["region"],
             "seller": {"@id": DOMAIN + SITE["base"] + "#business"},
-        },
-    }
+        }
+    return out
 
 
 
@@ -2098,8 +2105,8 @@ for _s in ("trotuarnaya-plitka", "trotuarnaya-plitka-razmery", "plitka-osobaya",
            "stupeni-betonnye"):
     _RUBRIC_OF[_s] = [("/dostavka/blagoustroystvo/", "Благоустройство: весь раздел")]
 
-_ZHBI_ALL = dict(MONEY_CFG_ZHBI); _ZHBI_ALL.update(MONEY_CFG_BETON); _ZHBI_ALL.update(MONEY_CFG_GAP); _ZHBI_ALL.update(MONEY_CFG_GAP2); _ZHBI_ALL.update(MONEY_CFG_GAP3); _ZHBI_ALL.update(MONEY_CFG_REV)
-_MAT_ALL = dict(MATERIALS_ZHBI); _MAT_ALL.update(MATERIALS_BETON); _MAT_ALL.update(MATERIALS_GAP); _MAT_ALL.update(MATERIALS_GAP2); _MAT_ALL.update(MATERIALS_GAP3); _MAT_ALL.update(MATERIALS_REV)
+_ZHBI_ALL = dict(MONEY_CFG_ZHBI); _ZHBI_ALL.update(MONEY_CFG_BETON); _ZHBI_ALL.update(MONEY_CFG_GAP); _ZHBI_ALL.update(MONEY_CFG_GAP2); _ZHBI_ALL.update(MONEY_CFG_GAP3); _ZHBI_ALL.update(MONEY_CFG_GAP4); _ZHBI_ALL.update(MONEY_CFG_REV)
+_MAT_ALL = dict(MATERIALS_ZHBI); _MAT_ALL.update(MATERIALS_BETON); _MAT_ALL.update(MATERIALS_GAP); _MAT_ALL.update(MATERIALS_GAP2); _MAT_ALL.update(MATERIALS_GAP3); _MAT_ALL.update(MATERIALS_GAP4); _MAT_ALL.update(MATERIALS_REV)
 for slug, mc in _ZHBI_ALL.items():
     mat = _MAT_ALL[slug]
     url = SITE["base"] + slug + "/"
@@ -2151,7 +2158,8 @@ for slug, mc in _ZHBI_ALL.items():
         price_note="Цены ориентировочные по рынку Свердловской области. "
                    "Товар есть в наличии: размер и срок отгрузки подтверждаем по заявке.",
         delivery_note="Доставку считаем отдельно: она зависит от веса, габарита и плеча. "
-                      "Тяжёлые изделия требуют манипулятора, и это оговаривается заранее.")
+                      "Тяжёлые изделия требуют манипулятора, и это оговаривается заранее. "
+                      "Самовывоз тоже возможен - уточняйте у менеджера при оформлении заявки.")
     htmlp = env.get_template("money.j2").render(**ctx)
     pages.append((url, htmlp, "money-zhbi"))
 
