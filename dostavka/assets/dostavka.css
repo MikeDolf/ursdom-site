@@ -568,6 +568,8 @@ section{padding:38px 0}
    числа моноширинные - таблица здесь и есть протокол замера. */
 .d-table-wrap{overflow-x:auto;background:var(--d-paper);
   border:1px solid var(--d-rule);margin:0 0 20px}
+.d-map-wrap{border:1px solid var(--d-rule);border-radius:2px;overflow:hidden;margin:0 0 20px}
+.d-map-wrap iframe{display:block}
 table{border-collapse:collapse;width:100%;font-size:15.5px}
 /* Подпись прилипает к левому краю прокрутки. Ширина caption равна ширине
    таблицы, а таблица на узком экране шире экрана, поэтому без sticky текст
@@ -662,6 +664,7 @@ table td:only-child,table td:first-child:last-child{font-weight:400}
 .d-tldr strong{display:block;font-size:12.5px;letter-spacing:.11em;
   text-transform:uppercase;color:var(--d-brass);margin-bottom:9px}
 .d-tldr p{margin:0;font-size:17px;color:var(--d-on-steel);line-height:1.55}
+.d-tldr a{color:var(--d-brass)}
 
 /* Ряд кнопок на узком экране.
    Ревью показало ряды с кнопками разной ширины: «Уточнить в WhatsApp»

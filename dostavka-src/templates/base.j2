@@ -22,11 +22,17 @@
    идёт первый из них, иначе общая обложка раздела. og_image приходит
    абсолютным из _photo_ctx: Open Graph относительных путей не понимает. #}
 <meta property="og:image" content="{{ og_image|default(cfg.og_image) }}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ og_title|default(title) }}">
+<meta name="twitter:description" content="{{ desc }}">
+<meta name="twitter:image" content="{{ og_image|default(cfg.og_image) }}">
 <link rel="preload" href="/dostavka/assets/fonts/golos-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/dostavka/assets/fonts/mono-num.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/dostavka/assets/dostavka.min.css?v={{ cfg.css_version }}">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <script type="application/ld+json">
 {{ jsonld }}
 </script>
