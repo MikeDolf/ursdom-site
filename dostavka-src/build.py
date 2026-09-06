@@ -301,12 +301,17 @@ def product_schema(name, desc, low_price, url, images=None):
 
     low_price может быть None - для позиций, где цены нет вовсе и вся
     таблица "по запросу". Публиковать offers с пустой или выдуманной
-    ценой хуже, чем не публиковать их: Product без offers валиден."""
+    ценой хуже, чем не публиковать их: Product без offers валиден.
+
+    Поля "category" здесь раньше не было - вернее, было, но со значением
+    "Нерудные строительные материалы", которое гугловская проверка
+    "Данные о товарах продавца" помечает как недопустимое (это не значение
+    из таксономии Google, а произвольный текст). Поле необязательное,
+    убрано целиком вместо подбора неподтверждённого значения таксономии."""
     out = {
         "@type": "Product",
         "name": name,
         "description": desc,
-        "category": "Нерудные строительные материалы",
         "url": DOMAIN + url,
         **({"image": [DOMAIN + i for i in images]} if images else {}),
         "brand": {"@type": "Brand", "name": SITE["brand"]},
@@ -322,6 +327,14 @@ def product_schema(name, desc, low_price, url, images=None):
             # Ставим квартал вперёд: прайс партнёра пересматривается
             # примерно с этой частотой.
             "priceValidUntil": PRICE_VALID_UNTIL,
+            # Возврат физически не применим: это сыпучий или штучный
+            # строительный материал, доставленный самосвалом или
+            # манипулятором на объект, а не товар, отправляемый обратно
+            # почтой. Значение честное, а не заглушка для галочки.
+            "hasMerchantReturnPolicy": {
+                "@type": "MerchantReturnPolicy",
+                "returnPolicyCategory": "https://schema.org/MerchantReturnNotPermitted",
+            },
             "unitText": "кубометр",
             "areaServed": SITE["region"],
             "seller": {"@id": DOMAIN + SITE["base"] + "#business"},
@@ -351,6 +364,14 @@ def pricelist_schema(fam_key, rows, page_url):
     Цена берётся из той же строки, что видит человек: 'от 1400 руб/м³'
     даёт lowPrice 1400. Позиции 'по запросу' в разметку не попадают
     вообще - Offer без цены бесполезен и засоряет граф.
+
+    "category" убрано по той же причине, что и в product_schema():
+    произвольный текст не проходит гугловскую проверку "Данные о товарах
+    продавца". "image" раньше не было вовсе - только у Product на
+    собственной странице материала, а у этих же материалов, упомянутых
+    в чужой таблице цен, картинки не было совсем. Слаг для неё вынимается
+    из href той же строки, снимок ищется тем же product_images(), что и
+    для родной страницы.
     """
     avail = ("https://schema.org/InStock" if fam_key in _IN_STOCK_FAMS
              else "https://schema.org/PreOrder")
@@ -363,17 +384,25 @@ def pricelist_schema(fam_key, rows, page_url):
         unit = ("кубометр" if "м³" in price else
                 "квадратный метр" if "м²" in price else
                 "мешок" if "мешок" in price else "штука")
+        _slug = href.strip("/")
+        if _slug.startswith("dostavka/"):
+            _slug = _slug[len("dostavka/"):]
+        _imgs = product_images(_slug)
         items.append({
             "@type": "ListItem", "position": len(items) + 1,
             "item": {
                 "@type": "Product", "name": name,
-                "category": "Нерудные строительные материалы",
                 "url": DOMAIN + href,
+                **({"image": [DOMAIN + i for i in _imgs]} if _imgs else {}),
                 "brand": {"@type": "Brand", "name": SITE["brand"]},
                 "offers": {
                     "@type": "Offer", "price": low, "priceCurrency": "RUB",
                     "availability": avail, "unitText": unit,
                     "areaServed": SITE["region"], "url": DOMAIN + href,
+                    "hasMerchantReturnPolicy": {
+                        "@type": "MerchantReturnPolicy",
+                        "returnPolicyCategory": "https://schema.org/MerchantReturnNotPermitted",
+                    },
                     "seller": {"@id": DOMAIN + SITE["base"] + "#business"},
                 },
             }})
