@@ -3,7 +3,7 @@
 {% block body %}
 <section class="d-hero" style="--cell:{{ hero_cell|default(34) }}px"><div class="wrap">
   <h1>{{ h1 }}</h1>
-  <p>Щебень, песок и нерудные материалы с доставкой по {{ cfg.region_dat }}. Самосвалы от 5 до 20 кубов, оплата после выгрузки, {{ cfg.callback_promise }}.</p>
+  <p>Щебень, песок и нерудные материалы с доставкой по {{ cfg.region_dat }}. Возим оптом, самосвалы от 5 до 20 кубов, узнать цену и актуальные расценки можно за одну заявку, оплата после выгрузки, {{ cfg.callback_promise }}.</p>
   {{ m.channels(cfg, "#zayavka", "Оставить заявку") }}
   {{ m.sieve(sieve) }}
 </div></section>
