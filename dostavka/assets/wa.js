@@ -1,4 +1,5 @@
-/* Плавающий блок связи: появляется один раз и больше не пропадает.
+/* Плавающий блок связи и мобильная липкая панель: оба появляются один
+   раз после прокрутки и больше не пропадают.
 
    Что было раньше и почему это переделано. Скрипт следил за блоками
    связи через IntersectionObserver и убирал виджет с экрана, когда
@@ -18,12 +19,22 @@
    на цену в стопке сит. После 700 пикселей прокрутки блок выезжает
    и дальше стоит на месте до конца страницы.
 
-   Без скрипта блок просто виден всегда: класс is-off ставится только
+   Липкая панель внизу телефона (.d-mobilebar) раньше жила отдельно
+   и была видна с самой загрузки страницы. На телефоне это значило
+   четыре одинаковых по смыслу призыва в одном первом экране разом:
+   три полноширинные кнопки геро (MAX, WhatsApp, заявка) и панель
+   поверх них пятым слоем. Витрина цен, ради которой человек и зашёл,
+   уезжала вниз под этот частокол кнопок. Правило то же, что и для
+   плавающего блока: скрыта, пока не прокрутили мимо первого экрана.
+
+   Без скрипта оба блока видны всегда: класс is-off ставится только
    отсюда, поэтому отключённый JavaScript ничего не ломает. */
 (function () {
   "use strict";
-  var el = document.querySelector(".d-float");
-  if (!el) return;
+  var targets = [".d-float", ".d-mobilebar"]
+    .map(function (sel) { return document.querySelector(sel); })
+    .filter(Boolean);
+  if (!targets.length) return;
 
   var SHOW_AFTER = 700;
   var shown = false;
@@ -32,7 +43,7 @@
     if (shown) return;
     if ((window.pageYOffset || document.documentElement.scrollTop) > SHOW_AFTER) {
       shown = true;
-      el.classList.remove("is-off");
+      targets.forEach(function (el) { el.classList.remove("is-off"); });
       /* Слушатель снимается сразу после первого срабатывания:
          дальше следить не за чем, а лишний обработчик на прокрутке
          это работа на каждом кадре ради ничего. */
@@ -40,7 +51,7 @@
     }
   }
 
-  el.classList.add("is-off");
+  targets.forEach(function (el) { el.classList.add("is-off"); });
   window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();
 })();

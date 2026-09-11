@@ -1108,7 +1108,8 @@ footer strong{color:#fff}
    доставалась MAX, а призыв набирался сталью и проигрывал соседу
    по заметности, хотя это единственная кнопка, ведущая к расчёту. */
 .d-mobilebar{position:fixed;left:0;right:0;bottom:0;display:none;
-  padding:0;border-top:1px solid var(--d-brass-h);z-index:50}
+  padding:0;border-top:1px solid var(--d-brass-h);z-index:50;
+  transition:opacity .18s ease,transform .18s ease}
 .d-mobilebar .call{flex:1;display:flex;flex-direction:column;
   align-items:center;justify-content:center;gap:1px;
   min-height:60px;padding:9px 12px;text-decoration:none;
@@ -1120,7 +1121,16 @@ footer strong{color:#fff}
    ни разу. Набрана сталью по латуни: белый по латуни даёт 2,23. */
 .d-mobilebar .call b{font-weight:600;font-size:12px;letter-spacing:0;
   color:#4a3607}
-@media(max-width:760px){.d-mobilebar{display:flex}body{padding-bottom:60px}}
+@media(prefers-reduced-motion:reduce){.d-mobilebar{transition:none}}
+@media(max-width:760px){.d-mobilebar{display:flex}body{padding-bottom:60px}
+  /* Не показываем панель поверх собственных кнопок первого экрана: там
+     уже три полноширинных призыва (MAX, WhatsApp, форма), и четвёртый
+     поверх них не подсказка, а шум. Класс ставит wa.js тем же правилом
+     и тем же порогом прокрутки, что и для .d-float, и той же техникой
+     (opacity/visibility, а не display): элемент фиксированный, и display
+     дёргал бы раскладку под ним. Без JavaScript is-off не появится,
+     и панель будет видна всегда - как и раньше. */
+  .d-mobilebar.is-off{opacity:0;visibility:hidden;transform:translateY(8px)}}
 
 /* ---------------------------------------------------- прочее */
 .d-thanks{max-width:44rem}
