@@ -70,6 +70,11 @@
   {{ m.objections(objections) }}
 </div></section>
 
+{% if reviews %}<section><div class="wrap">
+  <h2>Отзывы</h2>
+  {{ m.reviews(reviews) }}
+</div></section>
+{% endif %}
 <section><div class="wrap">
   <h2>Частые вопросы</h2>
   {{ m.faq(faq) }}

@@ -28,6 +28,7 @@ from products_rev import MATERIALS_REV, MONEY_CFG_REV
 from geo_matrix import (CITY_FACTS, MATRIX, MAT_FORMS,
                         ANGLE, LOCAL, MAT_TASK, example_for, plecho,
                         lsi_for)
+from reviews import REVIEWS
 import autolink
 from hubs import HUBS
 from canonical import canonical
@@ -297,7 +298,7 @@ def crumbs(items):
 
 
 def localbusiness():
-    return {
+    out = {
         "@type": "LocalBusiness",
         "@id": DOMAIN + SITE["base"] + "#business",
         "name": SITE["brand"],
@@ -330,6 +331,49 @@ def localbusiness():
         # а неверная точка на карте хуже её отсутствия. Поисковики
         # геокодируют PostalAddress сами.
         "sameAs": [],
+    }
+    # AggregateRating добавляется, только когда есть хоть один реальный
+    # отзыв. LocalBusiness с этим @id повторяется на каждой странице -
+    # это нормально, один и тот же факт о компании не размножается.
+    # А вот сами тексты Review (review_nodes) идут не сюда и не везде:
+    # дублировать их дословно на сотне страниц выглядело бы для Google
+    # накруткой сниппетов, поэтому они подключены только на главной
+    # раздела и на /kontakty/, там, где отзывы видны человеку.
+    _agg = aggregate_rating(REVIEWS)
+    if _agg:
+        out["aggregateRating"] = _agg
+    return out
+
+
+def review_nodes(items):
+    """Review-узлы для JSON-LD графа. REVIEWS пуст (см. data/reviews.py),
+    пока владелец не пришлёт реальные тексты - тогда функция возвращает []
+    и в граф ничего не добавляется. Отзыв без реального автора и оценки
+    хуже отсутствующего: фальшивая структурированная разметка это то же
+    самое нарушение, что и фальшивый текст на странице, только для робота,
+    а не для человека."""
+    return [{
+        "@type": "Review",
+        "itemReviewed": {"@id": DOMAIN + SITE["base"] + "#business"},
+        "author": {"@type": "Person", "name": r["name"]},
+        "datePublished": r["date"],
+        "reviewRating": {"@type": "Rating", "ratingValue": r["rating"], "bestRating": 5},
+        "reviewBody": r["text"],
+    } for r in items]
+
+
+def aggregate_rating(items):
+    """AggregateRating по REVIEWS, либо None. Считается из тех же оценок,
+    что видит человек в карточках - разойтись с ними нечему, копии числа
+    здесь нет."""
+    if not items:
+        return None
+    ratings = [r["rating"] for r in items]
+    return {
+        "@type": "AggregateRating",
+        "itemReviewed": {"@id": DOMAIN + SITE["base"] + "#business"},
+        "ratingValue": round(sum(ratings) / len(ratings), 2),
+        "reviewCount": len(items),
     }
 
 
@@ -1196,12 +1240,12 @@ pages = []  # (url, rendered_html, family)
 url = SITE["base"]
 crumb_items = [("Главная", "/"), ("Доставка материалов", None)]
 jl = graph(localbusiness(), service_schema(), bc_schema(crumb_items),
-           faq_schema(MATERIALS["shcheben"]["faq"][:4]))
+           faq_schema(MATERIALS["shcheben"]["faq"][:4]), *review_nodes(REVIEWS))
 htmlp = env.get_template("hub.j2").render(
     **BASE_CTX, title="Доставка нерудных материалов в Екатеринбурге: щебень, песок",
     desc="Доставка щебня, песка, ПГС и отсева по Екатеринбургу и Свердловской области. Самосвалы от 5 до 20 кубов, оплата после выгрузки, честный объём по кузову.",
     canonical=DOMAIN + url, h1="Доставка щебня, песка и нерудных материалов по " + SITE["region_dat"],
-    crumbs_html=crumbs(crumb_items), jsonld=jl,
+    crumbs_html=crumbs(crumb_items), jsonld=jl, reviews=REVIEWS,
     faq=MATERIALS["shcheben"]["faq"][:4],
     # Хаб показывает тот же прайс витриной, что и товарные страницы.
     # Своего материала у хаба нет, поэтому порядок строк обычный.
@@ -2574,10 +2618,10 @@ _c_sections = [
   "after": ["Фотографии техники добавим отдельно: показывать чужие снимки "
             "из фотобанка вместо своих машин мы не будем."]},
 ]
-jl = graph(localbusiness(), bc_schema(crumb_items), faq_schema(_c_faq))
+jl = graph(localbusiness(), bc_schema(crumb_items), faq_schema(_c_faq), *review_nodes(REVIEWS))
 htmlp = env.get_template("contacts.j2").render(
     # На контактах в панели база с воздуха: страница про то, где мы стоим.
-    **BASE_CTX, hero_img=img_one("fleet/baza-s-vozduha.jpg"),
+    **BASE_CTX, hero_img=img_one("fleet/baza-s-vozduha.jpg"), reviews=REVIEWS,
     hero_cap="наша база в Екатеринбурге", canonical=canonical(url), crumbs_html=crumbs(crumb_items), jsonld=jl,
     title="Контакты Щебень-Урал в Екатеринбурге: адрес и телефон",
     desc=("Контакты %s: база в Екатеринбурге, %s, телефон %s, режим работы %s. "

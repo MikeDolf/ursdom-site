@@ -1054,6 +1054,35 @@ table td:only-child,table td:first-child:last-child{font-weight:400}
 .d-faq details > div{padding:0 0 18px}
 .d-faq details p{margin:0;color:var(--d-ink-2);font-size:15.5px;max-width:70ch}
 
+/* ---------------------------------------------------- отзывы
+   REVIEWS в data/reviews.py сейчас пуст, макрос m.reviews() не рендерит
+   ничего, и стилей под класс, которого нет ни на одной странице, быть
+   не должно - это ровно то, что проверка «стили без разметки»
+   в audit/_verify.py существует ловить. Как только в reviews.py
+   появится хотя бы один настоящий отзыв, макрос начнёт печатать
+   разметку, и вот эти правила раскомментируются одним блоком -
+   ничего придумывать заново не придётся.
+
+.d-reviews{list-style:none;margin:0;display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1px;
+  background:var(--d-rule);border:1px solid var(--d-rule)}
+.d-review{background:var(--d-paper);padding:18px 20px}
+.d-review-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 10px;
+  margin-bottom:8px}
+.d-review-head strong{font-size:15.5px;font-weight:750;color:var(--d-ink)}
+.d-review-role{font-size:13px;color:var(--d-ink-2)}
+.d-review-stars{margin-left:auto;color:var(--d-brass);letter-spacing:1px;
+  font-size:15px}
+.d-review p{margin:0;font-size:15px;line-height:1.55;color:var(--d-ink-2)}
+.d-review-verified{margin-top:10px!important;font-size:12.5px!important;
+  font-weight:700;letter-spacing:.03em;text-transform:uppercase;
+  color:var(--d-brass-text)!important}
+.d-dark-sec .d-reviews{background:var(--d-steel-3)}
+.d-dark-sec .d-review{background:var(--d-steel)}
+.d-dark-sec .d-review-head strong{color:#fff}
+.d-dark-sec .d-review-role,.d-dark-sec .d-review p{color:var(--d-on-steel-2)}
+*/
+
 /* -------------------------------------- смотрите также и списки ссылок
    Ссылка - строка ведомости, а не плитка. Латунная засечка слева
    появляется по наведению: тот же обод сита. */

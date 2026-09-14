@@ -364,6 +364,26 @@
 {% endfor %}</div>
 {%- endmacro %}
 
+{# Отзывы клиентов. Список REVIEWS сейчас пуст (см. data/reviews.py) -
+   ни одной выдуманной записи, поэтому макрос рендерит пустую строку,
+   пока владелец не пришлёт реальные тексты. Звёзды выводятся символами,
+   а не картинкой: масштабируются с текстом и не тянут лишний запрос.
+   Оценка ставится самим клиентом и не округляется - показываем как есть. #}
+{% macro reviews(items) -%}
+{% if items %}<div class="d-reviews">
+{% for r in items %}  <div class="d-review">
+    <div class="d-review-head">
+      <strong>{{ r.name }}</strong>
+{% if r.role %}      <span class="d-review-role">{{ r.role }}</span>
+{% endif %}      <span class="d-review-stars" aria-label="Оценка {{ r.rating }} из 5">{{ '★' * r.rating }}{{ '☆' * (5 - r.rating) }}</span>
+    </div>
+    <p>{{ r.text }}</p>
+{% if r.verified %}    <p class="d-review-verified">Подтверждённая заявка</p>
+{% endif %}  </div>
+{% endfor %}</div>
+{% endif %}
+{%- endmacro %}
+
 {# Ряд каналов связи. Один макрос на весь сайт.
 
    Ревью паритета показало разнобой: калькулятор предлагал только
