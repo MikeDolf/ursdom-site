@@ -1125,6 +1125,10 @@ footer a:hover{color:var(--d-brass);border-bottom-color:var(--d-brass)}
 footer strong{color:#fff}
 .d-copy{font-size:13px;color:#8a97a0;  /* 5,18 на стали */margin-top:26px;line-height:1.55;
   border-top:1px solid var(--d-steel-3);padding-top:18px}
+/* Телефон намеренно самая нижняя строка страницы, после копирайта:
+   его нашли те, кто дочитал и целенаправленно ищет номер, а не те,
+   кто просто листает верх страницы. */
+.d-phone-bottom{margin-top:10px;font-size:13px}
 
 /* ---------------------------------------------------- мобильная панель */
 /* Липкая панель внизу телефона. Здесь стояли три кнопки: MAX, WhatsApp
