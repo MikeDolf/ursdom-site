@@ -75,16 +75,16 @@
   </table></div>
 {% endif %}
   <p><strong>Расчёт на примере.</strong> {{ b.ex.task|capitalize }} размером {{ b.ex.dims }},
-  это {{ b.ex.area }} квадратных метров, слой {{ b.ex.matname }} толщиной
-  {{ b.ex.thick }} сантиметров. По геометрии выходит {{ b.ex.geom }} кубометра,
-  с коэффициентом уплотнения {{ b.ex.k }} это {{ b.ex.real }} кубометра.
+  это {{ b.ex.area }} м², слой {{ b.ex.matname }} толщиной
+  {{ b.ex.thick }} см. По геометрии выходит {{ b.ex.geom }} м³,
+  с коэффициентом уплотнения {{ b.ex.k }} это {{ b.ex.real }} м³.
   {{ b.ex.note }} На плече {{ dist }} такой объём везёт {{ b.ex.truck }}.</p>
   <p class="d-note">Подробнее про виды и цены: <a href="{{ b.url }}">{{ b.name }} с доставкой по области</a>.</p>
 {% endfor %}
 </div></section>
 
 <section><div class="wrap d-prose">
-  <h2 id="grunt">Грунты {{ city.loc }} и что из этого следует</h2>
+  <h2 id="grunt">{{ h_grunt }}</h2>
   <p>{{ p_grunt }}</p>
 
   {# Второй из двух одинаковых заголовков: привязываем к городу

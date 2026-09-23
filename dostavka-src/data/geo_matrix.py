@@ -1239,6 +1239,12 @@ def truck_for(volume, km):
     return base
 
 
+def _num(x):
+    """Одна цифра после запятой, без хвостового ",0": 15 а не 15,0."""
+    r = "%.1f" % x
+    return (r[:-2] if r.endswith(".0") else r).replace(".", ",")
+
+
 def example_for(mkey, city_slug, km):
     """Собирает разобранный пример под конкретную пару город-материал.
     Задача выбирается детерминированно по имени города, чтобы соседние
@@ -1256,11 +1262,15 @@ def example_for(mkey, city_slug, km):
                 "в ту же заявку.")
         order = 5
     else:
-        note = f"Заказывать имеет смысл {order} кубов."
-    dims = (f"{a} на {b} метров" if b >= 2
-            else f"{a} метров длиной и {b} метра шириной")
+        _n10, _n100 = order % 10, order % 100
+        _w = ("куб" if _n10 == 1 and _n100 != 11 else
+              "куба" if 2 <= _n10 <= 4 and not 12 <= _n100 <= 14 else "кубов")
+        note = f"Заказывать имеет смысл {order} {_w}."
+    _b = ("%g" % b).replace(".", ",")
+    dims = (f"{a} на {_b} м" if b >= 2
+            else f"{a} м длиной и {_b} м шириной")
     return dict(
         task=task, dims=dims, area=("%g" % area), thick=int(thick * 100),
-        geom=("%.1f" % geom).replace(".", ","), k=("%g" % k).replace(".", ","),
-        real=("%.1f" % real).replace(".", ","), order=order,
+        geom=_num(geom), k=("%g" % k).replace(".", ","),
+        real=_num(real), order=order,
         note=note, matname=matname, truck=truck_for(order, km))
