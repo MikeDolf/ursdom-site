@@ -82,7 +82,12 @@
   <span class="d-topbar-sep" aria-hidden="true"></span>
   <span class="d-topbar-hours">{{ cfg.hours }}</span>
   <span class="d-topbar-sale">{{ cfg.discounts }}</span>
+  {# Адрес базы первым: на телефоне из всей полосы видна только правая
+     часть, и раньше это была одна личная почта на gmail, первое, что
+     видел человек. Адрес со ссылкой на контакты говорит о компании
+     больше. Почта осталась рядом: владелец просил её здесь держать. #}
   <span class="d-topbar-right">
+    <a href="/dostavka/kontakty/">{{ cfg.street }}</a>
     <a href="mailto:{{ cfg.email }}">{{ cfg.email }}</a>
   </span>
 </div></div>

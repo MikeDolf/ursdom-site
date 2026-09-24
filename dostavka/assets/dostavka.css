@@ -214,17 +214,17 @@ table,.d-sieve,.d-cat-price{font-variant-numeric:tabular-nums}
   display:inline-flex;align-items:center;min-height:48px}
 .d-topbar a:hover{color:var(--d-brass)}
 .d-topbar-sale{color:var(--d-brass);font-weight:650}
-/* На телефоне остаются телефон и почта: владелец просил почту вернуть,
-   а без региона, режима и скидки строка их вмещает. Скидка при этом
-   не пропадает - она уезжает в липкую панель внизу, где стоит подписью
-   под призывом и видна всё время прокрутки. */
+/* На телефоне остаются адрес базы и почта: владелец просил почту
+   вернуть, а без региона, режима и скидки строка вмещает обе ссылки.
+   Скидка при этом не пропадает - она стоит подписью под призывом
+   в липкой панели внизу. */
 @media(max-width:720px){
   .d-topbar .wrap{gap:14px;font-size:12.5px}
   .d-topbar-geo,.d-topbar-sep,.d-topbar-hours,.d-topbar-sale{display:none}
   .d-topbar-right{margin-left:0;gap:14px}
 }
 @media(max-width:400px){
-  /* Совсем узкий экран: почта длиннее номера и переносит строку. */
+  /* Совсем узкий экран: адрес и почта вместе переносят строку. */
   .d-topbar .wrap{gap:10px;font-size:12px}
   .d-topbar-right{gap:10px}
 }

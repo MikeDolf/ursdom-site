@@ -12,7 +12,7 @@
      не может. #}
 {% if hero_price %}  <p class="d-hero-price"><b>{{ hero_price }}</b><span>руб за куб, доставка считается отдельно</span></p>
 {% endif %}
-  {{ m.channels(cfg, "#zayavka", "Рассчитать заявку") }}
+  {{ m.channels(cfg, "#zayavka", "Узнать цену с доставкой") }}
   </div>
   {{ m.hero_panel(hero_cap|default("щебень 20-40 мм", true), hero_img|default(none, true)) }}
 </div></section>
