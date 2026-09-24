@@ -28,6 +28,8 @@ from products_rev import MATERIALS_REV, MONEY_CFG_REV
 from geo_matrix import (CITY_FACTS, MATRIX, MAT_FORMS,
                         ANGLE, LOCAL, MAT_TASK, example_for, plecho,
                         lsi_for)
+from geo_ground import ground_advice
+from geo_citynotes import CITY_MAT_NOTE
 from reviews import REVIEWS
 import autolink
 from hubs import HUBS
@@ -1123,6 +1125,38 @@ def city_lots(km, price_key="Щебень 20-40"):
     return out, note
 
 
+def city_trip(km):
+    """Цена машины каждого материала с доставкой в конкретный город.
+
+    Таблица «цены на материалы» на городской странице была одинаковой
+    на всех 167 адресах: цена за куб без доставки. Человек из Ревды
+    хочет знать другое - сколько будет стоить машина до него. Считаем
+    тем же estimate, что калькулятор и таблица «сколько стоит машина»,
+    на средний объём пояса этого города (10 кубов на ближнем и среднем
+    плече, 15 на дальнем, 20 на очень дальнем).
+    """
+    from calc import estimate
+    vols = next(v for lim, v, n in CITY_BANDS if km <= lim)
+    vol = vols[1]
+    rows = [(name, price, "%d" % estimate(vol, FLOOR[name], km)["total"])
+            for name, price in PER_CUBE_LIST]
+    return vol, rows
+
+
+def trip_faq(rod, vin_price_key, prep, km, name_rod=None):
+    """Вопрос с посчитанным ответом под город: сколько стоит машина."""
+    from calc import estimate
+    vols = next(v for lim, v, n in CITY_BANDS if km <= lim)
+    vol = vols[1]
+    e = estimate(vol, FLOOR[vin_price_key], km)
+    return ("Сколько стоит %d кубов %s с доставкой %s?" % (vol, name_rod or rod, prep),
+            "Предварительно %d руб: материал %d руб по цене %s руб за куб и доставка "
+            "%d руб за рейс на плечо %d км, машина едет к вам и обратно. Точную "
+            "сумму называем по заявке, после выгрузки она не меняется."
+            % (e["total"], e["material"], PER_CUBE.get(vin_price_key, "от %d" % FLOOR[vin_price_key]),
+               e["delivery"], km))
+
+
 def catalog_for(slug):
     """Витрина прайса карточками: цена, снимок, применение, кнопка.
 
@@ -1282,26 +1316,34 @@ htmlp = env.get_template("hub.j2").render(
 pages.append((url, htmlp, "hub"))
 
 # ---- MONEY: щебень, песок ----
+# Цена в заголовке: у конкурентов в выдаче Яндекса она стоит прямо
+# в title («цена от 485 рублей за куб»), и сниппет без цены проигрывает
+# им по кликам. Число берём из прайса, минимальное по строкам материала,
+# чтобы заголовок не разошёлся с таблицей на той же странице.
+def _title_floor(prefix):
+    return min(v for k, v in FLOOR.items() if k.startswith(prefix))
+
+
 money_cfg = {
     "shcheben": dict(hero_sub="Гранитный, известняковый, гравийный и вторичный щебень с доставкой по " + SITE["region_dat"] + ". Весь ряд фракций от 5-10 до 70-150 и отсев, оптом навалом и в фасовке, оплата после выгрузки.",
                      mat_vin="щебень", mat_rod="щебня", mat_order="доставку щебня", subject="доставка щебня, " + SITE["region_short"],
-                     title="Купить щебень в Екатеринбурге с доставкой: цена за куб",
-                     desc="Купить щебень с доставкой по Екатеринбургу и области: гранит, известняк, фракции от 5-10 до 70-150. Цена за куб, КамАЗ целиком, оплата после выгрузки.",
+                     title="Купить щебень в Екатеринбурге с доставкой от %d руб/м³" % _title_floor("Щебень"),
+                     desc="Щебень с доставкой по Екатеринбургу и области: гранит, известняк, фракции от 5-10 до 70-150. КамАЗ целиком, заявки круглосуточно, оплата после выгрузки.",
                      h1="Щебень с доставкой по Екатеринбургу и Свердловской области"),
     "pesok": dict(hero_sub="Карьерный и речной песок с доставкой по " + SITE["region_dat"] + ". Под отсыпку, подушку фундамента, бетон и кладку. Самосвалы от 5 кубов, оплата после выгрузки.",
                   mat_vin="песок", mat_rod="песка", mat_order="доставку песка", subject="доставка песка, " + SITE["region_short"],
-                  title="Купить песок в Екатеринбурге с доставкой: карьерный и речной",
-                  desc="Купить песок с доставкой по Екатеринбургу и области: карьерный для отсыпки, речной мытый для бетона. Цена за куб, КамАЗ целиком, оплата после выгрузки.",
+                  title="Купить песок в Екатеринбурге с доставкой от %d руб/м³" % _title_floor("Песок"),
+                  desc="Песок с доставкой по Екатеринбургу и области: карьерный под отсыпку, речной мытый под бетон. КамАЗ целиком, заявки круглосуточно, оплата после выгрузки.",
                   h1="Песок с доставкой по Екатеринбургу и Свердловской области"),
     "otsev": dict(hero_sub="Гранитный, известняковый и вторичный отсев 0-5 с доставкой по " + SITE["region_dat"] + ". Под тротуарную плитку, расклинцовку и планировку участка.",
                   mat_vin="отсев", mat_rod="отсева", mat_order="доставку отсева", subject="доставка отсева, " + SITE["region_short"],
-                  title="Отсев с доставкой в Екатеринбурге: купить щебёночный отсев",
-                  desc="Отсев 0-5 с доставкой по Екатеринбургу и Свердловской области: гранитный, известняковый, вторичный. Под плитку и планировку. Цена за куб, оплата после выгрузки.",
+                  title="Купить отсев в Екатеринбурге с доставкой от %d руб/м³" % _title_floor("Отсев"),
+                  desc="Отсев 0-5 с доставкой по Екатеринбургу и области: гранитный, известняковый, вторичный. Под плитку и планировку. Заявки круглосуточно, оплата после выгрузки.",
                   h1="Отсев с доставкой по Екатеринбургу и Свердловской области"),
     "pgs": dict(hero_sub="Природная ПГС и обогащённая ОПГС с доставкой по " + SITE["region_dat"] + ". Под планировку территории, подсыпку оснований и обратную засыпку.",
                 mat_vin="ПГС", mat_rod="ПГС", mat_order="доставку ПГС", subject="доставка ПГС, " + SITE["region_short"],
-                title="Купить ПГС с доставкой в Екатеринбурге: цена за куб",
-                desc="Доставка ПГС и ОПГС по Екатеринбургу и области. Песчано-гравийная смесь под отсыпку и планировку. Цена за куб, самосвалы 5-20 кубов, оплата после выгрузки.",
+                title="Купить ПГС в Екатеринбурге с доставкой от %d руб/м³" % _title_floor("ПГС"),
+                desc="ПГС и ОПГС с доставкой по Екатеринбургу и области под отсыпку и планировку. Самосвалы 5-20 м³, заявки круглосуточно, оплата после выгрузки, без предоплаты.",
                 h1="Доставка ПГС по Екатеринбургу и Свердловской области"),
 }
 # Городские страницы песка стоят отдельно от таблицы городов на хабе,
@@ -1674,16 +1716,28 @@ def gen_mat_city(mkey, price_key, rod, vin, calc_slug):
             ("Какой %s берут %s?" % (vin, f["loc"]), MAT_TASK[(mkey, f["kind"])]),
             ("Сколько %s везёт одна машина %s?" % (rod, f["prep"]),
              "Самосвалы от пяти до двадцати кубов. %s" % pl["minv"]),
+            trip_faq(rod, price_key, f["prep"], f["km"]),
         ]
         jl = graph(localbusiness(), bc_schema(crumb_items), faq_schema(cfaq),
                    product_schema("Доставка %s %s" % (rod, f["prep"]),
                                   "%s с доставкой %s, %s."
                                   % (forms["name"], f["prep"], dist),
                                   str(low), url, images=product_images(forms["url"])))
+        # Цена куба С ДОСТАВКОЙ именно в этот город для машин пояса.
+        # Это главное, что человек ищет по запросу «отсев с доставкой
+        # в Ревду», и единственное число, которое у каждой страницы своё.
+        from calc import estimate as _est
+        _vols = next(v for lim, v, n in CITY_BANDS if f["km"] <= lim)
+        _per = ["%d руб в машине на %d м³" % (round(_est(v, low, f["km"])["total"] / v), v)
+                for v in (_vols[0], _vols[-1])]
+        _exo = _est(max(ex["order"], 5), low, f["km"])
         sections = [
             {"id": "plecho", "h": "Доставка %s %s: плечо и цена" % (rod, f["prep"]),
              "p": ["Возим %s %s по %s, %s. %s %s"
                    % (vin, f["prep"], f["tract"], dist, pl["econ"], pl["minv"]),
+                   "С доставкой %s куб %s по нижней цене прайса выходит около %s "
+                   "и около %s: разница целиком из-за того, что рейс делится "
+                   "на большее число кубов." % (f["prep"], rod, _per[0], _per[1]),
                    "Срок подачи машины: %s. Плечо оплачивается в обе стороны: "
                    "машина едет к вам и возвращается порожняком. Точную сумму "
                    "называем по заявке." % pl["term"]]},
@@ -1697,17 +1751,29 @@ def gen_mat_city(mkey, price_key, rod, vin, calc_slug):
              # «отсев/песок + город» уходили за порог дублей 0,92.
              "p": [MAT_TASK[(mkey, f["kind"])],
                    "Чаще всего это %s." % ANGLE[(mkey, f["kind"])]]},
+            # Ручной абзац по городам со спросом (geo_citynotes.py).
+            *([{"id": "uchest", "h": "Что учесть, заказывая %s %s" % (vin, f["prep"]),
+                "p": [CITY_MAT_NOTE[(mkey, cs)]]}]
+              if (mkey, cs) in CITY_MAT_NOTE else []),
             {"id": "raschet", "h": "Пример расчёта %s" % f["loc"],
              "p": ["Типовая задача %s это %s. Площадка %s по геометрии даёт %s м³, "
-                   "с коэффициентом уплотнения %s выходит %s м³. %s Повезёт %s."
+                   "с коэффициентом уплотнения %s выходит %s м³. %s Повезёт %s. "
+                   "С доставкой %s это предварительно %d руб: %d за материал "
+                   "и %d за рейс."
                    % (f["loc"], ex["task"], ex["dims"], ex["geom"], ex["k"],
-                      ex["real"], ex["note"], ex["truck"])],
+                      ex["real"], ex["note"], ex["truck"], f["prep"],
+                      _exo["total"], _exo["material"], _exo["delivery"])],
              "after": ["Свой объём посчитайте в калькуляторе: он считает по размерам "
                        "площадки, переводит кубы в тонны и показывает цену с доставкой."]},
             {"id": "mestnoe", "h": "Местные особенности %s" % f["loc"],
              "p": [LOCAL[cs],
                    "Грунты здесь это %s, и от них зависит, сколько %s уйдёт "
                    "в основание сверх расчёта." % (f["ground"], rod)]},
+            # Свой текст страницы: как класть этот материал на этих грунтах.
+            # Абзацы выбираются по признакам грунта города (geo_ground.py).
+            *([{"id": "grunt", "h": "%s на грунтах %s" % (forms["name"], f["rod"]),
+                "p": ground_advice(mkey, f["ground"])}]
+              if ground_advice(mkey, f["ground"]) else []),
             {"id": "kak-zakazat", "h": "Как заказать %s %s" % (vin, f["prep"]),
              "steps": ["Скажите фракцию и объём в кубах.",
                        "Назовите адрес %s и опишите заезд: ширина ворот и место "
@@ -1753,6 +1819,7 @@ def gen_mat_city(mkey, price_key, rod, vin, calc_slug):
                   % (vin, f["prep"], dist, SITE["payment_short"])),
             sections=sections, cta_after=3,
             lots=_lots, lots_note=_lnote, plecho_km=f["km"],
+            trip_vol=city_trip(f["km"])[0], per_cube_trip=city_trip(f["km"])[1],
             calc_slug=calc_slug, calc_rod=rod,
             cta_head="Посчитаем объём %s" % f["loc"],
             cta_text=("Назовите размеры участка работ и адрес, подберём фракцию "
@@ -2433,6 +2500,8 @@ def geo_city_faq(facts, mats, pl, dist):
          f"{facts['areas'][0].upper()}{facts['areas'][1:]}. По адресам за городом "
          f"уточняйте состояние подъезда: гружёный самосвал проходит не везде."),
     ]
+    q.insert(1, trip_faq("щебня", "Щебень 20-40", facts["prep"], facts["km"],
+                         name_rod="щебня 20-40"))
     if facts.get("note"):
         q.insert(1, (f"Есть ли особенности с доставкой {facts['prep']}?",
                      facts["note"]))
@@ -2457,6 +2526,8 @@ for city_slug, mats in MATRIX.items():
             task=MAT_TASK.get((mkey, facts["kind"]), MAT_TASK[(mkey, "small")]),
             ex=example_for(mkey, city_slug, facts["km"]),
             fractions=GEO_FRACTIONS.get(mkey),
+            ground=(ground_advice(mkey, facts["ground"]) if mkey == "shcheben" else []),
+            note=(CITY_MAT_NOTE.get((mkey, city_slug)) if mkey == "shcheben" else None),
             price=next((p for n, p in PER_CUBE.items()
                         if n.lower().startswith(mat["vin"][:5].lower())), mat["low"]),
         ))
@@ -2510,6 +2581,16 @@ for city_slug, mats in MATRIX.items():
                    f"под объём и под ваш заезд: если ворота узкие или негде "
                    f"развернуться, подадим короткий самосвал вместо длинного.")
 
+    # Цена куба щебня 20-40 с доставкой в этот город, как на страницах
+    # материалов по городам (см. gen_mat_city).
+    from calc import estimate as _est
+    _vols = next(v for lim, v, n in CITY_BANDS if facts["km"] <= lim)
+    _p = [(round(_est(v, FLOOR["Щебень 20-40"], facts["km"])["total"] / v), v)
+          for v in (_vols[0], _vols[-1])]
+    p_percube = ("С доставкой %s куб щебня 20-40 по нижней цене прайса выходит около "
+                 "%d руб в машине на %d м³ и около %d руб в машине на %d м³."
+                 % (facts["prep"], _p[0][0], _p[0][1], _p[1][0], _p[1][1]))
+
     crumb_items = [("Главная", "/"), ("Доставка материалов", SITE["base"]),
                    ("Щебень", SITE["base"] + "shcheben/"), (facts["name"], None)]
     cfaq = geo_city_faq(facts, mats, pl, dist)
@@ -2555,7 +2636,8 @@ for city_slug, mats in MATRIX.items():
         city=dict(facts, dist=dist), dist=dist, mat_blocks=mat_blocks,
         lots=city_lots(facts["km"])[0], lots_note=city_lots(facts["km"])[1],
         plecho_km=facts["km"],
-        p_plecho=p_plecho, p_econ=p_econ, p_kuda=p_kuda, p_grunt=p_grunt,
+        trip_vol=city_trip(facts["km"])[0], per_cube_trip=city_trip(facts["km"])[1],
+        p_plecho=p_plecho, p_percube=p_percube, p_econ=p_econ, p_kuda=p_kuda, p_grunt=p_grunt,
         p_sroki=p_sroki, p_minv=pl["minv"], p_local=LOCAL[city_slug], h_grunt=h_grunt,
         faq=cfaq, related_links=rel[:12])
     pages.append((url, htmlp, "geo-city"))

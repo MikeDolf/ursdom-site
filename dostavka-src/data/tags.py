@@ -38,7 +38,7 @@ TAG_LONGREADS = [
  "related": ["shcheben/frakciya-20-40", "shcheben/frakciya-5-20",
              "stati/frakcii-shchebnya", "stati/podushka-pod-fundament",
              "butovyy-kamen", "skalnyy-grunt"],
- "title": title("Щебень", "40-70", tail="цена за куб"),
+ "title": title("Щебень", "40-70", tail="от %d руб/м³" % FLOOR["Щебень 40-70"]),
  "desc": description("Щебень", "40-70",
                      what="Крупная фракция под слабые грунты, дренаж и подпорные основания",
                      low=str(P_40_70), unit="за куб",
@@ -626,7 +626,7 @@ TAG_LONGREADS = [
  "related": ["shcheben/frakciya-40-70", "butovyy-kamen", "skalnyy-grunt",
              "stati/skalnyy-grunt-dresva-but", "stati/chem-otsypat-uchastok",
              "stati/frakcii-shchebnya"],
- "title": title("Щебень", "70-120", tail="цена за куб"),
+ "title": title("Щебень", "70-120", tail="от %d руб/м³" % FLOOR["Щебень 70-120"]),
  "desc": 'Щебень 70-120 с доставкой по Екатеринбургу и области. Крупная фракция для габионов, подпорных стенок и укрепления склонов. Цена от 920 рублей за один куб.',
  "h1": h1("Щебень", "70-120"),
  "hero_sub": "Камень размером с кулак и крупнее. Такой не разравнивают граблями "

@@ -601,6 +601,14 @@ tbody tr:hover td{background:var(--d-enamel-2)}
 /* Столбец с ценой - показание, а не текст: выделяем весом. */
 td:last-child{font-weight:650}
 table td:only-child,table td:first-child:last-child{font-weight:400}
+/* Прайс с колонкой «машина с доставкой» на городских страницах: три
+   столбца должны помещаться в экран телефона без прокрутки вбок,
+   иначе главная цифра, сумма с доставкой, оказывается за краем. */
+.d-trip thead th{white-space:normal}
+.d-trip td+td{white-space:nowrap}
+@media (max-width:700px){
+  .d-trip th,.d-trip td{padding-left:12px;padding-right:12px}
+}
 
 /* ---------------------------------------------------- формы */
 .d-form{background:var(--d-paper);border:1px solid var(--d-rule-2);padding:24px}

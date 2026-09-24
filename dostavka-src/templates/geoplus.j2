@@ -39,12 +39,17 @@
 
 <section><div class="wrap">
   <h2>Ориентировочные цены на материалы {{ place.loc }}</h2>
-  <div class="d-table-wrap"><table>
-    <caption>{{ price_note }} Итоговая цена с доставкой {{ place.prep }} зависит от расстояния ({{ place.dist }}) и объёма машины.</caption>
-    <thead><tr><th>Материал</th><th>Цена за куб, руб</th></tr></thead>
+  <div class="d-table-wrap"><table{% if per_cube_trip %} class="d-trip"{% endif %}>
+    <caption>{{ price_note }} Итоговая цена с доставкой {{ place.prep }} зависит от расстояния ({{ place.dist }}) и объёма машины.{% if per_cube_trip %} Последний столбец: предварительная сумма за машину на {{ trip_vol }} м³ с доставкой {{ place.prep }}.{% endif %}</caption>
+{% if per_cube_trip %}    <thead><tr><th>Материал</th><th>За куб, руб</th><th>{{ trip_vol }} м³ с доставкой, руб</th></tr></thead>
+    <tbody>
+{% for name,price,trip in per_cube_trip %}      <tr><td>{{ name }}</td><td>{{ price }}</td><td class="d-spec-val">{{ trip }}</td></tr>
+{% endfor %}    </tbody>
+{% else %}    <thead><tr><th>Материал</th><th>Цена за куб, руб</th></tr></thead>
     <tbody>
 {% for name,price in per_cube %}      <tr><td>{{ name }}</td><td>{{ price }}</td></tr>
 {% endfor %}    </tbody>
+{% endif %}
   </table></div>
   <p class="d-note">{{ delivery_note }}</p>
 </div></section>
