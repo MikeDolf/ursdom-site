@@ -231,10 +231,10 @@
 {% endif %}
   <h2 id="skolko">{{ calc_head|default("Сколько нужно на типовые задачи") }}</h2>
   <div class="d-table-wrap"><table>
-    <caption>{{ calc_caption|default("Готовые расчёты с запасом на уплотнение, чтобы прикинуть объём до заявки") }}</caption>
+    <caption>{{ own_calc_caption or calc_caption|default("Готовые расчёты с запасом на уплотнение, чтобы прикинуть объём до заявки") }}</caption>
     <thead><tr><th>{{ calc_col1|default("Задача") }}</th><th>{{ calc_col2|default("Объём с запасом") }}</th><th>{{ calc_col3|default("Машина") }}</th></tr></thead>
     <tbody>
-{% for task,vol,car in calc_rows %}      <tr><td>{{ task }}</td><td>{{ vol }}</td><td>{{ car }}</td></tr>
+{% for task,vol,car in (own_calc_rows or calc_rows) %}      <tr><td>{{ task }}</td><td>{{ vol }}</td><td>{{ car }}</td></tr>
 {% endfor %}    </tbody>
   </table></div>
   <p class="d-note">Расчёт ориентировочный: точный объём зависит от толщины слоя и плотности грунта. Посчитаем под ваш объект по размерам.</p>
