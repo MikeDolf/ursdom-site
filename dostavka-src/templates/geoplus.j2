@@ -1,16 +1,14 @@
 {% extends "base.j2" %}
 {% import "_macros.j2" as m %}
-{# Порядок и устройство блоков по образцу владельца (его второй проект):
-   первый экран с фото, сколько стоит, калькулятор, фото доставок,
-   быстрая заявка, гарантии, почему мы и цифры, как заказать, форма,
-   «проще написать», доставка в город и машины, текст, прайс, города,
-   частые вопросы. Страница «отсев с доставкой в Ревду» отвечает на свой
-   запрос ценой машины на втором экране, а не после восьми разделов. #}
+{# Порядок блоков по просьбе владельца: зашёл, увидел цену, посчитал,
+   оставил заявку. Поэтому сразу за первым экраном «сколько стоит
+   машина», калькулятор и форма, а фото доставок, гарантии, текст,
+   прайс, города и частые вопросы ниже. #}
 {% block fleet %}{% endblock %}
 {% block body %}
 {{ m.hero2(h1, hero_sub, bg=hero_bg, price=hero_price,
            price_unit="руб за куб, доставка " ~ place.prep ~ " по плечу " ~ plecho_km ~ " км",
-           note="Оплата после выгрузки, объём проверяете по кузову до разгрузки", cfg=cfg) }}
+           note="Оплата после выгрузки, объём проверяете по кузову до разгрузки", cfg=cfg, third_href=("#kalkulyator" if calc else "#zayavka"), third_text=("Посчитать в калькуляторе" if calc else "Узнать цену с доставкой")) }}
 
 {% if lots %}
 <section class="d-band"><div class="wrap">
@@ -34,9 +32,9 @@
 </div></section>
 {% endif %}
 
-{{ m.deliveries(fleet_photos) }}
+{{ m.form_band(cfg, "Заявка на доставку " ~ place.prep, subject) }}
 
-{{ m.quick_band(cfg, cta_head, cta_text, subject) }}
+{{ m.deliveries(fleet_photos) }}
 
 {{ m.guarantee_band(g.guarantees, g.trust) }}
 
@@ -44,10 +42,6 @@
 
 {% set order = sections|selectattr("id", "equalto", "kak-zakazat")|first %}
 {% if order %}{{ m.steps_band(order.h, order.steps) }}{% endif %}
-
-{{ m.form_band(cfg, "Заявка на доставку " ~ place.prep, subject) }}
-
-{{ m.msg_card(cfg) }}
 
 {% if info %}<section class="d-band"><div class="wrap">
   {{ m.sh("Доставка " ~ place.prep, "dostavka") }}
@@ -84,6 +78,8 @@
 <section class="d-band"><div class="wrap">
   {{ m.chips(related_links, "Ещё по теме и в соседних городах") }}
 </div></section>
+
+{{ m.msg_card(cfg) }}
 
 <section class="d-band d-band-tint"><div class="wrap">
   {{ m.sh("Частые вопросы о доставке " ~ place.prep, "faq") }}

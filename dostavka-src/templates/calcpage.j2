@@ -26,13 +26,11 @@
 </div></section>
 {% endif %}
 
+{{ m.form_band(cfg, "Заявка на " ~ mat_order, subject, head="Посчитаем под ваш объект") }}
+
 {{ m.deliveries(fleet_photos) }}
 
 {{ m.guarantee_band(g.guarantees, g.trust) }}
-
-{{ m.form_band(cfg, "Заявка на " ~ mat_order, subject, head="Посчитаем под ваш объект") }}
-
-{{ m.msg_card(cfg) }}
 
 <section class="d-band"><div class="wrap d-prose">
   {{ m.sh("Как мы считаем", "metodika") }}
@@ -40,6 +38,8 @@
 {% for line in p %}  <p>{{ line }}</p>
 {% endfor %}{% endfor %}
 </div></section>
+
+{{ m.msg_card(cfg) }}
 
 <section class="d-band d-band-tint"><div class="wrap">
   {{ m.sh("Частые вопросы о расчёте", "faq") }}

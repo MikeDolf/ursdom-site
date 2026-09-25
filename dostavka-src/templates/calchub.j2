@@ -10,18 +10,19 @@
   {{ m.crossshelf(cards, None) }}
 </div></section>
 
+
+{{ m.form_band(cfg, "Заявка на расчёт", subject, head="Посчитаем под ваш объект") }}
+
+{{ m.deliveries(fleet_photos) }}
+
+{{ m.guarantee_band(g.guarantees, g.trust) }}
+
 <section class="d-band d-band-tint"><div class="wrap d-prose">
   {{ m.sh("По каким формулам считаем", "metodika") }}
 {% for h, p in method %}  <h3>{{ h }}</h3>
 {% for line in p %}  <p>{{ line }}</p>
 {% endfor %}{% endfor %}
 </div></section>
-
-{{ m.deliveries(fleet_photos) }}
-
-{{ m.guarantee_band(g.guarantees, g.trust) }}
-
-{{ m.form_band(cfg, "Заявка на расчёт", subject, head="Посчитаем под ваш объект") }}
 
 {{ m.msg_card(cfg) }}
 

@@ -1,12 +1,15 @@
 {% extends "base.j2" %}
 {% import "_macros.j2" as m %}
-{# Статьи, страницы фракций и марок бетона. Режим чтения: сначала сам
-   материал целиком, без вставок посреди текста, потом коммерческий
-   хвост в устройстве по образцу владельца: фото доставок, быстрая
-   заявка, гарантии, порядок заказа, форма, «проще написать». #}
+{# Статьи, страницы фракций и марок бетона. У статей режим чтения:
+   сначала материал целиком, потом коммерческий хвост. У продающих
+   страниц (цены или калькулятор) путь короче, по просьбе владельца:
+   зашёл, увидел цену, посчитал, оставил заявку. Поэтому цены,
+   калькулятор и форма стоят сразу под первым экраном, а текст ниже. #}
 {% block fleet %}{% endblock %}
 {% block body %}
-{{ m.hero2(h1, hero_sub, bg=hero_img, bg_alt=(hero_cap ~ ", фотография") if hero_cap else None, cfg=cfg) }}
+{% set sell = commercial or calc %}
+{{ m.hero2(h1, hero_sub, bg=hero_img, bg_alt=(hero_cap ~ ", фотография") if hero_cap else None, cfg=cfg,
+           third_href=("#kalkulyator" if calc else "#zayavka"), third_text=("Посчитать в калькуляторе" if calc else "Узнать цену с доставкой")) }}
 
 {% if commercial %}
 <section class="d-band"><div class="wrap">
@@ -22,6 +25,12 @@
 </div></section>
 {% endif %}
 
+{% if calc %}<section class="d-band d-band-tint"><div class="wrap">
+{{ m.calculator(cfg, calc) }}
+</div></section>
+{% endif %}
+{% if sell %}{{ m.form_band(cfg, form_head, subject) }}
+{% endif %}
 <section class="d-band"><div class="wrap d-prose">
   {{ m.author_block(author, updated) }}
   <div class="d-tldr"><strong>Коротко, если некогда читать</strong><p>{{ lead }}</p></div>
@@ -39,14 +48,13 @@
 {% endfor %}
 {{ m.photos(photos, photos_head, photos_intro) }}
 {% if conv %}{{ m.order_block(cfg, conv.head, conv.rows, order_steps, price_note, conv.note) }}
-{% endif %}{% if calc %}{{ m.calculator(cfg, calc) }}
 {% endif %}{# Завершающий призыв в конце статьи убран: сразу за ней стоит
    тёмная полоса быстрой заявки, и два призыва подряд были бы дублем. #}
 </div></section>
 
 {{ m.deliveries(fleet_photos) }}
 
-{{ m.quick_band(cfg, cta_head, cta_text, subject) }}
+{% if not sell %}{{ m.quick_band(cfg, cta_head, cta_text, subject) }}{% endif %}
 
 {{ m.guarantee_band(g.guarantees, g.trust) }}
 
@@ -57,14 +65,14 @@
     "Принимаете машину на объекте и проверяете объём. " ~ cfg.payment]) }}
 {% endif %}
 
-{{ m.form_band(cfg, form_head, subject) }}
-
-{{ m.msg_card(cfg) }}
+{% if not sell %}{{ m.form_band(cfg, form_head, subject) }}{% endif %}
 
 <section class="d-band"><div class="wrap">
   {{ m.objections(objections, None,
      "Самосвалы от 5 до 20 кубов по " ~ cfg.region_dat ~ ". Разгрузка на объекте, оплата после выгрузки, " ~ cfg.callback_promise ~ ".") }}
 </div></section>
+
+{{ m.msg_card(cfg) }}
 
 <section class="d-band d-band-tint"><div class="wrap">
   {{ m.sh("Частые вопросы", "faq") }}

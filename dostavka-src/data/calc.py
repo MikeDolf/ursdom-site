@@ -224,19 +224,26 @@ def calc_for(slug):
         return None
     material, key, volumes = got
     price = FLOOR[key]
+    # Калькулятор открывается на материале страницы: на странице
+    # карьерного песка он стоял на щебне 20-40, и первое, что видел
+    # покупатель, была чужая цена. Материала нет в общем списке
+    # (бут, ЩПС, крошка) - он встаёт в список первой строкой.
+    mats = MATERIALS if any(l == material for l, _ in MATERIALS) \
+        else [(material, price)] + MATERIALS
     return {
         "rate": RATE_PER_KM,
         "round_trip": ROUND_TRIP,
         "min_volume": MIN_VOLUME,
         "trucks": TRUCKS,
-        "materials": MATERIALS,
+        "materials": mats,
         "destinations": DESTINATIONS,
         "default_price": price,
         "examples": examples(material, price, volumes),
+        "sel_mat": material,
         # Стартовое состояние рендерится на сборке. Без него блок
         # результата пуст до загрузки скрипта, а проверка соответствия
         # классов и стилей не видит разметку, которую рисует только JS.
-        "start": _start(MATERIALS[0][1], 10, EKB_KM),
+        "start": _start(price, 10, EKB_KM),
     }
 
 

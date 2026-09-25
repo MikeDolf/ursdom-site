@@ -1455,6 +1455,7 @@ htmlp = env.get_template("hub.j2").render(
     # Хаб показывает тот же прайс витриной, что и товарные страницы.
     # Своего материала у хаба нет, поэтому порядок строк обычный.
     shelf_rows=catalog_for(None), payment=PAYMENT,
+    calc=calc_for("shcheben"), has_calc=True,
     related_links=[("/dostavka/shcheben/", "Доставка щебня: фракции и цены"),
                    ("/dostavka/shcheben/frakciya-20-40/", "Щебень 20-40: характеристики и расчёт"),
                    ("/dostavka/pesok/", "Доставка песка"),

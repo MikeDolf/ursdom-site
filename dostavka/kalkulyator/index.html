@@ -499,16 +499,48 @@
 
 </div></section>
 
-<section class="d-band d-band-tint"><div class="wrap d-prose">
-  <h2 class="d-sh" id="metodika">По каким формулам считаем</h2>
 
-  <h3>Объём отсыпки</h3>
-  <p>Объём считается как площадь на толщину слоя: длина умножается на ширину и на толщину в метрах. Площадка шесть на четыре метра со слоем двадцать сантиметров это 6 × 4 × 0,2, то есть 4,8 кубометра в готовом слое.</p>
-  <p>Дальше вступает уплотнение, и именно на этом шаге чаще всего ошибаются. Материал в кузове лежит рыхло, а в слое его трамбуют, и он занимает меньше места. Поэтому привезти надо больше, чем получилось по геометрии.</p>
-  <h3>Коэффициент уплотнения</h3>
-  <p>Коэффициент показывает, во сколько раз рыхлый объём больше уплотнённого. У песка это 1,10-1,15, у щебня 20-40 доходит до 1,30. В расчёте берётся верхняя граница диапазона: недосыпать слой хуже, чем привезти лишний куб, который всегда есть куда деть.</p>
-  <p>Полная таблица коэффициентов по материалам разобрана в отдельной статье, вместе с тем, откуда эти числа берутся и почему у щебня разброс шире, чем у песка.</p>
-
+<section id="zayavka" class="d-band d-band-dark d-formband" data-ui><div class="wrap d-split">
+  <div>
+    <h2 class="d-sh">Посчитаем под ваш объект</h2>
+    <p>Напишите материал, объём и адрес: посчитаем стоимость с доставкой и перезвоним за 15 минут. Заявка ни к чему не обязывает.</p>
+    <ul class="d-ticks">
+      <li>
+<svg class="d-ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 8h16a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8ZM3 8l11-4 1.5 4M16.5 14h1"/></svg>Оплата любая: наличные, карта, перевод. После выгрузки, без предоплаты.</li>
+      <li>
+<svg class="d-ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3.5 15.5 15.5 3.5l5 5-12 12-5-5ZM7.5 11.5l2 2M10.5 8.5l2 2M13.5 5.5l2 2"/></svg>Объём по паспорту кузова, проверка до разгрузки</li>
+      <li>
+<svg class="d-ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18ZM12 7v5l3.5 2"/></svg>Круглосуточно, без выходных</li>
+    </ul>
+    <div class="d-cta-row">
+  <a class="d-btn d-btn-max" href="https://max.ru/u/f9LHodD0cOIgiq2N2buCj7oU32e1sbUDdW834GzM718dViUBpco7KXS8n10" target="_blank" rel="noopener" onclick="try{ym(110405092,'reachGoal','call')}catch(e){}">Написать в MAX</a>
+  <a class="d-btn d-btn-ghost" href="https://wa.me/79506460953" target="_blank" rel="noopener" onclick="try{ym(110405092,'reachGoal','wa')}catch(e){}">Написать в WhatsApp</a>
+</div>
+  </div>
+  <div class="d-formcard">
+    <h3>Заявка на расчёт</h3>
+    <form class="d-form" action="https://api.web3forms.com/submit" method="POST">
+  <input type="hidden" name="access_key" value="4c17cc27-0b22-40b7-bea5-47ff348ef6c8">
+  <input type="hidden" name="redirect" value="https://ursdom.ru/dostavka/spasibo/">
+  <input type="hidden" name="subject" value="Заявка: расчёт материала, Свердловская область">
+  <input type="hidden" name="from_name" value="Щебень-Урал, сайт">
+  
+  <input type="text" name="botcheck" class="d-hp" tabindex="-1" autocomplete="off"
+         aria-hidden="true" aria-label="Оставьте это поле пустым">
+  <label for="lf-name">Ваше имя</label>
+  <input id="lf-name" type="text" name="Имя" required>
+  <label for="lf-phone">Телефон для связи</label>
+  <input id="lf-phone" type="tel" name="Телефон" placeholder="+7" required>
+  <label for="lf-msg">Что и куда привезти</label>
+  <textarea id="lf-msg" name="Заявка" placeholder="Например: щебень 20-40, 10 кубов, Первоуральск, адрес"></textarea>
+  <label class="d-consent"><input type="checkbox" name="Согласие" value="да" required>
+    <span>Согласен на обработку персональных данных для ответа на заявку, включая
+    передачу через зарубежный сервис отправки форм.
+    <a href="/dostavka/politika/">Как мы обрабатываем данные</a></span></label>
+  <button class="d-btn d-btn-wide" type="submit">Отправить заявку</button>
+  <p class="d-note">Перезвоним за 15 минут. Заявка ни к чему не обязывает.</p>
+</form>
+  </div>
 </div></section>
 
 <section class="d-band d-deliv" aria-label="Наши доставки и техника" data-ui><div class="wrap">
@@ -632,47 +664,16 @@
 <svg class="d-ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 3h7l5 5v13H7V3ZM14 3v5h5M10 13h6M10 17h6"/></svg><span><b>ООО «Щебень-Урал»</b>Екатеринбург, ул. Толедова, 43</span></p>
 </div></aside>
 
-<section id="zayavka" class="d-band d-band-dark d-formband" data-ui><div class="wrap d-split">
-  <div>
-    <h2 class="d-sh">Посчитаем под ваш объект</h2>
-    <p>Напишите материал, объём и адрес: посчитаем стоимость с доставкой и перезвоним за 15 минут. Заявка ни к чему не обязывает.</p>
-    <ul class="d-ticks">
-      <li>
-<svg class="d-ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 8h16a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8ZM3 8l11-4 1.5 4M16.5 14h1"/></svg>Оплата любая: наличные, карта, перевод. После выгрузки, без предоплаты.</li>
-      <li>
-<svg class="d-ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3.5 15.5 15.5 3.5l5 5-12 12-5-5ZM7.5 11.5l2 2M10.5 8.5l2 2M13.5 5.5l2 2"/></svg>Объём по паспорту кузова, проверка до разгрузки</li>
-      <li>
-<svg class="d-ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18ZM12 7v5l3.5 2"/></svg>Круглосуточно, без выходных</li>
-    </ul>
-    <div class="d-cta-row">
-  <a class="d-btn d-btn-max" href="https://max.ru/u/f9LHodD0cOIgiq2N2buCj7oU32e1sbUDdW834GzM718dViUBpco7KXS8n10" target="_blank" rel="noopener" onclick="try{ym(110405092,'reachGoal','call')}catch(e){}">Написать в MAX</a>
-  <a class="d-btn d-btn-ghost" href="https://wa.me/79506460953" target="_blank" rel="noopener" onclick="try{ym(110405092,'reachGoal','wa')}catch(e){}">Написать в WhatsApp</a>
-</div>
-  </div>
-  <div class="d-formcard">
-    <h3>Заявка на расчёт</h3>
-    <form class="d-form" action="https://api.web3forms.com/submit" method="POST">
-  <input type="hidden" name="access_key" value="4c17cc27-0b22-40b7-bea5-47ff348ef6c8">
-  <input type="hidden" name="redirect" value="https://ursdom.ru/dostavka/spasibo/">
-  <input type="hidden" name="subject" value="Заявка: расчёт материала, Свердловская область">
-  <input type="hidden" name="from_name" value="Щебень-Урал, сайт">
-  
-  <input type="text" name="botcheck" class="d-hp" tabindex="-1" autocomplete="off"
-         aria-hidden="true" aria-label="Оставьте это поле пустым">
-  <label for="lf-name">Ваше имя</label>
-  <input id="lf-name" type="text" name="Имя" required>
-  <label for="lf-phone">Телефон для связи</label>
-  <input id="lf-phone" type="tel" name="Телефон" placeholder="+7" required>
-  <label for="lf-msg">Что и куда привезти</label>
-  <textarea id="lf-msg" name="Заявка" placeholder="Например: щебень 20-40, 10 кубов, Первоуральск, адрес"></textarea>
-  <label class="d-consent"><input type="checkbox" name="Согласие" value="да" required>
-    <span>Согласен на обработку персональных данных для ответа на заявку, включая
-    передачу через зарубежный сервис отправки форм.
-    <a href="/dostavka/politika/">Как мы обрабатываем данные</a></span></label>
-  <button class="d-btn d-btn-wide" type="submit">Отправить заявку</button>
-  <p class="d-note">Перезвоним за 15 минут. Заявка ни к чему не обязывает.</p>
-</form>
-  </div>
+<section class="d-band d-band-tint"><div class="wrap d-prose">
+  <h2 class="d-sh" id="metodika">По каким формулам считаем</h2>
+
+  <h3>Объём отсыпки</h3>
+  <p>Объём считается как площадь на толщину слоя: длина умножается на ширину и на толщину в метрах. Площадка шесть на четыре метра со слоем двадцать сантиметров это 6 × 4 × 0,2, то есть 4,8 кубометра в готовом слое.</p>
+  <p>Дальше вступает уплотнение, и именно на этом шаге чаще всего ошибаются. Материал в кузове лежит рыхло, а в слое его трамбуют, и он занимает меньше места. Поэтому привезти надо больше, чем получилось по геометрии.</p>
+  <h3>Коэффициент уплотнения</h3>
+  <p>Коэффициент показывает, во сколько раз рыхлый объём больше уплотнённого. У песка это 1,10-1,15, у щебня 20-40 доходит до 1,30. В расчёте берётся верхняя граница диапазона: недосыпать слой хуже, чем привезти лишний куб, который всегда есть куда деть.</p>
+  <p>Полная таблица коэффициентов по материалам разобрана в отдельной статье, вместе с тем, откуда эти числа берутся и почему у щебня разброс шире, чем у песка.</p>
+
 </div></section>
 
 <section class="d-band d-band-tint" data-ui><div class="wrap">

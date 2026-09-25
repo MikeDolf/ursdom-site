@@ -5,7 +5,7 @@
    прокрутки, и ради него сюда приходят. #}
 {% block fleet %}{% endblock %}
 {% block body %}
-{% call m.hero2(h1, "Щебень, песок, отсев, ПГС, бетон и ЖБИ с двух площадок отгрузки: в Екатеринбурге и у Верхней Пышмы. Самосвалы от 5 до 20 кубов, цену с доставкой называем по адресу, оплата после выгрузки, " ~ cfg.callback_promise ~ ".", bg=hero_bg_default, cfg=cfg) %}
+{% call m.hero2(h1, "Щебень, песок, отсев, ПГС, бетон и ЖБИ с двух площадок отгрузки: в Екатеринбурге и у Верхней Пышмы. Самосвалы от 5 до 20 кубов, цену с доставкой называем по адресу, оплата после выгрузки, " ~ cfg.callback_promise ~ ".", bg=hero_bg_default, cfg=cfg, third_href="#kalkulyator", third_text="Посчитать в калькуляторе") %}
   {{ m.sieve(sieve) }}
 {% endcall %}
 
@@ -22,9 +22,14 @@
   <p class="d-note">{{ price_note }}</p>
 </div></section>
 
-{{ m.deliveries(fleet_photos) }}
+{% if calc %}<section class="d-band d-band-tint"><div class="wrap">
+{{ m.calculator(cfg, calc) }}
+</div></section>
+{% endif %}
 
-{{ m.quick_band(cfg, "Посчитаем объём и цену за 15 минут", "Назовите материал, задачу и адрес: подберём фракцию и машину под ваш заезд и назовём итоговую сумму с доставкой.", "доставка материалов, " ~ cfg.region_short) }}
+{{ m.form_band(cfg, "Заявка на доставку", "доставка материалов, " ~ cfg.region_short) }}
+
+{{ m.deliveries(fleet_photos) }}
 
 {{ m.guarantee_band(g.guarantees, g.trust) }}
 
@@ -35,10 +40,6 @@
     "Назовите адрес и опишите заезд: ширина ворот, где развернуться и поднять кузов.",
     "Получите точную цену с доставкой. " ~ cfg.callback_promise|capitalize ~ ", на месте сумма не меняется.",
     "Принимаете машину на объекте и проверяете объём. " ~ cfg.payment]) }}
-
-{{ m.form_band(cfg, "Заявка на доставку", "доставка материалов, " ~ cfg.region_short) }}
-
-{{ m.msg_card(cfg) }}
 
 <section class="d-band"><div class="wrap">
   {{ m.sh("Доставка по городам Свердловской области", "goroda",
@@ -71,6 +72,8 @@
   {{ m.reviews(reviews) }}
 </div></section>
 {% endif %}
+
+{{ m.msg_card(cfg) }}
 
 <section class="d-band d-band-tint"><div class="wrap">
   {{ m.sh("Частые вопросы", "faq") }}

@@ -331,7 +331,7 @@
     <div class="d-cta-row">
   <a class="d-btn d-btn-max" href="https://max.ru/u/f9LHodD0cOIgiq2N2buCj7oU32e1sbUDdW834GzM718dViUBpco7KXS8n10" target="_blank" rel="noopener" onclick="try{ym(110405092,'reachGoal','call')}catch(e){}">Написать в MAX</a>
   <a class="d-btn d-btn-ghost" href="https://wa.me/79506460953" target="_blank" rel="noopener" onclick="try{ym(110405092,'reachGoal','wa')}catch(e){}">Написать в WhatsApp</a>
-  <a class="d-btn d-btn-ghost" href="#zayavka">Узнать цену с доставкой</a>
+  <a class="d-btn d-btn-ghost" href="#kalkulyator">Посчитать в калькуляторе</a>
 </div>
     
   </div>
@@ -475,6 +475,49 @@
 </div></section>
 
 
+<section id="zayavka" class="d-band d-band-dark d-formband" data-ui><div class="wrap d-split">
+  <div>
+    <h2 class="d-sh">Оставить заявку</h2>
+    <p>Напишите материал, объём и адрес: посчитаем стоимость с доставкой и перезвоним за 15 минут. Заявка ни к чему не обязывает.</p>
+    <ul class="d-ticks">
+      <li>
+<svg class="d-ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 8h16a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8ZM3 8l11-4 1.5 4M16.5 14h1"/></svg>Оплата любая: наличные, карта, перевод. После выгрузки, без предоплаты.</li>
+      <li>
+<svg class="d-ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3.5 15.5 15.5 3.5l5 5-12 12-5-5ZM7.5 11.5l2 2M10.5 8.5l2 2M13.5 5.5l2 2"/></svg>Объём по паспорту кузова, проверка до разгрузки</li>
+      <li>
+<svg class="d-ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18ZM12 7v5l3.5 2"/></svg>Круглосуточно, без выходных</li>
+    </ul>
+    <div class="d-cta-row">
+  <a class="d-btn d-btn-max" href="https://max.ru/u/f9LHodD0cOIgiq2N2buCj7oU32e1sbUDdW834GzM718dViUBpco7KXS8n10" target="_blank" rel="noopener" onclick="try{ym(110405092,'reachGoal','call')}catch(e){}">Написать в MAX</a>
+  <a class="d-btn d-btn-ghost" href="https://wa.me/79506460953" target="_blank" rel="noopener" onclick="try{ym(110405092,'reachGoal','wa')}catch(e){}">Написать в WhatsApp</a>
+</div>
+  </div>
+  <div class="d-formcard">
+    <h3>Заявка на доставку в Ирбит</h3>
+    <form class="d-form" action="https://api.web3forms.com/submit" method="POST">
+  <input type="hidden" name="access_key" value="4c17cc27-0b22-40b7-bea5-47ff348ef6c8">
+  <input type="hidden" name="redirect" value="https://ursdom.ru/dostavka/spasibo/">
+  <input type="hidden" name="subject" value="Заявка: керамзит, Ирбит">
+  <input type="hidden" name="from_name" value="Щебень-Урал, сайт">
+  
+  <input type="text" name="botcheck" class="d-hp" tabindex="-1" autocomplete="off"
+         aria-hidden="true" aria-label="Оставьте это поле пустым">
+  <label for="lf-name">Ваше имя</label>
+  <input id="lf-name" type="text" name="Имя" required>
+  <label for="lf-phone">Телефон для связи</label>
+  <input id="lf-phone" type="tel" name="Телефон" placeholder="+7" required>
+  <label for="lf-msg">Что и куда привезти</label>
+  <textarea id="lf-msg" name="Заявка" placeholder="Например: щебень 20-40, 10 кубов, Первоуральск, адрес"></textarea>
+  <label class="d-consent"><input type="checkbox" name="Согласие" value="да" required>
+    <span>Согласен на обработку персональных данных для ответа на заявку, включая
+    передачу через зарубежный сервис отправки форм.
+    <a href="/dostavka/politika/">Как мы обрабатываем данные</a></span></label>
+  <button class="d-btn d-btn-wide" type="submit">Отправить заявку</button>
+  <p class="d-note">Перезвоним за 15 минут. Заявка ни к чему не обязывает.</p>
+</form>
+  </div>
+</div></section>
+
 <section class="d-band d-deliv" aria-label="Наши доставки и техника" data-ui><div class="wrap">
   <h2 class="d-sh">Наши доставки и техника</h2>
 
@@ -567,37 +610,6 @@
 </div></section>
 
 
-<section class="d-band d-band-dark d-quickband" data-ui><div class="wrap d-split">
-  <div>
-    <h2 class="d-sh">Посчитаем объём в Ирбите</h2>
-    <p>Назовите размеры участка работ и адрес, подберём фракцию и машину, назовём итоговую цену с доставкой.</p>
-    <ul class="d-ticks">
-      <li>
-<svg class="d-ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12.5 9.5 17 19 7.5"/></svg>Цена с доставкой до вашего адреса, а не «от»</li>
-      <li>
-<svg class="d-ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12.5 9.5 17 19 7.5"/></svg>Объём посчитаем по размерам площадки</li>
-      <li>
-<svg class="d-ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12.5 9.5 17 19 7.5"/></svg>Перезвоним за 15 минут</li>
-    </ul>
-  </div>
-  <form class="d-qform" action="https://api.web3forms.com/submit" method="POST">
-    <input type="hidden" name="access_key" value="4c17cc27-0b22-40b7-bea5-47ff348ef6c8">
-    <input type="hidden" name="redirect" value="https://ursdom.ru/dostavka/spasibo/">
-    <input type="hidden" name="subject" value="Быстрая заявка: керамзит, Ирбит">
-    <input type="hidden" name="from_name" value="Щебень-Урал, сайт">
-    <input type="text" name="botcheck" class="d-hp" tabindex="-1" autocomplete="off"
-           aria-hidden="true" aria-label="Оставьте это поле пустым">
-    <label for="qf-phone">Телефон</label>
-    <input id="qf-phone" type="tel" name="Телефон" placeholder="+7" required>
-    <label for="qf-msg">Что и куда привезти</label>
-    <input id="qf-msg" type="text" name="Заявка" placeholder="Например: 10 кубов, адрес">
-    <label class="d-consent"><input type="checkbox" name="Согласие" value="да" required>
-      <span>Согласен на обработку персональных данных, включая передачу через зарубежный
-      сервис отправки форм. <a href="/dostavka/politika/">Как мы обрабатываем данные</a></span></label>
-    <button class="d-btn d-btn-wide" type="submit">Посчитать стоимость</button>
-  </form>
-</div></section>
-
 <section class="d-band d-band-dark" data-ui><div class="wrap">
   <h2 class="d-sh">Наши гарантии</h2>
 
@@ -664,62 +676,6 @@
     <li><span class="d-stepnum">3</span><p>Получите точную цену с доставкой. Перезвоним за 15 минут.</p></li>
     <li><span class="d-stepnum">4</span><p>Принимаете машину на объекте и проверяете объём. У керамзита гляньте на долю битых гранул и пыли: целая гранула круглая, с плотной коркой. Оплата любая: наличные, карта, перевод. После выгрузки, без предоплаты.</p></li>
   </ol>
-</div></section>
-
-<section id="zayavka" class="d-band d-band-dark d-formband" data-ui><div class="wrap d-split">
-  <div>
-    <h2 class="d-sh">Оставить заявку</h2>
-    <p>Напишите материал, объём и адрес: посчитаем стоимость с доставкой и перезвоним за 15 минут. Заявка ни к чему не обязывает.</p>
-    <ul class="d-ticks">
-      <li>
-<svg class="d-ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 8h16a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8ZM3 8l11-4 1.5 4M16.5 14h1"/></svg>Оплата любая: наличные, карта, перевод. После выгрузки, без предоплаты.</li>
-      <li>
-<svg class="d-ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3.5 15.5 15.5 3.5l5 5-12 12-5-5ZM7.5 11.5l2 2M10.5 8.5l2 2M13.5 5.5l2 2"/></svg>Объём по паспорту кузова, проверка до разгрузки</li>
-      <li>
-<svg class="d-ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18ZM12 7v5l3.5 2"/></svg>Круглосуточно, без выходных</li>
-    </ul>
-    <div class="d-cta-row">
-  <a class="d-btn d-btn-max" href="https://max.ru/u/f9LHodD0cOIgiq2N2buCj7oU32e1sbUDdW834GzM718dViUBpco7KXS8n10" target="_blank" rel="noopener" onclick="try{ym(110405092,'reachGoal','call')}catch(e){}">Написать в MAX</a>
-  <a class="d-btn d-btn-ghost" href="https://wa.me/79506460953" target="_blank" rel="noopener" onclick="try{ym(110405092,'reachGoal','wa')}catch(e){}">Написать в WhatsApp</a>
-</div>
-  </div>
-  <div class="d-formcard">
-    <h3>Заявка на доставку в Ирбит</h3>
-    <form class="d-form" action="https://api.web3forms.com/submit" method="POST">
-  <input type="hidden" name="access_key" value="4c17cc27-0b22-40b7-bea5-47ff348ef6c8">
-  <input type="hidden" name="redirect" value="https://ursdom.ru/dostavka/spasibo/">
-  <input type="hidden" name="subject" value="Заявка: керамзит, Ирбит">
-  <input type="hidden" name="from_name" value="Щебень-Урал, сайт">
-  
-  <input type="text" name="botcheck" class="d-hp" tabindex="-1" autocomplete="off"
-         aria-hidden="true" aria-label="Оставьте это поле пустым">
-  <label for="lf-name">Ваше имя</label>
-  <input id="lf-name" type="text" name="Имя" required>
-  <label for="lf-phone">Телефон для связи</label>
-  <input id="lf-phone" type="tel" name="Телефон" placeholder="+7" required>
-  <label for="lf-msg">Что и куда привезти</label>
-  <textarea id="lf-msg" name="Заявка" placeholder="Например: щебень 20-40, 10 кубов, Первоуральск, адрес"></textarea>
-  <label class="d-consent"><input type="checkbox" name="Согласие" value="да" required>
-    <span>Согласен на обработку персональных данных для ответа на заявку, включая
-    передачу через зарубежный сервис отправки форм.
-    <a href="/dostavka/politika/">Как мы обрабатываем данные</a></span></label>
-  <button class="d-btn d-btn-wide" type="submit">Отправить заявку</button>
-  <p class="d-note">Перезвоним за 15 минут. Заявка ни к чему не обязывает.</p>
-</form>
-  </div>
-</div></section>
-
-<section class="d-band d-band-tint" data-ui><div class="wrap">
-  <div class="d-msgcard">
-    <div>
-      <h2 class="d-msgcard-h">Проще написать? Мы в MAX</h2>
-      <p>Пришлите размеры площадки или фото участка и адрес: ответим за 5 минут, с объёмом и ценой машины.</p>
-    </div>
-    <div class="d-cta-row">
-  <a class="d-btn d-btn-max" href="https://max.ru/u/f9LHodD0cOIgiq2N2buCj7oU32e1sbUDdW834GzM718dViUBpco7KXS8n10" target="_blank" rel="noopener" onclick="try{ym(110405092,'reachGoal','call')}catch(e){}">Написать в MAX</a>
-  <a class="d-btn d-btn-ghost" href="https://wa.me/79506460953" target="_blank" rel="noopener" onclick="try{ym(110405092,'reachGoal','wa')}catch(e){}">Написать в WhatsApp</a>
-</div>
-  </div>
 </div></section>
 
 <section class="d-band"><div class="wrap">
@@ -842,6 +798,19 @@
   <li><a href="/dostavka/stati/cena-kuba-s-dostavkoy/">Цена за куб с доставкой</a></li>
 </ul>
 
+</div></section>
+
+<section class="d-band d-band-tint" data-ui><div class="wrap">
+  <div class="d-msgcard">
+    <div>
+      <h2 class="d-msgcard-h">Проще написать? Мы в MAX</h2>
+      <p>Пришлите размеры площадки или фото участка и адрес: ответим за 5 минут, с объёмом и ценой машины.</p>
+    </div>
+    <div class="d-cta-row">
+  <a class="d-btn d-btn-max" href="https://max.ru/u/f9LHodD0cOIgiq2N2buCj7oU32e1sbUDdW834GzM718dViUBpco7KXS8n10" target="_blank" rel="noopener" onclick="try{ym(110405092,'reachGoal','call')}catch(e){}">Написать в MAX</a>
+  <a class="d-btn d-btn-ghost" href="https://wa.me/79506460953" target="_blank" rel="noopener" onclick="try{ym(110405092,'reachGoal','wa')}catch(e){}">Написать в WhatsApp</a>
+</div>
+  </div>
 </div></section>
 
 <section class="d-band d-band-tint"><div class="wrap">

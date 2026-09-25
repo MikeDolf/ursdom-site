@@ -9,7 +9,7 @@
 {% block body %}
 {{ m.hero2(h1, hero_sub, bg=hero_bg, price=hero_price,
            price_unit="руб за куб щебня 20-40, доставка " ~ city.prep ~ " по плечу " ~ plecho_km ~ " км",
-           note="Оплата после выгрузки, объём проверяете по кузову до разгрузки", cfg=cfg) }}
+           note="Оплата после выгрузки, объём проверяете по кузову до разгрузки", cfg=cfg, third_href=("#kalkulyator" if calc else "#zayavka"), third_text=("Посчитать в калькуляторе" if calc else "Узнать цену с доставкой")) }}
 
 {% if lots %}
 <section class="d-band"><div class="wrap">
@@ -32,9 +32,9 @@
 </div></section>
 {% endif %}
 
-{{ m.deliveries(fleet_photos) }}
+{{ m.form_band(cfg, "Заявка на доставку " ~ city.prep, "доставка, " ~ city.name) }}
 
-{{ m.quick_band(cfg, "Посчитаем объём и цену за 15 минут", "Назовите задачу и адрес " ~ city.loc ~ ": подберём материал и машину под ваш заезд, назовём итоговую сумму с доставкой.", "доставка, " ~ city.name) }}
+{{ m.deliveries(fleet_photos) }}
 
 {{ m.guarantee_band(g.guarantees, g.trust) }}
 
@@ -45,10 +45,6 @@
     "Назовите адрес " ~ city.loc ~ " и опишите заезд: ширина ворот, есть ли где развернуться и поднять кузов.",
     "Получите точную цену с доставкой. " ~ cfg.callback_promise|capitalize ~ " и согласуем окно приезда.",
     "Принимаете машину на объекте, проверяете объём. " ~ cfg.payment], p_minv) }}
-
-{{ m.form_band(cfg, "Заявка на доставку " ~ city.prep, "доставка, " ~ city.name) }}
-
-{{ m.msg_card(cfg) }}
 
 <section class="d-band"><div class="wrap">
   {{ m.sh("Доставка " ~ city.prep, "dostavka") }}
@@ -124,6 +120,8 @@
 <section class="d-band"><div class="wrap">
   {{ m.chips(related_links, "Ещё по теме и в соседних городах") }}
 </div></section>
+
+{{ m.msg_card(cfg) }}
 
 <section class="d-band d-band-tint"><div class="wrap">
   {{ m.sh("Частые вопросы о доставке " ~ city.prep, "faq") }}

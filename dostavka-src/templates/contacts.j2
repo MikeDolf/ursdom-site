@@ -39,15 +39,13 @@
 {% endfor %}
 </div></section>
 
+{{ m.form_band(cfg, form_head, subject) }}
+
 {{ m.deliveries(fleet_photos) }}
 
 {{ m.guarantee_band(g.guarantees, g.trust) }}
 
 {{ m.why_band(g.why, g.stats, cfg) }}
-
-{{ m.form_band(cfg, form_head, subject) }}
-
-{{ m.msg_card(cfg) }}
 
 {% if photos %}<section class="d-band"><div class="wrap d-prose">
   {{ m.photos(photos, photos_head, photos_intro) }}
@@ -63,6 +61,8 @@
   {{ m.reviews(reviews) }}
 </div></section>
 {% endif %}
+
+{{ m.msg_card(cfg) }}
 
 <section class="d-band d-band-tint"><div class="wrap">
   {{ m.sh("Частые вопросы", "faq") }}
