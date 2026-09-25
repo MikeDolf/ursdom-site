@@ -1433,6 +1433,9 @@ dd a:not([class*="d-btn"]),
 .d-calc-res{background:var(--d-steel);color:var(--d-on-steel);border-radius:var(--r-card);padding:24px}
 .d-calc-res .d-calc-out{margin:0 0 18px}
 .d-calc-res .d-calc-table th,.d-calc-res .d-calc-table td{color:var(--d-on-steel);border-bottom-color:var(--d-steel-3)}
+/* Общая подсветка строки при наведении (светлый фон) на тёмной панели
+   итога съедала текст: белые цифры на светлом. Здесь строка не подсвечивается. */
+.d-calc-table tbody tr:hover td,.d-calc-table tbody tr:hover th{background:none}
 .d-calc-res .d-calc-total td{color:var(--d-brass);font-size:26px}
 .d-calc-res .d-calc-total th{color:#fff}
 .d-calc-res .d-note{color:var(--d-on-steel-2)}
