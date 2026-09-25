@@ -278,14 +278,32 @@ def fit_range_multi(bases, lo, hi, extras, dot=False):
 # Лесенки коротких честных добавок для геостраниц-по-матрице: правдивые
 # факты о заказе, ничего не выдумано, только порядок и длина меняются,
 # чтобы попасть в 50-60 знаков title и 150-160 знаков description.
-GEO_TITLE_PAD = ["", " уже", " и область", " и в область", " и в область тоже",
-                 " и в область: цена"]
-GEO_DESC_PAD = ["", ", в срок", ", без наценок", ", как договорились",
-                ", оплата на месте", ", без предоплаты",
-                ", оплата на месте без предоплаты",
-                ", объём проверяем по кузову",
-                ", объём проверяем по кузову, без предоплаты"]
-CALC_TITLE_PAD = ["", " бесплатно", " за минуту", " точно"]
+#
+# В title добивки больше нет. Лесенка « уже», « и в область тоже»,
+# « бесплатно», « точно» дотягивала короткие заголовки до 50 знаков и
+# давала в выдаче «Доставка гравия в Михайловск: цена за куб самосвалом
+# уже» и «Щебень в Арамили: доставка, цена за куб и в область: цена».
+# Такой сниппет выглядит сгенерированным и проигрывает по кликам тому,
+# что короче, но осмысленнее. Заголовок теперь выбирается из готовых
+# вариантов функцией title_pick: первый, что влез в 65 знаков, и цена
+# в нём там, где она есть на странице.
+#
+# Из description убраны « в срок», « без наценок» и « как договорились»:
+# это обещания, которых нет в условиях заказа, и повтор «оплаты на месте»
+# рядом с «оплатой после выгрузки».
+GEO_DESC_PAD = ["", ", без предоплаты",
+                ", объём проверяете по кузову",
+                ", объём проверяете по кузову, без предоплаты"]
+TITLE_MAX = 65
+
+
+def title_pick(*variants):
+    """Первый вариант заголовка, который влезает в TITLE_MAX знаков.
+    Варианты идут от полного к короткому; последний обязан влезать."""
+    for v in variants:
+        if len(v) <= TITLE_MAX:
+            return v
+    return variants[-1]
 
 
 def crumbs(items):
@@ -305,6 +323,7 @@ def localbusiness():
         "name": SITE["brand"],
         "description": SITE["tagline"] + " по " + SITE["region_dat"],
         "url": DOMAIN + SITE["base"],
+        "image": SITE["og_image"],
         "email": SITE["email"],
         "openingHours": "Mo-Su 00:00-23:59",   # круглосуточно: у schema.org
                                                # нет отдельного знака «24/7»,
@@ -401,8 +420,13 @@ def article_schema(url, title, desc, author=None, published=None, modified=None)
     return {"@type": "Article", "headline": title, "description": desc,
             "inLanguage": "ru-RU", "datePublished": published, "dateModified": modified,
             "mainEntityOfPage": DOMAIN + url,
+            # Без image статья не проходит в расширенный сниппет Google:
+            # поле для Article обязательное. Своих снимков у многих статей
+            # нет, поэтому идёт обложка раздела, а издатель - та же
+            # организация, что в LocalBusiness, по @id, а не безымянная копия.
+            "image": [SITE["og_image"]],
             "author": {"@type": "Person", "name": a["name"], "jobTitle": a["role"]},
-            "publisher": {"@type": "Organization", "name": SITE["brand"]}}
+            "publisher": {"@id": DOMAIN + SITE["base"] + "#business"}}
 
 
 def product_schema(name, desc, low_price, url, images=None):
@@ -1324,6 +1348,7 @@ def _photo_ctx(slug, items, default_head=None):
     # а он подставляет общую обложку лишь для необъявленной переменной.
     if items:
         ctx["og_image"] = DOMAIN + items[0]["src"]
+        ctx["og_w"], ctx["og_h"] = items[0]["w"], items[0]["h"]
     return ctx
 
 
@@ -1501,6 +1526,30 @@ PESOK_GEO = [("/dostavka/pesok/bogdanovich/", "Доставка песка в Б
              ("/dostavka/pesok/irbit/", "Доставка песка в Ирбит"),
              ("/dostavka/pesok/nevyansk/", "Доставка песка в Невьянск")]
 SREDNEURALSK = [("/dostavka/shcheben/sredneuralsk/", "Доставка щебня в Среднеуральск")]
+
+
+def mat_city_links(mkey):
+    """Городские страницы материала для его товарной страницы.
+
+    Без этого блока 73 страницы песка, отсева, керамзита, гравия и ПГС
+    по городам были недостижимы по ссылкам с корня раздела: они ссылались
+    только друг на друга, и робот находил их лишь по sitemap. Зоны
+    доставки на товарной странице ведут на щебень по городу, а на свой
+    материал ссылки не было. Анкор тот же, что в соседних городах на самих
+    гео-страницах: «Доставка отсева в Ревду» ведёт в одно место везде.
+    """
+    if mkey not in MAT_FORMS or mkey == "shcheben":
+        return []
+    f = MAT_FORMS[mkey]
+    hand = {c["slug"]: c for c in PESOK_CITIES} if mkey == "pesok" else {}
+    slugs = {cs for cs, mats in MATRIX.items() if mkey in mats and cs in CITY_FACTS} | set(hand)
+    items = []
+    for cs in slugs:
+        prep = CITY_FACTS[cs]["prep"] if cs in CITY_FACTS else hand[cs]["prep"]
+        km = ship_km(cs) if cs in CITY_FACTS else 999
+        items.append((km, prep, "%s%s/%s/" % (SITE["base"], f["url"], cs),
+                      "Доставка %s %s" % (f["rod"], prep)))
+    return [(h, t) for _, _, h, t in sorted(items)]
 
 # Ячейка сита и профильные статьи для товарных страниц без своего товара.
 ZHBI_CELL = {"beton": 19, "kolca-kanalizacionnye": 34, "lotki-teplotrass": 34,
@@ -1702,6 +1751,7 @@ for slug, mc in money_cfg.items():
         _ctx["price_note"] = _ctx["price_note"] + " " + _tn
     htmlp = env.get_template("money.j2").render(
         **_ctx, **mc, calc=_calc, has_calc=bool(_calc),
+        mat_cities=mat_city_links(slug),
         canonical=DOMAIN + url, crumbs_html=crumbs(crumb_items), jsonld=jl,
         intro=mat["intro"], types=mat["types"], fractions=mat.get("fractions"),
         fractions_head=mat.get("fractions_head"),
@@ -1784,8 +1834,9 @@ for c in CITIES:
         lots_note=(city_lots(ship_km(c["slug"]))[1] if c["slug"] in CITY_FACTS else None),
         plecho_km=ship_km(c["slug"]),
         hero_bg=hero_bg_for(c["slug"]), hero_price="от %d" % FLOOR["Щебень 20-40"],
-        title=fit_range(f"Доставка щебня {c['prep']}: цена за куб самосвалом",
-                        50, 60, GEO_TITLE_PAD),
+        title=title_pick(f"Доставка щебня {c['prep']}: цена за куб от {_title_floor('Щебень')} руб",
+                         f"Доставка щебня {c['prep']}: от {_title_floor('Щебень')} руб за куб",
+                         f"Доставка щебня {c['prep']}: цена за куб"),
         desc=fit_range(f"Доставка щебня {c['prep']} и в район ({c['dist']}). Гранит, "
                        "известняк, фракции 20-40, 40-70. Цена за куб, оплата после выгрузки",
                        150, 160, GEO_DESC_PAD, dot=True),
@@ -1963,8 +2014,9 @@ def gen_mat_city(mkey, price_key, rod, vin, calc_slug):
         htmlp = env.get_template("geoplus.j2").render(
             **BASE_CTX, **hero_ctx(forms["url"]), place=place,
             canonical=DOMAIN + url, crumbs_html=crumbs(crumb_items), jsonld=jl,
-            title=fit_range("Доставка %s %s: цена за куб самосвалом" % (rod, f["prep"]),
-                            50, 60, GEO_TITLE_PAD),
+            title=title_pick("Доставка %s %s: цена за куб от %d руб" % (rod, f["prep"], low),
+                             "Доставка %s %s: от %d руб за куб" % (rod, f["prep"], low),
+                             "Доставка %s %s: цена за куб" % (rod, f["prep"])),
             desc=fit_range("Доставка %s %s и в район (%s). Цена от %d руб за куб, "
                            "самосвалы от 5 кубов, оплата после выгрузки"
                            % (rod, f["prep"], dist, low),
@@ -2021,8 +2073,9 @@ for c in PESOK_CITIES:
     ]
     htmlp = env.get_template("geoplus.j2").render(
         **BASE_CTX, **hero_ctx("pesok"), place=c, canonical=DOMAIN + url, crumbs_html=crumbs(crumb_items), jsonld=jl,
-        title=fit_range(f"Доставка песка {c['prep']}: цена за куб, карьерный и речной",
-                        50, 60, GEO_TITLE_PAD),
+        title=title_pick(f"Доставка песка {c['prep']}: цена за куб от {_title_floor('Песок')} руб",
+                         f"Доставка песка {c['prep']}: карьерный и речной, цена за куб",
+                         f"Доставка песка {c['prep']}: цена за куб"),
         desc=fit_range(f"Доставка песка {c['prep']} и в район ({c['dist']}). Карьерный "
                        "под отсыпку, речной мытый под бетон. Цена за куб, оплата после выгрузки",
                        150, 160, GEO_DESC_PAD, dot=True),
@@ -2411,7 +2464,7 @@ for _ci, _c in enumerate(CALC_PAGES):
                 "Калькулятор %s: объём, вес и цена с доставкой" % _name,
                 "Калькулятор %s: цена с доставкой, объём и вес" % _name,
                 "Калькулятор %s: объём, вес, цена" % _name],
-                50, 60, CALC_TITLE_PAD),
+                0, TITLE_MAX, [""]),
         desc=fit_range_multi([
                 "Калькулятор %s: посчитайте объём по размерам площадки с запасом "
                 "на уплотнение, переведите кубы в тонны и узнайте цену с доставкой "
@@ -2517,7 +2570,13 @@ for slug, mc in MONEY_CFG_EXT.items():
     _calc = calc_for(slug)
     htmlp = env.get_template("money.j2").render(
         **BASE_CTX, calc=_calc, has_calc=bool(_calc), canonical=DOMAIN + url, crumbs_html=crumbs(crumb_items),
-        jsonld=jl, title=mc["title"], desc=mc["desc"], h1=mc["h1"],
+        # Цена в title, как у щебня, песка, отсева и ПГС: число то же,
+        # что в витрине и в первом экране этой страницы (mc["low"]).
+        jsonld=jl, title=title_pick(mc["title"].replace(": цена за куб", ": цена за куб от %s руб" % mc["low"]),
+                                    mc["title"].replace(": цена за куб", ": цена от %s руб/м³" % mc["low"]),
+                                    mc["title"]),
+        desc=mc["desc"], h1=mc["h1"],
+        mat_cities=mat_city_links(slug),
         hero_sub=mc["hero_sub"], mat_vin=mc["mat_vin"], mat_rod=mc["mat_rod"],
         mat_order=mc["mat_order"], subject=mc["mat_vin"] + ", " + SITE["region_short"],
         intro=mat["intro"], types=mat["types"], fractions=mat.get("fractions"),
@@ -2705,10 +2764,11 @@ for city_slug, mats in MATRIX.items():
     m1, m2 = MAT_FORMS[head[0]], MAT_FORMS[head[1]] if len(head) > 1 else None
     pair = m1["name"] + (" и " + m2["vin"] if m2 else "")
     h1 = f"{pair} {facts['loc']} с доставкой"
-    title = f"{m1['name']} {facts['loc']}: доставка, цена за куб"
-    if len(title) > 70:
-        title = f"{m1['name']} {facts['loc']}: цена за куб"
-    title = fit_range(title, 50, 60, GEO_TITLE_PAD)
+    _fl = _title_floor(m1["name"].split()[0])
+    title = title_pick(f"{m1['name']} {facts['loc']}: доставка, цена за куб от {_fl} руб",
+                       f"{m1['name']} {facts['loc']} с доставкой: от {_fl} руб за куб",
+                       f"{m1['name']} {facts['loc']}: доставка, цена за куб",
+                       f"{m1['name']} {facts['loc']}: цена за куб")
     # Список материалов не идёт в description без ограничения: у города
     # с пятью материалами строка "щебня, песка, отсева, гравия, керамзита"
     # сама по себе перебирала весь диапазон. Ограничиваем двумя именами

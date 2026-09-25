@@ -573,6 +573,42 @@ if _pub and len(_pub) == 1 and sum(_pub.values()) > 20:
         "у всех %d статей одна дата публикации %s - похоже на константу"
         % (sum(_pub.values()), list(_pub)[0]))
 
+# --- 27. повторяющийся id на странице
+# Раздел статьи с id="zayavka" совпал с якорем формы, и кнопка «Оставить
+# заявку» прокручивала к тексту, а не к форме. Браузер берёт первый id.
+for _u, _h in pages.items():
+    for _id, _n in collections.Counter(re.findall(r'\sid="([^"]+)"', _h)).items():
+        if _n > 1:
+            bad(_u, "дубль id", 'id="%s" встречается %d раза' % (_id, _n))
+
+# --- 28. добивка длины в title
+# Лесенка « уже», « тоже», « бесплатно», « точно» дотягивала title до 50
+# знаков и давала в выдаче «цена за куб самосвалом уже».
+_PAD_TAIL = re.compile(r"\s(уже|тоже|точно|бесплатно|за минуту|самосвалом|и в область|и область)$"
+                       r"|: цена: цена$|в область: цена$")
+for t, urls in titles.items():
+    if _PAD_TAIL.search(t):
+        bad(urls[0], "title", "хвост-добивка в title: %s" % t)
+
+# --- 29. достижимость по ссылкам от корня раздела
+# Проверка 20 ловит страницы без входящих ссылок, но не ловит кластер,
+# который ссылается сам на себя: 73 городские страницы песка, отсева
+# и керамзита имели по три-пять входящих, и все от соседей по кластеру.
+# С корня раздела до них не вела ни одна цепочка.
+_root = "/dostavka/"
+if _root in pages:
+    _links = {u: set(re.findall(r'href="(/dostavka/[^"#?]*)"', h)) & set(pages)
+              for u, h in pages.items()}
+    _seen, _queue = {_root}, [_root]
+    while _queue:
+        for _v in _links[_queue.pop()]:
+            if _v not in _seen:
+                _seen.add(_v)
+                _queue.append(_v)
+    for _u, _h in pages.items():
+        if _u not in _seen and 'content="noindex' not in _h:
+            bad(_u, "сирота", "не достижима по ссылкам от %s" % _root)
+
 # ------------------------------------------------------------------ вывод
 by_kind = collections.Counter(k for _, k, _ in problems)
 print("страниц проверено: %d" % len(pages))

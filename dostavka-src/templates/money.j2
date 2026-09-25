@@ -19,9 +19,16 @@
 {% endfor %}</div></nav>
 {% endif %}
 
+{# Наверху только свой материал: на странице щебня витрина всех
+   материалов занимала полторы тысячи пикселей телефона, и до
+   калькулятора надо было пролистать песок, ПГС и скалу. Остальные
+   строки витрины стоят ниже формы как перекрёстная продажа. #}
+{% set own_rows = shelf_rows|selectattr("own")|list if shelf_rows else [] %}
+{% set top_rows = own_rows if own_rows else shelf_rows %}
+{% set other_rows = shelf_rows|rejectattr("own")|list if own_rows else [] %}
 <section class="d-band"><div class="wrap">
 {% if shelf_rows %}
-  {{ m.shelf(shelf_rows, "Цены на " ~ mat_vin ~ " с доставкой", price_note) }}
+  {{ m.shelf(top_rows, "Цены на " ~ mat_vin ~ " с доставкой", price_note) }}
 {% elif price_rows %}
   {{ m.sh("Цены на " ~ mat_vin ~ " с доставкой", "ceny") }}
   <div class="d-table-wrap"><table>
@@ -46,16 +53,6 @@
 {% endfor %}  </div>
   <p class="d-note">{{ lots_note }}</p>
 {% endif %}
-{% if quarries %}
-  <h2 class="d-sh d-sh-sub" id="karyery">{{ quarries_head }}</h2>
-  <div class="d-table-wrap"><table>
-    <caption>{{ quarries_note }}</caption>
-    <thead><tr><th>Карьер</th><th>Вид</th><th>Цена</th><th>Чем отличается</th></tr></thead>
-    <tbody>
-{% for pit, kind, price, unit, note in quarries %}      <tr><td>{{ pit }}</td><td>{{ kind }}</td><td class="d-spec-val">{{ price }}{% if unit %} <span class="d-unit">{{ unit }}</span>{% endif %}</td><td>{{ note }}</td></tr>
-{% endfor %}    </tbody>
-  </table></div>
-{% endif %}
 </div></section>
 
 {% if calc %}<section class="d-band d-band-tint"><div class="wrap">
@@ -77,13 +74,30 @@
     "Получите точную цену с доставкой. " ~ cfg.callback_promise|capitalize ~ ".",
     "Принимаете машину на объекте и проверяете объём. " ~ cfg.payment]) }}
 
+{% if other_rows or quarries %}<section class="d-band d-band-tint"><div class="wrap">
+{% if quarries %}
+  <h2 class="d-sh" id="karyery">{{ quarries_head }}</h2>
+  <div class="d-table-wrap"><table>
+    <caption>{{ quarries_note }}</caption>
+    <thead><tr><th>Карьер</th><th>Вид</th><th>Цена</th><th>Чем отличается</th></tr></thead>
+    <tbody>
+{% for pit, kind, price, unit, note in quarries %}      <tr><td>{{ pit }}</td><td>{{ kind }}</td><td class="d-spec-val">{{ price }}{% if unit %} <span class="d-unit">{{ unit }}</span>{% endif %}</td><td>{{ note }}</td></tr>
+{% endfor %}    </tbody>
+  </table></div>
+{% endif %}
+{% if other_rows %}  {{ m.sh("Другие материалы с доставкой", "drugie-materialy", "Цена за куб на площадке, доставка считается так же, по плечу от ближайшей площадки отгрузки.") }}
+  {{ m.shelf(other_rows) }}
+{% endif %}</div></section>
+{% endif %}
+
 {# Оплата и зоны: снимают «а вдруг предоплата» и «а ко мне поедут». #}
 <section class="d-band"><div class="wrap">
   {{ m.sh("Как можно заплатить", "oplata") }}
   {{ m.payways(payment) }}
   {{ m.zones(zones, "Куда возим " ~ mat_vin,
      "Плечо доставки считается от ближайшей нашей площадки, в Екатеринбурге или в Верхней Пышме, и заметно влияет на цену за куб: чем дальше, тем выгоднее брать больший объём за одну машину. Города со ссылками имеют свою страницу с условиями.") }}
-</div></section>
+{% if mat_cities %}  {{ m.chips(mat_cities, "Доставка " ~ mat_rod ~ " по городам", "goroda", sub=True) }}
+{% endif %}</div></section>
 
 {{ m.trucks(trucks) }}
 
