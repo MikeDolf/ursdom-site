@@ -1,19 +1,67 @@
 {% extends "base.j2" %}
 {% import "_macros.j2" as m %}
-{# Фото доставок стоят выше, сразу под ценами (см. блок fleet в base.j2). #}
+{# Старый шаблон щебня по городу, на нём остался Среднеуральск. Порядок
+   блоков тот же, что у geoplus.j2 и geo2.j2 (по образцу владельца). #}
 {% block fleet %}{% endblock %}
 {% block body %}
-<section class="d-hero" style="--cell:{{ hero_cell|default(34) }}px"><div class="wrap d-hero-grid">
-  <div class="d-hero-main">
-  <h1>{{ h1 }}</h1>
-  <p>{{ hero_sub }}</p>
-  {{ m.channels(cfg, "#zayavka", "Узнать цену с доставкой") }}
-  </div>
-  {{ m.hero_panel(hero_cap|default("щебень 20-40 мм", true), hero_img|default(none, true)) }}
+{{ m.hero2(h1, hero_sub, bg=hero_bg, price=hero_price,
+           price_unit="руб за куб щебня 20-40, доставка считается по плечу",
+           note="Оплата после выгрузки, объём проверяете по кузову до разгрузки", cfg=cfg) }}
+
+{% if lots %}
+<section class="d-band"><div class="wrap">
+  {{ m.sh("Сколько стоит машина " ~ city.prep, "skolko-mashina") }}
+  <div class="d-lotcards">
+{% for r in lots %}    <div class="d-lotcard">
+      <span class="d-lotcard-vol">{{ r.vol }} м³</span>
+      <b>{{ r.total }} <small>руб</small></b>
+      <span>{{ r.truck }}: щебень 20-40 {{ r.material }} руб и доставка {{ r.delivery }} руб</span>
+    </div>
+{% endfor %}  </div>
+  <p class="d-note">Предварительный расчёт для плеча {{ plecho_km }} км, точную сумму называем по заявке.
+  {{ lots_note }} Другой материал и объём посчитает <a href="/dostavka/kalkulyator/shcheben/">калькулятор щебня</a>.</p>
+</div></section>
+{% endif %}
+
+{{ m.deliveries(fleet_photos) }}
+
+{{ m.quick_band(cfg, "Посчитаем объём и цену за 15 минут", "Назовите задачу и адрес " ~ city.loc ~ ": подберём фракцию и машину под ваш заезд, назовём итоговую сумму с доставкой.", "доставка, " ~ city.name) }}
+
+{{ m.guarantee_band(g.guarantees, g.trust) }}
+
+{{ m.why_band(g.why, g.stats, cfg) }}
+
+{{ m.steps_band("Как заказать доставку " ~ city.prep, [
+    "Скажите фракцию и объём в кубах. Не знаете объём: назовите размеры площадки или фундамента, посчитаем сами.",
+    "Назовите адрес " ~ city.loc ~ " и опишите заезд: ширина ворот, есть ли где развернуться и поднять кузов.",
+    "Получите точную цену с доставкой. " ~ cfg.callback_promise|capitalize ~ " и согласуем окно приезда.",
+    "Принимаете машину на объекте, проверяете объём и фракцию. " ~ cfg.payment]) }}
+
+{{ m.form_band(cfg, "Заявка на доставку " ~ city.prep, "доставка, " ~ city.name) }}
+
+{{ m.msg_card(cfg) }}
+
+{{ m.trucks(trucks) }}
+
+<section class="d-band"><div class="wrap d-prose">
+  <h2 class="d-sh" id="plecho">Доставка щебня {{ city.prep }}: плечо и цена</h2>
+  <p>{{ city.block }}</p>
+
+  <h2 class="d-sh" id="kuda">Куда возим {{ city.prep }} и в район</h2>
+  <p>{{ city.areas }}</p>
+
+  <h2 class="d-sh" id="chto">Что чаще заказывают {{ city.loc }}</h2>
+  <p>{{ city.use }}</p>
+
+  <h2 class="d-sh" id="sroki">Сроки и какая машина приедет</h2>
+  <p>{{ city.terms }}</p>
+
+  <h2 class="d-sh" id="obekty">Типовые объекты {{ city.loc }}</h2>
+  <p>{{ city.objects }}</p>
 </div></section>
 
-<section><div class="wrap d-prose">
-  <h2 id="ceny">Цены на щебень {{ city.loc }}</h2>
+<section class="d-band d-band-tint"><div class="wrap">
+  {{ m.sh("Цены на щебень " ~ city.loc, "ceny") }}
   <div class="d-table-wrap"><table>
     <caption>{{ price_note }} Итоговая цена с доставкой {{ city.prep }} зависит от расстояния ({{ city.dist }}) и объёма машины.</caption>
     <thead><tr><th>Материал</th><th>Цена за куб, руб</th></tr></thead>
@@ -22,78 +70,14 @@
 {% endfor %}    </tbody>
   </table></div>
   <p class="d-note">{{ delivery_note }}</p>
-
-  <h2 id="kak-zakazat">Как заказать доставку {{ city.prep }}</h2>
-  <ol class="d-steps">
-    <li>Скажите фракцию и объём в кубах. Не знаете объём: назовите размеры площадки или фундамента, посчитаем сами.</li>
-    <li>Назовите адрес {{ city.loc }} и опишите заезд: ширина ворот, есть ли где развернуться и поднять кузов.</li>
-    <li>Получите точную цену с доставкой. {{ cfg.callback_promise|capitalize }} и согласуем окно приезда.</li>
-    <li>Принимаете машину на объекте, проверяете объём и фракцию. {{ cfg.payment }}</li>
-  </ol>
-
-  {{ m.midcta(cfg, "Посчитаем объём и цену за 15 минут", "Назовите задачу и адрес " + city.loc + ", подберём фракцию и машину под ваш заезд, назовём итоговую сумму с доставкой.") }}
 </div></section>
 
-{{ m.fleet_strip(fleet_photos) }}
-
-<section><div class="wrap d-prose">
-{# Готовые суммы под этот город. Раньше плечо называлось словами
-   («около 140 км»), а во сколько это обходится, человек досчитывал сам
-   или уходил считать в другое место. Числа считаются от километража
-   именно этого города, поэтому таблица у каждой страницы своя. #}
-{% if lots %}
-  <h2 id="skolko-mashina">Сколько стоит машина {{ city.prep }}</h2>
-  <div class="d-table-wrap"><table>
-    <caption>Предварительный расчёт для плеча {{ plecho_km }} км: материал плюс доставка.
-    Точную сумму называем по заявке.</caption>
-    <thead><tr><th>Объём</th><th>Машина</th><th>Материал</th><th>Доставка</th><th>Итого</th></tr></thead>
-    <tbody>
-{% for r in lots %}      <tr><td class="d-spec-val">{{ r.vol }} м³</td><td>{{ r.truck }}</td><td class="d-spec-val">{{ r.material }} руб</td><td class="d-spec-val">{{ r.delivery }} руб</td><td class="d-spec-val">{{ r.total }} руб</td></tr>
-{% endfor %}    </tbody>
-  </table></div>
-  <p class="d-note">{{ lots_note }} Расчёт по щебню 20-40; другой материал
-  и другой объём посчитает <a href="/dostavka/kalkulyator/shcheben/">калькулятор щебня</a>,
-  там же считается объём по размерам площадки.</p>
-{% endif %}
-
-  <h2 id="plecho">Доставка щебня {{ city.prep }}: плечо и цена</h2>
-  <p>{{ city.block }}</p>
-
-  <h2 id="kuda">Куда возим {{ city.prep }} и в район</h2>
-  <p>{{ city.areas }}</p>
-
-  <h2 id="chto">Что чаще заказывают {{ city.loc }}</h2>
-  <p>{{ city.use }}</p>
-
-  <h2 id="sroki">Сроки и какая машина приедет</h2>
-  <p>{{ city.terms }}</p>
-
-  <h2 id="obekty">Типовые объекты {{ city.loc }}</h2>
-  <p>{{ city.objects }}</p>
+<section class="d-band"><div class="wrap">
+  {{ m.chips(related_links, "Ещё по теме и в соседних городах") }}
 </div></section>
 
-<section class="d-dark-sec"><div class="wrap">
-  <h2>Почему с нами спокойнее</h2>
-  {{ m.guarantees(guarantees) }}
-</div></section>
-
-<section id="zayavka"><div class="wrap">
-  <h2>Оставить заявку</h2>
-  <div class="d-two">
-  <div>{{ m.callblock(cfg) }}</div>
-  <div>
-    <h3>Заявка на доставку {{ city.prep }}</h3>
-    {{ m.lead_form(cfg, "щебень, "+city.name) }}
-  </div>
-  </div>
-</div></section>
-
-<section><div class="wrap">
-  <h2>Частые вопросы о доставке {{ city.prep }}</h2>
+<section class="d-band d-band-tint"><div class="wrap">
+  {{ m.sh("Частые вопросы о доставке " ~ city.prep, "faq") }}
   {{ m.faq(faq) }}
-</div></section>
-
-<section><div class="wrap">
-  {{ m.related(related_links) }}
 </div></section>
 {% endblock %}

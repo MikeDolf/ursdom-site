@@ -1,85 +1,71 @@
 {% extends "base.j2" %}
 {% import "_macros.j2" as m %}
-{# Порядок блоков как на коммерческих гео-страницах второго проекта
-   владельца: сначала всё, что нужно для решения (цена машины до города,
-   калькулятор, фото реальных доставок, гарантии, как заказать, форма),
-   потом текст про доставку, грунты и расчёты, потом полный прайс
-   и частые вопросы. Раньше цена стояла шестым экраном после восьми
-   текстовых разделов, хотя человек пришёл по запросу «отсев с доставкой
-   в Ревду» именно за ней. #}
+{# Порядок и устройство блоков по образцу владельца (его второй проект):
+   первый экран с фото, сколько стоит, калькулятор, фото доставок,
+   быстрая заявка, гарантии, почему мы и цифры, как заказать, форма,
+   «проще написать», доставка в город и машины, текст, прайс, города,
+   частые вопросы. Страница «отсев с доставкой в Ревду» отвечает на свой
+   запрос ценой машины на втором экране, а не после восьми разделов. #}
 {% block fleet %}{% endblock %}
 {% block body %}
-<section class="d-hero" style="--cell:{{ hero_cell|default(34) }}px"><div class="wrap d-hero-grid">
-  <div class="d-hero-main">
-  <h1>{{ h1 }}</h1>
-  <p>{{ hero_sub }}</p>
-  {{ m.channels(cfg, "#zayavka", "Узнать цену с доставкой") }}
-  </div>
-  {{ m.hero_panel(hero_cap|default("щебень 20-40 мм", true), hero_img|default(none, true)) }}
-</div></section>
+{{ m.hero2(h1, hero_sub, bg=hero_bg, price=hero_price,
+           price_unit="руб за куб, доставка " ~ place.prep ~ " по плечу " ~ plecho_km ~ " км",
+           note="Оплата после выгрузки, объём проверяете по кузову до разгрузки", cfg=cfg) }}
 
 {% if lots %}
-<section><div class="wrap">
-  <h2 id="skolko-mashina">Сколько стоит машина {{ place.prep }}</h2>
-{% if price_lead %}  <p>{{ price_lead }}</p>
-{% endif %}  <div class="d-table-wrap"><table class="d-lots">
-    <caption>Предварительный расчёт для плеча {{ plecho_km }} км: материал плюс доставка.
-    Точную сумму называем по заявке.</caption>
-    <thead><tr><th>Объём</th><th>Машина</th><th>Материал</th><th>Доставка</th><th>Итого</th></tr></thead>
-    <tbody>
-{% for r in lots %}      <tr><td class="d-spec-val">{{ r.vol }} м³</td><td>{{ r.truck }}</td><td class="d-spec-val">{{ r.material }} руб</td><td class="d-spec-val">{{ r.delivery }} руб</td><td class="d-spec-val">{{ r.total }} руб</td></tr>
-{% endfor %}    </tbody>
-  </table></div>
-  <p class="d-note">{{ lots_note }} Другой объём посчитает
+<section class="d-band"><div class="wrap">
+  {{ m.sh("Сколько стоит машина " ~ place.prep, "skolko-mashina", price_lead) }}
+  <div class="d-lotcards">
+{% for r in lots %}    <div class="d-lotcard">
+      <span class="d-lotcard-vol">{{ r.vol }} м³</span>
+      <b>{{ r.total }} <small>руб</small></b>
+      <span>{{ r.truck }}: материал {{ r.material }} руб и доставка {{ r.delivery }} руб</span>
+    </div>
+{% endfor %}  </div>
+  <p class="d-note">Предварительный расчёт для плеча {{ plecho_km }} км, точную сумму называем по заявке.
+  {{ lots_note }} Другой объём посчитает
   <a href="/dostavka/kalkulyator/{{ calc_slug|default('pesok', true) }}/">калькулятор {{ calc_rod|default('песка', true) }}</a>,
-  там же считается объём по размерам площадки и перевод кубов в тонны.</p>
+  там же объём по размерам площадки и перевод кубов в тонны.</p>
 </div></section>
 {% endif %}
 
-{% if calc %}<section><div class="wrap">
+{% if calc %}<section class="d-band d-band-tint"><div class="wrap">
 {{ m.calculator(cfg, calc) }}
 </div></section>
 {% endif %}
 
-{{ m.fleet_strip(fleet_photos) }}
+{{ m.deliveries(fleet_photos) }}
 
-<section><div class="wrap">
-  {{ m.midcta(cfg, cta_head, cta_text) }}
-</div></section>
+{{ m.quick_band(cfg, cta_head, cta_text, subject) }}
 
-<section class="d-dark-sec"><div class="wrap">
-  <h2>Почему с нами спокойнее</h2>
-  {{ m.guarantees(guarantees) }}
-</div></section>
+{{ m.guarantee_band(g.guarantees, g.trust) }}
+
+{{ m.why_band(g.why, g.stats, cfg) }}
 
 {% set order = sections|selectattr("id", "equalto", "kak-zakazat")|first %}
-{% if order %}
-<section><div class="wrap d-prose">
-  <h2 id="kak-zakazat">{{ order.h }}</h2>
-{{ m.blocks(order) }}
+{% if order %}{{ m.steps_band(order.h, order.steps) }}{% endif %}
+
+{{ m.form_band(cfg, "Заявка на доставку " ~ place.prep, subject) }}
+
+{{ m.msg_card(cfg) }}
+
+{% if info %}<section class="d-band"><div class="wrap">
+  {{ m.sh("Доставка " ~ place.prep, "dostavka") }}
+  {{ m.info_cards(info, info_note) }}
 </div></section>
 {% endif %}
 
-<section id="zayavka"><div class="wrap">
-  <h2>Оставить заявку</h2>
-  <div class="d-two">
-  <div>{{ m.callblock(cfg) }}</div>
-  <div>
-    <h3>Заявка на доставку {{ place.prep }}</h3>
-    {{ m.lead_form(cfg, subject) }}
-  </div>
-  </div>
-</div></section>
+{{ m.trucks(trucks) }}
 
-<section><div class="wrap d-prose">
-{% for s in sections if s.id != "kak-zakazat" %}
-  <h2 id="{{ s.id }}">{{ s.h }}</h2>
+<section class="d-band"><div class="wrap d-prose">
+{% for s in sections if s.id not in ("kak-zakazat", "kuda") %}
+  <h2 class="d-sh" id="{{ s.id }}">{{ s.h }}</h2>
 {{ m.blocks(s) }}
 {% endfor %}
 </div></section>
 
-<section><div class="wrap">
-  <h2>Цены на все материалы {{ place.loc }}</h2>
+<section class="d-band d-band-tint"><div class="wrap">
+  {{ m.sh("Цены на все материалы " ~ place.loc, "ceny") }}
   <div class="d-table-wrap"><table{% if per_cube_trip %} class="d-trip"{% endif %}>
     <caption>{{ price_note }} Итоговая цена с доставкой {{ place.prep }} зависит от расстояния ({{ place.dist }}) и объёма машины.{% if per_cube_trip %} Последний столбец: предварительная сумма за машину на {{ trip_vol }} м³ с доставкой {{ place.prep }}.{% endif %}</caption>
 {% if per_cube_trip %}    <thead><tr><th>Материал</th><th>За куб, руб</th><th>{{ trip_vol }} м³ с доставкой, руб</th></tr></thead>
@@ -95,12 +81,12 @@
   <p class="d-note">{{ delivery_note }}</p>
 </div></section>
 
-<section><div class="wrap">
-  <h2>Частые вопросы о доставке {{ place.prep }}</h2>
-  {{ m.faq(faq) }}
+<section class="d-band"><div class="wrap">
+  {{ m.chips(related_links, "Ещё по теме и в соседних городах") }}
 </div></section>
 
-<section><div class="wrap">
-  {{ m.related(related_links) }}
+<section class="d-band d-band-tint"><div class="wrap">
+  {{ m.sh("Частые вопросы о доставке " ~ place.prep, "faq") }}
+  {{ m.faq(faq) }}
 </div></section>
 {% endblock %}

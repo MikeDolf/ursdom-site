@@ -55,3 +55,23 @@
   window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();
 })();
+
+/* Лента «Наши доставки». Без скрипта это горизонтальная лента
+   с прилипанием кадра, её листают пальцем или колесом. Скрипт
+   только показывает стрелки и листает на один кадр. */
+(function () {
+  "use strict";
+  var navs = document.querySelectorAll(".d-slides-nav");
+  Array.prototype.forEach.call(navs, function (nav) {
+    var track = nav.parentNode.querySelector(".d-slides");
+    if (!track) return;
+    nav.hidden = false;
+    Array.prototype.forEach.call(nav.querySelectorAll(".d-slides-btn"), function (btn) {
+      btn.addEventListener("click", function () {
+        var slide = track.querySelector(".d-slide");
+        var step = slide ? slide.getBoundingClientRect().width + 16 : track.clientWidth;
+        track.scrollBy({ left: step * parseInt(btn.getAttribute("data-dir"), 10), behavior: "smooth" });
+      });
+    });
+  });
+})();

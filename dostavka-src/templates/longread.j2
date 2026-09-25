@@ -1,18 +1,16 @@
 {% extends "base.j2" %}
 {% import "_macros.j2" as m %}
+{# Статьи, страницы фракций и марок бетона. Режим чтения: сначала сам
+   материал целиком, без вставок посреди текста, потом коммерческий
+   хвост в устройстве по образцу владельца: фото доставок, быстрая
+   заявка, гарантии, порядок заказа, форма, «проще написать». #}
+{% block fleet %}{% endblock %}
 {% block body %}
-<section class="d-hero" style="--cell:{{ hero_cell|default(34) }}px"><div class="wrap d-hero-grid">
-  <div class="d-hero-main">
-  <h1>{{ h1 }}</h1>
-  <p>{{ hero_sub }}</p>
-  {{ m.channels(cfg, "#zayavka", "Узнать цену с доставкой") }}
-  </div>
-  {{ m.hero_panel(hero_cap|default("щебень 20-40 мм", true), hero_img|default(none, true)) }}
-</div></section>
+{{ m.hero2(h1, hero_sub, bg=hero_img, bg_alt=(hero_cap ~ ", фотография") if hero_cap else None, cfg=cfg) }}
 
-<section><div class="wrap d-prose">
 {% if commercial %}
-  <h2 id="ceny">{{ price_head }}</h2>
+<section class="d-band"><div class="wrap">
+  {{ m.sh(price_head, "ceny") }}
   <div class="d-table-wrap"><table>
     <caption>{{ price_note }}</caption>
     <thead><tr><th>Материал</th><th>Цена за куб, руб</th></tr></thead>
@@ -21,17 +19,10 @@
 {% endfor %}    </tbody>
   </table></div>
   <p class="d-note">{{ delivery_note }}</p>
-
-  <h2 id="kak-zakazat">{{ order_head }}</h2>
-  <ol class="d-steps">
-    <li>Скажите материал и объём в кубах. Не знаете объём: назовите размеры участка работ, посчитаем сами.</li>
-    <li>Назовите адрес и опишите заезд: ширина ворот, место для разворота и подъёма кузова.</li>
-    <li>Получите точную цену с доставкой. {{ cfg.callback_promise|capitalize }}, на месте сумма не меняется.</li>
-    <li>Принимаете машину на объекте и проверяете объём. {{ cfg.payment }}</li>
-  </ol>
-
-  {{ m.midcta(cfg, cta_head, cta_text) }}
+</div></section>
 {% endif %}
+
+<section class="d-band"><div class="wrap d-prose">
   {{ m.author_block(author, updated) }}
   <div class="d-tldr"><strong>Коротко, если некогда читать</strong><p>{{ lead }}</p></div>
 {% if conv %}  {{ m.pricebar(conv.anchor) }}
@@ -42,44 +33,45 @@
   </div>
 
 {% for s in sections %}
-  <h2 id="{{ s.id }}">{{ s.h }}</h2>
+  <h2 class="d-sh" id="{{ s.id }}">{{ s.h }}</h2>
 {{ m.blocks(s) }}
 {% if loop.index == cta_after %}{{ m.midcta(cfg, cta_head2 or cta_head, cta_text2 or cta_text) }}{% endif %}
 {% endfor %}
 {{ m.photos(photos, photos_head, photos_intro) }}
 {% if conv %}{{ m.order_block(cfg, conv.head, conv.rows, order_steps, price_note, conv.note) }}
 {% endif %}{% if calc %}{{ m.calculator(cfg, calc) }}
-{% endif %}{# Завершающий призыв не рендерится, если призыв в разделах
-   уже сработал после последнего из них: тогда два одинаковых блока
-   встают в пределах одного экрана. Ревью намерило 163-167 слов между
-   ними на пяти страницах марок бетона. #}
-{# Завершающий призыв не нужен, когда ниже уже стоит блок цен
-   с порядком заказа: он повторяет то же самое через один экран. #}
-{% if cta_after < sections|length and not conv %}  {{ m.midcta(cfg, cta_head, cta_text) }}
-{% endif %}</div></section>
-
-<section id="zayavka"><div class="wrap">
-  <h2>Оставить заявку</h2>
-  <div class="d-two">
-  <div>{{ m.callblock(cfg) }}</div>
-  <div>
-    <h3>{{ form_head }}</h3>
-    {{ m.lead_form(cfg, subject) }}
-  </div>
-  </div>
+{% endif %}{# Завершающий призыв в конце статьи убран: сразу за ней стоит
+   тёмная полоса быстрой заявки, и два призыва подряд были бы дублем. #}
 </div></section>
 
-<section class="d-dark-sec"><div class="wrap">
+{{ m.deliveries(fleet_photos) }}
+
+{{ m.quick_band(cfg, cta_head, cta_text, subject) }}
+
+{{ m.guarantee_band(g.guarantees, g.trust) }}
+
+{% if commercial %}{{ m.steps_band(order_head, [
+    "Скажите материал и объём в кубах. Не знаете объём: назовите размеры участка работ, посчитаем сами.",
+    "Назовите адрес и опишите заезд: ширина ворот, место для разворота и подъёма кузова.",
+    "Получите точную цену с доставкой. " ~ cfg.callback_promise|capitalize ~ ", на месте сумма не меняется.",
+    "Принимаете машину на объекте и проверяете объём. " ~ cfg.payment]) }}
+{% endif %}
+
+{{ m.form_band(cfg, form_head, subject) }}
+
+{{ m.msg_card(cfg) }}
+
+<section class="d-band"><div class="wrap">
   {{ m.objections(objections, None,
      "Самосвалы от 5 до 20 кубов по " ~ cfg.region_dat ~ ". Разгрузка на объекте, оплата после выгрузки, " ~ cfg.callback_promise ~ ".") }}
 </div></section>
 
-<section><div class="wrap">
-  <h2>Частые вопросы</h2>
+<section class="d-band d-band-tint"><div class="wrap">
+  {{ m.sh("Частые вопросы", "faq") }}
   {{ m.faq(faq) }}
 </div></section>
 
-<section><div class="wrap">
-  {{ m.related(related_links) }}
+<section class="d-band"><div class="wrap">
+  {{ m.chips(related_links, "Смотрите также") }}
 </div></section>
 {% endblock %}

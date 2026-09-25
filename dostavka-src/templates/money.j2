@@ -1,28 +1,17 @@
 {% extends "base.j2" %}
 {% import "_macros.j2" as m %}
-{# Фото доставок стоят выше, сразу под ценами (см. блок fleet в base.j2). #}
+{# Товарная страница по образцу владельца: первый экран с фото и ценой,
+   «сколько стоит» карточками, калькулятор, фото доставок, быстрая заявка,
+   гарантии, почему мы и цифры, как заказать, форма, «проще написать»,
+   оплата и зоны, машины, потом справочная часть (под задачу, виды,
+   фракции, характеристики, расчёты), частые вопросы и перекрёстные
+   ссылки. Справочная часть осталась целиком: её читают те, кто выбирает
+   материал, и по ней страница ранжируется. #}
 {% block fleet %}{% endblock %}
 {% block body %}
-<section class="d-hero" style="--cell:{{ hero_cell|default(34) }}px"><div class="wrap d-hero-grid">
-  <div class="d-hero-main">
-  <h1>{{ h1 }}</h1>
-  <p>{{ hero_sub }}</p>
-  {# Цена в первом экране. Раньше первое число появлялось только
-     в таблице ниже, и до него надо было доскроллить: человек, зашедший
-     узнать порядок цен, уходил раньше. Значение считается из той же
-     таблицы (hero_price_for в build.py), поэтому разойтись с ней
-     не может. #}
-{% if hero_price %}  <p class="d-hero-price"><b>{{ hero_price }}</b><span>руб за куб, доставка считается отдельно</span></p>
-{% endif %}
-  {{ m.channels(cfg, "#zayavka", "Узнать цену с доставкой") }}
-  </div>
-  {{ m.hero_panel(hero_cap|default("щебень 20-40 мм", true), hero_img|default(none, true)) }}
-</div></section>
+{{ m.hero2(h1, hero_sub, bg=hero_img, bg_alt=(hero_cap ~ ", фотография материала") if hero_cap else None,
+           price=hero_price, note="Оплата после выгрузки, объём проверяете по паспорту кузова", cfg=cfg) }}
 
-{# Быстрые ссылки. Человек с готовым запросом («мне нужен 20-40»)
-   уходит к нужной странице в один клик, не читая всё подряд. Стоят
-   сразу под первым экраном: ниже по странице их уже не ищут.
-   Ведут только на существующие адреса и на якоря этой же страницы. #}
 {% if quick %}
 <nav class="d-quick" aria-label="Частые запросы"><div class="wrap">
   <span class="d-quick-lab">Чаще всего ищут</span>
@@ -30,57 +19,11 @@
 {% endfor %}</div></nav>
 {% endif %}
 
-{# Содержание страницы.
-   Товарная страница выросла до двадцати разделов и двух с половиной тысяч
-   слов, и человеку, пришедшему за одним конкретным ответом - «а в мешках
-   возите?» - приходилось прокручивать её целиком. Полоса быстрых ссылок
-   выше отвечает на частые запросы, но не показывает, что на странице
-   есть вообще.
-
-   Список собирается теми же условиями, что и сами разделы, поэтому
-   пункта на несуществующий блок в нём быть не может. #}
-{# Подписи пунктов повторяют то же выражение, что и заголовок раздела,
-   на который они ссылаются - буквально, вплоть до default(). Раньше
-   тут стояли отдельные хардкод-строки вида "Размер зерна и применение",
-   и на страницах, где types_head/fractions_head/calc_head переопределён
-   (а это почти весь ассортимент ЖБИ, бетона и малых форм - там нет
-   ни зерна, ни фракций), оглавление обещало один заголовок, а по клику
-   открывался другой. #}
-{% set toc = [("ceny", "Цены и наличие")]
-   + ([("obemy", "Готовые объёмы с доставкой")] if lots else [])
-   + ([("karyery", "Карьеры и происхождение")] if quarries else [])
-   + ([("pod-zadachu", "Что взять под задачу")] if tasks else [])
-   + [("kak-zakazat", "Порядок заказа")]
-   + ([("foto", "Как выглядит на самом деле")] if photos and photos_head else [])
-   + [("vidy", types_head|default("Виды " ~ mat_rod))]
-   + ([("frakcii", fractions_head|default("Фракции и применение", true))] if fractions else [])
-   + ([("fasovka", "Фасовка: навал, мешки, биг-бэги")] if packs else [])
-   + ([("harakteristiki", specs_head|default("Характеристики " ~ mat_rod, true))] if specs else [])
-   + [("skolko", calc_head|default("Сколько нужно на типовые задачи"))]
-   + ([("kalkulyator", "Калькулятор доставки")] if calc else [])
-   + [("oplata", "Способы оплаты"), ("zony", "Зоны доставки и города"),
-      ("zayavka", "Оставить заявку"), ("faq", "Частые вопросы")] %}
-<section><div class="wrap d-prose">
-  <nav class="d-toc" aria-label="Содержание страницы"><strong>Что на этой странице</strong>
-    <ol>
-{% for id, label in toc %}      <li><a href="#{{ id }}">{{ label }}</a></li>
-{% endfor %}    </ol>
-  </nav>
-</div></section>
-
-{# Прайс витриной, а не таблицей. Строки те же и цены те же, но у каждой
-   появились снимок, применение одной фразой и кнопка заказа. Первыми
-   идут позиции материала этой страницы, остальные работают
-   перекрёстной продажей.
-
-   Стоит в обёртке без d-prose намеренно: колонка текста шириной 70ch
-   разворачивает сетку карточек в две колонки вместо четырёх и оставляет
-   треть широкого экрана пустой. Это сетка, а не проза. #}
-<section><div class="wrap">
+<section class="d-band"><div class="wrap">
 {% if shelf_rows %}
   {{ m.shelf(shelf_rows, "Цены на " ~ mat_vin ~ " с доставкой", price_note) }}
 {% elif price_rows %}
-  <h2 id="ceny">Цены на {{ mat_vin }} с доставкой</h2>
+  {{ m.sh("Цены на " ~ mat_vin ~ " с доставкой", "ceny") }}
   <div class="d-table-wrap"><table>
     <caption>Цены и наличие</caption>
     <thead><tr><th>{{ price_col1|default("Позиция", true) }}</th><th>{{ price_col2|default("Цена, руб", true) }}</th></tr></thead>
@@ -91,35 +34,20 @@
 {% if price_note %}  <p class="d-note">{{ price_note }}</p>
 {% endif %}{% endif %}
   <p class="d-note">{{ delivery_note }}</p>
-</div></section>
-
-<section><div class="wrap d-prose">
-{# Готовые объёмы с доставкой. Таблица выше даёт цену материала
-   самовывозом, а человеку нужна сумма «под ключ»: он спрашивает
-   не «сколько стоит куб», а «сколько стоит машина щебня».
-   Закрывает запросы вида «щебень 10 кубов цена». #}
+{# Готовые объёмы карточками: фиксированная цена машины по Екатеринбургу. #}
 {% if lots %}
-  <h2 id="obemy">{{ lots_head }}</h2>
-  <div class="d-table-wrap"><table>
-    <caption>{{ lots_note }}</caption>
-    <thead><tr><th>Объём</th><th>20-40, 40-70, 70-120</th><th>5-20</th><th>Какой заказ закрывает</th></tr></thead>
-    <tbody>
-{% for vol, p1, p2, note in lots %}      <tr><td class="d-spec-val">{{ vol }}</td><td class="d-spec-val">{{ p1 }} руб</td><td class="d-spec-val">{{ p2 }} руб</td><td>{{ note }}</td></tr>
-{% endfor %}    </tbody>
-  </table></div>
+  <h2 class="d-sh d-sh-sub" id="obemy">{{ lots_head }}</h2>
+  <div class="d-lotcards">
+{% for vol, p1, p2, note in lots %}    <div class="d-lotcard">
+      <span class="d-lotcard-vol">{{ vol }}</span>
+      <b>{{ p1 }} <small>руб</small></b>
+      <span>20-40, 40-70, 70-120 с доставкой по Екатеринбургу; 5-20 за {{ p2 }} руб. {{ note }}.</span>
+    </div>
+{% endfor %}  </div>
+  <p class="d-note">{{ lots_note }}</p>
 {% endif %}
-
-{# Песок по карьерам. Стоит вплотную к цене, потому что отвечает
-   на вопрос, который цена и порождает: почему у одного песка 990,
-   а у другого 1200, и что я за эту разницу получаю.
-
-   Колонка с единицей обязательна: мытый песок на этом рынке продают
-   тоннами, карьерный кубами. Без неё человек читает 990 как цену куба
-   и планирует бюджет в полтора раза меньше реального.
-
-   Блок необязательный: материалы без ключа quarries не рендерят ничего. #}
 {% if quarries %}
-  <h2 id="karyery">{{ quarries_head }}</h2>
+  <h2 class="d-sh d-sh-sub" id="karyery">{{ quarries_head }}</h2>
   <div class="d-table-wrap"><table>
     <caption>{{ quarries_note }}</caption>
     <thead><tr><th>Карьер</th><th>Вид</th><th>Цена</th><th>Чем отличается</th></tr></thead>
@@ -128,21 +56,42 @@
 {% endfor %}    </tbody>
   </table></div>
 {% endif %}
-
 </div></section>
 
-{{ m.fleet_strip(fleet_photos) }}
+{% if calc %}<section class="d-band d-band-tint"><div class="wrap">
+{{ m.calculator(cfg, calc, lots) }}
+</div></section>
+{% endif %}
 
-<section><div class="wrap d-prose">
-{# Блок «под задачу» стоит сразу после цен, а не в конце страницы.
-   Порядок здесь и есть суть перестройки: человек сначала видит цену,
-   потом сразу получает ответ «а мне какой», и только потом читает
-   про виды, характеристики и порядок заказа. Раньше этот блок был
-   девятым, и до него доходили единицы.
+{{ m.deliveries(fleet_photos) }}
 
-   Заголовок третьего уровня повторяет формулировку запроса, под ним
-   рабочая фракция и короткий разбор, дальше ссылка в статью по теме.
-   Блок необязательный: материалы без ключа tasks не рендерят ничего. #}
+{{ m.quick_band(cfg, "Не знаете, сколько кубов нужно?", "Назовите размеры площадки, фундамента или траншеи: посчитаем объём с запасом на уплотнение и подберём машину под ваш заезд.", subject) }}
+
+{{ m.guarantee_band(g.guarantees, g.trust) }}
+
+{{ m.why_band(g.why, g.stats, cfg) }}
+
+{{ m.steps_band("Как заказать " ~ mat_order, [
+    "Скажите вид материала и объём в кубах. Если объём неизвестен, назовите размеры участка работ и толщину слоя.",
+    "Назовите адрес и опишите заезд: ширина ворот, место для разворота и подъёма кузова.",
+    "Получите точную цену с доставкой. " ~ cfg.callback_promise|capitalize ~ ".",
+    "Принимаете машину на объекте и проверяете объём. " ~ cfg.payment]) }}
+
+{{ m.form_band(cfg, "Заявка на " ~ mat_order, subject) }}
+
+{{ m.msg_card(cfg) }}
+
+{# Оплата и зоны: снимают «а вдруг предоплата» и «а ко мне поедут». #}
+<section class="d-band"><div class="wrap">
+  {{ m.sh("Как можно заплатить", "oplata") }}
+  {{ m.payways(payment) }}
+  {{ m.zones(zones, "Куда возим " ~ mat_vin,
+     "Плечо доставки считается от ближайшей нашей площадки, в Екатеринбурге или в Верхней Пышме, и заметно влияет на цену за куб: чем дальше, тем выгоднее брать больший объём за одну машину. Города со ссылками имеют свою страницу с условиями.") }}
+</div></section>
+
+{{ m.trucks(trucks) }}
+
+<section class="d-band"><div class="wrap d-prose">
 {% if tasks %}
   {# mat_vin, а не выдуманный mat_name: в контексте товарной страницы
      название материала лежит в падежных формах, именительного отдельно
@@ -150,7 +99,7 @@
      default со вторым аргументом true: сборка передаёт tasks_head=None
      для материалов без своего заголовка, а односложный default ловит
      только необъявленную переменную и пропустил бы None в разметку. #}
-  <h2 id="pod-zadachu">{{ tasks_head|default(mat_vin|capitalize ~ " под задачу", true) }}</h2>
+  <h2 class="d-sh" id="pod-zadachu">{{ tasks_head|default(mat_vin|capitalize ~ " под задачу", true) }}</h2>
   <div class="d-tasks">
 {% for head, frac, text, href, link_text in tasks %}    <div class="d-task">
       <h3>{{ head }}</h3>
@@ -161,34 +110,17 @@
 {% endfor %}  </div>
 {% endif %}
 
-{# Лента шагов тоже выходит из колонки текста: четыре колонки в 70ch
-   дают по 160 пикселей на шаг, и фраза рассыпается в столбик из слов. #}
-</div></section>
-
-<section><div class="wrap">
-  <h2 id="kak-zakazat">Как заказать {{ mat_order }}</h2>
-  <ol class="d-steps">
-    <li>Скажите вид материала и объём в кубах. Если объём неизвестен, назовите размеры участка работ и толщину слоя.</li>
-    <li>Назовите адрес и опишите заезд: ширина ворот, место для разворота и подъёма кузова.</li>
-    <li>Получите точную цену с доставкой. {{ cfg.callback_promise|capitalize }}.</li>
-    <li>Принимаете машину на объекте и проверяете объём. {{ cfg.payment }}</li>
-  </ol>
-</div></section>
-
-<section><div class="wrap d-prose">
-  {{ m.midcta(cfg, "Не знаете, сколько кубов нужно?", "Назовите размеры площадки, фундамента или траншеи. Посчитаем объём с запасом на уплотнение и подберём машину под ваш заезд.") }}
-
   <p>{{ intro }}</p>
 
 {{ m.photos(photos, "Как выглядит " ~ mat_vin,
    "Снимки по каждому виду и фракции: по ним видно и цвет породы, и форму зерна, и реальный размер камня относительно рулетки или монеты.") }}
 
-  <h2 id="vidy">{{ types_head|default("Виды " ~ mat_rod) }}</h2>
+  <h2 class="d-sh" id="vidy">{{ types_head|default("Виды " ~ mat_rod) }}</h2>
   <div class="d-grid">
 {% for t,d in types %}    <div class="d-card"><strong>{{ t }}</strong><p>{{ d }}</p></div>
 {% endfor %}  </div>
 {% if fractions %}
-  <h2 id="frakcii">{{ fractions_head|default("Фракции и применение", true) }}</h2>
+  <h2 class="d-sh" id="frakcii">{{ fractions_head|default("Фракции и применение", true) }}</h2>
   <div class="d-table-wrap"><table>
     <caption>{{ fractions_caption|default("Какая фракция " ~ mat_rod ~ " под какую задачу", true) }}</caption>
     <thead><tr><th>{{ fractions_col1|default("Фракция", true) }}</th><th>{{ fractions_col2|default("Где применяют", true) }}</th></tr></thead>
@@ -202,7 +134,7 @@
    ли машина вообще. Цены тут нет намеренно - фасовка считается
    по заявке, а выдуманная цифра хуже отсутствующей. #}
 {% if packs %}
-  <h2 id="fasovka">{{ packs_head|default("Фасовка и объём", true) }}</h2>
+  <h2 class="d-sh" id="fasovka">{{ packs_head|default("Фасовка и объём", true) }}</h2>
   <div class="d-table-wrap"><table>
     <caption>Как берут материал и сколько выходит в кубе</caption>
     <thead><tr><th>Фасовка</th><th>Объём</th><th>Цена</th><th>Когда её берут</th></tr></thead>
@@ -220,7 +152,7 @@
    а «на 10 кубов слоя заказывают 11-13» говорит всё. Числа взяты
    из наших же статей и обязаны с ними совпадать. #}
 {% if specs %}
-  <h2 id="harakteristiki">{{ specs_head|default("Характеристики " ~ mat_rod, true) }}</h2>
+  <h2 class="d-sh" id="harakteristiki">{{ specs_head|default("Характеристики " ~ mat_rod, true) }}</h2>
   <div class="d-table-wrap"><table>
     <caption>Числа, по которым считают объём и выбирают материал под нагрузку</caption>
     <thead><tr><th>Параметр</th><th>Значение</th><th>Что это значит на объекте</th></tr></thead>
@@ -229,7 +161,7 @@
 {% endfor %}    </tbody>
   </table></div>
 {% endif %}
-  <h2 id="skolko">{{ calc_head|default("Сколько нужно на типовые задачи") }}</h2>
+  <h2 class="d-sh" id="skolko">{{ calc_head|default("Сколько нужно на типовые задачи") }}</h2>
   <div class="d-table-wrap"><table>
     <caption>{{ own_calc_caption or calc_caption|default("Готовые расчёты с запасом на уплотнение, чтобы прикинуть объём до заявки") }}</caption>
     <thead><tr><th>{{ calc_col1|default("Задача") }}</th><th>{{ calc_col2|default("Объём с запасом") }}</th><th>{{ calc_col3|default("Машина") }}</th></tr></thead>
@@ -238,52 +170,15 @@
 {% endfor %}    </tbody>
   </table></div>
   <p class="d-note">Расчёт ориентировочный: точный объём зависит от толщины слоя и плотности грунта. Посчитаем под ваш объект по размерам.</p>
-{% if calc %}{{ m.calculator(cfg, calc, lots) }}{% endif %}
 </div></section>
 
-<section class="d-dark-sec"><div class="wrap">
-  <h2>Условия доставки</h2>
-  <p>Возим самосвалами от 5 до 20 кубов по {{ cfg.region_dat }}. Чем больше объём за машину, тем ниже цена за куб. Разгрузка на объекте, оплата после выгрузки.</p>
-  {{ m.advantages(advantages) }}
-</div></section>
-
-<section><div class="wrap">
-  <h2>Что мы гарантируем</h2>
-  {{ m.guarantees(guarantees) }}
-</div></section>
-
-{# Оплата и зоны стоят перед формой, а не после неё. Оба блока снимают
-   возражения, с которыми человек к форме и не подходит: «а вдруг
-   потребуют предоплату» и «а ко мне вообще поедут». После формы
-   они бы отвечали тому, кто уже ушёл. #}
-<section><div class="wrap">
-  <h2 id="oplata">Как можно заплатить</h2>
-  {{ m.payways(payment) }}
-  {{ m.zones(zones, "Куда возим " ~ mat_vin,
-     "Плечо доставки считается от ближайшей нашей площадки, в Екатеринбурге или в Верхней Пышме, и заметно влияет на цену за куб: чем дальше, тем выгоднее брать больший объём за одну машину. Города со ссылками имеют свою страницу с условиями.") }}
-</div></section>
-
-<section id="zayavka"><div class="wrap">
-  <h2>Оставить заявку</h2>
-  <div class="d-two">
-  <div>{{ m.callblock(cfg) }}</div>
-  <div>
-    <h3>Заявка на {{ mat_order }}</h3>
-    {{ m.lead_form(cfg, subject) }}
-  </div>
-  </div>
-</div></section>
-
-<section><div class="wrap">
-  <h2 id="faq">Частые вопросы</h2>
+<section class="d-band d-band-tint"><div class="wrap">
+  {{ m.sh("Частые вопросы", "faq") }}
   {{ m.faq(faq) }}
 </div></section>
 
-<section><div class="wrap">
+<section class="d-band"><div class="wrap">
   {{ m.crossshelf(cross, "Вас также может заинтересовать") }}
-</div></section>
-
-<section><div class="wrap">
-  {{ m.related(related_links) }}
+  {{ m.chips(related_links, "Смотрите также", sub=True) }}
 </div></section>
 {% endblock %}

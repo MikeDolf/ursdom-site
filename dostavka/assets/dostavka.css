@@ -147,9 +147,7 @@ input,textarea{caret-color:var(--d-brass-text)}
    фокуса там переключается на саму латунь. Перечислены ровно те блоки,
    что стоят на стали: класса-обёртки вроде .d-steel-field в разметке нет,
    и выдумывать его под селектор нельзя. */
-.d-hero :focus-visible,.d-dark-sec :focus-visible,.d-callblock :focus-visible,
-.d-midcta :focus-visible,.d-tldr :focus-visible,
-.d-mobilebar :focus-visible,footer :focus-visible{outline-color:var(--d-brass)}
+.d-hero2 :focus-visible,.d-band-dark :focus-visible,.d-calc-res :focus-visible,.d-midcta :focus-visible,.d-tldr :focus-visible,.d-mobilebar :focus-visible,footer :focus-visible{outline-color:var(--d-brass)}
 
 a{color:var(--d-brass-text);text-underline-offset:.18em;text-decoration-thickness:1px}
 a:hover{color:var(--d-ink);text-decoration-color:var(--d-brass)}
@@ -172,13 +170,11 @@ p{margin:0 0 15px}
 
 /* Список - это остаток на сите: перед каждым пунктом лежит зерно.
    Один рисованный знак на весь сайт, никаких типографских «крючков». */
-.d-prose ul,.d-callblock ul,section ul:not(.d-list):not(.d-related ul):not(.d-steps){
+.d-prose ul{
   list-style:none;margin:0 0 18px;padding:0}
-.d-prose ul li,.d-callblock ul li,
-section ul:not(.d-list):not(.d-related ul):not(.d-steps) li{
+.d-prose ul li{
   position:relative;padding-left:20px;margin-bottom:9px}
-.d-prose ul li::before,.d-callblock ul li::before,
-section ul:not(.d-list):not(.d-related ul):not(.d-steps) li::before{
+.d-prose ul li::before{
   content:"";position:absolute;left:0;top:.62em;width:6px;height:6px;
   background:var(--d-brass);transform:rotate(45deg)}
 .d-prose ol{margin:0 0 18px;padding-left:24px}
@@ -269,41 +265,35 @@ table,.d-sieve,.d-cat-price{font-variant-numeric:tabular-nums}
 /* ---------------------------------------------------- герой
    Стальное поле. Заголовок и действие слева, стопка сит под ними.
    Плашки-надзаголовка здесь нет и не будет: заголовок держит вес сам. */
-.d-hero{background:var(--d-steel);color:var(--d-on-steel);padding:44px 0;
-  position:relative;overflow:hidden}
+
 /* На хабе низ героя держит подпись под стопкой сит, поэтому своё поле
    секции здесь почти не нужно. */
-.d-hero:has(.d-sieve){padding-bottom:6px}
-.d-hero h1{color:#fff;margin-bottom:14px;max-width:20ch}
-.d-hero :where(p){color:var(--d-on-steel-2);font-size:18.5px;max-width:52ch;
-  margin-bottom:24px}
+
+
+
 /* Отбивка под кнопками нужна только на хабе, где следом идёт стопка сит.
    На остальных страницах она оставляла под кнопками полосу пустой стали. */
-.d-hero .d-cta-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:0}
-.d-hero:has(.d-sieve) .d-cta-row{margin-bottom:34px}
-.d-hero a:not(.d-btn){color:var(--d-brass)}
+
+
+
 
 /* Боковое сито. На широком экране правая половина стального поля иначе
    пустует, а пустота - ровно то, с чего начался этот редизайн. Панель
    показывает ячейку страницы в крупном масштабе и называет фракцию
    словами. Шаг тот же --cell, что и везде: на песке мелкий, на буте
    крупный. */
-.d-hero-grid{display:grid;grid-template-columns:minmax(0,1fr) 300px;
-  gap:0 52px;align-items:start}
+
 /* Левая ячейка сетки. min-width:0 обязателен: без него grid-элемент
    не даёт длинному заголовку переноситься и распирает колонку,
    съедая панель справа. */
-.d-hero-main{min-width:0}
+
 /* Цена в первом экране. Латунная кромка слева, как у ценового якоря
    и у блоков «под задачу»: это тот же приём, а не новый элемент.
    Число моноширинными того же набора, что и все цифры на сайте. */
-.d-hero-price{display:flex;align-items:baseline;flex-wrap:wrap;gap:0 10px;
-  margin:0 0 20px;padding:9px 0 9px 15px;border-left:3px solid var(--d-brass)}
-.d-hero-price b{font-family:"Mono Num",ui-monospace,monospace;
-  font-size:29px;font-weight:700;line-height:1;color:var(--d-brass);
-  letter-spacing:-.01em}
-.d-hero-price span{font-size:14px;color:var(--d-on-steel-2)}
-@media (max-width:560px){.d-hero-price b{font-size:25px}}
+
+
+
+
 
 /* Полоса быстрых ссылок под первым экраном. Сидит на эмали, как крошки,
    и читается продолжением навигации, а не блоком контента. На телефоне
@@ -326,36 +316,21 @@ table,.d-sieve,.d-cat-price{font-variant-numeric:tabular-nums}
   .d-quick-lab{display:none}
 }
 
-.d-hero-panel{display:flex;flex-direction:column;margin-top:6px}
+
 /* Снимок вместо нарисованной сетки. Латунная кромка слева осталась -
    она и держит панель в общем языке, а рисовать сито поверх фотографии
    значит спорить с ней же. */
-.d-hero-ph{display:block;position:relative;height:214px;overflow:hidden;
-  background-color:#151d26;border-left:4px solid var(--d-brass)}
-.d-hero-ph img{width:100%;height:100%;object-fit:cover;display:block}
-.d-hero-cap{display:block;background:var(--d-steel-2);border-left:4px solid var(--d-brass);
-  padding:11px 14px;font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;
-  color:var(--d-on-steel-2);font-weight:700}
-.d-hero-cap b{display:block;margin-top:5px;font-size:16px;letter-spacing:-.02em;
-  text-transform:none;color:var(--d-brass);font-weight:800}
+
+
+
+
 
 /* Полоса сита по нижней кромке героя. Показывается там, где боковой
    панели нет: на узком экране и на хабе, где внизу стоит целая стопка
    сит вместо одного. Высота считается от ячейки, чтобы в полосу
    помещалось не меньше двух рядов - один ряд читается забором,
    а не сеткой. */
-@media(max-width:899px){
-  .d-hero-grid{grid-template-columns:1fr}
-  .d-hero-panel{display:none}
-  .d-hero:not(:has(.d-sieve)){padding-bottom:calc(var(--cell,34px) + 24px)}
-  .d-hero:not(:has(.d-sieve))::after{
-    content:"";position:absolute;left:0;right:0;bottom:0;
-    height:calc(var(--cell,34px) + 12px);
-    border-top:1px solid var(--d-steel-3);
-    background-image:
-      repeating-linear-gradient(90deg,var(--d-wire-dark) 0 1px,transparent 1px var(--cell,34px)),
-      repeating-linear-gradient(0deg,var(--d-wire-dark) 0 1px,transparent 1px var(--cell,34px))}
-}
+
 
 /* ---------------------------------------------------- стопка сит
    Главный объект мира. Каждая строка - одно сито: слева ячейка
@@ -448,18 +423,18 @@ main{display:block}
 section{padding:38px 0}
 /* Стальная поверхность. Всё, что стоит на стали, объявляет себя здесь,
    и вложенные элементы берут свои цвета наследованием. */
-.d-hero,.d-dark-sec,.d-callblock,.d-midcta,.d-tldr,.d-footer,footer{
+.d-hero2,.d-band-dark,.d-calc-res,.d-midcta,.d-tldr,.d-footer,footer{
   --d-ghost-line:var(--d-steel-3);
   --d-ghost-ink:var(--d-on-steel);
   --d-ghost-bg:var(--d-steel-2);
   --d-ghost-line-h:var(--d-on-steel-2);
   --d-ghost-ink-h:#fff;
 }
-.d-dark-sec{background:var(--d-steel);color:var(--d-on-steel)}
-.d-dark-sec h2,.d-dark-sec h3{color:#fff}
-.d-dark-sec p{color:var(--d-on-steel-2)}
-.d-dark-sec a{color:var(--d-brass)}
-.d-dark-sec li::before{background:var(--d-brass)}
+
+
+
+
+
 
 /* ---------------------------------------------------- ведомость
    Пары «наименование - значение» набраны разлиновкой, как строка
@@ -474,10 +449,10 @@ section{padding:38px 0}
 .d-card strong{font-size:16px;font-weight:750;letter-spacing:-.02em;
   color:var(--d-ink)}
 .d-card p{margin:0;font-size:15px;color:var(--d-ink-2);line-height:1.5}
-.d-dark-sec .d-grid{border-top-color:var(--d-steel-3)}
-.d-dark-sec .d-card{border-bottom-color:var(--d-steel-3)}
-.d-dark-sec .d-card strong{color:#fff}
-.d-dark-sec .d-card p{color:var(--d-on-steel-2)}
+
+
+
+
 
 /* ---------------------------------------------------- каталог
    Лоток на каждый материал: цена крупным измерительным знаком
@@ -611,11 +586,7 @@ table td:only-child,table td:first-child:last-child{font-weight:400}
    На узком экране прячем «Машину» и «Материал»: кузов показывает
    калькулятор сразу под таблицей, материал - это объём на цену куба.
    Остаются объём, доставка и итог, ради которых блок и стоит первым. */
-@media (max-width:560px){
-  .d-lots th:nth-child(2),.d-lots td:nth-child(2),
-  .d-lots th:nth-child(3),.d-lots td:nth-child(3){display:none}
-  .d-lots th,.d-lots td{padding-left:12px;padding-right:12px;white-space:nowrap}
-}
+
 @media (max-width:700px){
   .d-trip th,.d-trip td{padding-left:12px;padding-right:12px}
 }
@@ -643,22 +614,19 @@ table td:only-child,table td:first-child:last-child{font-weight:400}
 .d-form .d-btn{margin-top:18px}
 
 /* ---------------------------------------------------- блок связи */
-.d-callblock{background:var(--d-steel);color:var(--d-on-steel);padding:26px 24px;
-  border-left:3px solid var(--d-brass)}
-.d-callblock h2,.d-callblock h3{color:#fff;margin-top:0}
+
+
 /* Кнопки каналов в блоке связи тянутся на всю ширину колонки:
    при ширине по содержимому «Написать в MAX» и «Узнать цену
    с доставкой» вставали ступенькой разной длины под ровной
    латунной кнопкой WhatsApp, и ряд читался как случайный. */
-.d-callblock .d-cta-row{flex-direction:column;align-items:stretch}
-.d-callblock .d-cta-row .d-btn{width:100%}
-.d-callblock p{color:var(--d-on-steel-2)}
-.d-bigmax{display:block;background:var(--d-brass);color:var(--d-steel);
-  text-align:center;padding:15px;font-weight:800;font-size:16.5px;
-  text-decoration:none;margin:18px 0 12px;transition:background .15s ease}
-.d-bigmax:hover{background:var(--d-brass-h);color:var(--d-steel)}
-.d-note-light{color:var(--d-on-steel-2)!important}
-.d-center-row{justify-content:center}
+
+
+
+
+
+
+
 
 /* ---------------------------------------------------- призыв в тексте */
 .d-midcta{background:var(--d-steel);color:var(--d-on-steel);padding:24px;
@@ -938,30 +906,22 @@ table td:only-child,table td:first-child:last-child{font-weight:400}
    Номер стоит над текстом, а не слева от него: в четырёх узких колонках
    боковой номер съедает треть ширины строки. На узком экране лента
    складывается обратно в столбец с номером слева - там это уместно. */
-.d-steps{counter-reset:s;list-style:none;padding:0;margin:0 0 22px;
-  display:grid;grid-template-columns:repeat(4,1fr);gap:1px;
-  background:var(--d-rule);border:1px solid var(--d-rule)}
-.d-steps li{counter-increment:s;position:relative;background:var(--d-paper);
-  padding:17px 17px 18px;font-size:15px;line-height:1.5}
-.d-steps li::before{content:counter(s);display:flex;align-items:center;
-  justify-content:center;width:30px;height:30px;margin-bottom:11px;
-  background:var(--d-steel);color:var(--d-brass);
-  font-size:14.5px;font-weight:750}
-/* Латунная кромка сверху: полоса читается как шкала прибора, а колонки
-   на ней - как деления. Без неё четыре светлых прямоугольника
-   не отличаются от блока преимуществ этажом ниже. */
-.d-steps li::after{content:"";position:absolute;left:0;right:0;top:0;height:3px;
-  background:var(--d-brass);opacity:.28}
-.d-steps li:first-child::after{opacity:1}
-
-@media(max-width:900px){.d-steps{grid-template-columns:1fr 1fr}}
-@media(max-width:560px){
-  .d-steps{grid-template-columns:1fr}
-  .d-steps li{padding:13px 15px 14px 52px}
-  .d-steps li::before{position:absolute;left:15px;top:14px;margin:0;
-    width:26px;height:26px}
-  .d-steps li::after{display:none}
-}
+/* Шаги внутри текста (порядок приёмки, укладки, заказа). Были четырьмя
+   узкими колонками на сером фоне: в колонке текста 70ch на шаг выходило
+   160 пикселей, фраза рассыпалась по два слова в строке, а пустые ячейки
+   пятого ряда заливались серым. Теперь это карточки новой системы:
+   номер в латунном кружке слева, текст справа, сетка сама решает,
+   одна колонка или две. */
+.d-steps{counter-reset:s;list-style:none;padding:0;margin:0 0 24px;
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:12px}
+.d-steps li{counter-increment:s;position:relative;margin:0;background:var(--d-white);
+  border:1px solid var(--d-rule);border-radius:var(--r-card);box-shadow:var(--sh-card);
+  padding:16px 18px 16px 64px;font-size:15.5px;line-height:1.5;min-height:64px;
+  display:flex;align-items:center}
+.d-steps li::before{content:counter(s);position:absolute;left:16px;top:50%;
+  transform:translateY(-50%);display:flex;align-items:center;justify-content:center;
+  width:34px;height:34px;border-radius:50%;background:var(--d-brass);color:var(--d-steel);
+  font-size:15px;font-weight:800}
 
 /* ---------------------------------------------------- оплата
    «Как платить» на этом рынке спрашивают раньше, чем «сколько»:
@@ -1101,21 +1061,15 @@ table td:only-child,table td:first-child:last-child{font-weight:400}
 /* -------------------------------------- смотрите также и списки ссылок
    Ссылка - строка ведомости, а не плитка. Латунная засечка слева
    появляется по наведению: тот же обод сита. */
-.d-related ul,.d-list{list-style:none;padding:0;margin:0;display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:1px;
-  background:var(--d-rule);border:1px solid var(--d-rule)}
-.d-related li,.d-list li{margin:0;background:var(--d-paper)}
-.d-related li::before,.d-list li::before{content:none}
-.d-related a,.d-list a{display:block;padding:14px 16px;text-decoration:none;
-  font-size:15px;font-weight:650;color:var(--d-ink);
-  box-shadow:inset 0 0 0 0 var(--d-brass);
-  transition:box-shadow .16s ease,background .16s ease}
-.d-related a:hover,.d-list a:hover{background:#fff;color:var(--d-brass-text);
-  box-shadow:inset 3px 0 0 0 var(--d-brass)}
+
+
+
+
+
 
 /* ---------------------------------------------------- две колонки */
-.d-two{display:grid;grid-template-columns:1fr 1.15fr;gap:24px;align-items:start}
-@media(max-width:820px){.d-two{grid-template-columns:1fr}}
+
+
 
 /* ---------------------------------------------------- крошки */
 .d-crumbs{font-size:13px;color:var(--d-ink-2);background:var(--d-enamel-2);
@@ -1207,11 +1161,11 @@ footer strong{color:#fff}
    поэтому герой ужат, а стопка сит поднята под кнопки. */
 @media(max-width:560px){
   .wrap{padding:0 16px}
-  .d-hero{padding:24px 0 0}
-  .d-hero h1{font-size:29px;line-height:1.12;margin-bottom:10px}
-  .d-hero :where(p){font-size:16.5px;line-height:1.5;margin-bottom:18px}
-  .d-hero .d-cta-row{gap:8px;flex-wrap:nowrap;margin-bottom:22px}
-  .d-hero .d-cta-row .d-btn{flex:1 1 0;padding:13px 8px;font-size:14.5px}
+  
+  
+  
+  
+  
   section{padding:26px 0}
   h2{margin-top:30px}
 
@@ -1228,7 +1182,7 @@ footer strong{color:#fff}
   .d-head-ic{padding:0 12px}
   .d-header .wrap{padding:12px 16px}
   .d-cat{grid-template-columns:1fr}
-  .d-form,.d-callblock,.d-midcta{padding:20px 18px}
+  .d-form,.d-midcta{padding:20px 18px}
   th,td,caption{padding-left:14px;padding-right:14px}
 }
 
@@ -1255,3 +1209,284 @@ td a:not([class*="d-btn"]),
 dd a:not([class*="d-btn"]),
 .d-cat-name a, .d-shelf-name a, .d-crumbs a{
   display:inline-block;padding-block:4px;margin-block:-4px}
+
+/* ============================================================
+   СЕКЦИОННАЯ СИСТЕМА ПО ОБРАЗЦУ ВЛАДЕЛЬЦА (сентябрь 2026)
+   ------------------------------------------------------------
+   Владелец прислал страницу своего второго проекта и попросил тот
+   же порядок и то же устройство блоков во всём разделе. Отсюда:
+   полосы секций (светлая, тонированная, тёмная), заголовок секции
+   с латунной чертой, белые карточки со скруглением и мягкой тенью,
+   иконки у гарантий и преимуществ, лента цифр, карточки шагов,
+   форма на белой карточке в тёмной полосе, крупная лента фото.
+
+   Материалы мира остаются прежними: сталь, эмаль, латунь, шрифт
+   Golos и измерительные цифры. Палитра образца не переносится:
+   темы и бренды двух сайтов владельца разделены намеренно.
+   Прежние запреты на скругления, плитки с иконками и акцентную
+   полосу сняты этим решением, см. DESIGN.md.
+   ============================================================ */
+:root{
+  --d-white:#ffffff;       /* поверхность карточки: ink на белом 17,3 */
+  --r-card:14px;           /* карточки, лента, формы */
+  --r-ctl:9px;             /* кнопки, поля, плашки внутри карточек */
+  --sh-card:0 1px 2px rgba(20,26,32,.05),0 10px 26px rgba(20,26,32,.07);
+  --band-pad:clamp(44px,6.5vw,80px);
+}
+
+/* Кнопки и поля: скругление управляющих элементов. */
+.d-btn{border-radius:var(--r-ctl)}
+.d-form input[type=text],.d-form input[type=tel],.d-form textarea,
+.d-qform input[type=text],.d-qform input[type=tel],.d-calc-row select{border-radius:var(--r-ctl)}
+
+.d-ico{display:block;fill:none;stroke:currentColor;stroke-width:1.8;
+  stroke-linecap:round;stroke-linejoin:round;flex:none}
+
+/* ---------------------------------------------------- полосы секций */
+.d-band{padding:var(--band-pad) 0;background:var(--d-paper)}
+.d-band-tint{background:var(--d-enamel)}
+.d-band-dark{background:var(--d-steel);color:var(--d-on-steel)}
+.d-band-dark h2,.d-band-dark h3{color:#fff}
+.d-band-dark p{color:var(--d-on-steel-2)}
+.d-band-dark a:not(.d-btn){color:var(--d-brass)}
+.d-band > .wrap > :last-child{margin-bottom:0}
+
+.d-sh{margin:0 0 28px;padding-bottom:15px;position:relative}
+.d-sh::after{content:"";position:absolute;left:0;bottom:0;width:46px;height:3px;
+  border-radius:2px;background:var(--d-brass)}
+.d-sh-lead{margin:-12px 0 26px;color:var(--d-ink-2);max-width:62ch;font-size:17.5px}
+.d-band-dark .d-sh-lead{color:var(--d-on-steel-2)}
+.d-prose .d-sh{margin-top:52px}
+.d-prose .d-sh:first-child{margin-top:0}
+
+/* ---------------------------------------------------- первый экран */
+.d-hero2{position:relative;isolation:isolate;overflow:hidden;
+  background:var(--d-steel);color:var(--d-on-steel);
+  padding:clamp(44px,8vw,96px) 0 clamp(40px,6vw,72px)}
+.d-hero2-bg{position:absolute;inset:0;z-index:-2}
+.d-hero2-bg img{width:100%;height:100%;object-fit:cover}
+/* Затемнение плотнее слева, где текст: контраст считается по стали,
+   снимок справа остаётся читаемым. На узком экране текст идёт поверх
+   всего кадра, поэтому затемнение сплошное. */
+.d-hero2::before{content:"";position:absolute;inset:0;z-index:-1;
+  background:linear-gradient(90deg,rgba(21,29,38,.97) 0%,rgba(21,29,38,.9) 44%,
+    rgba(21,29,38,.55) 74%,rgba(21,29,38,.3) 100%)}
+@media (max-width:760px){
+  .d-hero2::before{background:linear-gradient(180deg,rgba(21,29,38,.84) 0%,rgba(21,29,38,.95) 60%)}
+}
+.d-hero2 h1{color:#fff;max-width:19ch;margin-bottom:16px}
+.d-hero2-sub{color:var(--d-on-steel);font-size:18.5px;max-width:54ch;margin:0 0 24px}
+.d-hero2-facts{display:flex;flex-wrap:wrap;gap:12px;margin:0 0 26px}
+.d-hero2-price,.d-hero2-note{margin:0;border-radius:var(--r-card);padding:13px 18px}
+.d-hero2-price{display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 10px;
+  background:rgba(217,165,72,.13);border:1px solid rgba(217,165,72,.5)}
+.d-hero2-price b{font-family:"Mono Num",ui-monospace,monospace;font-size:30px;
+  font-weight:700;line-height:1;color:var(--d-brass);letter-spacing:-.01em}
+.d-hero2-price span{font-size:14px;color:var(--d-on-steel-2)}
+.d-hero2-note{display:flex;align-items:center;gap:12px;max-width:34rem;
+  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);
+  font-size:15px;line-height:1.45;color:var(--d-on-steel)}
+.d-hero2-note .d-ico{width:26px;height:26px;color:var(--d-brass)}
+.d-hero2 .d-cta-row{display:flex;gap:10px;flex-wrap:wrap}
+.d-hero2 a:not(.d-btn){color:var(--d-brass)}
+.d-hero2 .d-sieve{margin-top:34px}
+
+/* ---------------------------------------------------- карточки */
+.d-icards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.d-icard,.d-infocard,.d-stat,.d-stepcards li,.d-msgcard,.d-truck,.d-slide,
+.d-formcard,.d-qform{background:var(--d-white);border:1px solid var(--d-rule);
+  border-radius:var(--r-card);box-shadow:var(--sh-card)}
+.d-icard{padding:24px 22px}
+.d-icard .d-ico,.d-infocard .d-ico{width:48px;height:48px;padding:11px;
+  border-radius:12px;background:var(--d-enamel);color:var(--d-brass-text);margin-bottom:16px}
+.d-icard h3,.d-infocard h3{margin:0 0 8px;font-size:18px}
+.d-icard p,.d-infocard p{margin:0;font-size:15.5px;color:var(--d-ink-2);line-height:1.5}
+.d-icards-dark .d-icard{background:var(--d-steel-2);border-color:var(--d-steel-3);box-shadow:none}
+.d-icards-dark .d-icard .d-ico{background:rgba(217,165,72,.14);color:var(--d-brass)}
+.d-icards-dark .d-icard p{color:var(--d-on-steel-2)}
+@media (max-width:900px){.d-icards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.d-icards{grid-template-columns:1fr}}
+
+/* Лента доверия под гарантиями. */
+.d-trust{background:var(--d-white);border-bottom:1px solid var(--d-rule)}
+.d-trust .wrap{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;
+  padding-top:22px;padding-bottom:22px}
+.d-trust-it{display:flex;align-items:center;gap:12px;margin:0;font-size:14px;
+  line-height:1.35;color:var(--d-ink-2)}
+.d-trust-it .d-ico{width:30px;height:30px;color:var(--d-brass-text)}
+.d-trust-it b{display:block;color:var(--d-ink);font-size:15px;font-weight:750}
+@media (max-width:900px){.d-trust .wrap{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:480px){.d-trust .wrap{grid-template-columns:1fr}}
+
+/* Цифры. */
+.d-stats-band{padding:clamp(28px,4vw,44px) 0}
+.d-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.d-stat{padding:22px 22px 20px}
+.d-stat b{display:block;font-size:38px;font-weight:800;letter-spacing:-.035em;line-height:1;color:var(--d-ink)}
+.d-stat b small{font-size:15px;font-weight:700;letter-spacing:0;color:var(--d-brass-text);margin-left:6px}
+.d-stat span{display:block;margin-top:10px;font-size:14.5px;color:var(--d-ink-2);line-height:1.4}
+@media (max-width:900px){.d-stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* Шаги заказа. */
+.d-stepcards{list-style:none;margin:0 0 18px;padding:0;display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+.d-stepcards li{margin:0;padding:24px 22px}
+.d-stepnum{display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;
+  border-radius:50%;background:var(--d-brass);color:var(--d-steel);font-weight:800;
+  font-size:18px;margin-bottom:14px}
+.d-stepcards p{margin:0;font-size:15.5px;line-height:1.5}
+
+/* ---------------------------------------------------- тёмные полосы с формой */
+.d-split{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:44px;align-items:center}
+@media (max-width:900px){.d-split{grid-template-columns:1fr;gap:28px}}
+.d-ticks{list-style:none;margin:20px 0 24px;padding:0}
+.d-ticks li{display:flex;align-items:flex-start;gap:12px;margin:0 0 12px;color:var(--d-on-steel);font-size:16px}
+.d-ticks .d-ico{width:22px;height:22px;margin-top:2px;color:var(--d-brass)}
+.d-qform,.d-formcard{padding:26px;color:var(--d-ink);box-shadow:0 18px 44px rgba(0,0,0,.28)}
+.d-band-dark .d-formcard h3{color:var(--d-ink);margin-top:0}
+.d-band-dark .d-formcard p,.d-band-dark .d-qform p,.d-band-dark .d-qform span,
+.d-band-dark .d-formcard span{color:var(--d-ink-2)}
+.d-band-dark .d-formcard a,.d-band-dark .d-qform a{color:var(--d-brass-text)}
+.d-formcard :focus-visible,.d-qform :focus-visible{outline-color:var(--d-brass-text)}
+.d-formcard .d-form{background:none;border:0;padding:0}
+.d-qform label{display:block;font-size:13px;font-weight:700;color:var(--d-ink-2);
+  margin:14px 0 6px;letter-spacing:.02em}
+.d-qform label:first-of-type{margin-top:0}
+.d-qform input[type=text],.d-qform input[type=tel]{width:100%;font:inherit;font-size:16px;
+  padding:13px 14px;border:1px solid var(--d-rule-2);background:var(--d-white);color:var(--d-ink)}
+.d-qform ::placeholder{color:#66736c;opacity:1}
+.d-qform input:focus{outline:none;border-color:var(--d-brass-text);box-shadow:0 0 0 3px rgba(217,165,72,.28)}
+.d-qform .d-btn{margin-top:16px}
+.d-formband .d-cta-row{display:flex;gap:10px;flex-wrap:wrap}
+
+/* «Проще написать?» */
+.d-msgcard{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:28px 30px}
+.d-msgcard-h{margin:0 0 6px;font-size:23px}
+.d-msgcard p{margin:0;color:var(--d-ink-2);max-width:52ch}
+.d-msgcard .d-cta-row{display:flex;gap:10px;flex-wrap:wrap;flex:none}
+@media (max-width:760px){.d-msgcard{flex-direction:column;align-items:stretch;padding:24px 20px}}
+
+/* ---------------------------------------------------- доставка и машины */
+.d-infocards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin:0 0 18px}
+.d-infocard{padding:22px}
+@media (max-width:900px){.d-infocards{grid-template-columns:1fr}}
+.d-accent{background:var(--d-white);border-left:3px solid var(--d-brass);
+  border-radius:0 var(--r-card) var(--r-card) 0;padding:16px 20px;box-shadow:var(--sh-card)}
+.d-accent p{margin:0;font-size:16px}
+.d-trucks{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.d-truck{margin:0;overflow:hidden;display:flex;flex-direction:column}
+.d-truck img{width:100%;aspect-ratio:4/3;object-fit:cover}
+.d-truck figcaption{padding:18px 20px 20px;font-size:15px;color:var(--d-ink-2);line-height:1.5}
+.d-truck figcaption b{display:block;font-size:19px;color:var(--d-ink);letter-spacing:-.02em}
+.d-truck-vol{display:inline-block;margin:8px 0 10px;padding:3px 12px;border-radius:999px;
+  background:var(--d-enamel);color:var(--d-brass-text);font-weight:750;font-size:14px}
+@media (max-width:900px){.d-trucks{grid-template-columns:1fr}}
+
+/* ---------------------------------------------------- лента фото доставок */
+.d-deliv{overflow:hidden}
+.d-slides{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;
+  padding:4px 2px 14px;scrollbar-width:thin;-webkit-overflow-scrolling:touch}
+.d-slide{flex:0 0 min(760px,86%);margin:0;scroll-snap-align:start;overflow:hidden;
+  display:flex;flex-direction:column}
+.d-slide img{width:100%;aspect-ratio:16/10;object-fit:cover}
+.d-slide figcaption{padding:15px 18px 17px;font-size:15px;color:var(--d-ink-2);line-height:1.5}
+.d-slides-nav{display:flex;justify-content:flex-end;gap:10px;margin-top:6px}
+.d-slides-btn{width:48px;height:48px;border-radius:50%;border:1px solid var(--d-rule-2);
+  background:var(--d-white);color:var(--d-ink);font:inherit;font-size:28px;line-height:1;
+  cursor:pointer;display:inline-flex;align-items:center;justify-content:center;
+  transition:border-color .15s ease,background .15s ease}
+.d-slides-btn:hover{border-color:var(--d-brass);background:var(--d-enamel)}
+
+/* ---------------------------------------------------- плашки-ссылки */
+.d-chips{list-style:none;margin:0 0 10px;padding:0;display:flex;flex-wrap:wrap;gap:10px}
+.d-chips li{margin:0}
+.d-chips a{display:inline-flex;align-items:center;min-height:48px;padding:0 18px;
+  border-radius:999px;background:var(--d-white);border:1px solid var(--d-rule);
+  color:var(--d-ink);text-decoration:none;font-size:15px;transition:border-color .15s ease}
+.d-chips a:hover{border-color:var(--d-brass);color:var(--d-brass-text)}
+
+/* ---------------------------------------------------- прежние блоки в новой системе */
+.d-table-wrap{border-radius:var(--r-card);box-shadow:var(--sh-card);background:var(--d-white)}
+.d-shelf{gap:16px!important;background:none!important;border:0!important}
+.d-shelf-item{border-radius:var(--r-card);overflow:hidden;background:var(--d-white)!important;
+  border:1px solid var(--d-rule);box-shadow:var(--sh-card)}
+.d-cat{gap:16px!important;background:none!important;border:0!important}
+.d-cat-card{border-radius:var(--r-card);background:var(--d-white)!important;
+  border:1px solid var(--d-rule);box-shadow:var(--sh-card)}
+.d-task{background:var(--d-white);border:1px solid var(--d-rule);border-left:3px solid var(--d-brass);
+  border-radius:0 var(--r-card) var(--r-card) 0;padding:18px 20px!important;box-shadow:var(--sh-card)}
+.d-callout,.d-tldr,.d-midcta,.d-calc,.d-toc,.d-author,.d-pricebar,.d-form{border-radius:var(--r-card)}
+.d-calc{background:var(--d-white);box-shadow:var(--sh-card)}
+.d-photos figure img,.d-shelf-ph{border-radius:0}
+.d-faq{border-top:0}
+.d-faq details{background:var(--d-white);border:1px solid var(--d-rule);border-radius:var(--r-card);
+  margin-bottom:10px;padding:0 20px;box-shadow:var(--sh-card)}
+.d-faq summary{padding-right:40px}
+
+
+
+
+
+/* Калькулятор: слева поля, справа тёмная панель с итогом. */
+.d-calc-ui{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:28px;align-items:start}
+.d-calc-ui[hidden]{display:none!important}
+.d-calc-res{background:var(--d-steel);color:var(--d-on-steel);border-radius:var(--r-card);padding:24px}
+.d-calc-res .d-calc-out{margin:0 0 18px}
+.d-calc-res .d-calc-table th,.d-calc-res .d-calc-table td{color:var(--d-on-steel);border-bottom-color:var(--d-steel-3)}
+.d-calc-res .d-calc-total td{color:var(--d-brass);font-size:26px}
+.d-calc-res .d-calc-total th{color:#fff}
+.d-calc-res .d-note{color:var(--d-on-steel-2)}
+.d-calc-res .d-cta-row{display:flex;gap:10px;flex-wrap:wrap}
+.d-calc-res .d-note a{color:var(--d-brass)}
+@media (max-width:760px){.d-calc-ui{grid-template-columns:1fr}}
+.d-calc-form{min-width:0}
+
+/* Цена машины карточками: объём, итог с доставкой, из чего он сложен. */
+.d-lotcards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin:0 0 18px}
+.d-lotcard{background:var(--d-white);border:1px solid var(--d-rule);border-radius:var(--r-card);
+  box-shadow:var(--sh-card);padding:22px 22px 20px}
+.d-lotcard-vol{display:inline-block;padding:3px 12px;border-radius:999px;background:var(--d-enamel);
+  color:var(--d-brass-text);font-weight:750;font-size:14px}
+.d-lotcard b{display:block;margin:14px 0 8px;font-size:34px;font-weight:800;letter-spacing:-.035em;
+  line-height:1;color:var(--d-ink)}
+.d-lotcard b small{font-size:15px;font-weight:700;letter-spacing:0;color:var(--d-ink-2)}
+.d-lotcard > span:last-child{display:block;font-size:14.5px;color:var(--d-ink-2);line-height:1.45}
+.d-sh-sub{margin-top:56px}
+
+/* Правки после первого прохода по скриншотам. */
+.d-truck figcaption > span:last-child{display:block}
+/* На главной поверх фото стоит стопка фракций с ценами во всю ширину:
+   затемнение здесь сплошное, иначе цены справа ложились на светлый кадр. */
+.d-hero2:has(.d-sieve)::before{background:rgba(21,29,38,.93)}
+.d-hero2 h1{max-width:22ch}
+/* Справочная часть: абзацы в удобную для чтения колонку 70ch, а таблицы,
+   карточки и калькулятор на всю ширину полосы. Раньше вся колонка была
+   70ch, и таблица фасовки в четыре столбца сжималась в узкую ленту. */
+.d-band > .wrap.d-prose{max-width:66rem}
+.d-band > .wrap.d-prose > p,.d-band > .wrap.d-prose > ul,.d-band > .wrap.d-prose > ol{max-width:70ch}
+@media (max-width:560px){
+  /* На телефоне карточки с иконкой строкой: иконка слева, текст справа.
+     Столбиком шесть гарантий и шесть причин занимали по два экрана. */
+  .d-icard{display:grid;grid-template-columns:44px minmax(0,1fr);gap:2px 14px;padding:16px}
+  .d-icard .d-ico{grid-row:span 2;width:44px;height:44px;padding:10px;margin:0}
+  .d-icard h3{margin:2px 0 4px;font-size:17px}
+  .d-lotcard b{font-size:30px}
+  .d-stat b{font-size:32px}
+}
+.d-hero2-in{position:relative}
+.d-quickband .d-sh{margin-bottom:22px}
+/* На 320 px колонку калькулятора растягивал самый длинный пункт списка
+   («Екатеринбург и ближний пояс, 25 км»), и страница уезжала вбок. */
+.d-calc-row select{min-width:0;width:100%}
+@media (max-width:760px){.d-calc-ui{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:400px){
+  /* Итог калькулятора крупным кеглем в одну строку не помещался в панель
+     на экране 320 px и уводил страницу вбок на 22 px. */
+  .d-calc{padding:16px 12px}
+  .d-calc-res{padding:18px 14px}
+  .d-calc-res .d-calc-total td{font-size:20px}
+}
+/* Шаги внутри колонки текста наследовали отступ обычного нумерованного
+   списка (24 px слева) и сдвигались вправо от заголовка. */
+.d-prose .d-steps{padding-left:0}
+.d-prose .d-steps li{margin:0}

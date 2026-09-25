@@ -171,7 +171,7 @@
    от плиток каталога на хабе: здесь внутри есть вторая цель, кнопка
    заказа, и растянутая ссылка накрыла бы её собой. #}
 {% macro shelf(rows, head=None, note=None) -%}
-{% if head %}  <h2 id="ceny">{{ head }}</h2>
+{% if head %}  <h2 class="d-sh" id="ceny">{{ head }}</h2>
 {% endif %}  <div class="d-shelf">
 {% for r in rows %}    <article class="d-shelf-item">
 {% if r.img %}      <div class="d-shelf-ph">
@@ -216,7 +216,7 @@
    пунктов - только отсортированным по признаку, который двигает цену,
    а не по алфавиту. #}
 {% macro zones(items, head, note=None) -%}
-  <h2 id="zony">{{ head }}</h2>
+  <h2 class="d-sh d-sh-sub" id="zony">{{ head }}</h2>
 {% if note %}  <p>{{ note }}</p>
 {% endif %}  <div class="d-zones">
 {% for z in items %}    <section class="d-zone">
@@ -234,7 +234,7 @@
    Текущий материал вычитается на сборке, поэтому страница не предлагает
    саму себя. #}
 {% macro crossshelf(rows, head) -%}
-{% if rows %}{% if head %}  <h2>{{ head }}</h2>
+{% if rows %}{% if head %}  <h2 class="d-sh">{{ head }}</h2>
 {% endif %}
   <div class="d-shelf d-shelf-cross">
 {% for r in rows %}    <article class="d-shelf-item">
@@ -258,7 +258,7 @@
 {%- endmacro %}
 
 {% macro photos(items, head=None, intro=None) -%}
-{% if items %}{% if head %}  <h2 id="foto">{{ head }}</h2>
+{% if items %}{% if head %}  <h2 class="d-sh" id="foto">{{ head }}</h2>
 {% endif %}{% if intro %}  <p>{{ intro }}</p>
 {% endif %}  <div class="d-photos">
 {% for ph in items %}    <figure>
@@ -428,7 +428,7 @@
    сразу в «Как мы возим»: между дочитанным материалом и заявкой
    не было ни одного шага. #}
 {% macro order_block(cfg, head, rows, steps, price_note, note=None) -%}
-<h2 id="skolko-stoit">{{ head }}</h2>
+<h2 class="d-sh" id="skolko-stoit">{{ head }}</h2>
 <div class="d-table-wrap"><table>
   <caption>{{ price_note }}</caption>
   <thead><tr><th>Позиция</th><th>Цена с доставкой</th></tr></thead>
@@ -455,7 +455,7 @@
    заголовков второго уровня, шесть из них про одно и то же действие.
    Одна сетка вместо двух, один заголовок вместо двух. #}
 {% macro objections(items, extra=None, note=None) -%}
-<h2>Что важно знать до заявки</h2>
+<h2 class="d-sh">Что важно знать до заявки</h2>
 {% if note %}<p>{{ note }}</p>
 {% endif %}<div class="d-grid">
 {% for t,d in items %}  <div class="d-card"><strong>{{ t }}</strong><p>{{ d }}</p></div>
@@ -485,6 +485,7 @@
   заезда и загрузки машин, точную сумму называем по заявке.</p>
 
   <div class="d-calc-ui" hidden>
+    <div class="d-calc-form">
     <div class="d-calc-row">
       <label for="calc-mat">Материал</label>
       <select id="calc-mat">
@@ -504,6 +505,8 @@
 {% for name,km in calc.destinations %}        <option value="{{ km }}"{% if name == (calc.sel_dest or "Екатеринбург и ближний пояс") %} selected{% endif %}>{{ name }}, {{ km }} км</option>
 {% endfor %}      </select>
     </div>
+    </div>
+    <div class="d-calc-res">
     <output class="d-calc-out" id="calc-out" aria-live="polite">
       <table class="d-calc-table"><tbody>
         <tr><th scope="row">Материал</th><td class="d-calc-formula">{{ calc.start.vol }} м³ × {{ calc.start.price_s }} руб</td><td>{{ calc.start.material_s }} руб</td></tr>
@@ -518,7 +521,8 @@
     <a href="#obemy">фиксированная цена за машину</a>, и она выгоднее этого расчёта:
     там доставка входит в стоимость загрузки, а здесь считается по километражу.
     Калькулятор нужен для нестандартных объёмов и для доставки за город.</p>
-{% endif %}  </div>
+{% endif %}    </div>
+  </div>
 
 {% if calc.static is not defined or calc.static %}  <div class="d-calc-static">
     <div class="d-table-wrap"><table>
@@ -690,9 +694,261 @@
 
 {% macro related(links) -%}
 <nav class="d-related" aria-label="Смотрите также">
-  <h2>Смотрите также</h2>
+  <h2 class="d-sh">Смотрите также</h2>
   <ul>
 {% for href,txt in links %}    <li><a href="{{ href }}">{{ txt }}</a></li>
 {% endfor %}  </ul>
 </nav>
+{%- endmacro %}
+
+{# ================================================================
+   БЛОКИ ПО ОБРАЗЦУ ВЛАДЕЛЬЦА (сентябрь 2026)
+
+   Владелец прислал страницу своего второго проекта и попросил тот же
+   порядок и то же устройство блоков во всём разделе: первый экран
+   с фото, «сколько стоит», калькулятор, фото доставок, тёмная полоса
+   с быстрой заявкой, гарантии карточками, цифры, шаги, форма в тёмной
+   полосе, «проще написать», доставка и машины, таблицы, текст, частые
+   вопросы. Цвета и шрифты остаются «Щебень-Урал»: темы и бренды двух
+   сайтов разделены по требованию владельца, копируется схема, а не
+   палитра.
+   ================================================================ #}
+
+{# Иконки одним контуром: 24×24, штрих currentColor. Нарисованы здесь,
+   без библиотек: у сайта нет ни одной внешней зависимости в рантайме. #}
+{% macro icon(name) -%}
+{% set P = {
+ "rub": "M8 20V4h5.5a4 4 0 0 1 0 8H6M6 16h8",
+ "cube": "M12 3 4 7.5v9L12 21l8-4.5v-9L12 3ZM4 7.5l8 4.5 8-4.5M12 12v9",
+ "truck": "M2 6h12v10H2zM14 9h4l4 4v3h-8M6.5 19.5a2 2 0 1 0 0-4 2 2 0 0 0 0 4ZM17.5 19.5a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z",
+ "clock": "M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18ZM12 7v5l3.5 2",
+ "shield": "M12 3 5 6v5.5c0 4.3 2.9 7.7 7 9.5 4.1-1.8 7-5.2 7-9.5V6l-7-3ZM9 12l2.2 2.2L15.5 10",
+ "wallet": "M3 8h16a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8ZM3 8l11-4 1.5 4M16.5 14h1",
+ "pin": "M12 21s-7-6.2-7-11.2a7 7 0 0 1 14 0C19 14.8 12 21 12 21ZM12 12.3a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z",
+ "ruler": "M3.5 15.5 15.5 3.5l5 5-12 12-5-5ZM7.5 11.5l2 2M10.5 8.5l2 2M13.5 5.5l2 2",
+ "chat": "M4 5h16v11H10l-5 4v-4H4V5ZM8 10h8M8 13h5",
+ "check": "M5 12.5 9.5 17 19 7.5",
+ "calc": "M6 3h12v18H6zM9 7h6M9 11h1M14 11h1M9 15h1M14 15h1M9 18h1M14 18h1",
+ "route": "M6 19a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5ZM18 10a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5ZM6 14V9a3 3 0 0 1 3-3h6.5M18 10v5a3 3 0 0 1-3 3H8.5",
+ "doc": "M7 3h7l5 5v13H7V3ZM14 3v5h5M10 13h6M10 17h6",
+ "hand": "M7 11V6.5a1.5 1.5 0 0 1 3 0V11M10 10V5a1.5 1.5 0 0 1 3 0v5M13 10V6a1.5 1.5 0 0 1 3 0v6M16 12V9a1.5 1.5 0 0 1 3 0v4c0 4.4-3 8-7.5 8-2.6 0-4.4-1.2-5.7-3.4L4 13.5a1.5 1.5 0 0 1 2.5-1.7L7 13"
+} %}
+<svg class="d-ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="{{ P[name] }}"/></svg>
+{%- endmacro %}
+
+{# Первый экран с настоящим снимком на фоне. Снимок лежит <picture>
+   под затемнением, а не фоном в CSS: так работают srcset, приоритет
+   загрузки и alt. Затемнение слева плотнее, где текст, и прозрачнее
+   справа, где видно сам материал или машину. #}
+{% macro hero2(h1, sub, bg=None, bg_alt=None, price=None, price_unit="руб за куб, доставка считается отдельно",
+               note=None, cfg=None, third_href="#zayavka", third_text="Узнать цену с доставкой",
+               phone=False) -%}
+<section class="d-hero2">
+{% if bg %}  <picture class="d-hero2-bg">
+{% if bg.webp %}    <source type="image/webp" srcset="{{ bg.webp }}" sizes="100vw">
+{% endif %}    <img src="{{ bg.src }}" srcset="{{ bg.jpg }}" sizes="100vw" alt="{{ bg.alt or bg_alt or '' }}"
+         width="{{ bg.w }}" height="{{ bg.h }}" loading="eager" fetchpriority="high" decoding="async">
+  </picture>
+{% endif %}  <div class="wrap d-hero2-in">
+    <h1>{{ h1 }}</h1>
+    <p class="d-hero2-sub">{{ sub }}</p>
+{% if price or note %}    <div class="d-hero2-facts">
+{% if price %}      <p class="d-hero2-price"><b>{{ price }}</b><span>{{ price_unit }}</span></p>
+{% endif %}{% if note %}      <p class="d-hero2-note">{{ icon("shield") }}<span>{{ note }}</span></p>
+{% endif %}    </div>
+{% endif %}{% if phone %}    <div class="d-cta-row">
+      <a class="d-btn d-btn-max" href="{{ cfg.phone_href }}" onclick="try{ym({{ cfg.metrika_id }},'reachGoal','{{ cfg.goal_contact }}')}catch(e){}">{{ cfg.phone }}</a>
+      <a class="d-btn d-btn-ghost" href="{{ cfg.max_url }}" target="_blank" rel="noopener" onclick="try{ym({{ cfg.metrika_id }},'reachGoal','{{ cfg.goal_contact }}')}catch(e){}">Написать в MAX</a>
+    </div>
+{% else %}    {{ channels(cfg, third_href, third_text) }}
+{% endif %}    {{ caller() if caller else "" }}
+  </div>
+</section>
+{%- endmacro %}
+
+{# Заголовок секции: латунная черта под ним, как в образце. #}
+{% macro sh(text, id=None, lead=None, sub=False) -%}
+<h2 class="d-sh{% if sub %} d-sh-sub{% endif %}"{% if id %} id="{{ id }}"{% endif %}>{{ text }}</h2>
+{% if lead %}<p class="d-sh-lead">{{ lead }}</p>
+{% endif %}
+{%- endmacro %}
+
+{# Лента реальных доставок: крупные снимки с прокруткой. Без скрипта это
+   горизонтальная лента с прилипанием кадра; wa.js добавляет стрелки. #}
+{% macro deliveries(items, head="Наши доставки и техника") -%}
+{% if items %}<section class="d-band d-deliv" aria-label="{{ head }}" data-ui><div class="wrap">
+  {{ sh(head) }}
+  <div class="d-slides" tabindex="0">
+{% for ph in items %}    <figure class="d-slide">
+      <picture>
+{% if ph.webp %}        <source type="image/webp" srcset="{{ ph.webp }}" sizes="(max-width:700px) 88vw, 760px">
+{% endif %}        <img src="{{ ph.src }}" srcset="{{ ph.jpg }}" sizes="(max-width:700px) 88vw, 760px"
+             alt="{{ ph.alt }}" width="{{ ph.w }}" height="{{ ph.h }}" loading="lazy" decoding="async">
+      </picture>
+      <figcaption>{{ ph.cap }}</figcaption>
+    </figure>
+{% endfor %}  </div>
+  <div class="d-slides-nav" hidden>
+    <button class="d-slides-btn" type="button" data-dir="-1" aria-label="Предыдущий снимок"><span aria-hidden="true">&#8249;</span></button>
+    <button class="d-slides-btn" type="button" data-dir="1" aria-label="Следующий снимок"><span aria-hidden="true">&#8250;</span></button>
+  </div>
+</div></section>
+{% endif %}
+{%- endmacro %}
+
+{# Быстрая заявка в тёмной полосе: телефон и что привезти. Полная форма
+   стоит ниже, эта для тех, кто уже решил и не хочет листать. #}
+{% macro quick_band(cfg, head, text, subject) -%}
+<section class="d-band d-band-dark d-quickband" data-ui><div class="wrap d-split">
+  <div>
+    <h2 class="d-sh">{{ head }}</h2>
+    <p>{{ text }}</p>
+    <ul class="d-ticks">
+      <li>{{ icon("check") }}Цена с доставкой до вашего адреса, а не «от»</li>
+      <li>{{ icon("check") }}Объём посчитаем по размерам площадки</li>
+      <li>{{ icon("check") }}{{ cfg.callback_promise|capitalize }}</li>
+    </ul>
+  </div>
+  <form class="d-qform" action="https://api.web3forms.com/submit" method="POST">
+    <input type="hidden" name="access_key" value="{{ cfg.web3forms_key }}">
+    <input type="hidden" name="redirect" value="{{ cfg.domain }}{{ cfg.base }}spasibo/">
+    <input type="hidden" name="subject" value="Быстрая заявка: {{ subject }}">
+    <input type="hidden" name="from_name" value="{{ cfg.brand }}, сайт">
+    <input type="text" name="botcheck" class="d-hp" tabindex="-1" autocomplete="off"
+           aria-hidden="true" aria-label="Оставьте это поле пустым">
+    <label for="qf-phone">Телефон</label>
+    <input id="qf-phone" type="tel" name="Телефон" placeholder="+7" required>
+    <label for="qf-msg">Что и куда привезти</label>
+    <input id="qf-msg" type="text" name="Заявка" placeholder="Например: 10 кубов, адрес">
+    <label class="d-consent"><input type="checkbox" name="Согласие" value="да" required>
+      <span>Согласен на обработку персональных данных, включая передачу через зарубежный
+      сервис отправки форм. <a href="/dostavka/politika/">Как мы обрабатываем данные</a></span></label>
+    <button class="d-btn d-btn-wide" type="submit">Посчитать стоимость</button>
+  </form>
+</div></section>
+{%- endmacro %}
+
+{# Гарантии: тёмная полоса, карточки с иконками, под ней лента доверия.
+
+   data-ui у всех блоков продающего хвоста: они одинаковы на всех
+   страницах по замыслу, как шапка и подвал, и проверка похожести
+   страниц (audit/_verify.py, группа 17) их не сравнивает. #}
+{% macro guarantee_band(items, strip) -%}
+<section class="d-band d-band-dark" data-ui><div class="wrap">
+  {{ sh("Наши гарантии") }}
+  <div class="d-icards d-icards-dark">
+{% for ic, t, d in items %}    <div class="d-icard">{{ icon(ic) }}<h3>{{ t }}</h3><p>{{ d }}</p></div>
+{% endfor %}  </div>
+</div></section>
+<aside class="d-trust" data-ui aria-label="Коротко о работе"><div class="wrap">
+{% for ic, t, d in strip %}  <p class="d-trust-it">{{ icon(ic) }}<span><b>{{ t }}</b>{{ d }}</span></p>
+{% endfor %}</div></aside>
+{%- endmacro %}
+
+{# «Почему заказывают у нас» и цифры под ними. #}
+{% macro why_band(items, stats, cfg) -%}
+<section class="d-band" data-ui><div class="wrap">
+  {{ sh("Почему заказывают у нас") }}
+  <div class="d-icards">
+{% for ic, t, d in items %}    <div class="d-icard">{{ icon(ic) }}<h3>{{ t }}</h3><p>{{ d }}</p></div>
+{% endfor %}  </div>
+</div></section>
+<section class="d-band d-band-tint d-stats-band" data-ui><div class="wrap">
+  <div class="d-stats">
+{% for num, unit, cap in stats %}    <div class="d-stat"><b>{{ num }}<small>{{ unit }}</small></b><span>{{ cap }}</span></div>
+{% endfor %}  </div>
+</div></section>
+{%- endmacro %}
+
+{# Как заказать: карточки с номером шага. #}
+{% macro steps_band(head, items, note=None, id="kak-zakazat") -%}
+<section class="d-band" data-ui><div class="wrap">
+  {{ sh(head, id) }}
+  <ol class="d-stepcards">
+{% for t in items %}    <li><span class="d-stepnum">{{ loop.index }}</span><p>{{ t }}</p></li>
+{% endfor %}  </ol>
+{% if note %}  <p class="d-note">{{ note }}</p>
+{% endif %}</div></section>
+{%- endmacro %}
+
+{# Заявка в тёмной полосе: слева зачем и как, справа форма на белой карточке. #}
+{% macro form_band(cfg, form_head, subject, head="Оставить заявку", text=None) -%}
+<section id="zayavka" class="d-band d-band-dark d-formband" data-ui><div class="wrap d-split">
+  <div>
+    <h2 class="d-sh">{{ head }}</h2>
+    <p>{{ text or ("Напишите материал, объём и адрес: посчитаем стоимость с доставкой и " ~ cfg.callback_promise ~ ". Заявка ни к чему не обязывает.") }}</p>
+    <ul class="d-ticks">
+      <li>{{ icon("wallet") }}{{ cfg.payment }}</li>
+      <li>{{ icon("ruler") }}Объём по паспорту кузова, проверка до разгрузки</li>
+      <li>{{ icon("clock") }}{{ cfg.hours }}</li>
+    </ul>
+    {{ channels(cfg) }}
+  </div>
+  <div class="d-formcard">
+    <h3>{{ form_head }}</h3>
+    {{ lead_form(cfg, subject) }}
+  </div>
+</div></section>
+{%- endmacro %}
+
+{# «Проще написать?» карточкой, как в образце. #}
+{% macro msg_card(cfg) -%}
+<section class="d-band d-band-tint" data-ui><div class="wrap">
+  <div class="d-msgcard">
+    <div>
+      <h2 class="d-msgcard-h">Проще написать? Мы в MAX</h2>
+      <p>Пришлите размеры площадки или фото участка и адрес: {{ cfg.reply_promise }}, с объёмом и ценой машины.</p>
+    </div>
+    {{ channels(cfg) }}
+  </div>
+</div></section>
+{%- endmacro %}
+
+{# Три карточки фактов по доставке с врезкой снизу. #}
+{% macro info_cards(items, note=None) -%}
+<div class="d-infocards">
+{% for ic, t, d in items %}  <div class="d-infocard">{{ icon(ic) }}<h3>{{ t }}</h3><p>{{ d }}</p></div>
+{% endfor %}</div>
+{% if note %}<div class="d-accent"><p>{{ note }}</p></div>
+{% endif %}
+{%- endmacro %}
+
+{# Машины с фотографиями: что приедет и куда проходит. #}
+{% macro trucks(items, head="Какая машина приедет") -%}
+{% if items %}<section class="d-band d-band-tint" data-ui><div class="wrap">
+  {{ sh(head, "mashiny") }}
+  <div class="d-trucks">
+{% for t in items %}    <figure class="d-truck">
+{% if t.img %}      <picture>
+{% if t.img.webp %}        <source type="image/webp" srcset="{{ t.img.webp }}" sizes="(max-width:700px) 88vw, 340px">
+{% endif %}        <img src="{{ t.img.src }}" srcset="{{ t.img.jpg }}" sizes="(max-width:700px) 88vw, 340px"
+             alt="{{ t.img.alt }}" width="{{ t.img.w }}" height="{{ t.img.h }}" loading="lazy" decoding="async">
+      </picture>
+{% endif %}      <figcaption><b>{{ t.name }}</b><span class="d-truck-vol">{{ t.vol }}</span><span>{{ t.text }}</span></figcaption>
+    </figure>
+{% endfor %}  </div>
+</div></section>
+{% endif %}
+{%- endmacro %}
+
+{# Плашки-ссылки: города, другие материалы, статьи. #}
+{% macro chips(links, head=None, id=None, sub=False) -%}
+{% if links %}{% if head %}{{ sh(head, id, sub=sub) }}{% endif %}
+<ul class="d-chips">
+{% for href, txt in links %}  <li><a href="{{ href }}">{{ txt }}</a></li>
+{% endfor %}</ul>
+{% endif %}
+{%- endmacro %}
+
+{# Весь коммерческий хвост по образцу одним вызовом: доставки, быстрая
+   заявка, гарантии, почему мы, цифры, шаги, форма, «проще написать».
+   Страница передаёт только то, что у неё своё. #}
+{% macro sales_block(cfg, fleet_photos, g, quick_head, quick_text, subject, steps_head, steps, form_head, steps_note=None) -%}
+{{ deliveries(fleet_photos) }}
+{{ quick_band(cfg, quick_head, quick_text, subject) }}
+{{ guarantee_band(g.guarantees, g.trust) }}
+{{ why_band(g.why, g.stats, cfg) }}
+{{ steps_band(steps_head, steps, steps_note) }}
+{{ form_band(cfg, form_head, subject) }}
+{{ msg_card(cfg) }}
 {%- endmacro %}

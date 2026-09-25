@@ -1104,6 +1104,12 @@ CITY_BANDS = [
 ]
 
 
+def rub(n):
+    """Сумма по-русски: от 10 000 с пробелом между разрядами."""
+    n = int(round(n))
+    return f"{n:,}".replace(",", " ") if n >= 10000 else str(n)
+
+
 def city_lots(km, price_key="Щебень 20-40"):
     """Готовые суммы «материал плюс доставка» под плечо конкретного города.
 
@@ -1118,9 +1124,9 @@ def city_lots(km, price_key="Щебень 20-40"):
     for v in vols:
         e = estimate(v, price, km)
         out.append(dict(vol=v, truck=_truck(v),
-                        material="%d" % e["material"],
-                        delivery="%d" % e["delivery"],
-                        total="%d" % e["total"]))
+                        material=rub(e["material"]),
+                        delivery=rub(e["delivery"]),
+                        total=rub(e["total"])))
     return out, note
 
 
@@ -1137,7 +1143,7 @@ def city_trip(km):
     from calc import estimate
     vols = next(v for lim, v, n in CITY_BANDS if km <= lim)
     vol = vols[1]
-    rows = [(name, price, "%d" % estimate(vol, FLOOR[name], km)["total"])
+    rows = [(name, price, rub(estimate(vol, FLOOR[name], km)["total"]))
             for name, price in PER_CUBE_LIST]
     return vol, rows
 
@@ -1149,11 +1155,11 @@ def trip_faq(rod, vin_price_key, prep, km, name_rod=None):
     vol = vols[1]
     e = estimate(vol, FLOOR[vin_price_key], km)
     return ("Сколько стоит %d кубов %s с доставкой %s?" % (vol, name_rod or rod, prep),
-            "Предварительно %d руб: материал %d руб по цене %s руб за куб и доставка "
-            "%d руб за рейс на плечо %d км, машина едет к вам и обратно. Точную "
+            "Предварительно %s руб: материал %s руб по цене %s руб за куб и доставка "
+            "%s руб за рейс на плечо %d км, машина едет к вам и обратно. Точную "
             "сумму называем по заявке, после выгрузки она не меняется."
-            % (e["total"], e["material"], PER_CUBE.get(vin_price_key, "от %d" % FLOOR[vin_price_key]),
-               e["delivery"], km))
+            % (rub(e["total"]), rub(e["material"]), PER_CUBE.get(vin_price_key, "от %d" % FLOOR[vin_price_key]),
+               rub(e["delivery"]), km))
 
 
 # Своя карточка материала первой в витрине цен. У керамзита, гравия,
@@ -1323,14 +1329,94 @@ def _photo_ctx(slug, items, default_head=None):
 
 FLEET_PHOTOS = photos_for("fleet")
 
-BASE_CTX = dict(cfg=SITE, advantages=ADVANTAGES, guarantees=GUARANTEES,
+
+def _fleet(name):
+    return next(p for p in FLEET_PHOTOS if name in p["src"])
+
+
+# Машины для блока «Какая машина приедет». Снимки из присланных
+# владельцем фото доставок и техники, классы - по нашему тарифу (5, 10
+# и 20 м³, TRUCKS в calc.py), описание - что проходит и когда выгодно.
+TRUCKS_SHOW = [
+    dict(name="Малый самосвал", vol="до 5 м³", img=_fleet("samosval-shcheben-k-domu"),
+         text="Узкие улицы частного сектора и ворота, куда большой не заедет. "
+              "Рейс оплачивается целиком, поэтому пять кубов выгоднее брать сразу."),
+    dict(name="КамАЗ", vol="10 м³", img=_fleet("samosval-karyer-shchebenka"),
+         text="Ходовая машина: «КамАЗ щебня» или «КамАЗ песка» - это она. "
+              "Нужен разворот и твёрдая площадка под выгрузку."),
+    dict(name="Большой самосвал", vol="20 м³", img=_fleet("samosval-vygruzka-krupnyy-shcheben"),
+         text="Три оси и двадцать кубов за рейс: на дальнем плече куб выходит "
+              "дешевле всего. Нужен широкий заезд и грунт, который держит машину."),
+]
+
+# Снимки первого экрана там, где своего снимка материала нет: главная
+# раздела, города, статьи. Только горизонтальные кадры - вертикальный
+# в широком первом экране обрезался бы до полосы. У городов кадр
+# чередуется по имени, чтобы соседние страницы не были одной картинкой.
+HERO_BG = [_fleet("samosval-vygruzka-krupnyy-shcheben"), _fleet("vygruzka-novostroyki"),
+           _fleet("samosval-shcheben-k-domu")]
+
+
+BASE_LOC = {"Екатеринбург": "в Екатеринбурге", PYSHMA: "в Верхней Пышме"}
+
+
+def geo_info(f, skm, sbase, pl):
+    """Три карточки «Доставка в город»: плечо, куда возим, срок."""
+    return [
+        ("route", "Плечо около %d км" % skm,
+         "С площадки %s по %s. %s" % (BASE_LOC[sbase], f["tract"], pl["econ"])),
+        ("pin", "Куда возим", "%s%s." % (f["areas"][0].upper(), f["areas"][1:])),
+        ("clock", "Срок подачи", "%s%s." % (pl["term"][0].upper(), pl["term"][1:])),
+    ]
+
+
+def hero_bg_for(key):
+    return HERO_BG[sum(map(ord, key)) % len(HERO_BG)]
+
+# Содержание блоков по образцу владельца (см. конец _macros.j2). Всё
+# здесь уже сказано на сайте другими словами: гарантии из GUARANTEES
+# и ADVANTAGES, площадка в Пышме со слов владельца, реквизиты из SITE.
+# Цифры в ленте считаются, а не пишутся: города из CITY_FACTS.
+SALES = dict(
+    guarantees=[
+        ("ruler", "Честный объём", "Меряем по паспорту кузова до разгрузки. При недосыпе досыпаем за свой счёт."),
+        ("wallet", "Оплата после выгрузки", "Сначала машина приезжает и выгружается, потом расчёт. Предоплату не берём."),
+        ("cube", "Материал как в заявке", "Везём ту фракцию и тот материал, что заказали, а не что осталось на площадке."),
+        ("rub", "Цена не растёт", "Стоимость с доставкой фиксируем при заказе, на месте она не меняется."),
+        ("clock", "Приезжаем в окно", "Согласуем окно доставки. Если машина задерживается, предупреждаем заранее."),
+        ("pin", "Две площадки отгрузки", "Екатеринбург и Верхняя Пышма: машина идёт с ближней, и плечо короче."),
+    ],
+    trust=[
+        ("clock", "Круглосуточно", "приём заявок без выходных"),
+        ("hand", "Без предоплаты", "оплата после выгрузки"),
+        ("truck", "5-20 м³", "самосвалы под любой заезд"),
+        ("doc", SITE["legal_name"], "%s, %s" % (SITE["city"], SITE["street"])),
+    ],
+    why=[
+        ("calc", "Цена до вашего адреса сразу", "Таблицы и калькулятор считают машину с доставкой по километражу, без ожидания менеджера."),
+        ("ruler", "Посчитаем объём за вас", "Назовите размеры площадки и слой: переведём в кубы с запасом на уплотнение и подберём машину."),
+        ("truck", "Машина под ваш заезд", "Малый самосвал на узкую улицу, КамАЗ на 10 кубов, 20 кубов на дальнее плечо."),
+        ("route", "Скажем, когда невыгодно", "На дальнем плече доставка бывает дороже материала, и мы говорим это до заказа."),
+        ("chat", "Ответ за пять минут", "Пишут в основном в MAX, отвечаем там же и в WhatsApp, круглосуточно."),
+        ("cube", "Всё одной заявкой", "Щебень, песок, отсев, бетон и ЖБИ: расчёт общий, рейсы ставим на один день."),
+    ],
+    stats=[
+        (str(len(CITY_FACTS)), "городов", "области со своей страницей и расчётом доставки"),
+        ("2", "площадки", "отгрузки: Екатеринбург и Верхняя Пышма"),
+        ("5-20", "м³", "самосвалы под объём и заезд"),
+        ("0", "руб", "предоплаты: платите после выгрузки"),
+    ],
+)
+
+BASE_CTX = dict(cfg=SITE, advantages=ADVANTAGES, guarantees=GUARANTEES, g=SALES,
+                trucks=TRUCKS_SHOW, hero_bg_default=HERO_BG[0],
                 fleet_photos=FLEET_PHOTOS,
                 per_cube=PER_CUBE_LIST, price_note=PRICE_NOTE, delivery_note=DELIVERY_NOTE,
                 extra=EXTRA, calc_rows=CALC_ROWS, catalog=CATALOG, sieve=sieve_rows(),
                 cities=[dict(slug=cs, prep=CITY_FACTS[cs]["prep"],
                              loc=CITY_FACTS[cs]["loc"],
                              name=CITY_FACTS[cs]["name"],
-                             km=CITY_FACTS[cs]["km"],
+                             km=ship_km(cs),
                              mats=", ".join(MAT_FORMS[m]["vin"] for m in ms))
                         for cs, ms in sorted(MATRIX.items(),
                                              key=lambda i: CITY_FACTS[i[0]]["km"])]
@@ -1696,6 +1782,7 @@ for c in CITIES:
         lots=(city_lots(ship_km(c["slug"]))[0] if c["slug"] in CITY_FACTS else None),
         lots_note=(city_lots(ship_km(c["slug"]))[1] if c["slug"] in CITY_FACTS else None),
         plecho_km=ship_km(c["slug"]),
+        hero_bg=hero_bg_for(c["slug"]), hero_price="от %d" % FLOOR["Щебень 20-40"],
         title=fit_range(f"Доставка щебня {c['prep']}: цена за куб самосвалом",
                         50, 60, GEO_TITLE_PAD),
         desc=fit_range(f"Доставка щебня {c['prep']} и в район ({c['dist']}). Гранит, "
@@ -1828,11 +1915,11 @@ def gen_mat_city(mkey, price_key, rod, vin, calc_slug):
             {"id": "raschet", "h": "Пример расчёта %s" % f["loc"],
              "p": ["Типовая задача %s это %s. Площадка %s по геометрии даёт %s м³, "
                    "с коэффициентом уплотнения %s выходит %s м³. %s Повезёт %s. "
-                   "С доставкой %s это предварительно %d руб: %d за материал "
-                   "и %d за рейс."
+                   "С доставкой %s это предварительно %s руб: %s за материал "
+                   "и %s за рейс."
                    % (f["loc"], ex["task"], ex["dims"], ex["geom"], ex["k"],
                       ex["real"], ex["note"], ex["truck"], f["prep"],
-                      _exo["total"], _exo["material"], _exo["delivery"])],
+                      rub(_exo["total"]), rub(_exo["material"]), rub(_exo["delivery"]))],
              "after": ["Свой объём посчитайте в калькуляторе: он считает по размерам "
                        "площадки, переводит кубы в тонны и показывает цену с доставкой."]},
             {"id": "mestnoe", "h": "Местные особенности %s" % f["loc"],
@@ -1897,6 +1984,8 @@ def gen_mat_city(mkey, price_key, rod, vin, calc_slug):
             calc=calc_geo(price_key, cs, _vols[1],
                           head="Калькулятор доставки %s %s" % (rod, f["prep"])),
             has_calc=True,
+            hero_bg=hero_bg_for(cs), hero_price="от %d" % low,
+            info=geo_info(f, skm, sbase, pl), info_note=(f.get("note") or pl["minv"]),
             trip_vol=city_trip(skm)[0], per_cube_trip=city_trip(skm)[1],
             calc_slug=calc_slug, calc_rod=rod,
             cta_head="Посчитаем объём %s" % f["loc"],
@@ -1948,6 +2037,7 @@ for c in PESOK_CITIES:
         lots_note=(city_lots(ship_km(c["slug"]), "Песок карьерный (сеяный)")[1]
                    if c["slug"] in CITY_FACTS else None),
         plecho_km=ship_km(c["slug"]),
+        hero_bg=hero_bg_for(c["slug"]), hero_price="от %d" % FLOOR["Песок карьерный (сеяный)"],
         cta_head=f"Посчитаем объём песка {c['loc']}",
         cta_text="Назовите размеры участка работ и адрес, подберём вид песка и машину, "
                  "назовём итоговую цену с доставкой.",
@@ -2718,6 +2808,8 @@ for city_slug, mats in MATRIX.items():
         calc=calc_geo("Щебень 20-40", city_slug, _vols[1],
                       head="Калькулятор доставки %s" % facts["prep"]),
         has_calc=True,
+        hero_bg=hero_bg_for(city_slug), hero_price="от %d" % FLOOR["Щебень 20-40"],
+        info=geo_info(facts, skm, sbase, pl), info_note=None,
         p_plecho=p_plecho, p_percube=p_percube, p_econ=p_econ, p_kuda=p_kuda, p_grunt=p_grunt,
         p_sroki=p_sroki, p_minv=pl["minv"], p_local=LOCAL[city_slug], h_grunt=h_grunt,
         faq=cfaq, related_links=rel[:12])
