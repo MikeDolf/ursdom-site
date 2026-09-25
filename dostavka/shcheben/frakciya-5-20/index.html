@@ -25,7 +25,7 @@
 <meta name="twitter:image" content="https://ursdom.ru/img/og-cover.png">
 <link rel="preload" href="/dostavka/assets/fonts/golos-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/dostavka/assets/fonts/mono-num.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/dostavka/assets/dostavka.min.css?v=7cd43700">
+<link rel="stylesheet" href="/dostavka/assets/dostavka.min.css?v=6e5b0fd7">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <script type="application/ld+json">
@@ -239,7 +239,7 @@
         "lowPrice": "1500",
         "priceCurrency": "RUB",
         "availability": "https://schema.org/InStock",
-        "priceValidUntil": "2026-12-23",
+        "priceValidUntil": "2026-12-24",
         "hasMerchantReturnPolicy": {
           "@type": "MerchantReturnPolicy",
           "returnPolicyCategory": "https://schema.org/MerchantReturnNotPermitted"
@@ -522,7 +522,8 @@
          data-rate="95" data-trip="2" data-min="5">
   <h2>Калькулятор доставки</h2>
   <p class="d-calc-lead">Считает материал, число рейсов и плечо доставки по тарифу
-  95 рублей за километр. Плечо считается в обе стороны: машина едет к вам
+  95 рублей за километр. Плечо считаем от ближайшей площадки отгрузки,
+  в Екатеринбурге или в Верхней Пышме, и в обе стороны: машина едет к вам
   и возвращается порожняком. Расчёт предварительный: тариф зависит от сезона,
   заезда и загрузки машин, точную сумму называем по заявке.</p>
 
@@ -550,23 +551,54 @@
     <div class="d-calc-row">
       <label for="calc-dest">Куда везём</label>
       <select id="calc-dest">
+
+        <option value="10">Балтым, 10 км</option>
+        <option value="10">Большой Исток, 10 км</option>
+        <option value="10">Верхняя Пышма, 10 км</option>
+        <option value="10">Среднеуральск, 10 км</option>
+        <option value="13">Патруши, 13 км</option>
         <option value="15">Берёзовский, 15 км</option>
-        <option value="15">Верхняя Пышма, 15 км</option>
+        <option value="15">Черданцево, 15 км</option>
+        <option value="19">Октябрьский, 19 км</option>
         <option value="20">Горный Щит, 20 км</option>
+        <option value="25">Арамиль, 25 км</option>
         <option value="25" selected>Екатеринбург и ближний пояс, 25 км</option>
-        <option value="25" selected>Среднеуральск, 25 км</option>
-        <option value="25" selected>Арамиль, 25 км</option>
+        <option value="29">Косулино, 29 км</option>
+        <option value="30">Бобровский, 30 км</option>
+        <option value="32">Курганово, 32 км</option>
+        <option value="33">Монетный, 33 км</option>
+        <option value="35">Верхнее Дуброво, 35 км</option>
+        <option value="40">Белоярский, 40 км</option>
+        <option value="45">Заречный, 45 км</option>
+        <option value="45">Кашино, 45 км</option>
         <option value="45">Первоуральск, 45 км</option>
         <option value="45">Ревда, 45 км</option>
-        <option value="50">Сысерть, 50 км</option>
+        <option value="50">Двуреченск, 50 км</option>
         <option value="50">Дегтярск, 50 км</option>
+        <option value="50">Сысерть, 50 км</option>
+        <option value="54">Верхняя Сысерть, 54 км</option>
         <option value="55">Билимбай, 55 км</option>
+        <option value="55">Новоуральск, 55 км</option>
+        <option value="58">Северский, 58 км</option>
+        <option value="60">Невьянск, 60 км</option>
         <option value="60">Полевской, 60 км</option>
         <option value="85">Асбест, 85 км</option>
-        <option value="100">Каменск-Уральский, 100 км</option>
+        <option value="85">Реж, 85 км</option>
         <option value="100">Богданович, 100 км</option>
-        <option value="140">Нижний Тагил, 140 км</option>
+        <option value="100">Каменск-Уральский, 100 км</option>
+        <option value="110">Сухой Лог, 110 км</option>
+        <option value="120">Артёмовский, 120 км</option>
+        <option value="125">Нижний Тагил, 125 км</option>
+        <option value="135">Камышлов, 135 км</option>
+        <option value="165">Верхняя Салда, 165 км</option>
+        <option value="170">Михайловск, 170 км</option>
+        <option value="185">Кушва, 185 км</option>
         <option value="200">Ирбит, 200 км</option>
+        <option value="200">Красноуфимск, 200 км</option>
+        <option value="220">Талица, 220 км</option>
+        <option value="235">Качканар, 235 км</option>
+        <option value="325">Серов, 325 км</option>
+        <option value="365">Краснотурьинск, 365 км</option>
       </select>
     </div>
     <output class="d-calc-out" id="calc-out" aria-live="polite">
@@ -595,22 +627,23 @@
       <tbody>
         <tr><td>3 м³</td><td>Екатеринбург</td><td>25 км</td><td>1 × 5 м³</td><td>3 450</td><td>4 750</td><td>8 200</td></tr>
         <tr><td>3 м³</td><td>Первоуральск</td><td>45 км</td><td>1 × 5 м³</td><td>3 450</td><td>8 550</td><td>12 000</td></tr>
-        <tr><td>3 м³</td><td>Нижний Тагил</td><td>140 км</td><td>1 × 5 м³</td><td>3 450</td><td>26 600</td><td>30 050</td></tr>
+        <tr><td>3 м³</td><td>Нижний Тагил</td><td>125 км</td><td>1 × 5 м³</td><td>3 450</td><td>23 750</td><td>27 200</td></tr>
         <tr><td>6 м³</td><td>Екатеринбург</td><td>25 км</td><td>1 × 10 м³</td><td>6 900</td><td>4 750</td><td>11 650</td></tr>
         <tr><td>6 м³</td><td>Первоуральск</td><td>45 км</td><td>1 × 10 м³</td><td>6 900</td><td>8 550</td><td>15 450</td></tr>
-        <tr><td>6 м³</td><td>Нижний Тагил</td><td>140 км</td><td>1 × 10 м³</td><td>6 900</td><td>26 600</td><td>33 500</td></tr>
+        <tr><td>6 м³</td><td>Нижний Тагил</td><td>125 км</td><td>1 × 10 м³</td><td>6 900</td><td>23 750</td><td>30 650</td></tr>
         <tr><td>12 м³</td><td>Екатеринбург</td><td>25 км</td><td>1 × 20 м³</td><td>13 800</td><td>4 750</td><td>18 550</td></tr>
         <tr><td>12 м³</td><td>Первоуральск</td><td>45 км</td><td>1 × 20 м³</td><td>13 800</td><td>8 550</td><td>22 350</td></tr>
-        <tr><td>12 м³</td><td>Нижний Тагил</td><td>140 км</td><td>1 × 20 м³</td><td>13 800</td><td>26 600</td><td>40 400</td></tr>
+        <tr><td>12 м³</td><td>Нижний Тагил</td><td>125 км</td><td>1 × 20 м³</td><td>13 800</td><td>23 750</td><td>37 550</td></tr>
         <tr><td>20 м³</td><td>Екатеринбург</td><td>25 км</td><td>1 × 20 м³</td><td>23 000</td><td>4 750</td><td>27 750</td></tr>
         <tr><td>20 м³</td><td>Первоуральск</td><td>45 км</td><td>1 × 20 м³</td><td>23 000</td><td>8 550</td><td>31 550</td></tr>
-        <tr><td>20 м³</td><td>Нижний Тагил</td><td>140 км</td><td>1 × 20 м³</td><td>23 000</td><td>26 600</td><td>49 600</td></tr>
+        <tr><td>20 м³</td><td>Нижний Тагил</td><td>125 км</td><td>1 × 20 м³</td><td>23 000</td><td>23 750</td><td>46 750</td></tr>
       </tbody>
     </table></div>
     <p class="d-note">Объём сверх 20 м³ везётся несколькими рейсами,
     и плечо оплачивается за каждый. Заказ меньше 5 м³ возможен,
     но рейс оплачивается целиком, поэтому куб выходит дороже.</p>
   </div>
+
 </section>
 
 
@@ -715,6 +748,7 @@
 </div></section>
 
 </main>
+
 <section class="d-fleet"><div class="wrap">
   <h2>Наша техника и доставки</h2>
   <div class="d-fleet-row">
@@ -842,8 +876,8 @@
     <p class="d-phone-bottom"><a href="tel:+79506460953" onclick="try{ym(110405092,'reachGoal','call')}catch(e){}">+7 950 646-09-53</a></p>
   </div>
 </footer>
-<script src="/dostavka/assets/wa.js?v=7cd43700" defer></script>
-<script src="/dostavka/assets/calc.js?v=7cd43700" defer></script>
+<script src="/dostavka/assets/wa.js?v=6e5b0fd7" defer></script>
+<script src="/dostavka/assets/calc.js?v=6e5b0fd7" defer></script>
 
 
 <div class="d-float" aria-label="Написать нам">

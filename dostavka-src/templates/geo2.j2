@@ -1,5 +1,9 @@
 {% extends "base.j2" %}
 {% import "_macros.j2" as m %}
+{# Порядок блоков тот же, что в geoplus.j2: сначала цена машины до города,
+   калькулятор, фото доставок, гарантии, порядок заказа и форма, потом
+   текст про плечо, грунты и материалы, в конце полный прайс. #}
+{% block fleet %}{% endblock %}
 {% block body %}
 <section class="d-hero" style="--cell:{{ hero_cell|default(34) }}px"><div class="wrap d-hero-grid">
   <div class="d-hero-main">
@@ -10,29 +14,15 @@
   {{ m.hero_panel(hero_cap|default("щебень 20-40 мм", true), hero_img|default(none, true)) }}
 </div></section>
 
-<section><div class="wrap d-prose">
-  <h2 id="ceny">Цены на материалы {{ city.loc }} с доставкой</h2>
-  <div class="d-table-wrap"><table{% if per_cube_trip %} class="d-trip"{% endif %}>
-    <caption>{{ price_note }} Итоговая цена {{ city.prep }} зависит от плеча ({{ dist }}) и объёма машины.{% if per_cube_trip %} Последний столбец: предварительная сумма за машину на {{ trip_vol }} м³ с доставкой {{ city.prep }}.{% endif %}</caption>
-{% if per_cube_trip %}    <thead><tr><th>Материал</th><th>За куб, руб</th><th>{{ trip_vol }} м³ с доставкой, руб</th></tr></thead>
-    <tbody>
-{% for name,price,trip in per_cube_trip %}      <tr><td>{{ name }}</td><td>{{ price }}</td><td class="d-spec-val">{{ trip }}</td></tr>
-{% endfor %}    </tbody>
-{% else %}    <thead><tr><th>Материал</th><th>Цена за куб, руб</th></tr></thead>
-    <tbody>
-{% for name,price in per_cube %}      <tr><td>{{ name }}</td><td>{{ price }}</td></tr>
-{% endfor %}    </tbody>
-{% endif %}
-  </table></div>
-  <p class="d-note">{{ delivery_note }}</p>
-
+<section><div class="wrap">
 {# Готовые суммы под этот город. Плечо называлось словами, а во сколько
    это обходится, человек досчитывал сам или уходил считать в другое
    место. Числа берутся от километража именно этого города, поэтому
    таблица у каждой страницы своя. #}
 {% if lots %}
   <h2 id="skolko-mashina">Сколько стоит машина {{ city.prep }}</h2>
-  <div class="d-table-wrap"><table>
+  <p>{{ p_percube }}</p>
+  <div class="d-table-wrap"><table class="d-lots">
     <caption>Предварительный расчёт для плеча {{ plecho_km }} км: материал плюс доставка.
     Точную сумму называем по заявке.</caption>
     <thead><tr><th>Объём</th><th>Машина</th><th>Материал</th><th>Доставка</th><th>Итого</th></tr></thead>
@@ -45,13 +35,52 @@
   там же считается объём по размерам площадки.</p>
 {% endif %}
 
+</div></section>
+
+{% if calc %}<section><div class="wrap">
+{{ m.calculator(cfg, calc) }}
+</div></section>
+{% endif %}
+
+{{ m.fleet_strip(fleet_photos) }}
+
+<section><div class="wrap">
+  {{ m.midcta(cfg, "Посчитаем объём и цену за 15 минут", "Назовите задачу и адрес " + city.loc + ", подберём материал и машину под ваш заезд, назовём итоговую сумму с доставкой.") }}
+</div></section>
+
+<section class="d-dark-sec"><div class="wrap">
+  <h2>Почему с нами спокойнее</h2>
+  {{ m.guarantees(guarantees) }}
+</div></section>
+
+<section><div class="wrap d-prose">
+  <h2 id="kak-zakazat">Как заказать доставку {{ city.prep }}</h2>
+  <ol class="d-steps">
+    <li>Скажите материал и объём в кубах. Не знаете объём: назовите размеры площадки или фундамента, посчитаем сами.</li>
+    <li>Назовите адрес {{ city.loc }} и опишите заезд: ширина ворот, есть ли где развернуться и поднять кузов.</li>
+    <li>Получите точную цену с доставкой. {{ cfg.callback_promise|capitalize }} и согласуем окно приезда.</li>
+    <li>Принимаете машину на объекте, проверяете объём. {{ cfg.payment }}</li>
+  </ol>
+  <p class="d-note">{{ p_minv }}</p>
+</div></section>
+
+<section id="zayavka"><div class="wrap">
+  <h2>Оставить заявку</h2>
+  <div class="d-two">
+  <div>{{ m.callblock(cfg) }}</div>
+  <div>
+    <h3>Заявка на доставку {{ city.prep }}</h3>
+    {{ m.lead_form(cfg, "доставка, " + city.name) }}
+  </div>
+  </div>
+</div></section>
+
+<section><div class="wrap d-prose">
   <h2 id="plecho">Сколько везти {{ city.prep }} и что это значит для цены</h2>
-  <p>{{ p_plecho }} {{ p_percube }}</p>
+  <p>{{ p_plecho }}</p>
 {% if city.note %}  <div class="d-callout"><p><strong>Важно по этому адресу:</strong> {{ city.note }}</p></div>
 {% endif %}
   <p>{{ p_econ }}</p>
-
-  {{ m.midcta(cfg, "Посчитаем объём и цену за 15 минут", "Назовите задачу и адрес " + city.loc + ", подберём материал и машину под ваш заезд, назовём итоговую сумму с доставкой.") }}
 
   <h2 id="kuda">Куда возим {{ city.prep }} и в округ</h2>
   <p>{{ p_kuda }}</p>
@@ -99,30 +128,24 @@
   <h2 id="sroki">Сроки {{ city.loc }}: рейс по {{ city.tract }}</h2>
   <p>{{ p_sroki }}</p>
 
-  <h2 id="kak-zakazat">Как заказать доставку {{ city.prep }}</h2>
-  <ol class="d-steps">
-    <li>Скажите материал и объём в кубах. Не знаете объём: назовите размеры площадки или фундамента, посчитаем сами.</li>
-    <li>Назовите адрес {{ city.loc }} и опишите заезд: ширина ворот, есть ли где развернуться и поднять кузов.</li>
-    <li>Получите точную цену с доставкой. {{ cfg.callback_promise|capitalize }} и согласуем окно приезда.</li>
-    <li>Принимаете машину на объекте, проверяете объём. {{ cfg.payment }}</li>
-  </ol>
-  <p class="d-note">{{ p_minv }}</p>
 </div></section>
 
-<section class="d-dark-sec"><div class="wrap">
-  <h2>Почему с нами спокойнее</h2>
-  {{ m.guarantees(guarantees) }}
-</div></section>
+<section><div class="wrap">
+  <h2 id="ceny">Цены на все материалы {{ city.loc }} с доставкой</h2>
+  <div class="d-table-wrap"><table{% if per_cube_trip %} class="d-trip"{% endif %}>
+    <caption>{{ price_note }} Итоговая цена {{ city.prep }} зависит от плеча ({{ dist }}) и объёма машины.{% if per_cube_trip %} Последний столбец: предварительная сумма за машину на {{ trip_vol }} м³ с доставкой {{ city.prep }}.{% endif %}</caption>
+{% if per_cube_trip %}    <thead><tr><th>Материал</th><th>За куб, руб</th><th>{{ trip_vol }} м³ с доставкой, руб</th></tr></thead>
+    <tbody>
+{% for name,price,trip in per_cube_trip %}      <tr><td>{{ name }}</td><td>{{ price }}</td><td class="d-spec-val">{{ trip }}</td></tr>
+{% endfor %}    </tbody>
+{% else %}    <thead><tr><th>Материал</th><th>Цена за куб, руб</th></tr></thead>
+    <tbody>
+{% for name,price in per_cube %}      <tr><td>{{ name }}</td><td>{{ price }}</td></tr>
+{% endfor %}    </tbody>
+{% endif %}
+  </table></div>
+  <p class="d-note">{{ delivery_note }}</p>
 
-<section id="zayavka"><div class="wrap">
-  <h2>Оставить заявку</h2>
-  <div class="d-two">
-  <div>{{ m.callblock(cfg) }}</div>
-  <div>
-    <h3>Заявка на доставку {{ city.prep }}</h3>
-    {{ m.lead_form(cfg, "доставка, " + city.name) }}
-  </div>
-  </div>
 </div></section>
 
 <section><div class="wrap">

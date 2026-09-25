@@ -34,7 +34,7 @@ from reviews import REVIEWS
 import autolink
 from hubs import HUBS
 from canonical import canonical
-from calc import calc_for, PER_PAGE, MATERIALS as CALC_MATERIALS, trips as calc_trips
+from calc import ship, ship_km, PYSHMA, calc_geo, calc_for, PER_PAGE, MATERIALS as CALC_MATERIALS, trips as calc_trips
 from calc_pages import CALC_PAGES, CALC_BY_SLUG, CALC_OWN
 
 # Список страниц с калькулятором живёт в data/calc.py вместе с их
@@ -1210,8 +1210,8 @@ def zones_for():
     """Города по зонам доставки, ссылками на их страницы."""
     out = []
     for lo, hi, head, band, note in ZONE_BANDS:
-        items = sorted(((v["km"], v["name"], k) for k, v in CITY_FACTS.items()
-                        if lo < v["km"] <= hi or (lo == 0 and v["km"] <= hi)),
+        items = sorted(((ship_km(k), v["name"], k) for k, v in CITY_FACTS.items()
+                        if lo < ship_km(k) <= hi or (lo == 0 and ship_km(k) <= hi)),
                        key=lambda t: t[0])
         if not items:
             continue
@@ -1630,9 +1630,9 @@ for c in CITIES:
            ("/dostavka/stati/cena-kuba-s-dostavkoy/", "Цена за куб с доставкой")] + others
     htmlp = env.get_template("geo.j2").render(
         **BASE_CTX, **hero_ctx("shcheben"), city=c, canonical=DOMAIN + url, crumbs_html=crumbs(crumb_items), jsonld=jl,
-        lots=(city_lots(CITY_FACTS[c["slug"]]["km"])[0] if c["slug"] in CITY_FACTS else None),
-        lots_note=(city_lots(CITY_FACTS[c["slug"]]["km"])[1] if c["slug"] in CITY_FACTS else None),
-        plecho_km=CITY_FACTS.get(c["slug"], {}).get("km"),
+        lots=(city_lots(ship_km(c["slug"]))[0] if c["slug"] in CITY_FACTS else None),
+        lots_note=(city_lots(ship_km(c["slug"]))[1] if c["slug"] in CITY_FACTS else None),
+        plecho_km=ship_km(c["slug"]),
         title=fit_range(f"Доставка щебня {c['prep']}: цена за куб самосвалом",
                         50, 60, GEO_TITLE_PAD),
         desc=fit_range(f"Доставка щебня {c['prep']} и в район ({c['dist']}). Гранит, "
@@ -1702,10 +1702,14 @@ def gen_mat_city(mkey, price_key, rod, vin, calc_slug):
     cities.sort(key=lambda cs: CITY_FACTS[cs]["km"])
     for i, cs in enumerate(cities):
         f = CITY_FACTS[cs]
+        # Плечо для расчётов - от ближайшей площадки (Екатеринбург или
+        # Верхняя Пышма, см. ship в calc.py). «Около N км от Екатеринбурга»
+        # в тексте остаётся фактом о городе.
+        skm, sbase = ship(cs)
         url = base + cs + "/"
         autolink.reset(url)
-        pl = plecho(f["km"])
-        ex = example_for(mkey, cs, f["km"])
+        pl = plecho(skm)
+        ex = example_for(mkey, cs, skm)
         dist = "около %d км от Екатеринбурга" % f["km"]
         place = dict(slug=cs, name=f["name"], prep=f["prep"], loc=f["loc"], dist=dist,
                      terms="Срок подачи машины: %s." % pl["term"],
@@ -1716,7 +1720,7 @@ def gen_mat_city(mkey, price_key, rod, vin, calc_slug):
             ("Какой %s берут %s?" % (vin, f["loc"]), MAT_TASK[(mkey, f["kind"])]),
             ("Сколько %s везёт одна машина %s?" % (rod, f["prep"]),
              "Самосвалы от пяти до двадцати кубов. %s" % pl["minv"]),
-            trip_faq(rod, price_key, f["prep"], f["km"]),
+            trip_faq(rod, price_key, f["prep"], skm),
         ]
         jl = graph(localbusiness(), bc_schema(crumb_items), faq_schema(cfaq),
                    product_schema("Доставка %s %s" % (rod, f["prep"]),
@@ -1727,17 +1731,17 @@ def gen_mat_city(mkey, price_key, rod, vin, calc_slug):
         # Это главное, что человек ищет по запросу «отсев с доставкой
         # в Ревду», и единственное число, которое у каждой страницы своё.
         from calc import estimate as _est
-        _vols = next(v for lim, v, n in CITY_BANDS if f["km"] <= lim)
-        _per = ["%d руб в машине на %d м³" % (round(_est(v, low, f["km"])["total"] / v), v)
+        _vols = next(v for lim, v, n in CITY_BANDS if skm <= lim)
+        _per = ["%d руб в машине на %d м³" % (round(_est(v, low, skm)["total"] / v), v)
                 for v in (_vols[0], _vols[-1])]
-        _exo = _est(max(ex["order"], 5), low, f["km"])
+        _exo = _est(max(ex["order"], 5), low, skm)
         sections = [
             {"id": "plecho", "h": "Доставка %s %s: плечо и цена" % (rod, f["prep"]),
-             "p": ["Возим %s %s по %s, %s. %s %s"
-                   % (vin, f["prep"], f["tract"], dist, pl["econ"], pl["minv"]),
-                   "С доставкой %s куб %s по нижней цене прайса выходит около %s "
-                   "и около %s: разница целиком из-за того, что рейс делится "
-                   "на большее число кубов." % (f["prep"], rod, _per[0], _per[1]),
+             "p": ["Возим %s %s по %s, %s.%s %s %s"
+                   % (vin, f["prep"], f["tract"], dist,
+                      (" Машина идёт с нашей площадки в Верхней Пышме, "
+                       "оттуда плечо около %d км." % skm) if sbase == PYSHMA else "",
+                      pl["econ"], pl["minv"]),
                    "Срок подачи машины: %s. Плечо оплачивается в обе стороны: "
                    "машина едет к вам и возвращается порожняком. Точную сумму "
                    "называем по заявке." % pl["term"]]},
@@ -1783,7 +1787,7 @@ def gen_mat_city(mkey, price_key, rod, vin, calc_slug):
                        "Принимаете машину на объекте и проверяете объём. %s %s"
                        % (ACCEPT_CHECK[mkey], SITE["payment"])]},
         ]
-        _lots, _lnote = city_lots(f["km"], price_key)
+        _lots, _lnote = city_lots(skm, price_key)
         nbrs = cities[i + 1:] + cities[:i]
         rel = ([(base, "Доставка %s: виды и цены" % rod),
                 (CALCHUB_URL + calc_slug + "/", "Калькулятор %s" % rod),
@@ -1818,8 +1822,16 @@ def gen_mat_city(mkey, price_key, rod, vin, calc_slug):
                   "с доставкой на ваш адрес, %s"
                   % (vin, f["prep"], dist, SITE["payment_short"])),
             sections=sections, cta_after=3,
-            lots=_lots, lots_note=_lnote, plecho_km=f["km"],
-            trip_vol=city_trip(f["km"])[0], per_cube_trip=city_trip(f["km"])[1],
+            lots=_lots, lots_note=_lnote, plecho_km=skm,
+            # Фраза с ценой куба стоит над таблицей машины, в первом блоке
+            # после первого экрана: это ответ на запрос, а не деталь плеча.
+            price_lead=("С доставкой %s куб %s по нижней цене прайса выходит около %s "
+                        "и около %s: разница целиком из-за того, что рейс делится "
+                        "на большее число кубов." % (f["prep"], rod, _per[0], _per[1])),
+            calc=calc_geo(price_key, cs, _vols[1],
+                          head="Калькулятор доставки %s %s" % (rod, f["prep"])),
+            has_calc=True,
+            trip_vol=city_trip(skm)[0], per_cube_trip=city_trip(skm)[1],
             calc_slug=calc_slug, calc_rod=rod,
             cta_head="Посчитаем объём %s" % f["loc"],
             cta_text=("Назовите размеры участка работ и адрес, подберём фракцию "
@@ -1865,11 +1877,11 @@ for c in PESOK_CITIES:
              f"обратную засыпку, речной мытый под бетон и кладку. Цену считаем за кубометр "
              f"с доставкой на ваш адрес, {SITE['payment_short']}",
         sections=sections, cta_after=3,
-        lots=(city_lots(CITY_FACTS[c["slug"]]["km"], "Песок карьерный (сеяный)")[0]
+        lots=(city_lots(ship_km(c["slug"]), "Песок карьерный (сеяный)")[0]
               if c["slug"] in CITY_FACTS else None),
-        lots_note=(city_lots(CITY_FACTS[c["slug"]]["km"], "Песок карьерный (сеяный)")[1]
+        lots_note=(city_lots(ship_km(c["slug"]), "Песок карьерный (сеяный)")[1]
                    if c["slug"] in CITY_FACTS else None),
-        plecho_km=CITY_FACTS.get(c["slug"], {}).get("km"),
+        plecho_km=ship_km(c["slug"]),
         cta_head=f"Посчитаем объём песка {c['loc']}",
         cta_text="Назовите размеры участка работ и адрес, подберём вид песка и машину, "
                  "назовём итоговую цену с доставкой.",
@@ -2471,7 +2483,7 @@ GEO_FRACTIONS = {
 }
 
 
-def geo_city_faq(facts, mats, pl, dist):
+def geo_city_faq(facts, mats, pl, dist, skm):
     """FAQ городской страницы. Падежи материалов подставляются явно:
     ровно на этом месте раньше вылезали 'привезёте щебня' и 'виды щебень'."""
     first = MAT_FORMS[mats[0]]
@@ -2500,7 +2512,7 @@ def geo_city_faq(facts, mats, pl, dist):
          f"{facts['areas'][0].upper()}{facts['areas'][1:]}. По адресам за городом "
          f"уточняйте состояние подъезда: гружёный самосвал проходит не везде."),
     ]
-    q.insert(1, trip_faq("щебня", "Щебень 20-40", facts["prep"], facts["km"],
+    q.insert(1, trip_faq("щебня", "Щебень 20-40", facts["prep"], skm,
                          name_rod="щебня 20-40"))
     if facts.get("note"):
         q.insert(1, (f"Есть ли особенности с доставкой {facts['prep']}?",
@@ -2512,7 +2524,8 @@ OLD_CITY = {c["slug"]: c for c in CITIES}
 
 for city_slug, mats in MATRIX.items():
     facts = CITY_FACTS[city_slug]
-    pl = plecho(facts["km"])
+    skm, sbase = ship(city_slug)
+    pl = plecho(skm)
     dist = f"около {facts['km']} км от Екатеринбурга"
     url = f"{SITE['base']}shcheben/{city_slug}/"
     old = OLD_CITY.get(city_slug)
@@ -2524,7 +2537,7 @@ for city_slug, mats in MATRIX.items():
             key=mkey, name=mat["name"], vin=mat["vin"], rod=mat["rod"],
             url="/dostavka/" + mat["url"] + "/",
             task=MAT_TASK.get((mkey, facts["kind"]), MAT_TASK[(mkey, "small")]),
-            ex=example_for(mkey, city_slug, facts["km"]),
+            ex=example_for(mkey, city_slug, skm),
             fractions=GEO_FRACTIONS.get(mkey),
             ground=(ground_advice(mkey, facts["ground"]) if mkey == "shcheben" else []),
             note=(CITY_MAT_NOTE.get((mkey, city_slug)) if mkey == "shcheben" else None),
@@ -2584,16 +2597,18 @@ for city_slug, mats in MATRIX.items():
     # Цена куба щебня 20-40 с доставкой в этот город, как на страницах
     # материалов по городам (см. gen_mat_city).
     from calc import estimate as _est
-    _vols = next(v for lim, v, n in CITY_BANDS if facts["km"] <= lim)
-    _p = [(round(_est(v, FLOOR["Щебень 20-40"], facts["km"])["total"] / v), v)
+    _vols = next(v for lim, v, n in CITY_BANDS if skm <= lim)
+    _p = [(round(_est(v, FLOOR["Щебень 20-40"], skm)["total"] / v), v)
           for v in (_vols[0], _vols[-1])]
-    p_percube = ("С доставкой %s куб щебня 20-40 по нижней цене прайса выходит около "
+    p_percube = (("Машина идёт с нашей площадки в Верхней Пышме, оттуда плечо около "
+                  "%d км. " % skm) if sbase == PYSHMA else "") + (
+                 "С доставкой %s куб щебня 20-40 по нижней цене прайса выходит около "
                  "%d руб в машине на %d м³ и около %d руб в машине на %d м³."
                  % (facts["prep"], _p[0][0], _p[0][1], _p[1][0], _p[1][1]))
 
     crumb_items = [("Главная", "/"), ("Доставка материалов", SITE["base"]),
                    ("Щебень", SITE["base"] + "shcheben/"), (facts["name"], None)]
-    cfaq = geo_city_faq(facts, mats, pl, dist)
+    cfaq = geo_city_faq(facts, mats, pl, dist, skm)
     jl = graph(localbusiness(), bc_schema(crumb_items), faq_schema(cfaq),
                product_schema(h1, desc, MAT_FORMS[mats[0]]["low"], url,
                               images=product_images(MAT_FORMS[mats[0]]["url"])))
@@ -2634,9 +2649,12 @@ for city_slug, mats in MATRIX.items():
         jsonld=jl, title=title, desc=desc, h1=h1, hero_sub=hero,
         **_lsi, ground_tag=_ground_tag,
         city=dict(facts, dist=dist), dist=dist, mat_blocks=mat_blocks,
-        lots=city_lots(facts["km"])[0], lots_note=city_lots(facts["km"])[1],
-        plecho_km=facts["km"],
-        trip_vol=city_trip(facts["km"])[0], per_cube_trip=city_trip(facts["km"])[1],
+        lots=city_lots(skm)[0], lots_note=city_lots(skm)[1],
+        plecho_km=skm,
+        trip_vol=city_trip(skm)[0], per_cube_trip=city_trip(skm)[1],
+        calc=calc_geo("Щебень 20-40", city_slug, _vols[1],
+                      head="Калькулятор доставки %s" % facts["prep"]),
+        has_calc=True,
         p_plecho=p_plecho, p_percube=p_percube, p_econ=p_econ, p_kuda=p_kuda, p_grunt=p_grunt,
         p_sroki=p_sroki, p_minv=pl["minv"], p_local=LOCAL[city_slug], h_grunt=h_grunt,
         faq=cfaq, related_links=rel[:12])

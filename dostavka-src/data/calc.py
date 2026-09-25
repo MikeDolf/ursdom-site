@@ -75,20 +75,57 @@ _PICK = [
 MATERIALS = [(label, FLOOR[key]) for label, key in _PICK]
 
 
-def _km(slug):
+# Вторая площадка отгрузки: в районе Верхней Пышмы. Владелец сообщил,
+# что материал возят и оттуда. Плечо считается от БЛИЖАЙШЕЙ площадки.
+#
+# Откуда числа. Точного адреса площадки нет, поэтому расстояния от неё
+# выводятся из наших же данных, а не из выдуманных координат: Верхняя
+# Пышма стоит в 15 км от Екатеринбурга по Серовскому тракту (CITY_FACTS),
+# и рейс в любой город этого тракта проходит через неё. Для них плечо
+# от Пышмы на эти 15 км короче. Для остальных трактов Пышма не ближе
+# Екатеринбурга, и плечо не меняется.
+#
+# PYSHMA_LOCAL_KM - плечо по самой Пышме и соседним посёлкам, ОРИЕНТИР
+# того же рода, что EKB_KM. Заменить на фактическое, когда владелец
+# назовёт адрес площадки.
+PYSHMA = "Верхняя Пышма"
+PYSHMA_TRACT = "Серовскому тракту"
+PYSHMA_FROM_EKB = CITY_FACTS["verhnyaya-pyshma"]["km"]
+PYSHMA_LOCAL_KM = 10
+
+
+def ship(slug):
+    """(плечо в км, площадка) для города: от ближайшей площадки."""
     f = CITY_FACTS.get(slug) or {}
-    return f.get("km")
+    km = f.get("km")
+    if not km:
+        return None, None
+    if f.get("tract") == PYSHMA_TRACT:
+        from_p = max(km - PYSHMA_FROM_EKB, PYSHMA_LOCAL_KM)
+        if from_p < km:
+            return from_p, PYSHMA
+    return km, "Екатеринбург"
 
 
-# Направления: Екатеринбург плюс города, у которых плечо известно
+def ship_km(slug):
+    return ship(slug)[0]
+
+
+def _km(slug):
+    return ship_km(slug)
+
+
+# Направления: Екатеринбург плюс все города, у которых плечо известно
 # фактически. Города без километража в калькулятор не попадают:
 # придумывать им расстояние нельзя, а показывать ноль нечестно.
+# Раньше список брался из старого перечня CITIES (33 города), и городов,
+# добавленных позже, в выпадающем списке не было.
 DESTINATIONS = [("Екатеринбург и ближний пояс", EKB_KM)]
-for _c in CITIES:
-    _d = _km(_c["slug"])
+for _s, _f in CITY_FACTS.items():
+    _d = ship_km(_s)
     if _d:
-        DESTINATIONS.append((_c["name"], _d))
-DESTINATIONS.sort(key=lambda x: x[1])
+        DESTINATIONS.append((_f["name"], _d))
+DESTINATIONS.sort(key=lambda x: (x[1], x[0]))
 
 
 def trips(volume):
@@ -156,7 +193,8 @@ PER_PAGE = {
 }
 
 # Плечи для примеров. Три точки: город, ближний пояс, дальний север.
-EXAMPLE_ROUTES = (("Екатеринбург", EKB_KM), ("Первоуральск", 45), ("Нижний Тагил", 140))
+EXAMPLE_ROUTES = (("Екатеринбург", EKB_KM), ("Первоуральск", ship_km("pervouralsk")),
+                  ("Нижний Тагил", ship_km("nizhniy-tagil")))
 
 
 def examples(material, price, volumes):
@@ -199,6 +237,38 @@ def calc_for(slug):
         # результата пуст до загрузки скрипта, а проверка соответствия
         # классов и стилей не видит разметку, которую рисует только JS.
         "start": _start(MATERIALS[0][1], 10, EKB_KM),
+    }
+
+
+def calc_geo(price_key, slug, vol, head=None):
+    """Калькулятор городской страницы: сразу выбраны город и материал.
+
+    Человек пришёл по запросу «отсев с доставкой в Ревду», и калькулятор,
+    открывшийся на Екатеринбурге и щебне, заставлял его первым делом
+    перещёлкивать оба списка. Здесь стартовое состояние - его город,
+    материал страницы и объём, ходовой для этого плеча.
+
+    Таблица примеров (запасной вид без JavaScript) не выводится: на той
+    же странице выше стоит таблица «Сколько стоит машина» с теми же
+    числами для этого города.
+    """
+    label = next(l for l, k in _PICK if k == price_key)
+    price = FLOOR[price_key]
+    km = ship_km(slug)
+    return {
+        "rate": RATE_PER_KM,
+        "round_trip": ROUND_TRIP,
+        "min_volume": MIN_VOLUME,
+        "trucks": TRUCKS,
+        "materials": MATERIALS,
+        "destinations": DESTINATIONS,
+        "default_price": price,
+        "examples": examples(label, price, (vol,)),
+        "start": _start(price, vol, km),
+        "sel_mat": label,
+        "sel_dest": CITY_FACTS[slug]["name"],
+        "static": False,
+        "head": head,
     }
 
 

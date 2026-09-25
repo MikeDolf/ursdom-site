@@ -115,7 +115,11 @@
 <main id="content">
 {% block body %}{% endblock %}
 </main>
-{% if not no_cta %}{{ m.fleet_strip(fleet_photos) }}{% endif %}
+{# Полоса «Наша техника и доставки». Коммерческие шаблоны ставят её выше,
+   сразу под блоком цен, и переопределяют этот блок пустым: фото
+   реальных выгрузок работают на доверие там, где человек решает,
+   а не под подвалом. Остальные страницы получают её здесь. #}
+{% block fleet %}{% if not no_cta %}{{ m.fleet_strip(fleet_photos) }}{% endif %}{% endblock %}
 <footer class="d-footer">
   <div class="wrap">
     <div class="d-foot-grid">

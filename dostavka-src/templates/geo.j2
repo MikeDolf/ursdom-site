@@ -1,5 +1,7 @@
 {% extends "base.j2" %}
 {% import "_macros.j2" as m %}
+{# Фото доставок стоят выше, сразу под ценами (см. блок fleet в base.j2). #}
+{% block fleet %}{% endblock %}
 {% block body %}
 <section class="d-hero" style="--cell:{{ hero_cell|default(34) }}px"><div class="wrap d-hero-grid">
   <div class="d-hero-main">
@@ -31,6 +33,8 @@
 
   {{ m.midcta(cfg, "Посчитаем объём и цену за 15 минут", "Назовите задачу и адрес " + city.loc + ", подберём фракцию и машину под ваш заезд, назовём итоговую сумму с доставкой.") }}
 </div></section>
+
+{{ m.fleet_strip(fleet_photos) }}
 
 <section><div class="wrap d-prose">
 {# Готовые суммы под этот город. Раньше плечо называлось словами

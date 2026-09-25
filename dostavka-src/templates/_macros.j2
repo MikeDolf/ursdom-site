@@ -477,9 +477,10 @@
 {% macro calculator(cfg, calc, lots=None) -%}
 <section class="d-calc" id="kalkulyator"
          data-rate="{{ calc.rate }}" data-trip="{{ calc.round_trip }}" data-min="{{ calc.min_volume }}">
-  <h2>Калькулятор доставки</h2>
+  <h2>{{ calc.head or "Калькулятор доставки" }}</h2>
   <p class="d-calc-lead">Считает материал, число рейсов и плечо доставки по тарифу
-  {{ calc.rate }} рублей за километр. Плечо считается в обе стороны: машина едет к вам
+  {{ calc.rate }} рублей за километр. Плечо считаем от ближайшей площадки отгрузки,
+  в Екатеринбурге или в Верхней Пышме, и в обе стороны: машина едет к вам
   и возвращается порожняком. Расчёт предварительный: тариф зависит от сезона,
   заезда и загрузки машин, точную сумму называем по заявке.</p>
 
@@ -487,17 +488,20 @@
     <div class="d-calc-row">
       <label for="calc-mat">Материал</label>
       <select id="calc-mat">
-{% for name,price in calc.materials %}        <option value="{{ price }}">{{ name }}, {{ price }} руб/м³</option>
+{% for name,price in calc.materials %}        <option value="{{ price }}"{% if calc.sel_mat and name == calc.sel_mat %} selected{% endif %}>{{ name }}, {{ price }} руб/м³</option>
 {% endfor %}      </select>
     </div>
     <div class="d-calc-row">
-      <label for="calc-vol">Объём: <output id="calc-vol-out">10</output> м³</label>
-      <input id="calc-vol" type="range" min="1" max="40" step="1" value="10">
+      <label for="calc-vol">Объём: <output id="calc-vol-out">{{ calc.start.vol }}</output> м³</label>
+      <input id="calc-vol" type="range" min="1" max="40" step="1" value="{{ calc.start.vol }}">
     </div>
     <div class="d-calc-row">
       <label for="calc-dest">Куда везём</label>
       <select id="calc-dest">
-{% for name,km in calc.destinations %}        <option value="{{ km }}"{% if km == 25 %} selected{% endif %}>{{ name }}, {{ km }} км</option>
+{# Выбор по имени, а не по километражу: у Арамили, Ревды и Первоуральска
+   плечо совпадает с соседями, и «selected» по числу отмечал сразу
+   несколько строк, из которых браузер брал последнюю. #}
+{% for name,km in calc.destinations %}        <option value="{{ km }}"{% if name == (calc.sel_dest or "Екатеринбург и ближний пояс") %} selected{% endif %}>{{ name }}, {{ km }} км</option>
 {% endfor %}      </select>
     </div>
     <output class="d-calc-out" id="calc-out" aria-live="polite">
@@ -516,7 +520,7 @@
     Калькулятор нужен для нестандартных объёмов и для доставки за город.</p>
 {% endif %}  </div>
 
-  <div class="d-calc-static">
+{% if calc.static is not defined or calc.static %}  <div class="d-calc-static">
     <div class="d-table-wrap"><table>
       <caption>Примеры расчёта: {{ calc.examples.material }} по {{ calc.examples.price }} руб/м³,
       доставка {{ calc.rate }} руб/км в обе стороны. В колонке «Плечо» расстояние
@@ -531,6 +535,7 @@
     и плечо оплачивается за каждый. Заказ меньше {{ calc.min_volume }} м³ возможен,
     но рейс оплачивается целиком, поэтому куб выходит дороже.</p>
   </div>
+{% endif %}
 </section>
 {%- endmacro %}
 

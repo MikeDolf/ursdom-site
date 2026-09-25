@@ -606,6 +606,16 @@ table td:only-child,table td:first-child:last-child{font-weight:400}
    иначе главная цифра, сумма с доставкой, оказывается за краем. */
 .d-trip thead th{white-space:normal}
 .d-trip td+td{white-space:nowrap}
+/* «Сколько стоит машина» на городских страницах стоит первым блоком
+   после героя, и на телефоне пять колонок уводили «Итого» за край.
+   На узком экране прячем «Машину» и «Материал»: кузов показывает
+   калькулятор сразу под таблицей, материал - это объём на цену куба.
+   Остаются объём, доставка и итог, ради которых блок и стоит первым. */
+@media (max-width:560px){
+  .d-lots th:nth-child(2),.d-lots td:nth-child(2),
+  .d-lots th:nth-child(3),.d-lots td:nth-child(3){display:none}
+  .d-lots th,.d-lots td{padding-left:12px;padding-right:12px;white-space:nowrap}
+}
 @media (max-width:700px){
   .d-trip th,.d-trip td{padding-left:12px;padding-right:12px}
 }

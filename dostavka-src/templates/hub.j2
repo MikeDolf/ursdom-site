@@ -1,5 +1,7 @@
 {% extends "base.j2" %}
 {% import "_macros.j2" as m %}
+{# Фото доставок стоят выше, сразу под ценами (см. блок fleet в base.j2). #}
+{% block fleet %}{% endblock %}
 {% block body %}
 <section class="d-hero" style="--cell:{{ hero_cell|default(34) }}px"><div class="wrap">
   <h1>{{ h1 }}</h1>
@@ -20,6 +22,8 @@
 {% endfor %}  </div>
   <p class="d-note">{{ price_note }}</p>
 </div></section>
+
+{{ m.fleet_strip(fleet_photos) }}
 
 <section class="d-dark-sec"><div class="wrap">
   <h2>Почему заказывают у нас</h2>

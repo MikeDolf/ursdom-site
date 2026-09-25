@@ -1,5 +1,13 @@
 {% extends "base.j2" %}
 {% import "_macros.j2" as m %}
+{# Порядок блоков как на коммерческих гео-страницах второго проекта
+   владельца: сначала всё, что нужно для решения (цена машины до города,
+   калькулятор, фото реальных доставок, гарантии, как заказать, форма),
+   потом текст про доставку, грунты и расчёты, потом полный прайс
+   и частые вопросы. Раньше цена стояла шестым экраном после восьми
+   текстовых разделов, хотя человек пришёл по запросу «отсев с доставкой
+   в Ревду» именно за ней. #}
+{% block fleet %}{% endblock %}
 {% block body %}
 <section class="d-hero" style="--cell:{{ hero_cell|default(34) }}px"><div class="wrap d-hero-grid">
   <div class="d-hero-main">
@@ -10,20 +18,11 @@
   {{ m.hero_panel(hero_cap|default("щебень 20-40 мм", true), hero_img|default(none, true)) }}
 </div></section>
 
-<section><div class="wrap d-prose">
-  <div class="d-tldr"><strong>Коротко по доставке {{ place.prep }}</strong><p>{{ lead }}</p></div>
-
-{% for s in sections %}
-  <h2 id="{{ s.id }}">{{ s.h }}</h2>
-{{ m.blocks(s) }}
-{% if loop.index == cta_after %}{{ m.midcta(cfg, cta_head, cta_text) }}{% endif %}
-{% endfor %}
-</div></section>
-
 {% if lots %}
 <section><div class="wrap">
   <h2 id="skolko-mashina">Сколько стоит машина {{ place.prep }}</h2>
-  <div class="d-table-wrap"><table>
+{% if price_lead %}  <p>{{ price_lead }}</p>
+{% endif %}  <div class="d-table-wrap"><table class="d-lots">
     <caption>Предварительный расчёт для плеча {{ plecho_km }} км: материал плюс доставка.
     Точную сумму называем по заявке.</caption>
     <thead><tr><th>Объём</th><th>Машина</th><th>Материал</th><th>Доставка</th><th>Итого</th></tr></thead>
@@ -37,8 +36,50 @@
 </div></section>
 {% endif %}
 
+{% if calc %}<section><div class="wrap">
+{{ m.calculator(cfg, calc) }}
+</div></section>
+{% endif %}
+
+{{ m.fleet_strip(fleet_photos) }}
+
 <section><div class="wrap">
-  <h2>Ориентировочные цены на материалы {{ place.loc }}</h2>
+  {{ m.midcta(cfg, cta_head, cta_text) }}
+</div></section>
+
+<section class="d-dark-sec"><div class="wrap">
+  <h2>Почему с нами спокойнее</h2>
+  {{ m.guarantees(guarantees) }}
+</div></section>
+
+{% set order = sections|selectattr("id", "equalto", "kak-zakazat")|first %}
+{% if order %}
+<section><div class="wrap d-prose">
+  <h2 id="kak-zakazat">{{ order.h }}</h2>
+{{ m.blocks(order) }}
+</div></section>
+{% endif %}
+
+<section id="zayavka"><div class="wrap">
+  <h2>Оставить заявку</h2>
+  <div class="d-two">
+  <div>{{ m.callblock(cfg) }}</div>
+  <div>
+    <h3>Заявка на доставку {{ place.prep }}</h3>
+    {{ m.lead_form(cfg, subject) }}
+  </div>
+  </div>
+</div></section>
+
+<section><div class="wrap d-prose">
+{% for s in sections if s.id != "kak-zakazat" %}
+  <h2 id="{{ s.id }}">{{ s.h }}</h2>
+{{ m.blocks(s) }}
+{% endfor %}
+</div></section>
+
+<section><div class="wrap">
+  <h2>Цены на все материалы {{ place.loc }}</h2>
   <div class="d-table-wrap"><table{% if per_cube_trip %} class="d-trip"{% endif %}>
     <caption>{{ price_note }} Итоговая цена с доставкой {{ place.prep }} зависит от расстояния ({{ place.dist }}) и объёма машины.{% if per_cube_trip %} Последний столбец: предварительная сумма за машину на {{ trip_vol }} м³ с доставкой {{ place.prep }}.{% endif %}</caption>
 {% if per_cube_trip %}    <thead><tr><th>Материал</th><th>За куб, руб</th><th>{{ trip_vol }} м³ с доставкой, руб</th></tr></thead>
@@ -52,17 +93,6 @@
 {% endif %}
   </table></div>
   <p class="d-note">{{ delivery_note }}</p>
-</div></section>
-
-<section id="zayavka"><div class="wrap">
-  <h2>Оставить заявку</h2>
-  <div class="d-two">
-  <div>{{ m.callblock(cfg) }}</div>
-  <div>
-    <h3>Заявка на доставку {{ place.prep }}</h3>
-    {{ m.lead_form(cfg, subject) }}
-  </div>
-  </div>
 </div></section>
 
 <section><div class="wrap">

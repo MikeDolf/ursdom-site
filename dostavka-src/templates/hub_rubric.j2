@@ -1,5 +1,7 @@
 {% extends "base.j2" %}
 {% import "_macros.j2" as m %}
+{# Фото доставок стоят выше, сразу под ценами (см. блок fleet в base.j2). #}
+{% block fleet %}{% endblock %}
 {% block body %}
 <section class="d-hero" style="--cell:{{ hero_cell|default(28) }}px"><div class="wrap d-hero-grid">
   <div class="d-hero-main">
@@ -19,6 +21,8 @@
 
 {# Список рубрики. Каждая карточка это отдельная посадочная страница
    под свой параметр: клиент ищет «кольца для колодца», а не «ЖБИ». #}
+{{ m.fleet_strip(fleet_photos) }}
+
 <section><div class="wrap">
   <div class="d-cat">
 {% for it in items %}    <div class="d-cat-card">
