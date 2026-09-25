@@ -5,7 +5,7 @@
    прокрутки, и ради него сюда приходят. #}
 {% block fleet %}{% endblock %}
 {% block body %}
-{% call m.hero2(h1, "Щебень, песок, отсев, ПГС, бетон и ЖБИ с двух площадок отгрузки: в Екатеринбурге и у Верхней Пышмы. Самосвалы от 5 до 20 кубов, цену с доставкой называем по адресу, оплата после выгрузки, " ~ cfg.callback_promise ~ ".", bg=hero_bg_default, cfg=cfg, third_href="#kalkulyator", third_text="Посчитать в калькуляторе") %}
+{% call m.hero2(h1, "Щебень, песок, отсев, ПГС, бетон и ЖБИ с двух площадок отгрузки: в Екатеринбурге и у Верхней Пышмы. Самосвалы от 4 до 26 кубов, цену с доставкой называем по адресу, оплата после выгрузки, " ~ cfg.callback_promise ~ ".", bg=hero_bg_default, cfg=cfg, third_href="#kalkulyator", third_text="Посчитать в калькуляторе") %}
   {{ m.sieve(sieve) }}
 {% endcall %}
 
@@ -64,7 +64,7 @@
   {{ m.shelf(shelf_rows, "Ориентировочные цены", price_note) }}
   <p class="d-note">{{ delivery_note }}</p>
   {{ m.sh("Как можно заплатить", "oplata", sub=True) }}
-  {{ m.payways(payment) }}
+  {{ m.payways(payment, payment_note) }}
 </div></section>
 
 {% if reviews %}<section class="d-band d-band-tint"><div class="wrap">

@@ -55,18 +55,18 @@
   "published": "2026-08-16"
  },
  "otsev/v-meshkah": {
-  "fp": "0c564e3eaab31aba",
-  "modified": "2026-09-02",
+  "fp": "9246c320bd1d9ba8",
+  "modified": "2026-09-25",
   "published": "2026-09-02"
  },
  "pesok/karyernyy": {
-  "fp": "7b2448d8bd72b0a7",
-  "modified": "2026-07-28",
+  "fp": "f8d8e31f9455c99b",
+  "modified": "2026-09-25",
   "published": "2026-07-28"
  },
  "pesok/mytyy": {
-  "fp": "f9402b60314afd24",
-  "modified": "2026-09-05",
+  "fp": "6c16cde6c910a6e3",
+  "modified": "2026-09-25",
   "published": "2026-09-02"
  },
  "pesok/peskostruynyy": {
@@ -75,13 +75,13 @@
   "published": "2026-08-21"
  },
  "pesok/rechnoy": {
-  "fp": "667187c3fbd4720d",
-  "modified": "2026-09-02",
+  "fp": "82871f0e377f7990",
+  "modified": "2026-09-25",
   "published": "2026-07-28"
  },
  "pesok/v-meshkah": {
-  "fp": "790f4aaa32419d60",
-  "modified": "2026-08-22",
+  "fp": "a7471dc45a871cd2",
+  "modified": "2026-09-25",
   "published": "2026-08-22"
  },
  "shcheben/frakciya-10-20": {
@@ -90,8 +90,8 @@
   "published": "2026-08-22"
  },
  "shcheben/frakciya-20-40": {
-  "fp": "98e0a4fadd914fb5",
-  "modified": "2026-07-28",
+  "fp": "56dd44d30970e1be",
+  "modified": "2026-09-25",
   "published": "2026-07-28"
  },
  "shcheben/frakciya-40-70": {
@@ -105,8 +105,8 @@
   "published": "2026-08-22"
  },
  "shcheben/frakciya-5-20": {
-  "fp": "ca639981b2a994ff",
-  "modified": "2026-08-04",
+  "fp": "b1a8a64c93d69448",
+  "modified": "2026-09-25",
   "published": "2026-08-04"
  },
  "shcheben/frakciya-70-120": {
@@ -115,13 +115,13 @@
   "published": "2026-08-22"
  },
  "shcheben/frakciya-70-150": {
-  "fp": "2f033150dbe80e7a",
-  "modified": "2026-08-22",
+  "fp": "382aa549427419e7",
+  "modified": "2026-09-25",
   "published": "2026-08-22"
  },
  "shcheben/v-meshkah": {
-  "fp": "c0cf04a36b554593",
-  "modified": "2026-07-28",
+  "fp": "c36d87d8f4b902eb",
+  "modified": "2026-09-25",
   "published": "2026-07-28"
  },
  "stati/arbolit-i-polistirolbeton": {
@@ -150,13 +150,13 @@
   "published": "2026-08-15"
  },
  "stati/cena-kuba-s-dostavkoy": {
-  "fp": "07183c9a167da5f9",
-  "modified": "2026-07-28",
+  "fp": "ac1025624d04c5c9",
+  "modified": "2026-09-25",
   "published": "2026-07-28"
  },
  "stati/chem-otsypat-uchastok": {
-  "fp": "9aaec0c113c98514",
-  "modified": "2026-07-28",
+  "fp": "664c343d4b5188e9",
+  "modified": "2026-09-25",
   "published": "2026-07-28"
  },
  "stati/cvet-trotuarnoy-plitki": {
@@ -165,8 +165,8 @@
   "published": "2026-08-16"
  },
  "stati/dekorativnaya-otsypka": {
-  "fp": "34b845ac97f66c86",
-  "modified": "2026-09-02",
+  "fp": "244a905f4954c093",
+  "modified": "2026-09-25",
   "published": "2026-08-23"
  },
  "stati/doroga-k-uchastku": {
@@ -185,8 +185,8 @@
   "published": "2026-08-15"
  },
  "stati/dostavka-na-dachu": {
-  "fp": "293042d1c65c5d98",
-  "modified": "2026-09-23",
+  "fp": "7416e5609ae91991",
+  "modified": "2026-09-25",
   "published": "2026-07-28"
  },
  "stati/drenazh-uchastka": {
@@ -195,8 +195,8 @@
   "published": "2026-08-23"
  },
  "stati/drenazhnyy-kolodec": {
-  "fp": "0a97ba5d2fb35f9f",
-  "modified": "2026-08-23",
+  "fp": "d4a6ed5acb8803ea",
+  "modified": "2026-09-25",
   "published": "2026-08-23"
  },
  "stati/formy-dlya-plitki": {
@@ -245,13 +245,13 @@
   "published": "2026-07-28"
  },
  "stati/keramzit-frakcii-i-ves": {
-  "fp": "2e437cd137b74b52",
-  "modified": "2026-08-15",
+  "fp": "27522336220e25f2",
+  "modified": "2026-09-25",
   "published": "2026-08-15"
  },
  "stati/keramzit-v-styazhke": {
-  "fp": "8b5f91834207e2f8",
-  "modified": "2026-08-23",
+  "fp": "be5415248fac786e",
+  "modified": "2026-09-25",
   "published": "2026-08-23"
  },
  "stati/kladochnaya-smes": {
@@ -345,8 +345,8 @@
   "published": "2026-08-15"
  },
  "stati/otsypka-mogily": {
-  "fp": "267c94b63bc27046",
-  "modified": "2026-09-22",
+  "fp": "531d0835cd878344",
+  "modified": "2026-09-25",
   "published": "2026-08-23"
  },
  "stati/parkovka-iz-shchebnya": {
@@ -370,8 +370,8 @@
   "published": "2026-08-15"
  },
  "stati/pgs-ili-opgs": {
-  "fp": "042a5c9c7518ad36",
-  "modified": "2026-08-25",
+  "fp": "554fb4b872c4991b",
+  "modified": "2026-09-25",
   "published": "2026-08-15"
  },
  "stati/plastikovyy-sadovyy-bordyur": {
@@ -400,8 +400,8 @@
   "published": "2026-08-23"
  },
  "stati/pol-v-garazhe": {
-  "fp": "357b09d170825887",
-  "modified": "2026-08-23",
+  "fp": "cfad7561f0df6126",
+  "modified": "2026-09-25",
   "published": "2026-08-23"
  },
  "stati/proizvoditeli-trotuarnoy-plitki": {
@@ -420,8 +420,8 @@
   "published": "2026-08-15"
  },
  "stati/rashod-na-m2": {
-  "fp": "674a65de5fb0bf4d",
-  "modified": "2026-08-23",
+  "fp": "cb991b0b0fdf88fd",
+  "modified": "2026-09-25",
   "published": "2026-08-23"
  },
  "stati/rastvor-proporcii": {
@@ -460,8 +460,8 @@
   "published": "2026-08-16"
  },
  "stati/skalnyy-grunt-dresva-but": {
-  "fp": "3a82011532b8e40b",
-  "modified": "2026-09-19",
+  "fp": "25d6a24e80ebcb02",
+  "modified": "2026-09-25",
   "published": "2026-08-15"
  },
  "stati/skalnyy-grunt-klassifikaciya": {
@@ -475,8 +475,8 @@
   "published": "2026-08-15"
  },
  "stati/skolko-shchebnya-i-peska-na-kub-betona": {
-  "fp": "0ccec77c7263a105",
-  "modified": "2026-09-02",
+  "fp": "40cf93ba40b8f238",
+  "modified": "2026-09-25",
   "published": "2026-08-11"
  },
  "stati/skolko-shchebnya-nuzhno": {
@@ -485,8 +485,8 @@
   "published": "2026-07-28"
  },
  "stati/skolko-shchebnya-v-kamaze": {
-  "fp": "a7b7371bb1d5c011",
-  "modified": "2026-08-25",
+  "fp": "329d8b102cd2a50a",
+  "modified": "2026-09-25",
   "published": "2026-07-28"
  },
  "stati/skolko-vesit-kub": {

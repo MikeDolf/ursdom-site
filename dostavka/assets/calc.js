@@ -29,8 +29,8 @@
      порожняком. Множитель приходит из разметки, чтобы формула здесь
      и в data/calc.py не разъехались. */
   var TRIP = parseInt(root.getAttribute("data-trip"), 10) || 2;
-  var MIN = parseInt(root.getAttribute("data-min"), 10) || 5;
-  var TRUCKS = [5, 10, 20];
+  var MIN = parseInt(root.getAttribute("data-min"), 10) || 4;
+  var TRUCKS = [4, 10, 26]; /* малый, КамАЗ, большой: как TRUCKS в data/calc.py */
 
   function trips(v) {
     for (var i = 0; i < TRUCKS.length; i++) {

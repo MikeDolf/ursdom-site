@@ -83,7 +83,7 @@
   <span class="d-topbar-geo">{{ cfg.region }}</span>
   <span class="d-topbar-sep" aria-hidden="true"></span>
   <span class="d-topbar-hours">{{ cfg.hours }}</span>
-  <span class="d-topbar-sale">{{ cfg.discounts }}</span>
+  <span class="d-topbar-sale">{{ cfg.promo }}</span>
   {# Адрес базы первым: на телефоне из всей полосы видна только правая
      часть, и раньше это была одна личная почта на gmail, первое, что
      видел человек. Адрес со ссылкой на контакты говорит о компании
@@ -106,10 +106,6 @@
          aria-label="Написать в MAX, {{ cfg.reply_promise }}"
          onclick="try{ym({{ cfg.metrika_id }},'reachGoal','{{ cfg.goal_contact }}')}catch(e){}">
         {{ m.max_badge('head') }}<span>MAX</span></a>
-      <a class="d-head-ic" href="{{ cfg.wa_url }}" target="_blank" rel="noopener"
-         aria-label="Написать в WhatsApp, {{ cfg.reply_promise }}"
-         onclick="try{ym({{ cfg.metrika_id }},'reachGoal','{{ cfg.goal_wa }}')}catch(e){}">
-        {{ m.wa_badge('head') }}<span>WhatsApp</span></a>
     </div>
   </div>
 </header>
@@ -134,7 +130,6 @@
         <h3>Контакты</h3>
         <p>{{ cfg.hours }}</p>
         <p><a href="{{ cfg.max_url }}" target="_blank" rel="noopener" onclick="try{ym({{ cfg.metrika_id }},'reachGoal','{{ cfg.goal_contact }}')}catch(e){}">Написать в MAX</a></p>
-        <p><a href="{{ cfg.wa_url }}" target="_blank" rel="noopener" onclick="try{ym({{ cfg.metrika_id }},'reachGoal','{{ cfg.goal_wa }}')}catch(e){}">Написать в WhatsApp</a></p>
         <p><a href="mailto:{{ cfg.email }}">{{ cfg.email }}</a></p>
         <p><a href="/dostavka/kontakty/">Контакты, адрес и реквизиты</a><br>
         <small>{{ cfg.city }}, {{ cfg.street }}</small></p>
@@ -185,10 +180,7 @@
   <a class="msg" href="{{ cfg.max_url }}" target="_blank" rel="noopener"
      aria-label="Написать в MAX, {{ cfg.reply_promise }}"
      onclick="try{ym({{ cfg.metrika_id }},'reachGoal','{{ cfg.goal_contact }}')}catch(e){}">{{ m.max_badge('bar') }}<span>MAX</span></a>
-  <a class="msg" href="{{ cfg.wa_url }}" target="_blank" rel="noopener"
-     aria-label="Написать в WhatsApp, {{ cfg.reply_promise }}"
-     onclick="try{ym({{ cfg.metrika_id }},'reachGoal','{{ cfg.goal_wa }}')}catch(e){}">{{ m.wa_badge('bar') }}<span>WhatsApp</span></a>
-  <a class="call" href="{{ form_anchor|default('#zayavka') }}">Узнать цену<b>{{ cfg.discounts }}</b></a>
+  <a class="call" href="{{ form_anchor|default('#zayavka') }}">Узнать цену<b>Скидка {{ cfg.promo_pct }}% за заявку</b></a>
 </div>
 {% endif %}
 {# Всплывающее окно .d-pop удалено при ревью интерфейса.

@@ -42,7 +42,7 @@
     return v;
   }
 
-  var TRUCKS = [5, 10, 20];
+  var TRUCKS = [4, 10, 26]; /* малый, КамАЗ, большой: как TRUCKS в data/calc.py */
   function trips(v) {
     for (var i = 0; i < TRUCKS.length; i++) {
       if (v <= TRUCKS[i]) return { n: 1, cap: TRUCKS[i] };

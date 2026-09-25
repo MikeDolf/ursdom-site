@@ -927,19 +927,24 @@ table td:only-child,table td:first-child:last-child{font-weight:400}
    «Как платить» на этом рынке спрашивают раньше, чем «сколько»:
    за вопросом стоит страх предоплаты незнакомой конторе. Раньше
    ответ был одной строкой в условиях доставки и там терялся. */
-.d-pay{list-style:none!important;padding:0!important;margin:0 0 26px!important;
-  display:grid;grid-template-columns:repeat(4,1fr);gap:1px;
-  background:var(--d-rule);border:1px solid var(--d-rule)}
-.d-pay-item{background:var(--d-paper);padding:17px 18px 18px;
-  margin:0!important;padding-left:18px!important}
-/* Ромб-маркер общего списка тут не нужен: у карточки своя кромка. */
+/* Плитки по двум группам (частным лицам, организациям) с иконкой,
+   над ними общее условие «после выгрузки» полосой с медной кромкой. */
+.d-pay-note{display:flex;gap:14px;align-items:flex-start;margin:0 0 26px;
+  padding:16px 18px;background:var(--d-white);border-radius:var(--r-card);
+  border-left:4px solid var(--d-brass);box-shadow:var(--sh-card);font-size:15.5px;line-height:1.5}
+.d-pay-note .d-ico{flex:none;width:26px;height:26px;color:var(--d-brass-text)}
+.d-pay-h{font-size:18px;font-weight:750;letter-spacing:-.01em;margin:0 0 12px}
+.d-pay{list-style:none!important;padding:0!important;margin:0 0 28px!important;
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
+.d-pay-item{background:var(--d-white);border-radius:var(--r-card);box-shadow:var(--sh-card);
+  padding:20px 20px 22px!important;margin:0!important}
+/* Ромб-маркер общего списка тут не нужен: у плитки своя иконка. */
 .d-pay-item::before{display:none!important}
-.d-pay-item strong{display:block;font-size:15.5px;font-weight:750;
-  letter-spacing:-.02em;border-left:3px solid var(--d-brass);
-  padding-left:11px;margin-bottom:9px}
-.d-pay-item span{display:block;font-size:14px;color:var(--d-ink-2);line-height:1.5}
-@media(max-width:900px){.d-pay{grid-template-columns:1fr 1fr}}
-@media(max-width:520px){.d-pay{grid-template-columns:1fr}}
+.d-pay-item .d-ico{width:48px;height:48px;padding:11px;border-radius:12px;
+  background:rgba(217,165,72,.16);color:var(--d-brass-text);margin-bottom:14px}
+.d-pay-item strong{display:block;font-size:16px;font-weight:750;
+  letter-spacing:-.02em;margin-bottom:7px}
+.d-pay-item span{display:block;font-size:14.5px;color:var(--d-ink-2);line-height:1.5}
 
 /* ---------------------------------------------------- зоны доставки
    Вместо карты области - то, что на карте ищут: своё направление,
@@ -1493,3 +1498,72 @@ dd a:not([class*="d-btn"]),
    списка (24 px слева) и сдвигались вправо от заголовка. */
 .d-prose .d-steps{padding-left:0}
 .d-prose .d-steps li{margin:0}
+
+/* ---------------------------------------------------- зелёные кнопки
+   Владелец: WhatsApp убрать (туда не пишут), оставить MAX, кнопки
+   крупнее и зелёные, чтобы выделялись на фоне остального сайта.
+   Зелёный выбран по контрасту: белый текст на #15803d даёт 5,0,
+   на ховере #116932 - 6,5. Латунь остаётся акцентом заголовков
+   и цен, а действие теперь одного цвета на всём разделе. */
+:root{--d-go:#15803d;--d-go-h:#116932;--d-go-soft:#dcf5e5}
+.d-btn{background:var(--d-go);border-color:var(--d-go);color:#fff}
+.d-btn:hover{background:var(--d-go-h);border-color:var(--d-go-h);color:#fff}
+.d-btn:not(.d-shelf-buy){font-size:17.5px;padding:18px 32px;min-height:60px;
+  display:inline-flex;align-items:center;justify-content:center}
+.d-btn-max{font-weight:800;font-size:18.5px!important;min-width:260px;
+  box-shadow:0 8px 22px rgba(21,128,61,.28)}
+.d-btn-wide{padding:19px 24px}
+.d-btn-ghost{background:transparent}
+.d-cta-row{gap:12px}
+@media(max-width:760px){.d-btn-max{min-width:0}}
+/* Панель на телефоне: MAX и «Узнать цену», обе зелёные, выше прежней. */
+.d-mobilebar{border-top-color:var(--d-go-h)}
+.d-mobilebar .call{background:var(--d-go);color:#fff;min-height:66px;font-size:17.5px}
+.d-mobilebar .call:hover{background:var(--d-go-h);color:#fff}
+.d-mobilebar .call b{color:var(--d-go-soft)}
+.d-mobilebar .msg{width:86px;min-height:66px;font-size:13px}
+.d-mobilebar .msg svg{width:32px;height:32px}
+@media(max-width:1163px){body{padding-bottom:66px}}
+/* Плавающая кнопка и кнопка в шапке: MAX на зелёном. */
+.d-float-btn{background:var(--d-go);color:#fff;min-height:60px;padding:0 24px 0 16px}
+.d-float-btn:hover{background:var(--d-go-h);color:#fff}
+.d-float-btn b{color:var(--d-go-soft)}
+.d-float-btn svg{width:34px;height:34px}
+@media (min-width:1164px) and (max-width:1439px){.d-float-btn{width:60px;padding:0}}
+.d-head-ic{background:var(--d-go);border-radius:var(--r-ctl);padding:0 18px;
+  min-height:48px;font-size:16px}
+.d-head-ic:hover{background:var(--d-go-h)}
+@media(max-width:900px){.d-head-ic{padding:0 12px}}
+
+/* ---------------------------------------------------- плашка скидки
+   «Скидка 5% при заявке через MAX или сайт» у каждой кнопки MAX
+   и над отправкой формы. Ярко-жёлтая, чтобы её не спутать ни с зелёной
+   кнопкой рядом, ни с латунными ценами: на светлом и на стальном фоне
+   одна и та же плашка, тёмный текст на жёлтом даёт 11,6. */
+.d-promo{display:inline-flex;align-items:center;gap:12px;margin:0 0 14px;
+  padding:9px 16px 9px 9px;background:#ffd84a;color:#1b1b0a;border-radius:999px;
+  font-weight:750;font-size:16px;line-height:1.3;letter-spacing:-.01em;
+  box-shadow:0 6px 18px rgba(255,200,40,.28)}
+.d-promo-pct{flex:none;display:inline-flex;align-items:center;justify-content:center;
+  min-width:52px;height:40px;padding:0 10px;border-radius:999px;background:#c2410c;color:#fff;
+  font-size:18px;font-weight:850}
+.d-promo-form{display:flex;border-radius:var(--r-ctl);margin:18px 0 0}
+.d-promo + .d-cta-row{margin-top:0}
+@media(max-width:520px){.d-promo{font-size:15px;border-radius:14px}}
+/* В тёмной полосе и в карточке формы цвет абзаца задан контекстом
+   сильнее одного класса, и текст плашки бледнел. Цвет плашки свой. */
+.d-promo,.d-band-dark .d-promo,.d-hero2 .d-promo,.d-form .d-promo,.d-calc-res .d-promo{color:#1b1b0a}
+.d-promo span{color:inherit}
+.d-promo .d-promo-pct{color:#fff}
+/* Кнопки в одном ряду одной высоты, хотя у MAX кегль крупнее. */
+.d-cta-row .d-btn{min-height:64px;padding-top:0;padding-bottom:0}
+.d-head-ic{color:#fff!important}
+/* Контурная кнопка: цвета снова из переменных поверхности. Общий
+   .d-btn выше задаёт зелёный и белый текст и иначе перебивает их. */
+.d-btn-ghost{background:transparent;border-color:var(--d-ghost-line,var(--d-rule-2));
+  color:var(--d-ghost-ink,var(--d-ink))}
+.d-btn-ghost:hover{background:var(--d-ghost-bg,var(--d-enamel-2));
+  border-color:var(--d-ghost-line-h,var(--d-ink));color:var(--d-ghost-ink-h,var(--d-ink))}
+/* Контексты (.d-midcta, .d-form, .d-msgcard) красят span своим цветом
+   с большей специфичностью; плашка везде одна и та же. */
+.d-promo span{color:#1b1b0a!important}
