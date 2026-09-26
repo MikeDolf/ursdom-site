@@ -65,7 +65,33 @@ from longreads_pesok import PESOK_LONGREADS
 from longreads_prim import PRIM_LONGREADS
 from longreads_tovar import TOVAR_LONGREADS
 from tags import TAG_LONGREADS
-LONGREADS = LONGREADS + CORE_LONGREADS + BETON_LONGREADS + ZADACHI_LONGREADS + SMEZH_LONGREADS + BETON2_LONGREADS + GAP_LONGREADS + GAP2_LONGREADS + PLITKA_LONGREADS + BETON3_LONGREADS + SMESI_LONGREADS + SKALA_LONGREADS + REV_LONGREADS + BRENDY_LONGREADS + PESOK_LONGREADS + PRIM_LONGREADS + TOVAR_LONGREADS + TAG_LONGREADS
+from wordstat_cover import WS_FAQ, WS_SECTIONS, WS_LONGREADS, WS_FAM
+FAM.update(WS_FAM)
+from blog import BLOG_RUBRICS, BLOG_OF
+from kupit_cover import KUPIT_ROWS, buyers_ctx
+from kupit_pages import KUPIT_LONGREADS, KUPIT_SECTIONS
+LONGREADS = LONGREADS + WS_LONGREADS + KUPIT_LONGREADS + CORE_LONGREADS + BETON_LONGREADS + ZADACHI_LONGREADS + SMEZH_LONGREADS + BETON2_LONGREADS + GAP_LONGREADS + GAP2_LONGREADS + PLITKA_LONGREADS + BETON3_LONGREADS + SMESI_LONGREADS + SKALA_LONGREADS + REV_LONGREADS + BRENDY_LONGREADS + PESOK_LONGREADS + PRIM_LONGREADS + TOVAR_LONGREADS + TAG_LONGREADS
+
+# Формулировки из выгрузки Вордстата (data/wordstat_cover.py): вопросы
+# в частые вопросы и разделы в конец существующих страниц. Применяются
+# до расчёта дат статей, поэтому дополненная статья получает свежую
+# дату изменения, а нетронутые сохраняют прежнюю.
+for _a in LONGREADS:
+    _a["faq"] = list(_a["faq"]) + WS_FAQ.get(_a["slug"], [])
+    _a["sections"] = (KUPIT_SECTIONS.get(_a["slug"], []) + list(_a["sections"])
+                      + WS_SECTIONS.get(_a["slug"], []))
+# Какие страницы получили таблицу «ответы покупателям»: в конце сборки
+# сверяется, что ни одна группа коммерческих запросов не потерялась.
+BUYERS_DONE = set()
+
+
+def buyers_for(key):
+    BUYERS_DONE.add(key)
+    return buyers_ctx(key)
+for _k in ("shcheben", "otsev", "pesok", "pgs"):
+    MATERIALS[_k]["faq"] = list(MATERIALS[_k]["faq"]) + WS_FAQ.get(_k, [])
+for _k in MATERIALS_EXT:
+    MATERIALS_EXT[_k]["faq"] = list(MATERIALS_EXT[_k]["faq"]) + WS_FAQ.get(_k, [])
 from legal import legal_sections, LEGAL_UPDATED
 
 env = Environment(loader=FileSystemLoader(os.path.join(HERE, "templates")),
@@ -1457,6 +1483,9 @@ BASE_CTX = dict(cfg=SITE, advantages=ADVANTAGES, guarantees=GUARANTEES, g=SALES,
                                loc="в Среднеуральске", name="Среднеуральск", km=25,
                                mats="щебень")],
                 more_materials=[("/dostavka/kontakty/", "Контакты, адрес базы и реквизиты"),
+                                ("/dostavka/galka/", "Галька: речная и ландшафтная"),
+                                ("/dostavka/glina/", "Глина и суглинок под заявку"),
+                                ("/dostavka/plitnyak/", "Плитняк и дикий камень"),
                                 ("/dostavka/zhbi-i-vodootvod/", "ЖБИ и водоотвод: кольца, лотки, дождеприёмники"),
                                 ("/dostavka/blagoustroystvo/", "Благоустройство участка: плитка, бордюр, основание")]
                                + [(("/dostavka/" + k + "/"), v["name"])
@@ -1682,7 +1711,8 @@ ZHBI_ART = {
                    ("/dostavka/stati/frakcii-shchebnya/", "Фракции щебня под подготовку")],
 }
 
-MAT_ART = {'shcheben': [('/dostavka/stati/podushka-pod-fundament/', 'Подушка под фундамент: щебень или песок'),
+MAT_ART = {'shcheben': [('/dostavka/shcheben/mramornyy/', 'Мраморный и белый щебень'),
+                 ('/dostavka/stati/podushka-pod-fundament/', 'Подушка под фундамент: щебень или песок'),
                  ('/dostavka/stati/materialy-na-dom-po-etapam/', 'Материалы на дом по этапам'),
                  ('/dostavka/stati/frakcii-shchebnya/', 'Фракции щебня: какая под какую задачу'), ('/dostavka/stati/gost-na-shcheben-i-pesok/', 'ГОСТ на щебень и песок: что спрашивать')],
     'pesok': [('/dostavka/pesok/mytyy/', 'Мытый песок: карьеры и цена за тонну'),
@@ -1692,11 +1722,11 @@ MAT_ART = {'shcheben': [('/dostavka/stati/podushka-pod-fundament/', 'Подуш�
     'otsev': [('/dostavka/otsev/v-meshkah/', 'Отсев в мешках и биг-бэгах'),
               ('/dostavka/stati/otsev-gde-primenyat/', 'Отсев 0-5: где применяют и чем заменить'), ('/dostavka/stati/frakcii-shchebnya/', 'Фракции щебня: какая под какую задачу')],
     'pgs': [('/dostavka/stati/pgs-ili-opgs/', 'ПГС и ОПГС: чем отличаются'), ('/dostavka/stati/skalnyy-grunt-dresva-but/', 'Скальный грунт, дресва и бут')],
-    'keramzit': [('/dostavka/stati/keramzit-frakcii-i-ves/', 'Керамзит: фракции, вес и где выгоден')],
+    'keramzit': [('/dostavka/keramzit/v-meshkah/', 'Керамзит в мешках'), ('/dostavka/stati/keramzit-frakcii-i-ves/', 'Керамзит: фракции, вес и где выгоден')],
     'skalnyy-grunt': [('/dostavka/stati/skalnyy-grunt-klassifikaciya/', 'Скальный грунт: классификация и разработка'),
                       ('/dostavka/stati/skalnyy-grunt-dresva-but/', 'Скальный грунт, дресва и бут'), ('/dostavka/stati/pgs-ili-opgs/', 'ПГС и ОПГС: чем отличаются')],
-    'butovyy-kamen': [('/dostavka/stati/skalnyy-grunt-dresva-but/', 'Скальный грунт, дресва и бут')],
-    'graviy': [('/dostavka/stati/frakcii-shchebnya/', 'Фракции щебня: какая под какую задачу')],
+    'butovyy-kamen': [('/dostavka/plitnyak/', 'Плитняк и дикий камень'), ('/dostavka/stati/skalnyy-grunt-dresva-but/', 'Скальный грунт, дресва и бут')],
+    'graviy': [('/dostavka/galka/', 'Галька: речная и ландшафтная'), ('/dostavka/stati/frakcii-shchebnya/', 'Фракции щебня: какая под какую задачу')],
     'shchps': [('/dostavka/stati/pgs-ili-opgs/', 'ПГС и ОПГС: чем отличаются')],
     'granitnaya-kroshka': [('/dostavka/stati/otsev-gde-primenyat/', 'Отсев 0-5: где применяют')],
     'asfaltovaya-kroshka': [('/dostavka/stati/skalnyy-grunt-dresva-but/', 'Чем отсыпать дёшево')]}
@@ -1759,7 +1789,9 @@ for slug, mc in money_cfg.items():
         _ctx["price_note"] = _ctx["price_note"] + " " + _tn
     htmlp = env.get_template("money.j2").render(
         **_ctx, **mc, calc=_calc, has_calc=bool(_calc),
-        mat_cities=mat_city_links(slug),
+        mat_cities=mat_city_links(slug), **buyers_for(slug),
+        buy_sections=KUPIT_SECTIONS.get(slug, []),
+        extra_sections=WS_SECTIONS.get(slug, []),
         canonical=DOMAIN + url, crumbs_html=crumbs(crumb_items), jsonld=jl,
         intro=mat["intro"], types=mat["types"], fractions=mat.get("fractions"),
         fractions_head=mat.get("fractions_head"),
@@ -1837,7 +1869,7 @@ for c in CITIES:
            ("/dostavka/otsev/", "Отсев 0-5"),
            ("/dostavka/stati/cena-kuba-s-dostavkoy/", "Цена за куб с доставкой")] + others
     htmlp = env.get_template("geo.j2").render(
-        **BASE_CTX, **hero_ctx("shcheben"), city=c, canonical=DOMAIN + url, crumbs_html=crumbs(crumb_items), jsonld=jl,
+        **BASE_CTX, **hero_ctx("shcheben"), **buyers_for("shcheben/" + c["slug"]), city=c, canonical=DOMAIN + url, crumbs_html=crumbs(crumb_items), jsonld=jl,
         lots=(city_lots(ship_km(c["slug"]))[0] if c["slug"] in CITY_FACTS else None),
         lots_note=(city_lots(ship_km(c["slug"]))[1] if c["slug"] in CITY_FACTS else None),
         plecho_km=ship_km(c["slug"]),
@@ -2020,7 +2052,7 @@ def gen_mat_city(mkey, price_key, rod, vin, calc_slug):
                   ("/dostavka/stati/cena-kuba-s-dostavkoy/", "Цена за куб с доставкой"),
                   ("/dostavka/", "Все города и материалы")])
         htmlp = env.get_template("geoplus.j2").render(
-            **BASE_CTX, **hero_ctx(forms["url"]), place=place,
+            **BASE_CTX, **hero_ctx(forms["url"]), **buyers_for(forms["url"] + "/" + cs), place=place,
             canonical=DOMAIN + url, crumbs_html=crumbs(crumb_items), jsonld=jl,
             title=title_pick("Доставка %s %s: цена за куб от %d руб" % (rod, f["prep"], low),
                              "Доставка %s %s: от %d руб за куб" % (rod, f["prep"], low),
@@ -2080,7 +2112,7 @@ for c in PESOK_CITIES:
                    f"Принимаете машину на объекте и проверяете объём. {SITE['payment']}"]},
     ]
     htmlp = env.get_template("geoplus.j2").render(
-        **BASE_CTX, **hero_ctx("pesok"), place=c, canonical=DOMAIN + url, crumbs_html=crumbs(crumb_items), jsonld=jl,
+        **BASE_CTX, **hero_ctx("pesok"), **buyers_for("pesok/" + c["slug"]), place=c, canonical=DOMAIN + url, crumbs_html=crumbs(crumb_items), jsonld=jl,
         title=title_pick(f"Доставка песка {c['prep']}: цена за куб от {_title_floor('Песок')} руб",
                          f"Доставка песка {c['prep']}: карьерный и речной, цена за куб",
                          f"Доставка песка {c['prep']}: цена за куб"),
@@ -2257,16 +2289,14 @@ if _notlist:
 for a in LONGREADS:
     url = SITE["base"] + a["slug"] + "/"
     autolink.reset(url)
-    if a["slug"].startswith("shcheben/"):
-        parent = ("Щебень", SITE["base"] + "shcheben/")
-    elif a["slug"].startswith("beton/"):
-        parent = ("Бетон", SITE["base"] + "beton/")
-    elif a["slug"].startswith("pesok/"):
-        parent = ("Песок", SITE["base"] + "pesok/")
-    else:
-        parent = ("Статьи", None)
-    crumb_items = [("Главная", "/"), ("Доставка материалов", SITE["base"]), parent,
-                   (a["h1"], None)]
+    # Родитель в крошках по первому сегменту адреса. Раньше всё, что не
+    # щебень, бетон и песок, попадало в «Статьи», включая отсев в мешках.
+    _seg = a["slug"].split("/")[0] if "/" in a["slug"] else None
+    _PARENT = {"shcheben": "Щебень", "beton": "Бетон", "pesok": "Песок",
+               "otsev": "Отсев", "keramzit": "Керамзит", "stati": "Блог"}
+    parent = (_PARENT[_seg], SITE["base"] + _seg + "/") if _seg in _PARENT else None
+    crumb_items = ([("Главная", "/"), ("Доставка материалов", SITE["base"])]
+                   + ([parent] if parent else []) + [(a["h1"], None)])
     _fam, _conv = (None, None) if a.get("commercial") else CONV_FOR(a["slug"])
     nodes = [localbusiness(), bc_schema(crumb_items), faq_schema(a["faq"])]
     if _conv:
@@ -2306,7 +2336,7 @@ for a in LONGREADS:
             for o in CITIES[:4]]
     _calc = calc_for(a["slug"])
     htmlp = env.get_template("longread.j2").render(
-        calc=_calc, has_calc=bool(_calc),
+        calc=_calc, has_calc=bool(_calc), **buyers_for(a["slug"]),
         og_type="article" if a["kind"] == "article" else "website",
         **_photo_ctx(a["slug"], photos_for(a["slug"])),
         **BASE_CTX, author=AUTHOR_FULL, updated=UPDATED,
@@ -2321,8 +2351,62 @@ for a in LONGREADS:
         conv=_conv,
         order_steps=ORDER_STEPS, objections=OBJECTIONS,
         price_head=a.get("price_head", ""), order_head=a.get("order_head", ""),
+        # Материалы этой работы под «коротко»: рубрика блога, а если
+        # статья не из блога, первые строки прайса её семейства.
+        mat_rows=(BLOG_OF[a["slug"]]["mats"] if a["slug"] in BLOG_OF
+                  else (_conv["rows"][:3] if _conv else None)),
+        mat_head="Материалы для этой работы с доставкой",
         related_links=list(dict.fromkeys(rel))[:14])
     pages.append((url, htmlp, "longread"))
+
+# ---- БЛОГ: статьи по видам работ ----
+# Каждая статья блога обязана стоять в рубрике: иначе она не попадёт
+# в список и останется без призыва купить материал под свою работу.
+_lr_by = {a["slug"]: a for a in LONGREADS}
+_unassigned = sorted(sl for sl in _lr_by if sl.startswith("stati/") and sl not in BLOG_OF)
+_missing = sorted(sl for sl in BLOG_OF if sl not in _lr_by)
+if _unassigned or _missing:
+    print("ОШИБКА: блог и статьи разошлись")
+    for sl in _unassigned:
+        print("  статья без рубрики:", sl)
+    for sl in _missing:
+        print("  в рубрике нет такой статьи:", sl)
+    raise SystemExit(1)
+url = SITE["base"] + "stati/"
+autolink.reset(url)
+crumb_items = [("Главная", "/"), ("Доставка материалов", SITE["base"]), ("Блог", None)]
+_rubrics = []
+for _r in BLOG_RUBRICS:
+    _arts = [dict(href=SITE["base"] + "stati/" + sl + "/", h1=_lr_by["stati/" + sl]["h1"],
+                  desc=_lr_by["stati/" + sl]["desc"]) for sl in _r["slugs"]]
+    _rubrics.append(dict(_r, articles=_arts))
+_all_arts = [x for r in _rubrics for x in r["articles"]]
+jl = graph(localbusiness(), bc_schema(crumb_items),
+           {"@type": "ItemList", "name": "Статьи блога по видам работ",
+            "numberOfItems": len(_all_arts),
+            "itemListElement": [{"@type": "ListItem", "position": i + 1,
+                                 "url": DOMAIN + x["href"], "name": x["h1"]}
+                                for i, x in enumerate(_all_arts)]})
+htmlp = env.get_template("blog.j2").render(
+    **BASE_CTX, **hero_ctx(""), canonical=DOMAIN + url, crumbs_html=crumbs(crumb_items),
+    jsonld=jl, title="Блог о щебне, песке и бетоне: статьи по видам работ",
+    desc=("Статьи по видам работ: фундамент, дорожки и заезды, дренаж, отсыпка участка, "
+          "бетон и полы, плитка и бордюр. Какой материал брать, сколько и по какой цене "
+          "с доставкой."),
+    h1="Блог: какой материал под какую работу",
+    hero_sub=("%d статей по видам работ: что класть под фундамент, дорожку, дренаж "
+              "и плитку, сколько кубов заказывать и как принять машину. Под каждой "
+              "рубрикой материалы с ценой и доставкой." % len(_all_arts)),
+    rubrics=_rubrics, rubric_links=[("#" + r["id"], r["h"]) for r in _rubrics],
+    subject="материалы под работу, " + SITE["region_short"],
+    related_links=[("/dostavka/shcheben/", "Доставка щебня: все фракции и цены"),
+                   ("/dostavka/pesok/", "Доставка песка"),
+                   ("/dostavka/otsev/", "Отсев 0-5"),
+                   ("/dostavka/pgs/", "ПГС и ОПГС"),
+                   ("/dostavka/beton/", "Бетон с доставкой"),
+                   ("/dostavka/kalkulyator/", "Калькуляторы объёма и веса"),
+                   ("/dostavka/", "Все города и материалы")])
+pages.append((url, htmlp, "blog"))
 
 # ---- РАЗДЕЛ КАЛЬКУЛЯТОРОВ ----
 #
@@ -2578,6 +2662,7 @@ for slug, mc in MONEY_CFG_EXT.items():
     _calc = calc_for(slug)
     htmlp = env.get_template("money.j2").render(
         **BASE_CTX, calc=_calc, has_calc=bool(_calc), canonical=DOMAIN + url, crumbs_html=crumbs(crumb_items),
+        **buyers_for(slug), buy_sections=KUPIT_SECTIONS.get(slug, []),
         # Цена в title, как у щебня, песка, отсева и ПГС: число то же,
         # что в витрине и в первом экране этой страницы (mc["low"]).
         jsonld=jl, title=title_pick(mc["title"].replace(": цена за куб", ": цена за куб от %s руб" % mc["low"]),
@@ -2649,6 +2734,7 @@ for slug, mc in _ZHBI_ALL.items():
             ("/dostavka/", "Все города и материалы")]
     ctx = dict(BASE_CTX)
     _calc = calc_for(slug)
+    ctx.update(buyers_for(slug), buy_sections=KUPIT_SECTIONS.get(slug, []))
     ctx.update(
         calc=_calc, has_calc=bool(_calc),
         canonical=DOMAIN + url, crumbs_html=crumbs(crumb_items), jsonld=jl,
@@ -2830,7 +2916,7 @@ for city_slug, mats in MATRIX.items():
 
     crumb_items = [("Главная", "/"), ("Доставка материалов", SITE["base"]),
                    ("Щебень", SITE["base"] + "shcheben/"), (facts["name"], None)]
-    cfaq = geo_city_faq(facts, mats, pl, dist, skm)
+    cfaq = geo_city_faq(facts, mats, pl, dist, skm) + WS_FAQ.get("city:" + city_slug, [])
     jl = graph(localbusiness(), bc_schema(crumb_items), faq_schema(cfaq),
                product_schema(h1, desc, MAT_FORMS[mats[0]]["low"], url,
                               images=product_images(MAT_FORMS[mats[0]]["url"])))
@@ -2867,7 +2953,7 @@ for city_slug, mats in MATRIX.items():
     # (см. _lsi_places в geo_matrix). Отдельного списка посёлков в текст
     # не добавляем: facts["areas"] уже перечисляет их в блоке «Куда возим».
     htmlp = env.get_template("geo2.j2").render(
-        **BASE_CTX, **hero_ctx("shcheben"), canonical=DOMAIN + url, crumbs_html=crumbs(crumb_items),
+        **BASE_CTX, **hero_ctx("shcheben"), **buyers_for("shcheben/" + city_slug), canonical=DOMAIN + url, crumbs_html=crumbs(crumb_items),
         jsonld=jl, title=title, desc=desc, h1=h1, hero_sub=hero,
         **_lsi, ground_tag=_ground_tag,
         city=dict(facts, dist=dist), dist=dist, mat_blocks=mat_blocks,
@@ -3118,6 +3204,10 @@ print("lastmod: текст изменился у %d из %d страниц" % (_
 
 sm = ['<?xml version="1.0" encoding="UTF-8"?>',
       '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
+_lost = sorted(set(KUPIT_ROWS) - BUYERS_DONE)
+if _lost:
+    print("ОШИБКА: коммерческие запросы отнесены к страницам, которых нет:", _lost)
+    raise SystemExit(1)
 # Страница благодарности закрыта от индексации, поэтому в карту не идёт:
 # иначе Вебмастер отчитается о ней как об исключённой и будет прав.
 for url, h, fam in pages:

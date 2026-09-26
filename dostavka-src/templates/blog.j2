@@ -1,0 +1,40 @@
+{% extends "base.j2" %}
+{% import "_macros.j2" as m %}
+{# Блог: статьи по видам работ. Под каждой рубрикой полоса материалов
+   для этой работы с ценой и кнопкой MAX, чтобы от чтения до заказа
+   был один шаг, а не поиск по каталогу. #}
+{% block fleet %}{% endblock %}
+{% block body %}
+{{ m.hero2(h1, hero_sub, bg=hero_bg_default, cfg=cfg, third_href="#rubriki", third_text="Выбрать вид работ") }}
+
+<section class="d-band"><div class="wrap">
+  {{ m.sh("Выберите вид работ", "rubriki", "Статьи разложены не по материалам, а по задаче: сначала что делаете, потом чем и сколько.") }}
+  {{ m.chips(rubric_links) }}
+</div></section>
+
+{% for r in rubrics %}
+<section class="d-band{% if loop.index is even %} d-band-tint{% endif %}"><div class="wrap">
+  {{ m.sh(r.h, r.id, r.lead) }}
+  {{ m.matcta(cfg, r.mats, "Материалы для этих работ с доставкой") }}
+  <div class="d-cat d-blog-list">
+{% for a in r.articles %}    <div class="d-cat-card">
+      <p class="d-cat-name"><a href="{{ a.href }}">{{ a.h1 }}</a></p>
+      <p>{{ a.desc }}</p>
+      <p class="d-cat-go">Читать статью</p>
+    </div>
+{% endfor %}  </div>
+</div></section>
+{% endfor %}
+
+{{ m.form_band(cfg, "Заявка на материалы", subject, head="Посчитаем материал под вашу работу") }}
+
+{{ m.deliveries(fleet_photos) }}
+
+{{ m.guarantee_band(g.guarantees, g.trust) }}
+
+{{ m.msg_card(cfg) }}
+
+<section class="d-band"><div class="wrap">
+  {{ m.chips(related_links, "Материалы и цены") }}
+</div></section>
+{% endblock %}

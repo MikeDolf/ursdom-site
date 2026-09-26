@@ -102,6 +102,10 @@
 {{ m.trucks(trucks) }}
 
 <section class="d-band"><div class="wrap d-prose">
+{% for s in buy_sections|default([], true) %}
+  <h2 class="d-sh" id="{{ s.id }}">{{ s.h }}</h2>
+{{ m.blocks(s) }}
+{% endfor %}
 {% if tasks %}
   {# mat_vin, а не выдуманный mat_name: в контексте товарной страницы
      название материала лежит в падежных формах, именительного отдельно
@@ -180,7 +184,12 @@
 {% endfor %}    </tbody>
   </table></div>
   <p class="d-note">Расчёт ориентировочный: точный объём зависит от толщины слоя и плотности грунта. Посчитаем под ваш объект по размерам.</p>
-</div></section>
+{% for s in extra_sections|default([], true) %}
+  <h2 class="d-sh" id="{{ s.id }}">{{ s.h }}</h2>
+{{ m.blocks(s) }}
+{% endfor %}</div></section>
+
+{{ m.buyers(buyers|default([], true), buyers_head) }}
 
 {{ m.msg_card(cfg) }}
 

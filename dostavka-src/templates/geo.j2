@@ -72,6 +72,8 @@
   {{ m.chips(related_links, "Ещё по теме и в соседних городах") }}
 </div></section>
 
+{{ m.buyers(buyers|default([], true), buyers_head) }}
+
 {{ m.msg_card(cfg) }}
 
 <section class="d-band d-band-tint"><div class="wrap">

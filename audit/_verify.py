@@ -609,6 +609,37 @@ if _root in pages:
         if _u not in _seen and 'content="noindex' not in _h:
             bad(_u, "сирота", "не достижима по ссылкам от %s" % _root)
 
+# --- 30. формулировки из выгрузки Вордстата есть на сайте
+# Владелец: все формулировки из выгрузки должны стоять в тексте сайта.
+# Список в audit/wordstat-*.csv, правила сравнения в audit/_wordstat.py,
+# исключения с причиной в _wordstat.SKIP.
+try:
+    sys.path.insert(0, os.path.join(ROOT, "audit"))
+    import _wordstat
+    for _q, _us in _wordstat.coverage(pages).items():
+        if not _us and _q not in _wordstat.SKIP:
+            bad("(Вордстат)", "формулировка", "нет на сайте: «%s»" % _q)
+except Exception as _e:
+    bad("(Вордстат)", "формулировка", "не удалось проверить: %s" % _e)
+
+# --- 31. коммерческие запросы «купить» есть на сайте
+# Выгрузка audit/wordstat-kupit, фильтр чужих регионов и чужого товара
+# в dostavka-src/data/kupit_cover.py: проверка берёт тот же фильтр, что
+# и сборка, иначе они разъедутся при первой правке одного из них.
+try:
+    sys.path.insert(0, os.path.join(ROOT, "dostavka-src", "data"))
+    import _wordstat
+    from kupit_cover import load as _kload
+    _segs = {u: _wordstat.segments(h) for u, h in pages.items()}
+    for _mat, _q, _n, _why in _kload():
+        if _why:
+            continue
+        _qt = _wordstat.query_tokens(_q)
+        if not any(_wordstat.found_in(_qt, _s) for _s in _segs.values()):
+            bad("(купить)", "формулировка", "нет на сайте: «%s»" % _q)
+except Exception as _e:
+    bad("(купить)", "формулировка", "не удалось проверить: %s" % _e)
+
 # ------------------------------------------------------------------ вывод
 by_kind = collections.Counter(k for _, k, _ in problems)
 print("страниц проверено: %d" % len(pages))

@@ -26,7 +26,7 @@
 <meta name="twitter:image" content="https://ursdom.ru/dostavka/assets/img/og-dostavka.jpg">
 <link rel="preload" href="/dostavka/assets/fonts/golos-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/dostavka/assets/fonts/mono-num.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/dostavka/assets/dostavka.min.css?v=104ba38d">
+<link rel="stylesheet" href="/dostavka/assets/dostavka.min.css?v=a8e831b5">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <script type="application/ld+json">
@@ -145,7 +145,8 @@
         {
           "@type": "ListItem",
           "position": 3,
-          "name": "Статьи"
+          "name": "Блог",
+          "item": "https://ursdom.ru/dostavka/stati/"
         },
         {
           "@type": "ListItem",
@@ -211,6 +212,14 @@
           "acceptedAnswer": {
             "@type": "Answer",
             "text": "Можем посчитать за вас. Назовите размеры участка работ и задачу, вернёмся с объёмом, подходящей фракцией и ценой с доставкой."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Сколько надо щебня на площадку 6 на 4 метра?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Сколько надо щебня, считают по формуле площадь на слой плюс запас на уплотнение: 24 м² на 0,2 м дают 4,8 куба, с коэффициентом 1,2 около 5,8 куба, то есть КамАЗ."
           }
         }
       ]
@@ -455,7 +464,7 @@
       "description": "Как посчитать, сколько кубов щебня или песка нужно: формула, коэффициент уплотнения, готовые расчёты под площадку, фундамент и траншею, пересчёт кубов в тонны.",
       "inLanguage": "ru-RU",
       "datePublished": "2026-07-28",
-      "dateModified": "2026-07-28",
+      "dateModified": "2026-09-26",
       "mainEntityOfPage": "https://ursdom.ru/dostavka/stati/skolko-shchebnya-nuzhno/",
       "image": [
         "https://ursdom.ru/dostavka/assets/img/og-dostavka.jpg"
@@ -541,7 +550,7 @@
     </div>
   </div>
 </header>
-<nav class="d-crumbs" aria-label="Хлебные крошки"><div class="wrap"><a href="/">Главная</a> › <a href="/dostavka/">Доставка материалов</a> › Статьи › Сколько щебня нужно: как посчитать объём и не ошибиться</div></nav>
+<nav class="d-crumbs" aria-label="Хлебные крошки"><div class="wrap"><a href="/">Главная</a> › <a href="/dostavka/">Доставка материалов</a> › <a href="/dostavka/stati/">Блог</a> › Сколько щебня нужно: как посчитать объём и не ошибиться</div></nav>
 <main id="content">
 
 
@@ -577,6 +586,19 @@
 </div>
 <p class="d-upd">Материал обновлён 11 августа 2026 года. Цифры проверены по действующим ГОСТам и практике отгрузок по Свердловской области.</p>
   <div class="d-tldr"><strong>Коротко, если некогда читать</strong><p>Базовая формула: площадь умножить на толщину слоя в метрах. Площадка 20 квадратов слоем 10 см это 2 кубометра. К результату обязательно добавьте 15-25 процентов на уплотнение, иначе после трамбовки слой окажется тоньше проектного. Для пересчёта в тонны умножьте кубы на 1,4 для гранита и на 1,55 для песка.</p></div>
+  <aside class="d-matcta" data-ui>
+  <p class="d-matcta-h">Материалы для этой работы с доставкой</p>
+  <ul class="d-matcta-list">
+    <li><a href="/dostavka/shcheben/frakciya-20-40/">Щебень 20-40</a><b>от 770 руб/м³</b></li>
+    <li><a href="/dostavka/pesok/karyernyy/">Песок карьерный</a><b>от 990 руб/м³</b></li>
+    <li><a href="/dostavka/otsev/">Отсев 0-5</a><b>от 500 руб/м³</b></li>
+  </ul>
+  <p class="d-promo"><b class="d-promo-pct">5%</b><span>Скидка 5% при заявке через MAX или сайт</span></p>
+<div class="d-cta-row">
+  <a class="d-btn d-btn-max" href="https://max.ru/u/f9LHodD0cOIgiq2N2buCj7oU32e1sbUDdW834GzM718dViUBpco7KXS8n10" target="_blank" rel="noopener" onclick="try{ym(110405092,'reachGoal','call')}catch(e){}">Написать в MAX</a>
+  <a class="d-btn d-btn-ghost" href="#zayavka">Рассчитать с доставкой</a>
+</div>
+</aside>
   <div class="d-pricebar">
   <b>Щебень от 600 руб за куб, песок от 990, отсев от 500 с доставкой по области.</b>
   <a href="#skolko-stoit">Все цены и как заказать</a>
@@ -948,6 +970,8 @@
 </div>
 </div></section>
 
+
+
 <section class="d-band d-band-tint" data-ui><div class="wrap">
   <div class="d-msgcard">
     <div>
@@ -972,6 +996,7 @@
   <details><summary>Как считать объём под ленточный фундамент?</summary><div><p>По длине траншеи, а не по площади дома: общая длина ленты умножается на ширину траншеи и на толщину подушки. Внутренние несущие стены тоже входят в длину.</p></div></details>
   <details><summary>Что делать, если объём получился между размерами машин?</summary><div><p>Округляйте вверх. Второй вызов машины ради нескольких кубов обойдётся дороже, чем сразу взять с запасом.</p></div></details>
   <details><summary>Считаете объём вы или это делает заказчик?</summary><div><p>Можем посчитать за вас. Назовите размеры участка работ и задачу, вернёмся с объёмом, подходящей фракцией и ценой с доставкой.</p></div></details>
+  <details><summary>Сколько надо щебня на площадку 6 на 4 метра?</summary><div><p>Сколько надо щебня, считают по формуле площадь на слой плюс запас на уплотнение: 24 м² на 0,2 м дают 4,8 куба, с коэффициентом 1,2 около 5,8 куба, то есть КамАЗ.</p></div></details>
 </div>
 </div></section>
 
@@ -1021,6 +1046,7 @@
         <p><a href="/dostavka/shcheben/">Доставка щебня</a><br>
         <a href="/dostavka/pesok/">Доставка песка</a><br>
         <a href="/dostavka/kalkulyator/">Калькуляторы объёма и веса</a><br>
+        <a href="/dostavka/stati/">Блог: статьи по видам работ</a><br>
         <a href="/dostavka/">Все города и материалы</a><br>
         <a href="/dostavka/politika/">Обработка данных</a></p>
       </div>
@@ -1030,7 +1056,7 @@
     <p class="d-phone-bottom"><a href="tel:+79506460953" onclick="try{ym(110405092,'reachGoal','call')}catch(e){}">+7 950 646-09-53</a></p>
   </div>
 </footer>
-<script src="/dostavka/assets/wa.js?v=104ba38d" defer></script>
+<script src="/dostavka/assets/wa.js?v=a8e831b5" defer></script>
 
 
 

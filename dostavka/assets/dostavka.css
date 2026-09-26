@@ -1567,3 +1567,32 @@ dd a:not([class*="d-btn"]),
 /* Контексты (.d-midcta, .d-form, .d-msgcard) красят span своим цветом
    с большей специфичностью; плашка везде одна и та же. */
 .d-promo span{color:#1b1b0a!important}
+
+/* ---------------------------------------------------- материалы для работы
+   Блок «что купить под эту работу»: в блоге под рубрикой и в статье
+   под «коротко». Белая карточка с зелёной кромкой: цвет действия,
+   как у кнопок MAX, чтобы блок читался как предложение, а не как
+   ещё одна врезка текста. */
+.d-matcta{background:var(--d-white);border-radius:var(--r-card);box-shadow:var(--sh-card);
+  border-left:5px solid var(--d-go);padding:20px 22px 22px;margin:0 0 26px}
+.d-matcta-h{margin:0 0 12px;font-size:17px;font-weight:800;letter-spacing:-.015em}
+.d-matcta-list{list-style:none!important;padding:0!important;margin:0 0 18px!important;
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:8px 18px}
+.d-matcta-list li{display:flex;justify-content:space-between;align-items:baseline;gap:12px;
+  margin:0!important;padding:9px 0 !important;border-bottom:1px solid var(--d-rule)}
+.d-matcta-list li::before{display:none!important}
+.d-matcta-list a{font-weight:700}
+.d-matcta-list b{white-space:nowrap;font-weight:800;color:var(--d-ink)}
+.d-blog-list .d-cat-card p:not(.d-cat-name):not(.d-cat-go){font-size:14.5px;color:var(--d-ink-2);line-height:1.5}
+
+/* ---------------------------------------------------- ответы покупателям
+   Запрос в левой колонке набран жирным: это то, что человек ввёл
+   в поиск, по нему он и находит свою строку глазами. */
+.d-buyers td:first-child{font-weight:700;width:36%}
+.d-buyers-more{margin-top:14px}
+.d-buyers-sum{cursor:pointer;font-weight:750;color:var(--d-go);padding:10px 0;
+  list-style-position:inside}
+.d-buyers-sum:hover{color:var(--d-go-h)}
+/* Ответ обычным начертанием: общий стиль таблиц выделяет последнюю колонку
+   как цену, а здесь в ней текст, и жирная простыня читается тяжело. */
+.d-buyers td:last-child{font-weight:450;color:var(--d-ink-2)}

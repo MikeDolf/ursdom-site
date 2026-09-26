@@ -54,6 +54,21 @@
   "modified": "2026-08-16",
   "published": "2026-08-16"
  },
+ "galka": {
+  "fp": "d75ae4e438e1c113",
+  "modified": "2026-09-26",
+  "published": "2026-09-26"
+ },
+ "glina": {
+  "fp": "8d491159a736b8e1",
+  "modified": "2026-09-26",
+  "published": "2026-09-26"
+ },
+ "keramzit/v-meshkah": {
+  "fp": "c0582a06cba6bc16",
+  "modified": "2026-09-26",
+  "published": "2026-09-26"
+ },
  "otsev/v-meshkah": {
   "fp": "9246c320bd1d9ba8",
   "modified": "2026-09-25",
@@ -70,13 +85,13 @@
   "published": "2026-09-02"
  },
  "pesok/peskostruynyy": {
-  "fp": "7a373f71cbecb91d",
-  "modified": "2026-08-21",
+  "fp": "eef758157d1e100b",
+  "modified": "2026-09-26",
   "published": "2026-08-21"
  },
  "pesok/rechnoy": {
-  "fp": "82871f0e377f7990",
-  "modified": "2026-09-25",
+  "fp": "6a09456f31cf56d9",
+  "modified": "2026-09-26",
   "published": "2026-07-28"
  },
  "pesok/v-meshkah": {
@@ -84,19 +99,24 @@
   "modified": "2026-09-25",
   "published": "2026-08-22"
  },
+ "plitnyak": {
+  "fp": "3f1c71fa39df698b",
+  "modified": "2026-09-26",
+  "published": "2026-09-26"
+ },
  "shcheben/frakciya-10-20": {
-  "fp": "cac925fe46e4542f",
-  "modified": "2026-08-22",
+  "fp": "c8021acea1d6d494",
+  "modified": "2026-09-26",
   "published": "2026-08-22"
  },
  "shcheben/frakciya-20-40": {
-  "fp": "56dd44d30970e1be",
-  "modified": "2026-09-25",
+  "fp": "cc350eeca8dea861",
+  "modified": "2026-09-26",
   "published": "2026-07-28"
  },
  "shcheben/frakciya-40-70": {
-  "fp": "868cdccb74e07db9",
-  "modified": "2026-08-16",
+  "fp": "d48bd3bf82eb560f",
+  "modified": "2026-09-26",
   "published": "2026-08-16"
  },
  "shcheben/frakciya-5-10": {
@@ -105,13 +125,13 @@
   "published": "2026-08-22"
  },
  "shcheben/frakciya-5-20": {
-  "fp": "b1a8a64c93d69448",
-  "modified": "2026-09-25",
+  "fp": "e115885671417a20",
+  "modified": "2026-09-26",
   "published": "2026-08-04"
  },
  "shcheben/frakciya-70-120": {
-  "fp": "fff3ca0305e1898e",
-  "modified": "2026-08-22",
+  "fp": "618beb6af4b50f9c",
+  "modified": "2026-09-26",
   "published": "2026-08-22"
  },
  "shcheben/frakciya-70-150": {
@@ -119,9 +139,14 @@
   "modified": "2026-09-25",
   "published": "2026-08-22"
  },
+ "shcheben/mramornyy": {
+  "fp": "a359d1bdcd42e833",
+  "modified": "2026-09-26",
+  "published": "2026-09-26"
+ },
  "shcheben/v-meshkah": {
-  "fp": "c36d87d8f4b902eb",
-  "modified": "2026-09-25",
+  "fp": "31b28fd5e10501db",
+  "modified": "2026-09-26",
   "published": "2026-07-28"
  },
  "stati/arbolit-i-polistirolbeton": {
@@ -169,6 +194,11 @@
   "modified": "2026-09-25",
   "published": "2026-08-23"
  },
+ "stati/dekorativnyy-shcheben": {
+  "fp": "32fb71b207237236",
+  "modified": "2026-09-26",
+  "published": "2026-09-26"
+ },
  "stati/doroga-k-uchastku": {
   "fp": "a5be7ecd270b8680",
   "modified": "2026-08-23",
@@ -210,8 +240,8 @@
   "published": "2026-08-15"
  },
  "stati/geotekstil-pod-shcheben": {
-  "fp": "be8e556688e091e9",
-  "modified": "2026-08-23",
+  "fp": "00c77c2aebfd4a8c",
+  "modified": "2026-09-26",
   "published": "2026-08-23"
  },
  "stati/gidroizolyaciya-betona": {
@@ -475,23 +505,23 @@
   "published": "2026-08-15"
  },
  "stati/skolko-shchebnya-i-peska-na-kub-betona": {
-  "fp": "40cf93ba40b8f238",
-  "modified": "2026-09-25",
+  "fp": "e11f5ce161aa7e47",
+  "modified": "2026-09-26",
   "published": "2026-08-11"
  },
  "stati/skolko-shchebnya-nuzhno": {
-  "fp": "86f199ee62a35ecc",
-  "modified": "2026-07-28",
+  "fp": "90ce0081bc5546c2",
+  "modified": "2026-09-26",
   "published": "2026-07-28"
  },
  "stati/skolko-shchebnya-v-kamaze": {
-  "fp": "329d8b102cd2a50a",
-  "modified": "2026-09-25",
+  "fp": "5a2b5293d33c1ba0",
+  "modified": "2026-09-26",
   "published": "2026-07-28"
  },
  "stati/skolko-vesit-kub": {
-  "fp": "2266499130a5ff0c",
-  "modified": "2026-09-02",
+  "fp": "022317143cac9435",
+  "modified": "2026-09-26",
   "published": "2026-08-11"
  },
  "stati/styazhka-pola": {
@@ -503,6 +533,11 @@
   "fp": "f7563c7fa253c50c",
   "modified": "2026-08-16",
   "published": "2026-08-16"
+ },
+ "stati/ukladka-shchebnya": {
+  "fp": "351a1dc2cac4261b",
+  "modified": "2026-09-26",
+  "published": "2026-09-26"
  },
  "stati/ukladka-trotuarnoy-plitki": {
   "fp": "942b354a825aa10c",
@@ -528,6 +563,11 @@
   "fp": "504303374dc9331a",
   "modified": "2026-09-22",
   "published": "2026-08-15"
+ },
+ "stati/vidy-shchebnya": {
+  "fp": "95e8b9bc1ca701d6",
+  "modified": "2026-09-26",
+  "published": "2026-09-26"
  },
  "stati/vybrat-trotuarnuyu-plitku": {
   "fp": "d30a36375c3f3d33",

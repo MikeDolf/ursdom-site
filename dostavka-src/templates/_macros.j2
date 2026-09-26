@@ -398,6 +398,48 @@
 {% endif %}</div>
 {%- endmacro %}
 
+{# Материалы для этой работы: название со ссылкой на товар, цена,
+   плашка скидки и кнопка MAX. Стоит в блоге под каждой рубрикой
+   и в статье сразу под «коротко». Строки берутся из прайса
+   (conversion.PRICE_SETS), поэтому подпись, адрес и цена совпадают
+   с остальным сайтом. #}
+{# Ответы покупателям: запрос из Вордстата в точной формулировке и короткий
+   ответ из наших данных (data/kupit_cover.py). Первые двенадцать строк
+   видны сразу, остальные раскрываются, чтобы таблица не съедала страницу. #}
+{% macro buyers(rows, head) -%}
+{% if rows %}<section class="d-band"><div class="wrap">
+  <h2 class="d-sh" id="pokupatelyam">{{ head }}</h2>
+  <p class="d-sh-lead">Коротко на то, что спрашивают перед покупкой. Точную цену на ваш адрес назовём по заявке, при заявке через MAX или сайт скидка 5%.</p>
+  <div class="d-table-wrap"><table class="d-buyers">
+    <caption>Частые запросы и ответы</caption>
+    <thead><tr><th>Запрос</th><th>Ответ</th></tr></thead>
+    <tbody>
+{% for q, a in rows[:12] %}      <tr><td>{{ q }}</td><td>{{ a }}</td></tr>
+{% endfor %}    </tbody>
+  </table></div>
+{% if rows|length > 12 %}  <details class="d-buyers-more">
+    <summary class="d-buyers-sum">Ещё {{ rows|length - 12 }} ответов покупателям</summary>
+    <div class="d-table-wrap"><table class="d-buyers">
+      <caption>Остальные запросы</caption>
+      <tbody>
+{% for q, a in rows[12:] %}        <tr><td>{{ q }}</td><td>{{ a }}</td></tr>
+{% endfor %}      </tbody>
+    </table></div>
+  </details>
+{% endif %}</div></section>
+{% endif %}
+{%- endmacro %}
+
+{% macro matcta(cfg, rows, head) -%}
+<aside class="d-matcta" data-ui>
+  <p class="d-matcta-h">{{ head }}</p>
+  <ul class="d-matcta-list">
+{% for name, price, href in rows %}    <li><a href="{{ href }}">{{ name }}</a><b>{{ price }}</b></li>
+{% endfor %}  </ul>
+  {{ channels(cfg, "#zayavka", "Рассчитать с доставкой") }}
+</aside>
+{%- endmacro %}
+
 {% macro midcta(cfg, headline, text) -%}
 <div class="d-midcta">
   <h3>{{ headline }}</h3>

@@ -34,7 +34,8 @@
 <section class="d-band"><div class="wrap d-prose">
   {{ m.author_block(author, updated) }}
   <div class="d-tldr"><strong>Коротко, если некогда читать</strong><p>{{ lead }}</p></div>
-{% if conv %}  {{ m.pricebar(conv.anchor) }}
+{% if not sell and mat_rows %}  {{ m.matcta(cfg, mat_rows, mat_head) }}
+{% endif %}{% if conv %}  {{ m.pricebar(conv.anchor) }}
 {% endif %}  <div class="d-toc"><strong>О чём этот материал</strong>
     <ol>
 {% for s in sections %}      <li><a href="#{{ s.id }}">{{ s.h }}</a></li>
@@ -71,6 +72,8 @@
   {{ m.objections(objections, None,
      "Самосвалы от 4 до 26 кубов по " ~ cfg.region_dat ~ ". Разгрузка на объекте, оплата после выгрузки, " ~ cfg.callback_promise ~ ".") }}
 </div></section>
+
+{{ m.buyers(buyers|default([], true), buyers_head) }}
 
 {{ m.msg_card(cfg) }}
 
