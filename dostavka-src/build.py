@@ -34,7 +34,7 @@ from reviews import REVIEWS
 import autolink
 from hubs import HUBS
 from canonical import canonical
-from calc import ship, ship_km, PYSHMA, calc_geo, calc_for, PER_PAGE, MATERIALS as CALC_MATERIALS, trips as calc_trips
+from calc import ship, ship_km, PYSHMA, calc_geo, calc_for, PER_PAGE, MATERIALS as CALC_MATERIALS, trips as calc_trips, TRUCKS
 from calc_pages import CALC_PAGES, CALC_BY_SLUG, CALC_OWN
 
 # Список страниц с калькулятором живёт в data/calc.py вместе с их
@@ -97,6 +97,51 @@ from legal import legal_sections, LEGAL_UPDATED
 env = Environment(loader=FileSystemLoader(os.path.join(HERE, "templates")),
                   autoescape=False, trim_blocks=False, lstrip_blocks=False)
 env.filters['xlink'] = autolink.link
+
+
+# Пример в поле «Что и куда привезти». Раньше он был один на весь сайт,
+# «щебень 20-40, 10 кубов, Первоуральск», и на странице колец ЖБИ или
+# бетона подсказывал человеку не тот товар и не те единицы. Пример
+# строится из темы заявки страницы: материал, штуки или кубы, город.
+_PIECE = re.compile(r"лот[окк]|плит|блок|бордюр|поребрик|фбс|труб|люк|решётк|опор|сва[ия]|"
+                    r"ступен|забор|перемыч|прогон|дождепри|утяжел|малые формы", re.I)
+_BAGS = re.compile(r"смес|цемент|химия|гидроизоляц|битум", re.I)
+_BULK = re.compile(r"^(щебень|песок|отсев|пгс|керамзит|скальный|дресв|гравий|галька|глина|"
+                   r"гранитн|асфальтов|щпс|бутов|плитняк|речной|мытый|карьерный|пескоструйный|"
+                   r"мраморн)", re.I)
+_REGION = {"Екатеринбург и область", "Свердловская область", "Екатеринбург", "СНТ"}
+
+
+def form_example(subject):
+    parts = [p.strip() for p in subject.split(",")]
+    first, low = parts[0], parts[0].lower()
+    city = (parts[1] if len(parts) > 1 and parts[1] not in _REGION and parts[1][:1].isupper()
+            else None)
+    where = city + ", адрес" if city else "адрес"
+    if "кольц" in low:
+        return "Например: кольца КС 10-9, 4 штуки, днище и крышка, " + where
+    if low.startswith("полистиролбетон"):
+        return "Например: полистиролбетон, 5 кубов, " + where
+    if re.match(r"бетон( м\d|$| и подача)", low):
+        return "Например: бетон М200, 6 кубов, " + where + ", нужен ли насос"
+    if _BULK.match(low):
+        if " и " in low and not re.search(r"(ый|ой|ий)$", low.split(" и ")[0]):
+            first = first.split(" и ")[0]
+        first = re.split(r" (под|для) ", first)[0]
+        if not first[:2].isupper():
+            first = first[:1].lower() + first[1:]
+        if " и " not in first and len(first) <= 26:
+            if "мешк" in first:
+                return "Например: %s, 40 мешков, %s" % (first, where)
+            return "Например: %s, 10 кубов, %s" % (first, where)
+    if _PIECE.search(low):
+        return "Например: что нужно и сколько штук, " + where
+    if _BAGS.search(low):
+        return "Например: что нужно и сколько мешков, " + where
+    return "Например: щебень 20-40, 10 кубов, " + (where if city else "Первоуральск, адрес")
+
+
+env.filters['form_example'] = form_example
 
 # Версия CSS считается из содержимого файла. Раньше она была константой в конфиге,
 # и после правок стилей вернувшийся посетитель получал старый файл из кеша.
@@ -615,13 +660,60 @@ def graph(*nodes):
                       ensure_ascii=False, indent=2)
 
 
+# Таблицы в три столбца и больше на телефоне. В экран 390 px такая
+# таблица не помещается и уезжает в прокрутку вбок: третий и четвёртый
+# столбец видны обрывками («Требова... плотны...»), и человек не знает,
+# что таблицу надо листать. На узком экране строка становится карточкой:
+# первая ячейка заголовком, остальные парами «подпись: значение».
+# Подпись берётся из шапки столбца в data-label, стили в dostavka.css
+# у .d-stack. Разметка таблицы при этом та же, поиск видит её как была.
+# Свои раскладки для телефона уже есть у калькулятора, у прайса машины
+# на городских страницах, у ответов покупателям (два столбца) и у списка
+# городов на главной, их не трогаем.
+_TABLE_RX = re.compile(r'<table(?P<attrs>[^>]*)>(?P<body>.*?)</table>', re.S)
+_NOSTACK = {"d-calc-table", "d-trip", "d-buyers", "d-kv", "d-cities"}
+
+
+def stack_tables(html):
+    def one(m):
+        attrs, body = m.group("attrs"), m.group("body")
+        cls = re.search(r'class="([^"]*)"', attrs)
+        if cls and _NOSTACK & set(cls.group(1).split()):
+            return m.group(0)
+        th = re.search(r"<thead>(.*?)</thead>", body, re.S)
+        if not th:
+            return m.group(0)
+        heads = [re.sub(r"<[^>]+>", "", x).strip()
+                 for x in re.findall(r"<th\b[^>]*>(.*?)</th>", th.group(1), re.S)]
+        if len(heads) < 3:
+            return m.group(0)
+
+        def row(rm):
+            k = [0]
+
+            def cell(cm):
+                i = k[0]
+                k[0] += 1
+                if cm.group(1) != "td" or i == 0 or i >= len(heads) or "data-label" in cm.group(2):
+                    return cm.group(0)
+                return '<td data-label="%s"%s>' % (heads[i].replace('"', "&quot;"), cm.group(2))
+            return re.sub(r"<(t[dh])\b([^>]*)>", cell, rm.group(0))
+
+        rest = re.sub(r"<tr\b[^>]*>.*?</tr>", row, body[th.end():], flags=re.S)
+        attrs = (attrs.replace(cls.group(0), 'class="%s d-stack"' % cls.group(1)) if cls
+                 else ' class="d-stack"' + attrs)
+        return "<table%s>%s%s</table>" % (attrs, body[:th.end()], rest)
+    return _TABLE_RX.sub(one, html)
+
+
 def write(url, html_str):
     path = os.path.join(OUT, url[len(SITE["base"]):].strip("/"), "index.html") \
         if url != SITE["base"] else os.path.join(OUT, "index.html")
     os.makedirs(os.path.dirname(path), exist_ok=True)
     # Единственная точка, через которую проходят все страницы, поэтому
-    # снятие ссылок на саму себя стоит здесь, а не в каждом шаблоне.
-    open(path, "w", encoding="utf-8").write(strip_self_links(html_str, url))
+    # снятие ссылок на саму себя и карточки таблиц стоят здесь,
+    # а не в каждом шаблоне.
+    open(path, "w", encoding="utf-8").write(stack_tables(strip_self_links(html_str, url)))
     return path
 
 
@@ -1458,7 +1550,9 @@ SALES = dict(
     stats=[
         (str(len(CITY_FACTS)), "городов", "области со своей страницей и расчётом доставки"),
         ("2", "площадки", "отгрузки: Екатеринбург и Верхняя Пышма"),
-        ("5-20", "м³", "самосвалы под объём и заезд"),
+        # Парк берётся из calc.TRUCKS: здесь долго стояло «5-20» от прежнего
+        # парка, хотя лента доверия рядом уже говорила «4-26».
+        ("%d-%d" % (TRUCKS[0][0], TRUCKS[-1][0]), "м³", "самосвалы под объём и заезд"),
         ("0", "руб", "предоплаты: платите после выгрузки"),
     ],
 )
@@ -1472,7 +1566,11 @@ BASE_CTX = dict(cfg=SITE, advantages=ADVANTAGES, guarantees=GUARANTEES, g=SALES,
                 fleet_photos=FLEET_PHOTOS,
                 per_cube=PER_CUBE_LIST, price_note=PRICE_NOTE, delivery_note=DELIVERY_NOTE,
                 extra=EXTRA, calc_rows=CALC_ROWS, catalog=CATALOG, sieve=sieve_rows(),
-                cities=[dict(slug=cs, prep=CITY_FACTS[cs]["prep"],
+                # Порядок по плечу, которое стоит в таблице (от ближайшей
+                # площадки), а не по расстоянию от Екатеринбурга: иначе
+                # Балтым с 10 км оказывался после Горного Щита с 20,
+                # а Среднеуральск стоял последним после Краснотурьинска.
+                cities=sorted([dict(slug=cs, prep=CITY_FACTS[cs]["prep"],
                              loc=CITY_FACTS[cs]["loc"],
                              name=CITY_FACTS[cs]["name"],
                              km=ship_km(cs),
@@ -1482,6 +1580,7 @@ BASE_CTX = dict(cfg=SITE, advantages=ADVANTAGES, guarantees=GUARANTEES, g=SALES,
                        + [dict(slug="sredneuralsk", prep="в Среднеуральск",
                                loc="в Среднеуральске", name="Среднеуральск", km=25,
                                mats="щебень")],
+                              key=lambda c: (c["km"], c["name"])),
                 more_materials=[("/dostavka/kontakty/", "Контакты, адрес базы и реквизиты"),
                                 ("/dostavka/galka/", "Галька: речная и ландшафтная"),
                                 ("/dostavka/glina/", "Глина и суглинок под заявку"),
@@ -2390,9 +2489,8 @@ jl = graph(localbusiness(), bc_schema(crumb_items),
 htmlp = env.get_template("blog.j2").render(
     **BASE_CTX, **hero_ctx(""), canonical=DOMAIN + url, crumbs_html=crumbs(crumb_items),
     jsonld=jl, title="Блог о щебне, песке и бетоне: статьи по видам работ",
-    desc=("Статьи по видам работ: фундамент, дорожки и заезды, дренаж, отсыпка участка, "
-          "бетон и полы, плитка и бордюр. Какой материал брать, сколько и по какой цене "
-          "с доставкой."),
+    desc=("Статьи по видам работ: фундамент, дорожки, дренаж, отсыпка участка, бетон "
+          "и полы, плитка. Какой материал брать, сколько и по какой цене с доставкой."),
     h1="Блог: какой материал под какую работу",
     hero_sub=("%d статей по видам работ: что класть под фундамент, дорожку, дренаж "
               "и плитку, сколько кубов заказывать и как принять машину. Под каждой "

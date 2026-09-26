@@ -302,12 +302,16 @@
      ругался на поле формы без подписи. #}
   <input type="text" name="botcheck" class="d-hp" tabindex="-1" autocomplete="off"
          aria-hidden="true" aria-label="Оставьте это поле пустым">
+  {# Обязательных полей два: телефон и согласие. Имя необязательное:
+     без него заявка всё равно доходит, а каждое лишнее обязательное
+     поле на телефоне это ещё одна причина бросить форму. autocomplete
+     даёт подставить имя и номер из телефона одним касанием. #}
   <label for="lf-name">Ваше имя</label>
-  <input id="lf-name" type="text" name="Имя" required>
+  <input id="lf-name" type="text" name="Имя" autocomplete="name" enterkeyhint="next">
   <label for="lf-phone">Телефон для связи</label>
-  <input id="lf-phone" type="tel" name="Телефон" placeholder="+7" required>
+  <input id="lf-phone" type="tel" name="Телефон" placeholder="+7" autocomplete="tel" inputmode="tel" enterkeyhint="next" required>
   <label for="lf-msg">Что и куда привезти</label>
-  <textarea id="lf-msg" name="Заявка" placeholder="Например: щебень 20-40, 10 кубов, Первоуральск, адрес"></textarea>
+  <textarea id="lf-msg" name="Заявка" placeholder="{{ subject|form_example }}"></textarea>
   <label class="d-consent"><input type="checkbox" name="Согласие" value="да" required>
     <span>Согласен на обработку персональных данных для ответа на заявку, включая
     передачу через зарубежный сервис отправки форм.
@@ -346,10 +350,20 @@
 {% endfor %}</ul>
 {%- endmacro %}
 
-{% macro faq(items) -%}
+{# Частые вопросы. На странице щебня их 29, и на телефоне закрытый
+   список занимал четыре экрана подряд. Первые восемь видны сразу,
+   остальные под одной раскрывашкой. Вопросы и ответы остаются
+   в разметке и в FAQPage: скрыт только список, не текст для поиска.
+   Складываем, только если под раскрывашку уходит больше двух: прятать
+   один-два вопроса за лишний клик бессмысленно. #}
+{% macro faq(items, show=8) -%}
 <div class="d-faq">
-{% for q,a in items %}  <details><summary>{{ q }}</summary><div><p>{{ a }}</p></div></details>
-{% endfor %}</div>
+{% for q,a in items[:show] %}  <details><summary>{{ q }}</summary><div><p>{{ a }}</p></div></details>
+{% endfor %}{% if items|length > show + 2 %}  <details class="d-faq-more"><summary class="d-faq-more-sum">Показать ещё вопросы: {{ items|length - show }}</summary>
+{% for q,a in items[show:] %}    <details><summary>{{ q }}</summary><div><p>{{ a }}</p></div></details>
+{% endfor %}  </details>
+{% else %}{% for q,a in items[show:] %}  <details><summary>{{ q }}</summary><div><p>{{ a }}</p></div></details>
+{% endfor %}{% endif %}</div>
 {%- endmacro %}
 
 {# Отзывы клиентов. Список REVIEWS сейчас пуст (см. data/reviews.py) -
@@ -466,7 +480,7 @@
 <h2 class="d-sh" id="skolko-stoit">{{ head }}</h2>
 <div class="d-table-wrap"><table>
   <caption>{{ price_note }}</caption>
-  <thead><tr><th>Позиция</th><th>Цена с доставкой</th></tr></thead>
+  <thead><tr><th>Позиция</th><th>Цена</th></tr></thead>
   <tbody>
 {% for name,price,href in rows %}    <tr><td><a href="{{ href }}">{{ name }}</a></td><td>{{ price }}</td></tr>
 {% endfor %}  </tbody>
@@ -537,7 +551,7 @@
 {# Выбор по имени, а не по километражу: у Арамили, Ревды и Первоуральска
    плечо совпадает с соседями, и «selected» по числу отмечал сразу
    несколько строк, из которых браузер брал последнюю. #}
-{% for name,km in calc.destinations %}        <option value="{{ km }}"{% if name == (calc.sel_dest or "Екатеринбург и ближний пояс") %} selected{% endif %}>{{ name }}, {{ km }} км</option>
+{% for name,km in calc.destinations %}        <option value="{{ km }}"{% if name == (calc.sel_dest or "Екатеринбург и пригород") %} selected{% endif %}>{{ name }}, {{ km }} км</option>
 {% endfor %}      </select>
     </div>
     </div>
@@ -855,12 +869,15 @@
     <input type="text" name="botcheck" class="d-hp" tabindex="-1" autocomplete="off"
            aria-hidden="true" aria-label="Оставьте это поле пустым">
     <label for="qf-phone">Телефон</label>
-    <input id="qf-phone" type="tel" name="Телефон" placeholder="+7" required>
+    <input id="qf-phone" type="tel" name="Телефон" placeholder="+7" autocomplete="tel" inputmode="tel" enterkeyhint="next" required>
     <label for="qf-msg">Что и куда привезти</label>
-    <input id="qf-msg" type="text" name="Заявка" placeholder="Например: 10 кубов, адрес">
+    <input id="qf-msg" type="text" name="Заявка" placeholder="{{ subject|form_example }}" enterkeyhint="send">
     <label class="d-consent"><input type="checkbox" name="Согласие" value="да" required>
       <span>Согласен на обработку персональных данных, включая передачу через зарубежный
       сервис отправки форм. <a href="/dostavka/politika/">Как мы обрабатываем данные</a></span></label>
+    {# Плашка скидки и здесь: быстрая форма тоже заявка через сайт,
+       а стояла без неё, хотя полная форма ниже её показывает. #}
+    {{ promo(cfg, "d-promo-form") }}
     <button class="d-btn d-btn-wide" type="submit">Посчитать стоимость</button>
   </form>
 </div></section>

@@ -4,6 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#1b2530">
+
+<meta name="format-detection" content="telephone=no">
 <title>Куб щебня с доставкой в Екатеринбурге: цена за кубометр</title>
 <meta name="description" content="Куб щебня в Екатеринбурге и области: фракция 20-40 от 770, 5-20 от 1150, вторичка от 600 руб за кубометр самовывозом. Оплата после выгрузки, честный объём.">
 <link rel="canonical" href="https://ursdom.ru/dostavka/stati/cena-kuba-s-dostavkoy/">
@@ -26,7 +28,7 @@
 <meta name="twitter:image" content="https://ursdom.ru/dostavka/assets/img/og-dostavka.jpg">
 <link rel="preload" href="/dostavka/assets/fonts/golos-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/dostavka/assets/fonts/mono-num.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/dostavka/assets/dostavka.min.css?v=a8e831b5">
+<link rel="stylesheet" href="/dostavka/assets/dostavka.min.css?v=6c55e5c6">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <script type="application/ld+json">
@@ -253,35 +255,6 @@
 <script data-page-id="20037714" src="https://yandex.ru/ads/system/ap-loader.js" async></script>
 </head>
 <body>
-<!--
-  DIRECTION CONTRACT · «Рассев» · seed 0aacaa17
-
-  THESIS: this site is the instrument that grades stone by size, not a
-  brochure about delivery. It refuses the category default of a dark hero
-  with a truck photo, three trust cards and a price table below.
-
-  OWN-WORLD: steel #1b2530 carries whole fields; enamel #eef1ec carries
-  content; graph #5d7b88 is ruling only; brass #d9a548 is action only and
-  always takes steel ink, never white. One 2px radius, no soft cards, no
-  kicker pills. Woven sieve mesh whose cell step is computed from the real
-  fraction in millimetres. Golos Text for words, JetBrains Mono for every
-  digit on the site, cap-height matched.
-
-  STORY: a buyer who does not know which fraction to order sees four sieves
-  with real mesh, real stone and a real price, picks one, and asks for a
-  quote already knowing the word for what they want.
-
-  FIRST VIEWPORT: steel field. H1 left at up to 46px, one line of subhead,
-  brass MAX button beside an outlined form button, then the sieve stack
-  full width: four rows, mesh 104px at left, fraction, use, price at right.
-  Primary action is the brass button; the stack is the second entry.
-
-  FORM: sieve stack, first on the ordered list of seven, seed key 0aacaa17.
-
-  FINISH: unreviewed and undocumented is unfinished; this build ends with
-  the finish review, the verdict, DESIGN.md, and every shipping raster
-  carrying its provenance.
--->
 <a class="d-skip" href="#content">К содержимому</a>
 
 <div class="d-topbar"><div class="wrap">
@@ -391,10 +364,11 @@
   
   <input type="text" name="botcheck" class="d-hp" tabindex="-1" autocomplete="off"
          aria-hidden="true" aria-label="Оставьте это поле пустым">
+  
   <label for="lf-name">Ваше имя</label>
-  <input id="lf-name" type="text" name="Имя" required>
+  <input id="lf-name" type="text" name="Имя" autocomplete="name" enterkeyhint="next">
   <label for="lf-phone">Телефон для связи</label>
-  <input id="lf-phone" type="tel" name="Телефон" placeholder="+7" required>
+  <input id="lf-phone" type="tel" name="Телефон" placeholder="+7" autocomplete="tel" inputmode="tel" enterkeyhint="next" required>
   <label for="lf-msg">Что и куда привезти</label>
   <textarea id="lf-msg" name="Заявка" placeholder="Например: щебень 20-40, 10 кубов, Первоуральск, адрес"></textarea>
   <label class="d-consent"><input type="checkbox" name="Согласие" value="да" required>
@@ -433,14 +407,14 @@
 
   <h2 class="d-sh" id="iz-chego">Из чего складывается цена куба с доставкой</h2>
   <p>Когда вам называют цену за куб с доставкой, внутри неё четыре составляющие. Понимание пропорций помогает торговаться по делу и видеть, где предложение выглядит подозрительно дешёвым.</p>
-  <div class="d-table-wrap"><table>
+  <div class="d-table-wrap"><table class="d-stack">
     <caption>Составляющие цены куба и от чего каждая зависит</caption>
     <thead><tr><th>Составляющая</th><th>От чего зависит</th><th>Доля в цене</th></tr></thead>
     <tbody>
-      <tr><td>Материал</td><td>Порода, фракция, карьер</td><td>от 30 до 80 процентов</td></tr>
-      <tr><td>Доставка</td><td>Расстояние и объём машины</td><td>от 20 до 70 процентов</td></tr>
-      <tr><td>Погрузка</td><td>Обычно входит в цену карьера</td><td>небольшая</td></tr>
-      <tr><td>Разгрузка</td><td>Самосвал разгружается сам, манипулятор нет</td><td>обычно входит</td></tr>
+      <tr><td>Материал</td><td data-label="От чего зависит">Порода, фракция, карьер</td><td data-label="Доля в цене">от 30 до 80 процентов</td></tr>
+      <tr><td>Доставка</td><td data-label="От чего зависит">Расстояние и объём машины</td><td data-label="Доля в цене">от 20 до 70 процентов</td></tr>
+      <tr><td>Погрузка</td><td data-label="От чего зависит">Обычно входит в цену карьера</td><td data-label="Доля в цене">небольшая</td></tr>
+      <tr><td>Разгрузка</td><td data-label="От чего зависит">Самосвал разгружается сам, манипулятор нет</td><td data-label="Доля в цене">обычно входит</td></tr>
     </tbody>
   </table></div>
   <p>Ключевой момент: доставка считается за рейс, а не за куб. Поэтому её стоимость делится на объём машины, и чем больше кубов вы берёте за раз, тем меньше доля доставки в каждом кубе.</p>
@@ -450,13 +424,13 @@
   <h2 class="d-sh" id="obem">Почему куб дешевле в большой машине</h2>
   <p>Один и тот же <a href="/dostavka/shcheben/">щебень</a> по одному и тому же адресу может стоить заметно по-разному в зависимости от того, какая машина поехала. Причина простая: плечо доставки оплачивается один раз за рейс.</p>
   <div class="d-callout"><p><strong>Практический вывод:</strong> если материал вам всё равно понадобится на следующем этапе работ, выгоднее взять сразу одной большой машиной, чем дважды вызывать маленькую.</p></div>
-  <div class="d-table-wrap"><table>
+  <div class="d-table-wrap"><table class="d-stack">
     <caption>Как объём машины влияет на цену куба (принцип, цифры условные)</caption>
     <thead><tr><th>Машина</th><th>Материал за куб</th><th>Доставка на рейс</th><th>Итого за куб</th></tr></thead>
     <tbody>
-      <tr><td>Малый самосвал до 4 м³</td><td>1400 руб</td><td>делится на 4 куба</td><td>самый дорогой куб</td></tr>
-      <tr><td>КамАЗ до 10 м³</td><td>1400 руб</td><td>делится на 10 кубов</td><td>средний</td></tr>
-      <tr><td>Большой самосвал до 26 м³</td><td>1400 руб</td><td>делится на 26 кубов</td><td>самый выгодный куб</td></tr>
+      <tr><td>Малый самосвал до 4 м³</td><td data-label="Материал за куб">1400 руб</td><td data-label="Доставка на рейс">делится на 4 куба</td><td data-label="Итого за куб">самый дорогой куб</td></tr>
+      <tr><td>КамАЗ до 10 м³</td><td data-label="Материал за куб">1400 руб</td><td data-label="Доставка на рейс">делится на 10 кубов</td><td data-label="Итого за куб">средний</td></tr>
+      <tr><td>Большой самосвал до 26 м³</td><td data-label="Материал за куб">1400 руб</td><td data-label="Доставка на рейс">делится на 26 кубов</td><td data-label="Итого за куб">самый выгодный куб</td></tr>
     </tbody>
   </table></div>
   <p>Обратная сторона: большую машину нужно куда-то разгрузить и она должна заехать. Если на участок проходит только малый самосвал, экономия на объёме не сработает.</p>
@@ -478,15 +452,15 @@
   <h2 class="d-sh" id="tonna-vs-kub">Цена за тонну и цена за куб: главная путаница</h2>
   <p>Самая частая причина, по которой заказчику кажется, что одно предложение дешевле другого. Тонна и куб это разные единицы, и для щебня разница почти в полтора раза.</p>
   <div class="d-callout d-warn"><p><strong>Пример подмены:</strong> предложение «1000 рублей за тонну» звучит дешевле, чем «1400 за куб». Но тонна гранита это 0,71 куба, значит куб выходит около 1400 рублей. Цены одинаковые.</p></div>
-  <div class="d-table-wrap"><table>
+  <div class="d-table-wrap"><table class="d-stack">
     <caption>Сколько кубов в тонне разных материалов</caption>
     <thead><tr><th>Материал</th><th>Тонн в кубе</th><th>1 тонна это</th></tr></thead>
     <tbody>
-      <tr><td>Щебень гранитный</td><td>около 1,4</td><td>около 0,71 м³</td></tr>
-      <tr><td>Щебень известняковый</td><td>около 1,3</td><td>около 0,78 м³</td></tr>
-      <tr><td>Отсев 0-5</td><td>около 1,45</td><td>около 0,69 м³</td></tr>
-      <tr><td>Песок карьерный</td><td>около 1,55</td><td>около 0,64 м³</td></tr>
-      <tr><td>ПГС</td><td>около 1,65</td><td>около 0,60 м³</td></tr>
+      <tr><td>Щебень гранитный</td><td data-label="Тонн в кубе">около 1,4</td><td data-label="1 тонна это">около 0,71 м³</td></tr>
+      <tr><td>Щебень известняковый</td><td data-label="Тонн в кубе">около 1,3</td><td data-label="1 тонна это">около 0,78 м³</td></tr>
+      <tr><td>Отсев 0-5</td><td data-label="Тонн в кубе">около 1,45</td><td data-label="1 тонна это">около 0,69 м³</td></tr>
+      <tr><td>Песок карьерный</td><td data-label="Тонн в кубе">около 1,55</td><td data-label="1 тонна это">около 0,64 м³</td></tr>
+      <tr><td>ПГС</td><td data-label="Тонн в кубе">около 1,65</td><td data-label="1 тонна это">около 0,60 м³</td></tr>
     </tbody>
   </table></div>
 
@@ -788,7 +762,7 @@
     <p class="d-phone-bottom"><a href="tel:+79506460953" onclick="try{ym(110405092,'reachGoal','call')}catch(e){}">+7 950 646-09-53</a></p>
   </div>
 </footer>
-<script src="/dostavka/assets/wa.js?v=a8e831b5" defer></script>
+<script src="/dostavka/assets/wa.js?v=6c55e5c6" defer></script>
 
 
 

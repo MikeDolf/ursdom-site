@@ -4,6 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#1b2530">
+
+<meta name="format-detection" content="telephone=no">
 <title>Кладочная смесь: марки, расход на куб кладки, счёт мешков</title>
 <meta name="description" content="Сухая кладочная смесь М75, М100, М150 и М200: чем отличается от самомеса, расход на кубометр кладки и квадрат по типу блока, как посчитать мешки на объект.">
 <link rel="canonical" href="https://ursdom.ru/dostavka/stati/kladochnaya-smes/">
@@ -26,7 +28,7 @@
 <meta name="twitter:image" content="https://ursdom.ru/dostavka/assets/img/og-dostavka.jpg">
 <link rel="preload" href="/dostavka/assets/fonts/golos-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/dostavka/assets/fonts/mono-num.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/dostavka/assets/dostavka.min.css?v=a8e831b5">
+<link rel="stylesheet" href="/dostavka/assets/dostavka.min.css?v=6c55e5c6">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <script type="application/ld+json">
@@ -412,35 +414,6 @@
 <script data-page-id="20037714" src="https://yandex.ru/ads/system/ap-loader.js" async></script>
 </head>
 <body>
-<!--
-  DIRECTION CONTRACT · «Рассев» · seed 0aacaa17
-
-  THESIS: this site is the instrument that grades stone by size, not a
-  brochure about delivery. It refuses the category default of a dark hero
-  with a truck photo, three trust cards and a price table below.
-
-  OWN-WORLD: steel #1b2530 carries whole fields; enamel #eef1ec carries
-  content; graph #5d7b88 is ruling only; brass #d9a548 is action only and
-  always takes steel ink, never white. One 2px radius, no soft cards, no
-  kicker pills. Woven sieve mesh whose cell step is computed from the real
-  fraction in millimetres. Golos Text for words, JetBrains Mono for every
-  digit on the site, cap-height matched.
-
-  STORY: a buyer who does not know which fraction to order sees four sieves
-  with real mesh, real stone and a real price, picks one, and asks for a
-  quote already knowing the word for what they want.
-
-  FIRST VIEWPORT: steel field. H1 left at up to 46px, one line of subhead,
-  brass MAX button beside an outlined form button, then the sieve stack
-  full width: four rows, mesh 104px at left, fraction, use, price at right.
-  Primary action is the brass button; the stack is the second entry.
-
-  FORM: sieve stack, first on the ordered list of seven, seed key 0aacaa17.
-
-  FINISH: unreviewed and undocumented is unfinished; this build ends with
-  the finish review, the verdict, DESIGN.md, and every shipping raster
-  carrying its provenance.
--->
 <a class="d-skip" href="#content">К содержимому</a>
 
 <div class="d-topbar"><div class="wrap">
@@ -544,33 +517,33 @@
   <h2 class="d-sh" id="marki">Что означает марка на мешке</h2>
   <p>Число после буквы М это прочность затвердевшего раствора на сжатие в килограммах на квадратный сантиметр. М150 означает сто пятьдесят, и это относится к раствору, а не к готовой стене: прочность кладки всегда ниже прочности и блока, и раствора по отдельности.</p>
   <div class="d-callout"><p><strong>Марку раствора подбирают под нагрузку, а не под прочность блока.</strong> Раствор прочнее блока не делает стену прочнее: при перегрузке разрушается блок, а жёсткий шов работает как концентратор напряжений. Кладка газоблока на М200 не крепче кладки на М75, зато дороже и хуже в работе.</p></div>
-  <div class="d-table-wrap"><table>
+  <div class="d-table-wrap"><table class="d-stack">
     <caption>Марки кладочных смесей и где какая</caption>
     <thead><tr><th>Марка</th><th>Где применяют</th><th>Оговорка</th></tr></thead>
     <tbody>
-      <tr><td>М75</td><td>Перегородки, ненесущие стены, кладка в один блок</td><td>Самая пластичная, легко работать</td></tr>
-      <tr><td>М100</td><td>Несущие стены малоэтажного дома, гараж</td><td>Рабочая марка для частного строительства</td></tr>
-      <tr><td>М150</td><td>Нагруженные стены, цоколь, столбы, печная труба снаружи</td><td>Жёстче в работе, схватывается быстрее</td></tr>
-      <tr><td>М200</td><td>Фундаментная кладка, подпорные стенки, промышленные объекты</td><td>На частном объекте избыточна почти всегда</td></tr>
-      <tr><td>Тонкошовный клей</td><td>Газоблок и пеноблок по ровной геометрии</td><td>Шов 2-3 мм, это отдельный продукт</td></tr>
-      <tr><td>Жаростойкая шамотная</td><td>Топка печи и камина</td><td>Отдельная тема, обычный раствор в топке трескается</td></tr>
+      <tr><td>М75</td><td data-label="Где применяют">Перегородки, ненесущие стены, кладка в один блок</td><td data-label="Оговорка">Самая пластичная, легко работать</td></tr>
+      <tr><td>М100</td><td data-label="Где применяют">Несущие стены малоэтажного дома, гараж</td><td data-label="Оговорка">Рабочая марка для частного строительства</td></tr>
+      <tr><td>М150</td><td data-label="Где применяют">Нагруженные стены, цоколь, столбы, печная труба снаружи</td><td data-label="Оговорка">Жёстче в работе, схватывается быстрее</td></tr>
+      <tr><td>М200</td><td data-label="Где применяют">Фундаментная кладка, подпорные стенки, промышленные объекты</td><td data-label="Оговорка">На частном объекте избыточна почти всегда</td></tr>
+      <tr><td>Тонкошовный клей</td><td data-label="Где применяют">Газоблок и пеноблок по ровной геометрии</td><td data-label="Оговорка">Шов 2-3 мм, это отдельный продукт</td></tr>
+      <tr><td>Жаростойкая шамотная</td><td data-label="Где применяют">Топка печи и камина</td><td data-label="Оговорка">Отдельная тема, обычный раствор в топке трескается</td></tr>
     </tbody>
   </table></div>
 
 
 
   <h2 class="d-sh" id="gotovaya-ili-samomes">Готовая смесь или свой замес</h2>
-  <div class="d-table-wrap"><table>
+  <div class="d-table-wrap"><table class="d-stack">
     <caption>Сравнение по существу</caption>
     <thead><tr><th>Признак</th><th>Готовая смесь</th><th>Цемент с песком на объекте</th></tr></thead>
     <tbody>
-      <tr><td>Цена материала на куб раствора</td><td>Выше в 1,5-2,5 раза</td><td>База</td></tr>
-      <tr><td>Стабильность марки</td><td>Задана заводом, воспроизводится</td><td>Зависит от лопаты и от песка</td></tr>
-      <tr><td>Песок</td><td>Фракционированный, сухой, без глины</td><td>Тот, что привезли</td></tr>
-      <tr><td>Пластичность и время работы</td><td>Держит подвижность 2-3 часа</td><td>Схватывается быстрее, расслаивается</td></tr>
-      <tr><td>Что нужно на объекте</td><td>Вода, ведро, миксер</td><td>Бетономешалка, площадка, место под песок</td></tr>
-      <tr><td>Разумный объём</td><td>До 3-4 кубов кладки</td><td>От 4 кубов и выше</td></tr>
-      <tr><td>Зимой</td><td>Есть готовые составы с добавками</td><td>Противоморозную добавку дозируют вручную</td></tr>
+      <tr><td>Цена материала на куб раствора</td><td data-label="Готовая смесь">Выше в 1,5-2,5 раза</td><td data-label="Цемент с песком на объекте">База</td></tr>
+      <tr><td>Стабильность марки</td><td data-label="Готовая смесь">Задана заводом, воспроизводится</td><td data-label="Цемент с песком на объекте">Зависит от лопаты и от песка</td></tr>
+      <tr><td>Песок</td><td data-label="Готовая смесь">Фракционированный, сухой, без глины</td><td data-label="Цемент с песком на объекте">Тот, что привезли</td></tr>
+      <tr><td>Пластичность и время работы</td><td data-label="Готовая смесь">Держит подвижность 2-3 часа</td><td data-label="Цемент с песком на объекте">Схватывается быстрее, расслаивается</td></tr>
+      <tr><td>Что нужно на объекте</td><td data-label="Готовая смесь">Вода, ведро, миксер</td><td data-label="Цемент с песком на объекте">Бетономешалка, площадка, место под песок</td></tr>
+      <tr><td>Разумный объём</td><td data-label="Готовая смесь">До 3-4 кубов кладки</td><td data-label="Цемент с песком на объекте">От 4 кубов и выше</td></tr>
+      <tr><td>Зимой</td><td data-label="Готовая смесь">Есть готовые составы с добавками</td><td data-label="Цемент с песком на объекте">Противоморозную добавку дозируют вручную</td></tr>
     </tbody>
   </table></div>
   <p>Порог примерно такой: до трёх-четырёх кубометров кладки готовая смесь выигрывает по итоговым деньгам за счёт того, что не надо возить и хранить <a href="/dostavka/pesok/">песок</a>, ставить мешалку и терять раствор на расслоении. Выше этого объёма разница в цене материала становится больше, чем экономия на логистике, и переходят на свой замес.</p>
@@ -579,19 +552,19 @@
 
   <h2 class="d-sh" id="rashod">Расход по типу блока</h2>
   <div class="d-callout"><p><strong>Расход в таблице это расчёт, а не факт.</strong> Реальный расход на объекте выше на десять-двадцать процентов: часть раствора уходит в вертикальные швы сверх нормы, часть падает с кельмы, часть остаётся в ведре. Мешки считают с этим запасом, иначе смесь заканчивается в середине последнего ряда.</p></div>
-  <div class="d-table-wrap"><table>
+  <div class="d-table-wrap"><table class="d-stack">
     <caption>Сколько смеси уходит на кладку</caption>
     <thead><tr><th>Материал стены</th><th>Толщина шва</th><th>Расход сухой смеси</th></tr></thead>
     <tbody>
-      <tr><td>Кирпич одинарный, в полкирпича</td><td>10-12 мм</td><td>около 75 кг на м²</td></tr>
-      <tr><td>Кирпич одинарный, в кирпич</td><td>10-12 мм</td><td>около 150 кг на м²</td></tr>
-      <tr><td>Кирпич полуторный, в полкирпича</td><td>10-12 мм</td><td>около 60 кг на м²</td></tr>
-      <tr><td>Пескоблок 390×190×188</td><td>10 мм</td><td>около 45 кг на м²</td></tr>
-      <tr><td>Керамзитоблок 390×190×188</td><td>10 мм</td><td>около 40 кг на м²</td></tr>
-      <tr><td>Газоблок на обычный раствор</td><td>10 мм</td><td>около 45 кг на м²</td></tr>
-      <tr><td>Газоблок на тонкошовный клей</td><td>2-3 мм</td><td>около 25 кг на м²</td></tr>
-      <tr><td>Арболит 500×300×200</td><td>10-12 мм</td><td>около 50 кг на м²</td></tr>
-      <tr><td>Бутовая кладка</td><td>по камню</td><td>0,3-0,4 м³ раствора на м³ кладки</td></tr>
+      <tr><td>Кирпич одинарный, в полкирпича</td><td data-label="Толщина шва">10-12 мм</td><td data-label="Расход сухой смеси">около 75 кг на м²</td></tr>
+      <tr><td>Кирпич одинарный, в кирпич</td><td data-label="Толщина шва">10-12 мм</td><td data-label="Расход сухой смеси">около 150 кг на м²</td></tr>
+      <tr><td>Кирпич полуторный, в полкирпича</td><td data-label="Толщина шва">10-12 мм</td><td data-label="Расход сухой смеси">около 60 кг на м²</td></tr>
+      <tr><td>Пескоблок 390×190×188</td><td data-label="Толщина шва">10 мм</td><td data-label="Расход сухой смеси">около 45 кг на м²</td></tr>
+      <tr><td>Керамзитоблок 390×190×188</td><td data-label="Толщина шва">10 мм</td><td data-label="Расход сухой смеси">около 40 кг на м²</td></tr>
+      <tr><td>Газоблок на обычный раствор</td><td data-label="Толщина шва">10 мм</td><td data-label="Расход сухой смеси">около 45 кг на м²</td></tr>
+      <tr><td>Газоблок на тонкошовный клей</td><td data-label="Толщина шва">2-3 мм</td><td data-label="Расход сухой смеси">около 25 кг на м²</td></tr>
+      <tr><td>Арболит 500×300×200</td><td data-label="Толщина шва">10-12 мм</td><td data-label="Расход сухой смеси">около 50 кг на м²</td></tr>
+      <tr><td>Бутовая кладка</td><td data-label="Толщина шва">по камню</td><td data-label="Расход сухой смеси">0,3-0,4 м³ раствора на м³ кладки</td></tr>
     </tbody>
   </table></div>
   <p>На кубометр кладки из мелкоштучных материалов уходит в среднем от 0,20 до 0,25 кубометра раствора, а в бутовой кладке до 0,4. В мешках это считают через насыпную плотность: кубометр готового раствора требует примерно 1500-1600 килограммов сухой смеси.</p>
@@ -615,15 +588,15 @@
     <li>Разделите на массу мешка, обычно 25 или 40 килограммов, и округлите вверх.</li>
     <li>Прибавьте один мешок про запас: доборный мешок из другой партии может отличаться по оттенку шва.</li>
   </ol>
-  <div class="d-table-wrap"><table>
+  <div class="d-table-wrap"><table class="d-stack">
     <caption>Готовый счёт для типовых стен</caption>
     <thead><tr><th>Стена</th><th>Площадь</th><th>Смеси, кг</th><th>Мешков по 25 кг</th></tr></thead>
     <tbody>
-      <tr><td>Гараж из пескоблока, 6×4 м, высота 2,5 м</td><td>50 м²</td><td>2600</td><td>104</td></tr>
-      <tr><td>Перегородка из газоблока на клей</td><td>20 м²</td><td>575</td><td>23</td></tr>
-      <tr><td>Стена дома из керамзитоблока</td><td>120 м²</td><td>5520</td><td>221</td></tr>
-      <tr><td>Забор из кирпича в полкирпича</td><td>40 м²</td><td>3450</td><td>138</td></tr>
-      <tr><td>Цоколь из кирпича в кирпич</td><td>25 м²</td><td>4310</td><td>173</td></tr>
+      <tr><td>Гараж из пескоблока, 6×4 м, высота 2,5 м</td><td data-label="Площадь">50 м²</td><td data-label="Смеси, кг">2600</td><td data-label="Мешков по 25 кг">104</td></tr>
+      <tr><td>Перегородка из газоблока на клей</td><td data-label="Площадь">20 м²</td><td data-label="Смеси, кг">575</td><td data-label="Мешков по 25 кг">23</td></tr>
+      <tr><td>Стена дома из керамзитоблока</td><td data-label="Площадь">120 м²</td><td data-label="Смеси, кг">5520</td><td data-label="Мешков по 25 кг">221</td></tr>
+      <tr><td>Забор из кирпича в полкирпича</td><td data-label="Площадь">40 м²</td><td data-label="Смеси, кг">3450</td><td data-label="Мешков по 25 кг">138</td></tr>
+      <tr><td>Цоколь из кирпича в кирпич</td><td data-label="Площадь">25 м²</td><td data-label="Смеси, кг">4310</td><td data-label="Мешков по 25 кг">173</td></tr>
     </tbody>
   </table></div>
 
@@ -646,7 +619,7 @@
 <h2 class="d-sh" id="skolko-stoit">Цемент, смеси и химия с доставкой</h2>
 <div class="d-table-wrap"><table>
   <caption>Цена за материал без доставки, самовывозом. Доставку считаем отдельно по объёму и плечу доставки.</caption>
-  <thead><tr><th>Позиция</th><th>Цена с доставкой</th></tr></thead>
+  <thead><tr><th>Позиция</th><th>Цена</th></tr></thead>
   <tbody>
     <tr><td><a href="/dostavka/cement-i-smesi/">Цемент М400, мешок 50 кг</a></td><td>от 420 руб/мешок</td></tr>
     <tr><td><a href="/dostavka/cement-i-smesi/">Цемент М500, мешок 50 кг</a></td><td>от 470 руб/мешок</td></tr>
@@ -780,12 +753,14 @@
     <input type="text" name="botcheck" class="d-hp" tabindex="-1" autocomplete="off"
            aria-hidden="true" aria-label="Оставьте это поле пустым">
     <label for="qf-phone">Телефон</label>
-    <input id="qf-phone" type="tel" name="Телефон" placeholder="+7" required>
+    <input id="qf-phone" type="tel" name="Телефон" placeholder="+7" autocomplete="tel" inputmode="tel" enterkeyhint="next" required>
     <label for="qf-msg">Что и куда привезти</label>
-    <input id="qf-msg" type="text" name="Заявка" placeholder="Например: 10 кубов, адрес">
+    <input id="qf-msg" type="text" name="Заявка" placeholder="Например: что нужно и сколько мешков, адрес" enterkeyhint="send">
     <label class="d-consent"><input type="checkbox" name="Согласие" value="да" required>
       <span>Согласен на обработку персональных данных, включая передачу через зарубежный
       сервис отправки форм. <a href="/dostavka/politika/">Как мы обрабатываем данные</a></span></label>
+    
+    <p class="d-promo d-promo-form"><b class="d-promo-pct">5%</b><span>Скидка 5% при заявке через MAX или сайт</span></p>
     <button class="d-btn d-btn-wide" type="submit">Посчитать стоимость</button>
   </form>
 </div></section>
@@ -848,12 +823,13 @@
   
   <input type="text" name="botcheck" class="d-hp" tabindex="-1" autocomplete="off"
          aria-hidden="true" aria-label="Оставьте это поле пустым">
+  
   <label for="lf-name">Ваше имя</label>
-  <input id="lf-name" type="text" name="Имя" required>
+  <input id="lf-name" type="text" name="Имя" autocomplete="name" enterkeyhint="next">
   <label for="lf-phone">Телефон для связи</label>
-  <input id="lf-phone" type="tel" name="Телефон" placeholder="+7" required>
+  <input id="lf-phone" type="tel" name="Телефон" placeholder="+7" autocomplete="tel" inputmode="tel" enterkeyhint="next" required>
   <label for="lf-msg">Что и куда привезти</label>
-  <textarea id="lf-msg" name="Заявка" placeholder="Например: щебень 20-40, 10 кубов, Первоуральск, адрес"></textarea>
+  <textarea id="lf-msg" name="Заявка" placeholder="Например: что нужно и сколько мешков, адрес"></textarea>
   <label class="d-consent"><input type="checkbox" name="Согласие" value="да" required>
     <span>Согласен на обработку персональных данных для ответа на заявку, включая
     передачу через зарубежный сервис отправки форм.
@@ -905,9 +881,11 @@
   <details><summary>Что будет, если развести смесь жиже, чем написано?</summary><div><p>Раствор станет удобнее в работе и заметно слабее. Превышение воды на четверть опускает М150 примерно до уровня М75. Норму воды берут с мешка и отмеряют, а не на глаз.</p></div></details>
   <details><summary>Какая кладочная смесь нужна для печей и каминов?</summary><div><p>Обычная цементная не годится: при нагреве она растрескивается и шов выкрашивается. Для топки берут глино-шамотную жаростойкую смесь, для наружной части печи и трубы термостойкую кладочную. Это отдельная группа товара со своими марками, и разобрана она на странице печных смесей.</p></div></details>
   <details><summary>Что такое монтажно-кладочная смесь?</summary><div><p>Универсальный состав, которым и кладут блок, и заделывают примыкания, и монтируют мелкие элементы. Марка обычно М150-М200, зерно мелкое. Удобна на небольшом объёме, когда не хочется держать на объекте два разных мешка, но по цене за куб раствора проигрывает обычной кладочной.</p></div></details>
-  <details><summary>Сколько мешков кладочной смеси в кубе раствора?</summary><div><p>От 60 до 64 мешков по 25 килограммов: кубометр готового раствора требует примерно 1500-1600 килограммов сухой смеси. Считать удобнее не кубами, а квадратами кладки: на квадрат стены из пескоблока уходит около 45 килограммов, из кирпича в полкирпича около 75.</p></div></details>
-  <details><summary>Можно ли класть газоблок на обычную кладочную смесь?</summary><div><p>Можно, но шов получится 10 миллиметров вместо 2-3, и через него уйдёт заметная часть тепла: раствор проводит тепло гораздо лучше самого газоблока. На ровной геометрии блока берут тонкошовный клей, на кривой обычную смесь, потому что клеем перепад не выбрать.</p></div></details>
-  <details><summary>Сколько хранится сухая кладочная смесь?</summary><div><p>Обычно от шести до двенадцати месяцев в закрытом мешке на поддоне под навесом. Набравшая влагу смесь комкуется и марку уже не держит. При приёмке прощупайте несколько мешков по всему поддону: твёрдые комки внутри означают, что партия мокла.</p></div></details>
+  <details class="d-faq-more"><summary class="d-faq-more-sum">Показать ещё вопросы: 3</summary>
+    <details><summary>Сколько мешков кладочной смеси в кубе раствора?</summary><div><p>От 60 до 64 мешков по 25 килограммов: кубометр готового раствора требует примерно 1500-1600 килограммов сухой смеси. Считать удобнее не кубами, а квадратами кладки: на квадрат стены из пескоблока уходит около 45 килограммов, из кирпича в полкирпича около 75.</p></div></details>
+    <details><summary>Можно ли класть газоблок на обычную кладочную смесь?</summary><div><p>Можно, но шов получится 10 миллиметров вместо 2-3, и через него уйдёт заметная часть тепла: раствор проводит тепло гораздо лучше самого газоблока. На ровной геометрии блока берут тонкошовный клей, на кривой обычную смесь, потому что клеем перепад не выбрать.</p></div></details>
+    <details><summary>Сколько хранится сухая кладочная смесь?</summary><div><p>Обычно от шести до двенадцати месяцев в закрытом мешке на поддоне под навесом. Набравшая влагу смесь комкуется и марку уже не держит. При приёмке прощупайте несколько мешков по всему поддону: твёрдые комки внутри означают, что партия мокла.</p></div></details>
+  </details>
 </div>
 </div></section>
 
@@ -967,7 +945,7 @@
     <p class="d-phone-bottom"><a href="tel:+79506460953" onclick="try{ym(110405092,'reachGoal','call')}catch(e){}">+7 950 646-09-53</a></p>
   </div>
 </footer>
-<script src="/dostavka/assets/wa.js?v=a8e831b5" defer></script>
+<script src="/dostavka/assets/wa.js?v=6c55e5c6" defer></script>
 
 
 

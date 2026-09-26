@@ -1596,3 +1596,145 @@ dd a:not([class*="d-btn"]),
 /* Ответ обычным начертанием: общий стиль таблиц выделяет последнюю колонку
    как цену, а здесь в ней текст, и жирная простыня читается тяжело. */
 .d-buyers td:last-child{font-weight:450;color:var(--d-ink-2)}
+
+/* ============================================================
+   МОБИЛЬНОЕ РЕВЬЮ (сентябрь 2026)
+   ------------------------------------------------------------
+   Прогон 12 типов страниц на экране 390 px. Каждое правило ниже
+   закрывает то, что было видно на снимке, а не общий совет.
+   ============================================================ */
+
+/* Первый экран на телефоне. На товарных и городских страницах кнопка
+   MAX оказывалась на 800-860 px, то есть под сгибом: заголовок в три
+   строки, подзаголовок в шесть, цена, плашка оплаты и плашка скидки
+   стояли над ней. Липкая панель появляется только после прокрутки,
+   так что первый экран оставался без кнопки вовсе. Теперь кегль
+   подзаголовка чуть меньше, плашка оплаты уходит под кнопки, и MAX
+   попадает в первые 650 px. Порядок меняется только визуально через
+   order: в разметке и для скринридера он прежний. */
+@media (max-width:560px){
+  .d-hero2{padding:24px 0 30px}
+  .d-hero2 h1{font-size:28px;line-height:1.14;margin-bottom:12px}
+  .d-hero2-sub{font-size:16.5px;line-height:1.52;margin-bottom:18px}
+  .d-hero2-in{display:flex;flex-direction:column}
+  .d-hero2-in > *{order:10}
+  .d-hero2-in > h1{order:1}
+  .d-hero2-in > .d-hero2-sub{order:2}
+  .d-hero2-facts{display:contents}
+  .d-hero2-price{order:3;margin:0 0 14px;padding:10px 14px}
+  .d-hero2-price b{font-size:26px}
+  .d-hero2-in > .d-promo{order:4}
+  .d-hero2-in > .d-cta-row{order:5}
+  .d-hero2-note{order:6;margin-top:14px;padding:10px 14px;font-size:14px}
+  /* Шапка липкая, и 72 px из 844 она занимала на каждом экране.
+     Поле меньше, кнопка MAX и логотип по-прежнему 48 px. */
+  .d-header .wrap{padding:6px 16px}
+}
+
+/* Таблицы в три столбца и больше карточками (класс .d-stack ставит
+   сборка, см. stack_tables в build.py). На телефоне третий столбец
+   уезжал за край экрана обрывками слов, теперь каждая строка это
+   карточка: первая ячейка заголовком, дальше «подпись: значение». */
+@media (max-width:600px){
+  table.d-stack{font-size:15px}
+  table.d-stack thead{position:absolute;width:1px;height:1px;overflow:hidden;
+    clip:rect(0 0 0 0);white-space:nowrap}
+  table.d-stack,table.d-stack tbody,table.d-stack tr,table.d-stack td{display:block}
+  table.d-stack caption{display:block;max-width:none;position:static}
+  table.d-stack tr{padding:13px 16px 12px;border-top:1px solid var(--d-rule)}
+  table.d-stack tbody tr:first-child{border-top:none}
+  table.d-stack td{padding:3px 0;border:none;display:grid;font-weight:450;
+    grid-template-columns:minmax(0,40%) minmax(0,1fr);gap:12px;align-items:baseline}
+  table.d-stack td::before{content:attr(data-label);font-size:13px;font-weight:600;
+    color:var(--d-ink-2);line-height:1.4}
+  table.d-stack td:first-child{display:block;font-weight:750;font-size:16px;
+    padding-bottom:7px;color:var(--d-ink)}
+  table.d-stack td:first-child::before{content:none}
+  table.d-stack tbody tr:hover td{background:none}
+  .d-table-wrap:has(table.d-stack){overflow-x:visible}
+}
+
+/* Калькулятор на телефоне. Колонка формулы пряталась display:none,
+   и строка итога с colspan уводила сумму в чужой столбец: цифры
+   «Материал» и «Доставка» стояли посередине, а линии обрывались
+   на двух третях ширины. Теперь строка это гибкий ряд: подпись слева,
+   сумма у правого края, формула мелкой строкой под ними. */
+@media (max-width:560px){
+  .d-calc-table,.d-calc-table tbody{display:block;width:100%}
+  .d-calc-table tr{display:flex;flex-wrap:wrap;align-items:baseline;
+    border-bottom:1px solid var(--d-rule)}
+  .d-calc-res .d-calc-table tr{border-bottom-color:var(--d-steel-3)}
+  .d-calc-table tr.d-calc-total{border-bottom:none}
+  .d-calc-table th,.d-calc-table td{display:block;border-bottom:none;border-top:none}
+  .d-calc-table th{flex:1 1 0;min-width:0;width:auto;padding-right:12px}
+  .d-calc-table td:last-child{flex:0 0 auto;margin-left:auto}
+  .d-calc-table .d-calc-formula{display:block;order:3;flex:0 0 100%;padding:0 0 10px;
+    font-size:13px;font-weight:400;color:var(--d-ink-2);text-align:left}
+  .d-calc-res .d-calc-table .d-calc-formula{color:var(--d-on-steel-2)}
+}
+
+/* Зоны доставки: километраж стоял на 8 px ниже названия города.
+   Ссылка тянется на 48 px высоты под палец, но общее правило для
+   ссылок в списках делает её inline-block, и текст прижимался к верху. */
+.d-zone-list li{min-height:48px}
+.d-zone-list li a{display:flex;align-items:center;min-height:48px;padding-block:0;margin-block:0}
+
+/* Города на главной: на телефоне таблица в три столбца давала 46 строк
+   по 80 px, третий столбец за краем. Здесь две колонки плиток «город
+   и плечо», материалы остаются на странице города и на компьютере. */
+@media (max-width:600px){
+  table.d-cities thead{position:absolute;width:1px;height:1px;overflow:hidden;
+    clip:rect(0 0 0 0);white-space:nowrap}
+  table.d-cities caption{display:block;max-width:none;position:static}
+  table.d-cities,table.d-cities tbody{display:block}
+  table.d-cities tbody{display:grid;grid-template-columns:1fr 1fr;gap:1px;
+    background:var(--d-rule)}
+  table.d-cities tr{display:flex;flex-direction:column;justify-content:center;
+    background:var(--d-white);padding:10px 14px}
+  table.d-cities td{display:block;border:none;padding:0}
+  table.d-cities td:first-child a{font-size:15px;font-weight:650}
+  table.d-cities td:nth-child(2){font-size:13px;color:var(--d-ink-2);font-weight:500;
+    padding-top:2px}
+  table.d-cities td:nth-child(3){display:none}
+  table.d-cities tbody tr:hover td{background:none}
+}
+
+/* Раскрывашка «Показать ещё вопросы»: контейнер, а не карточка вопроса. */
+.d-faq .d-faq-more{background:none;border:0;box-shadow:none;padding:0;margin:0;border-radius:0}
+.d-faq .d-faq-more-sum{display:inline-flex;align-items:center;gap:10px;min-height:48px;
+  padding:0 20px;margin:4px 0 12px;border:1px solid var(--d-rule-2);border-radius:var(--r-ctl);
+  background:var(--d-white);color:var(--d-go);font-weight:750;font-size:16px}
+.d-faq .d-faq-more-sum::after{position:static;transform:rotate(45deg) translate(-2px,-2px);
+  border-color:var(--d-go)}
+.d-faq .d-faq-more[open] > .d-faq-more-sum{display:none}
+.d-faq .d-faq-more-sum:hover{border-color:var(--d-go);color:var(--d-go-h)}
+
+/* Оглавление статьи: номер пункта садился на последнюю строку, когда
+   название переносилось. Причина та же, что у зон: ссылка inline-block.
+   Внутри строки она обычная, поле нажатия даёт padding без сдвига. */
+.d-toc li a{display:inline;padding-block:3px;margin-block:0}
+
+/* Фракция в карточке «под задачу»: прописные делали «20-40 ММ». */
+.d-task-frac{text-transform:none;letter-spacing:.02em}
+
+/* Блог на телефоне: 87 карточек по 220 px, 19 000 px прокрутки.
+   Карточка кликабельна целиком, поэтому строка «Читать статью»
+   на узком экране лишняя, а описание урезано до трёх строк. */
+@media (max-width:560px){
+  .d-blog-list{gap:10px}
+  .d-blog-list .d-cat-card{padding:15px 16px}
+  .d-blog-list .d-cat-go{display:none}
+  .d-blog-list .d-cat-card p:not(.d-cat-name):not(.d-cat-go){display:-webkit-box;
+    -webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;margin-top:4px}
+}
+
+/* Кнопка отправки, пока заявка уходит (wa.js). */
+.d-btn[disabled]{opacity:.72;cursor:progress}
+
+/* Ссылка внутри абзаца статьи и примечания переносится вместе
+   с текстом. Общее правило делает её inline-block ради зоны нажатия,
+   и длинная ссылка («фиксированная цена за машину») целиком уезжала
+   на новую строку, оставляя в абзаце дыру. Внутри строки ссылка
+   обычная, зону нажатия по вертикали даёт padding. */
+.d-prose p a:not([class*="d-btn"]),.d-prose li a:not([class*="d-btn"]),p.d-note a:not([class*="d-btn"]){
+  display:inline;margin-block:0}

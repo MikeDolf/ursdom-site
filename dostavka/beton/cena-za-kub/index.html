@@ -4,6 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#1b2530">
+
+<meta name="format-detection" content="telephone=no">
 <title>Куб бетона: цена с доставкой, вес и сколько кубов нужно</title>
 <meta name="description" content="Сколько стоит куб бетона с доставкой в Екатеринбурге по маркам, сколько весит кубометр, из чего складывается цена и как посчитать нужный объём по конструкции.">
 <link rel="canonical" href="https://ursdom.ru/dostavka/beton/cena-za-kub/">
@@ -26,7 +28,7 @@
 <meta name="twitter:image" content="https://ursdom.ru/dostavka/assets/img/og-dostavka.jpg">
 <link rel="preload" href="/dostavka/assets/fonts/golos-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/dostavka/assets/fonts/mono-num.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/dostavka/assets/dostavka.min.css?v=a8e831b5">
+<link rel="stylesheet" href="/dostavka/assets/dostavka.min.css?v=6c55e5c6">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <script type="application/ld+json">
@@ -509,35 +511,6 @@
 <script data-page-id="20037714" src="https://yandex.ru/ads/system/ap-loader.js" async></script>
 </head>
 <body>
-<!--
-  DIRECTION CONTRACT · «Рассев» · seed 0aacaa17
-
-  THESIS: this site is the instrument that grades stone by size, not a
-  brochure about delivery. It refuses the category default of a dark hero
-  with a truck photo, three trust cards and a price table below.
-
-  OWN-WORLD: steel #1b2530 carries whole fields; enamel #eef1ec carries
-  content; graph #5d7b88 is ruling only; brass #d9a548 is action only and
-  always takes steel ink, never white. One 2px radius, no soft cards, no
-  kicker pills. Woven sieve mesh whose cell step is computed from the real
-  fraction in millimetres. Golos Text for words, JetBrains Mono for every
-  digit on the site, cap-height matched.
-
-  STORY: a buyer who does not know which fraction to order sees four sieves
-  with real mesh, real stone and a real price, picks one, and asks for a
-  quote already knowing the word for what they want.
-
-  FIRST VIEWPORT: steel field. H1 left at up to 46px, one line of subhead,
-  brass MAX button beside an outlined form button, then the sieve stack
-  full width: four rows, mesh 104px at left, fraction, use, price at right.
-  Primary action is the brass button; the stack is the second entry.
-
-  FORM: sieve stack, first on the ordered list of seven, seed key 0aacaa17.
-
-  FINISH: unreviewed and undocumented is unfinished; this build ends with
-  the finish review, the verdict, DESIGN.md, and every shipping raster
-  carrying its provenance.
--->
 <a class="d-skip" href="#content">К содержимому</a>
 
 <div class="d-topbar"><div class="wrap">
@@ -639,17 +612,17 @@
   <h2 class="d-sh" id="cena">Сколько стоит куб и из чего складывается цена</h2>
   <p>Цена куба состоит из трёх частей, и только первая зависит от марки. Сама смесь дорожает с маркой примерно на триста рублей за ступень, доставка считается от объёма и плеча, а подача <a href="/dostavka/beton/betononasos/">бетононасосом</a> при необходимости оплачивается отдельно и посменно.</p>
   <div class="d-callout"><p><strong>Где цена растёт незаметно.</strong> Минимальный заказ, простой машины сверх включённого времени, подача насосом и зимнее удорожание с противоморозными добавками. Каждый пункт по отдельности небольшой, вместе они добавляют к кубу заметную долю.</p></div>
-  <div class="d-table-wrap"><table>
+  <div class="d-table-wrap"><table class="d-stack">
     <caption>Ориентировочная цена куба по маркам, Свердловская область</caption>
     <thead><tr><th>Марка</th><th>Класс</th><th>Цена за куб</th><th>Типичное применение</th></tr></thead>
     <tbody>
-      <tr><td>М100</td><td>B7,5</td><td>от 3900</td><td>Подбетонка, подготовка</td></tr>
-      <tr><td>М150</td><td>B12,5</td><td>от 4200</td><td>Стяжка, дорожка, отмостка</td></tr>
-      <tr><td>М200</td><td>B15</td><td>от 4500</td><td>Площадка, лестница, лёгкий фундамент</td></tr>
-      <tr><td>М250</td><td>B20</td><td>от 4800</td><td>Лента каркасного дома, плита пола</td></tr>
-      <tr><td>М300</td><td>B22,5</td><td>от 5100</td><td>Фундамент кирпичного дома</td></tr>
-      <tr><td>М350</td><td>B25</td><td>от 5400</td><td>Перекрытие, монолитный каркас</td></tr>
-      <tr><td>М400</td><td>B30</td><td>от 5800</td><td>Специальные конструкции</td></tr>
+      <tr><td>М100</td><td data-label="Класс">B7,5</td><td data-label="Цена за куб">от 3900</td><td data-label="Типичное применение">Подбетонка, подготовка</td></tr>
+      <tr><td>М150</td><td data-label="Класс">B12,5</td><td data-label="Цена за куб">от 4200</td><td data-label="Типичное применение">Стяжка, дорожка, отмостка</td></tr>
+      <tr><td>М200</td><td data-label="Класс">B15</td><td data-label="Цена за куб">от 4500</td><td data-label="Типичное применение">Площадка, лестница, лёгкий фундамент</td></tr>
+      <tr><td>М250</td><td data-label="Класс">B20</td><td data-label="Цена за куб">от 4800</td><td data-label="Типичное применение">Лента каркасного дома, плита пола</td></tr>
+      <tr><td>М300</td><td data-label="Класс">B22,5</td><td data-label="Цена за куб">от 5100</td><td data-label="Типичное применение">Фундамент кирпичного дома</td></tr>
+      <tr><td>М350</td><td data-label="Класс">B25</td><td data-label="Цена за куб">от 5400</td><td data-label="Типичное применение">Перекрытие, монолитный каркас</td></tr>
+      <tr><td>М400</td><td data-label="Класс">B30</td><td data-label="Цена за куб">от 5800</td><td data-label="Типичное применение">Специальные конструкции</td></tr>
     </tbody>
   </table></div>
   <p>Цены ориентировочные по рынку области. Точную стоимость с доставкой на конкретный адрес называем по заявке: на плече в сорок километров и на плече в двести разница в итоговом кубе доходит до тысячи рублей.</p>
@@ -658,15 +631,15 @@
 
   <h2 class="d-sh" id="ves">Сколько весит куб бетона</h2>
   <p>Кубометр тяжёлого <a href="/dostavka/beton/">бетона</a> на гранитном <a href="/dostavka/shcheben/">щебне</a> весит 2350-2500 килограммов, в расчётах берут 2400. Это число нужно в трёх местах: чтобы проверить накладную, если бетон считают тоннами, чтобы посчитать нагрузку на перекрытие и чтобы понять, проедет ли гружёный миксер по вашей дороге.</p>
-  <div class="d-table-wrap"><table>
+  <div class="d-table-wrap"><table class="d-stack">
     <caption>Вес кубометра по видам</caption>
     <thead><tr><th>Вид бетона</th><th>Вес куба</th><th>Где встречается</th></tr></thead>
     <tbody>
-      <tr><td>На гранитном щебне</td><td>2350-2500 кг</td><td>Фундаменты, плиты, монолит</td></tr>
-      <tr><td>На гравийном щебне</td><td>2300-2400 кг</td><td>Общестроительные работы</td></tr>
-      <tr><td>На известняковом щебне</td><td>2200-2350 кг</td><td>Подбетонка, ненагруженное</td></tr>
-      <tr><td>Керамзитобетон конструкционный</td><td>1400-1800 кг</td><td>Стены, лёгкие перекрытия</td></tr>
-      <tr><td>Керамзитобетон теплоизоляционный</td><td>800-1200 кг</td><td>Утеплённые стяжки</td></tr>
+      <tr><td>На гранитном щебне</td><td data-label="Вес куба">2350-2500 кг</td><td data-label="Где встречается">Фундаменты, плиты, монолит</td></tr>
+      <tr><td>На гравийном щебне</td><td data-label="Вес куба">2300-2400 кг</td><td data-label="Где встречается">Общестроительные работы</td></tr>
+      <tr><td>На известняковом щебне</td><td data-label="Вес куба">2200-2350 кг</td><td data-label="Где встречается">Подбетонка, ненагруженное</td></tr>
+      <tr><td>Керамзитобетон конструкционный</td><td data-label="Вес куба">1400-1800 кг</td><td data-label="Где встречается">Стены, лёгкие перекрытия</td></tr>
+      <tr><td>Керамзитобетон теплоизоляционный</td><td data-label="Вес куба">800-1200 кг</td><td data-label="Где встречается">Утеплённые стяжки</td></tr>
     </tbody>
   </table></div>
   <p>Обратный пересчёт делается делением на 2,4. Двадцать четыре тонны это ровно десять кубометров тяжёлого бетона, и накладная с двадцатью тоннами на «десять кубов» стоит перечитать до подписи.</p>
@@ -676,19 +649,19 @@
   <h2 class="d-sh" id="skolko-kubov">Сколько кубов нужно на вашу конструкцию</h2>
   <p>Объём считается перемножением размеров в метрах. Сложность не в арифметике, а в том, что реальная конструкция редко бывает простым параллелепипедом: лента имеет углы, плита имеет вырезы, а опалубка всегда чуть шире расчётной.</p>
   <div class="d-callout"><p><strong>Запас три-пять процентов обязателен.</strong> Недолитая конструкция это второй рейс миксера с полной оплатой доставки ради полукуба. Лишние полкуба уходят в подбетонку, в дорожку или в столбы, и это дешевле.</p></div>
-  <div class="d-table-wrap"><table>
+  <div class="d-table-wrap"><table class="d-stack">
     <caption>Готовые расчёты, объём уже с запасом</caption>
     <thead><tr><th>Конструкция</th><th>Размеры</th><th>Объём</th><th>Марка</th></tr></thead>
     <tbody>
-      <tr><td>Стяжка в комнате</td><td>20 м², слой 5 см</td><td>1,0 м³</td><td>М150</td></tr>
-      <tr><td>Стяжка по всему дому</td><td>80 м², слой 6 см</td><td>5,0 м³</td><td>М150</td></tr>
-      <tr><td>Отмостка</td><td>периметр 36 м, ширина 1 м, слой 9 см</td><td>3,3 м³</td><td>М200</td></tr>
-      <tr><td>Площадка под машину</td><td>6×4 м, слой 12 см</td><td>2,9 м³</td><td>М200</td></tr>
-      <tr><td>Лента 8×10 м</td><td>ширина 0,4 м, высота 0,6 м</td><td>8,6 м³</td><td>М300</td></tr>
-      <tr><td>Лента 6×9 м</td><td>ширина 0,4 м, высота 0,5 м</td><td>5,8 м³</td><td>М250</td></tr>
-      <tr><td>Плита 8×10 м</td><td>толщина 20 см</td><td>16,0 м³</td><td>М300</td></tr>
-      <tr><td>Крыльцо со ступенями</td><td>2×1,5 м, три ступени</td><td>0,9 м³</td><td>М250</td></tr>
-      <tr><td>17 столбов забора</td><td>0,3×0,3×0,8 м каждый</td><td>1,2 м³</td><td>М200</td></tr>
+      <tr><td>Стяжка в комнате</td><td data-label="Размеры">20 м², слой 5 см</td><td data-label="Объём">1,0 м³</td><td data-label="Марка">М150</td></tr>
+      <tr><td>Стяжка по всему дому</td><td data-label="Размеры">80 м², слой 6 см</td><td data-label="Объём">5,0 м³</td><td data-label="Марка">М150</td></tr>
+      <tr><td>Отмостка</td><td data-label="Размеры">периметр 36 м, ширина 1 м, слой 9 см</td><td data-label="Объём">3,3 м³</td><td data-label="Марка">М200</td></tr>
+      <tr><td>Площадка под машину</td><td data-label="Размеры">6×4 м, слой 12 см</td><td data-label="Объём">2,9 м³</td><td data-label="Марка">М200</td></tr>
+      <tr><td>Лента 8×10 м</td><td data-label="Размеры">ширина 0,4 м, высота 0,6 м</td><td data-label="Объём">8,6 м³</td><td data-label="Марка">М300</td></tr>
+      <tr><td>Лента 6×9 м</td><td data-label="Размеры">ширина 0,4 м, высота 0,5 м</td><td data-label="Объём">5,8 м³</td><td data-label="Марка">М250</td></tr>
+      <tr><td>Плита 8×10 м</td><td data-label="Размеры">толщина 20 см</td><td data-label="Объём">16,0 м³</td><td data-label="Марка">М300</td></tr>
+      <tr><td>Крыльцо со ступенями</td><td data-label="Размеры">2×1,5 м, три ступени</td><td data-label="Объём">0,9 м³</td><td data-label="Марка">М250</td></tr>
+      <tr><td>17 столбов забора</td><td data-label="Размеры">0,3×0,3×0,8 м каждый</td><td data-label="Объём">1,2 м³</td><td data-label="Марка">М200</td></tr>
     </tbody>
   </table></div>
   <p>Периметр ленты считается по средней линии, а не по наружной грани: иначе углы попадают в расчёт дважды. Для дома 8 на 10 метров с лентой шириной 0,4 метра средняя линия даёт 35,2 погонных метра, а не 36.</p>
@@ -705,15 +678,15 @@
 
   <h2 class="d-sh" id="svoy-ili-zavodskoy">Где куб выгоднее заказать, а где замесить</h2>
   <p>Граница проходит примерно по двум кубометрам, и считать надо не цену смеси, а полную стоимость куба на объекте.</p>
-  <div class="d-table-wrap"><table>
+  <div class="d-table-wrap"><table class="d-stack">
     <caption>Что выгоднее по объёму</caption>
     <thead><tr><th>Объём</th><th>Обычно выгоднее</th><th>Почему</th></tr></thead>
     <tbody>
-      <tr><td>До 0,5 м³</td><td>Мешки готовой смеси</td><td>Дорого за куб, но без мешалки и без остатков</td></tr>
-      <tr><td>0,5-2 м³</td><td>Свой замес</td><td>Минимальный заказ и доставка съедают экономию</td></tr>
-      <tr><td>2-4 м³</td><td>Считать по месту</td><td>Решают плечо и минимальный объём у завода</td></tr>
-      <tr><td>От 4 м³</td><td>Заводской бетон</td><td>Ручной замес даёт разнобой по маркам</td></tr>
-      <tr><td>От 8 м³</td><td>Только заводской</td><td>Сорок замесов подряд одинаковыми не выйдут</td></tr>
+      <tr><td>До 0,5 м³</td><td data-label="Обычно выгоднее">Мешки готовой смеси</td><td data-label="Почему">Дорого за куб, но без мешалки и без остатков</td></tr>
+      <tr><td>0,5-2 м³</td><td data-label="Обычно выгоднее">Свой замес</td><td data-label="Почему">Минимальный заказ и доставка съедают экономию</td></tr>
+      <tr><td>2-4 м³</td><td data-label="Обычно выгоднее">Считать по месту</td><td data-label="Почему">Решают плечо и минимальный объём у завода</td></tr>
+      <tr><td>От 4 м³</td><td data-label="Обычно выгоднее">Заводской бетон</td><td data-label="Почему">Ручной замес даёт разнобой по маркам</td></tr>
+      <tr><td>От 8 м³</td><td data-label="Обычно выгоднее">Только заводской</td><td data-label="Почему">Сорок замесов подряд одинаковыми не выйдут</td></tr>
     </tbody>
   </table></div>
   <p>На своём замесе куб М300 обходится примерно в стоимость 350 килограммов <a href="/dostavka/stati/cement-m400-i-m500/">цемента М500</a>, 0,45 кубометра <a href="/dostavka/pesok/">песка</a> и 0,79 кубометра щебня. Материал выходит дешевле заводского куба, но к нему добавляется день работы вдвоём и аренда мешалки, и на объёмах от четырёх кубов это перестаёт окупаться.</p>
@@ -724,7 +697,7 @@
 <h2 class="d-sh" id="skolko-stoit">Бетон с доставкой миксером</h2>
 <div class="d-table-wrap"><table>
   <caption>Цена за материал без доставки, самовывозом. Доставку считаем отдельно по объёму и плечу доставки.</caption>
-  <thead><tr><th>Позиция</th><th>Цена с доставкой</th></tr></thead>
+  <thead><tr><th>Позиция</th><th>Цена</th></tr></thead>
   <tbody>
     <tr><td><a href="/dostavka/beton/m100/">Бетон М100, класс B7,5</a></td><td>от 3900 руб/м³</td></tr>
     <tr><td><a href="/dostavka/beton/m150/">Бетон М150, класс B12,5</a></td><td>от 4200 руб/м³</td></tr>
@@ -860,12 +833,14 @@
     <input type="text" name="botcheck" class="d-hp" tabindex="-1" autocomplete="off"
            aria-hidden="true" aria-label="Оставьте это поле пустым">
     <label for="qf-phone">Телефон</label>
-    <input id="qf-phone" type="tel" name="Телефон" placeholder="+7" required>
+    <input id="qf-phone" type="tel" name="Телефон" placeholder="+7" autocomplete="tel" inputmode="tel" enterkeyhint="next" required>
     <label for="qf-msg">Что и куда привезти</label>
-    <input id="qf-msg" type="text" name="Заявка" placeholder="Например: 10 кубов, адрес">
+    <input id="qf-msg" type="text" name="Заявка" placeholder="Например: бетон М200, 6 кубов, адрес, нужен ли насос" enterkeyhint="send">
     <label class="d-consent"><input type="checkbox" name="Согласие" value="да" required>
       <span>Согласен на обработку персональных данных, включая передачу через зарубежный
       сервис отправки форм. <a href="/dostavka/politika/">Как мы обрабатываем данные</a></span></label>
+    
+    <p class="d-promo d-promo-form"><b class="d-promo-pct">5%</b><span>Скидка 5% при заявке через MAX или сайт</span></p>
     <button class="d-btn d-btn-wide" type="submit">Посчитать стоимость</button>
   </form>
 </div></section>
@@ -928,12 +903,13 @@
   
   <input type="text" name="botcheck" class="d-hp" tabindex="-1" autocomplete="off"
          aria-hidden="true" aria-label="Оставьте это поле пустым">
+  
   <label for="lf-name">Ваше имя</label>
-  <input id="lf-name" type="text" name="Имя" required>
+  <input id="lf-name" type="text" name="Имя" autocomplete="name" enterkeyhint="next">
   <label for="lf-phone">Телефон для связи</label>
-  <input id="lf-phone" type="tel" name="Телефон" placeholder="+7" required>
+  <input id="lf-phone" type="tel" name="Телефон" placeholder="+7" autocomplete="tel" inputmode="tel" enterkeyhint="next" required>
   <label for="lf-msg">Что и куда привезти</label>
-  <textarea id="lf-msg" name="Заявка" placeholder="Например: щебень 20-40, 10 кубов, Первоуральск, адрес"></textarea>
+  <textarea id="lf-msg" name="Заявка" placeholder="Например: бетон М200, 6 кубов, адрес, нужен ли насос"></textarea>
   <label class="d-consent"><input type="checkbox" name="Согласие" value="да" required>
     <span>Согласен на обработку персональных данных для ответа на заявку, включая
     передачу через зарубежный сервис отправки форм.
@@ -1046,7 +1022,7 @@
     <p class="d-phone-bottom"><a href="tel:+79506460953" onclick="try{ym(110405092,'reachGoal','call')}catch(e){}">+7 950 646-09-53</a></p>
   </div>
 </footer>
-<script src="/dostavka/assets/wa.js?v=a8e831b5" defer></script>
+<script src="/dostavka/assets/wa.js?v=6c55e5c6" defer></script>
 
 
 

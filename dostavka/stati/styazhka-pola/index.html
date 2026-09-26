@@ -4,6 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#1b2530">
+
+<meta name="format-detection" content="telephone=no">
 <title>Стяжка пола: пропорции, толщина слоя и расход песка и щебня</title>
 <meta name="description" content="Стяжка пола по грунту и по перекрытию: пирог, толщина слоёв, пропорции раствора и бетона, расход песка, щебня и керамзита на квадратный метр и на всю комнату.">
 <link rel="canonical" href="https://ursdom.ru/dostavka/stati/styazhka-pola/">
@@ -26,7 +28,7 @@
 <meta name="twitter:image" content="https://ursdom.ru/dostavka/assets/img/og-dostavka.jpg">
 <link rel="preload" href="/dostavka/assets/fonts/golos-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/dostavka/assets/fonts/mono-num.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/dostavka/assets/dostavka.min.css?v=a8e831b5">
+<link rel="stylesheet" href="/dostavka/assets/dostavka.min.css?v=6c55e5c6">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <script type="application/ld+json">
@@ -476,35 +478,6 @@
 <script data-page-id="20037714" src="https://yandex.ru/ads/system/ap-loader.js" async></script>
 </head>
 <body>
-<!--
-  DIRECTION CONTRACT · «Рассев» · seed 0aacaa17
-
-  THESIS: this site is the instrument that grades stone by size, not a
-  brochure about delivery. It refuses the category default of a dark hero
-  with a truck photo, three trust cards and a price table below.
-
-  OWN-WORLD: steel #1b2530 carries whole fields; enamel #eef1ec carries
-  content; graph #5d7b88 is ruling only; brass #d9a548 is action only and
-  always takes steel ink, never white. One 2px radius, no soft cards, no
-  kicker pills. Woven sieve mesh whose cell step is computed from the real
-  fraction in millimetres. Golos Text for words, JetBrains Mono for every
-  digit on the site, cap-height matched.
-
-  STORY: a buyer who does not know which fraction to order sees four sieves
-  with real mesh, real stone and a real price, picks one, and asks for a
-  quote already knowing the word for what they want.
-
-  FIRST VIEWPORT: steel field. H1 left at up to 46px, one line of subhead,
-  brass MAX button beside an outlined form button, then the sieve stack
-  full width: four rows, mesh 104px at left, fraction, use, price at right.
-  Primary action is the brass button; the stack is the second entry.
-
-  FORM: sieve stack, first on the ordered list of seven, seed key 0aacaa17.
-
-  FINISH: unreviewed and undocumented is unfinished; this build ends with
-  the finish review, the verdict, DESIGN.md, and every shipping raster
-  carrying its provenance.
--->
 <a class="d-skip" href="#content">К содержимому</a>
 
 <div class="d-topbar"><div class="wrap">
@@ -606,17 +579,17 @@
 
   <h2 class="d-sh" id="dva-piroga">Два разных пирога</h2>
   <p>Стяжка по грунту и стяжка по перекрытию решают разные задачи, и путать их конструкции нельзя. По грунту стяжка сама несущая и должна распределять нагрузку по основанию, поэтому под ней обязательны <a href="/dostavka/shcheben/">щебень</a> и армирование. По перекрытию нагрузку несёт плита, а стяжка только выравнивает, и её задача - быть как можно легче.</p>
-  <div class="d-table-wrap"><table>
+  <div class="d-table-wrap"><table class="d-stack">
     <caption>Стяжка по грунту и по перекрытию</caption>
     <thead><tr><th>Слой</th><th>По грунту</th><th>По перекрытию</th></tr></thead>
     <tbody>
-      <tr><td>Основание</td><td>Уплотнённый грунт</td><td>Плита перекрытия</td></tr>
-      <tr><td>Песок</td><td>10-15 см с проливкой и трамбовкой</td><td>Нет</td></tr>
-      <tr><td>Щебень 20-40</td><td>10 см с трамбовкой</td><td>Нет</td></tr>
-      <tr><td>Гидроизоляция</td><td>Плёнка с нахлёстом и заходом на стены</td><td>Плёнка, при мокром помещении обмазочная</td></tr>
-      <tr><td>Утепление</td><td>ЭППС 5-10 см или керамзит 10-15 см</td><td>Керамзит или ЭППС по необходимости</td></tr>
-      <tr><td>Армирование</td><td>Сетка 100×100×4 мм обязательно</td><td>Сетка при слое от 5 см</td></tr>
-      <tr><td>Верхний слой</td><td>Бетон М150-М200, 7-10 см</td><td>Раствор М150, 4-7 см</td></tr>
+      <tr><td>Основание</td><td data-label="По грунту">Уплотнённый грунт</td><td data-label="По перекрытию">Плита перекрытия</td></tr>
+      <tr><td>Песок</td><td data-label="По грунту">10-15 см с проливкой и трамбовкой</td><td data-label="По перекрытию">Нет</td></tr>
+      <tr><td>Щебень 20-40</td><td data-label="По грунту">10 см с трамбовкой</td><td data-label="По перекрытию">Нет</td></tr>
+      <tr><td>Гидроизоляция</td><td data-label="По грунту">Плёнка с нахлёстом и заходом на стены</td><td data-label="По перекрытию">Плёнка, при мокром помещении обмазочная</td></tr>
+      <tr><td>Утепление</td><td data-label="По грунту">ЭППС 5-10 см или керамзит 10-15 см</td><td data-label="По перекрытию">Керамзит или ЭППС по необходимости</td></tr>
+      <tr><td>Армирование</td><td data-label="По грунту">Сетка 100×100×4 мм обязательно</td><td data-label="По перекрытию">Сетка при слое от 5 см</td></tr>
+      <tr><td>Верхний слой</td><td data-label="По грунту">Бетон М150-М200, 7-10 см</td><td data-label="По перекрытию">Раствор М150, 4-7 см</td></tr>
     </tbody>
   </table></div>
 
@@ -637,14 +610,14 @@
 
   <h2 class="d-sh" id="nagruzka">Нагрузка на перекрытие: когда обычная стяжка не подходит</h2>
   <p>Куб цементно-песчаного раствора весит около двух тонн. Отсюда простой пересчёт, который решает судьбу конструкции в старом доме.</p>
-  <div class="d-table-wrap"><table>
+  <div class="d-table-wrap"><table class="d-stack">
     <caption>Вес стяжки на квадратный метр</caption>
     <thead><tr><th>Толщина</th><th>Раствор ЦПС</th><th>Керамзитобетон</th><th>Сухая засыпка керамзитом</th></tr></thead>
     <tbody>
-      <tr><td>3 см</td><td>около 60 кг</td><td>около 36 кг</td><td>около 12 кг</td></tr>
-      <tr><td>5 см</td><td>около 100 кг</td><td>около 60 кг</td><td>около 20 кг</td></tr>
-      <tr><td>7 см</td><td>около 140 кг</td><td>около 84 кг</td><td>около 28 кг</td></tr>
-      <tr><td>10 см</td><td>около 200 кг</td><td>около 120 кг</td><td>около 40 кг</td></tr>
+      <tr><td>3 см</td><td data-label="Раствор ЦПС">около 60 кг</td><td data-label="Керамзитобетон">около 36 кг</td><td data-label="Сухая засыпка керамзитом">около 12 кг</td></tr>
+      <tr><td>5 см</td><td data-label="Раствор ЦПС">около 100 кг</td><td data-label="Керамзитобетон">около 60 кг</td><td data-label="Сухая засыпка керамзитом">около 20 кг</td></tr>
+      <tr><td>7 см</td><td data-label="Раствор ЦПС">около 140 кг</td><td data-label="Керамзитобетон">около 84 кг</td><td data-label="Сухая засыпка керамзитом">около 28 кг</td></tr>
+      <tr><td>10 см</td><td data-label="Раствор ЦПС">около 200 кг</td><td data-label="Керамзитобетон">около 120 кг</td><td data-label="Сухая засыпка керамзитом">около 40 кг</td></tr>
     </tbody>
   </table></div>
   <p>Деревянное перекрытие старого дома обычно рассчитано на 150 килограммов полезной нагрузки на квадратный метр, и стяжка в семь сантиметров съедает её почти целиком, не оставляя запаса на мебель и людей. Именно поэтому в реконструкции идут керамзитобетон, сухая засыпка или регулируемые лаги.</p>
@@ -661,15 +634,15 @@
 
   <h2 class="d-sh" id="raschet">Расход материалов</h2>
   <div class="d-callout"><p><strong>Песок для стяжки нужен средний, модуль крупности от 2,0.</strong> Мелкий пылеватый песок тянет цемент и даёт усадочные трещины по всей плоскости. Это тот случай, когда экономия на песке вылезает на поверхности буквально.</p></div>
-  <div class="d-table-wrap"><table>
+  <div class="d-table-wrap"><table class="d-stack">
     <caption>Материалы на стяжку по грунту, комната 20 м²</caption>
     <thead><tr><th>Слой</th><th>Толщина</th><th>Объём</th><th>С запасом</th></tr></thead>
     <tbody>
-      <tr><td>Песок</td><td>12 см</td><td>2,4 м³</td><td>2,8 м³</td></tr>
-      <tr><td>Щебень 20-40</td><td>10 см</td><td>2,0 м³</td><td>2,3 м³</td></tr>
-      <tr><td>Керамзит, если утепляем им</td><td>12 см</td><td>2,4 м³</td><td>2,6 м³</td></tr>
-      <tr><td>Бетон М200</td><td>8 см</td><td>1,6 м³</td><td>1,7 м³</td></tr>
-      <tr><td>Цемент М400 на этот бетон</td><td>-</td><td>около 450 кг</td><td>10 мешков</td></tr>
+      <tr><td>Песок</td><td data-label="Толщина">12 см</td><td data-label="Объём">2,4 м³</td><td data-label="С запасом">2,8 м³</td></tr>
+      <tr><td>Щебень 20-40</td><td data-label="Толщина">10 см</td><td data-label="Объём">2,0 м³</td><td data-label="С запасом">2,3 м³</td></tr>
+      <tr><td>Керамзит, если утепляем им</td><td data-label="Толщина">12 см</td><td data-label="Объём">2,4 м³</td><td data-label="С запасом">2,6 м³</td></tr>
+      <tr><td>Бетон М200</td><td data-label="Толщина">8 см</td><td data-label="Объём">1,6 м³</td><td data-label="С запасом">1,7 м³</td></tr>
+      <tr><td>Цемент М400 на этот бетон</td><td data-label="Толщина">-</td><td data-label="Объём">около 450 кг</td><td data-label="С запасом">10 мешков</td></tr>
     </tbody>
   </table></div>
   <p>На стяжку по перекрытию тех же двадцати квадратов слоем пять сантиметров нужен только раствор: около одного кубометра, то есть примерно 320 килограммов цемента и 1,1 кубометра <a href="/dostavka/pesok/">песка</a>. Щебень здесь не нужен.</p>
@@ -680,7 +653,7 @@
 <h2 class="d-sh" id="skolko-stoit">Бетон с доставкой миксером</h2>
 <div class="d-table-wrap"><table>
   <caption>Цена за материал без доставки, самовывозом. Доставку считаем отдельно по объёму и плечу доставки.</caption>
-  <thead><tr><th>Позиция</th><th>Цена с доставкой</th></tr></thead>
+  <thead><tr><th>Позиция</th><th>Цена</th></tr></thead>
   <tbody>
     <tr><td><a href="/dostavka/beton/m100/">Бетон М100, класс B7,5</a></td><td>от 3900 руб/м³</td></tr>
     <tr><td><a href="/dostavka/beton/m150/">Бетон М150, класс B12,5</a></td><td>от 4200 руб/м³</td></tr>
@@ -816,12 +789,14 @@
     <input type="text" name="botcheck" class="d-hp" tabindex="-1" autocomplete="off"
            aria-hidden="true" aria-label="Оставьте это поле пустым">
     <label for="qf-phone">Телефон</label>
-    <input id="qf-phone" type="tel" name="Телефон" placeholder="+7" required>
+    <input id="qf-phone" type="tel" name="Телефон" placeholder="+7" autocomplete="tel" inputmode="tel" enterkeyhint="next" required>
     <label for="qf-msg">Что и куда привезти</label>
-    <input id="qf-msg" type="text" name="Заявка" placeholder="Например: 10 кубов, адрес">
+    <input id="qf-msg" type="text" name="Заявка" placeholder="Например: щебень 20-40, 10 кубов, Первоуральск, адрес" enterkeyhint="send">
     <label class="d-consent"><input type="checkbox" name="Согласие" value="да" required>
       <span>Согласен на обработку персональных данных, включая передачу через зарубежный
       сервис отправки форм. <a href="/dostavka/politika/">Как мы обрабатываем данные</a></span></label>
+    
+    <p class="d-promo d-promo-form"><b class="d-promo-pct">5%</b><span>Скидка 5% при заявке через MAX или сайт</span></p>
     <button class="d-btn d-btn-wide" type="submit">Посчитать стоимость</button>
   </form>
 </div></section>
@@ -884,10 +859,11 @@
   
   <input type="text" name="botcheck" class="d-hp" tabindex="-1" autocomplete="off"
          aria-hidden="true" aria-label="Оставьте это поле пустым">
+  
   <label for="lf-name">Ваше имя</label>
-  <input id="lf-name" type="text" name="Имя" required>
+  <input id="lf-name" type="text" name="Имя" autocomplete="name" enterkeyhint="next">
   <label for="lf-phone">Телефон для связи</label>
-  <input id="lf-phone" type="tel" name="Телефон" placeholder="+7" required>
+  <input id="lf-phone" type="tel" name="Телефон" placeholder="+7" autocomplete="tel" inputmode="tel" enterkeyhint="next" required>
   <label for="lf-msg">Что и куда привезти</label>
   <textarea id="lf-msg" name="Заявка" placeholder="Например: щебень 20-40, 10 кубов, Первоуральск, адрес"></textarea>
   <label class="d-consent"><input type="checkbox" name="Согласие" value="да" required>
@@ -999,7 +975,7 @@
     <p class="d-phone-bottom"><a href="tel:+79506460953" onclick="try{ym(110405092,'reachGoal','call')}catch(e){}">+7 950 646-09-53</a></p>
   </div>
 </footer>
-<script src="/dostavka/assets/wa.js?v=a8e831b5" defer></script>
+<script src="/dostavka/assets/wa.js?v=6c55e5c6" defer></script>
 
 
 

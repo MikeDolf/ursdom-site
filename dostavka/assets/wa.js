@@ -75,3 +75,43 @@
     });
   });
 })();
+
+/* Формы заявки. Два правила, оба про то, чтобы заявка дошла.
+
+   1. Номер короче десяти цифр не отправляем: «+7 912 345» проходил
+      проверку required и приходил владельцу номером, по которому
+      не перезвонить. Подсказка появляется у поля, а не страницей
+      ошибки после отправки.
+   2. После нажатия кнопка блокируется и пишет «Отправляем заявку»:
+      сервис форм отвечает не мгновенно, и на медленном мобильном
+      интернете человек жал кнопку второй раз, заявка приходила дважды.
+      Возврат назад со страницы «спасибо» снимает блокировку (pageshow),
+      иначе форма оставалась мёртвой. */
+(function () {
+  "use strict";
+  var forms = document.querySelectorAll("form.d-form, form.d-qform");
+  Array.prototype.forEach.call(forms, function (form) {
+    var tel = form.querySelector('input[type="tel"]');
+    var btn = form.querySelector('button[type="submit"]');
+    var label = btn ? btn.textContent : "";
+    if (tel) tel.addEventListener("input", function () { tel.setCustomValidity(""); });
+    form.addEventListener("submit", function (e) {
+      if (tel && tel.value.replace(/\D/g, "").length < 10) {
+        e.preventDefault();
+        tel.setCustomValidity("Проверьте номер: нужно 10-11 цифр, например +7 912 345-67-89");
+        tel.reportValidity();
+        return;
+      }
+      if (btn) {
+        btn.disabled = true;
+        btn.textContent = "Отправляем заявку...";
+      }
+    });
+    window.addEventListener("pageshow", function () {
+      if (btn) {
+        btn.disabled = false;
+        btn.textContent = label;
+      }
+    });
+  });
+})();

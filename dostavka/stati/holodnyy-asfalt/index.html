@@ -4,6 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#1b2530">
+
+<meta name="format-detection" content="telephone=no">
 <title>Холодный асфальт в мешках: когда работает, а когда нет</title>
 <meta name="description" content="Холодный асфальт для ямочного ремонта: расход на квадратный метр и на яму, порядок укладки, при какой температуре работает и чем он отличается от горячего.">
 <link rel="canonical" href="https://ursdom.ru/dostavka/stati/holodnyy-asfalt/">
@@ -26,7 +28,7 @@
 <meta name="twitter:image" content="https://ursdom.ru/dostavka/assets/img/og-dostavka.jpg">
 <link rel="preload" href="/dostavka/assets/fonts/golos-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/dostavka/assets/fonts/mono-num.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/dostavka/assets/dostavka.min.css?v=a8e831b5">
+<link rel="stylesheet" href="/dostavka/assets/dostavka.min.css?v=6c55e5c6">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <script type="application/ld+json">
@@ -374,35 +376,6 @@
 <script data-page-id="20037714" src="https://yandex.ru/ads/system/ap-loader.js" async></script>
 </head>
 <body>
-<!--
-  DIRECTION CONTRACT · «Рассев» · seed 0aacaa17
-
-  THESIS: this site is the instrument that grades stone by size, not a
-  brochure about delivery. It refuses the category default of a dark hero
-  with a truck photo, three trust cards and a price table below.
-
-  OWN-WORLD: steel #1b2530 carries whole fields; enamel #eef1ec carries
-  content; graph #5d7b88 is ruling only; brass #d9a548 is action only and
-  always takes steel ink, never white. One 2px radius, no soft cards, no
-  kicker pills. Woven sieve mesh whose cell step is computed from the real
-  fraction in millimetres. Golos Text for words, JetBrains Mono for every
-  digit on the site, cap-height matched.
-
-  STORY: a buyer who does not know which fraction to order sees four sieves
-  with real mesh, real stone and a real price, picks one, and asks for a
-  quote already knowing the word for what they want.
-
-  FIRST VIEWPORT: steel field. H1 left at up to 46px, one line of subhead,
-  brass MAX button beside an outlined form button, then the sieve stack
-  full width: four rows, mesh 104px at left, fraction, use, price at right.
-  Primary action is the brass button; the stack is the second entry.
-
-  FORM: sieve stack, first on the ordered list of seven, seed key 0aacaa17.
-
-  FINISH: unreviewed and undocumented is unfinished; this build ends with
-  the finish review, the verdict, DESIGN.md, and every shipping raster
-  carrying its provenance.
--->
 <a class="d-skip" href="#content">К содержимому</a>
 
 <div class="d-topbar"><div class="wrap">
@@ -507,16 +480,16 @@
   <p>Горячий асфальт укладывают при температуре порядка 140-160 градусов, и связывающим в нём работает битум, который твердеет при остывании. Холодный содержит разжижитель, поэтому остаётся пластичным при обычной температуре, а прочность набирает по мере испарения растворителя, то есть неделями.</p>
   <p>Из этого следуют все его свойства сразу. Он не требует техники и укладывается лопатой в любую погоду, включая мороз и мокрую яму. И он же принципиально слабее горячего: полного сцепления зёрен, которое даёт горячий битум, здесь не будет никогда.</p>
   <div class="d-callout"><p><strong>Холодный асфальт стоит дороже горячего за квадратный метр.</strong> Экономия появляется только на малых объёмах, где горячий вообще нельзя заказать: минимальная партия и техника делают ремонт одной ямы горячим асфальтом бессмысленным.</p></div>
-  <div class="d-table-wrap"><table>
+  <div class="d-table-wrap"><table class="d-stack">
     <caption>Холодный и горячий асфальт</caption>
     <thead><tr><th>Признак</th><th>Холодный</th><th>Горячий</th></tr></thead>
     <tbody>
-      <tr><td>Температура укладки</td><td>От минус 10 до плюс 30</td><td>От плюс 5, смесь 140-160</td></tr>
-      <tr><td>Техника</td><td>Лопата и трамбовка</td><td>Каток, укладчик, самосвал</td></tr>
-      <tr><td>Минимальный объём</td><td>Мешок 25 кг</td><td>От нескольких тонн</td></tr>
-      <tr><td>Срок службы</td><td>Сезон - три года</td><td>10-15 лет</td></tr>
-      <tr><td>Набор прочности</td><td>Недели, по мере испарения растворителя</td><td>Часы, при остывании</td></tr>
-      <tr><td>Стоимость за м²</td><td>Выше</td><td>Ниже при большом объёме</td></tr>
+      <tr><td>Температура укладки</td><td data-label="Холодный">От минус 10 до плюс 30</td><td data-label="Горячий">От плюс 5, смесь 140-160</td></tr>
+      <tr><td>Техника</td><td data-label="Холодный">Лопата и трамбовка</td><td data-label="Горячий">Каток, укладчик, самосвал</td></tr>
+      <tr><td>Минимальный объём</td><td data-label="Холодный">Мешок 25 кг</td><td data-label="Горячий">От нескольких тонн</td></tr>
+      <tr><td>Срок службы</td><td data-label="Холодный">Сезон - три года</td><td data-label="Горячий">10-15 лет</td></tr>
+      <tr><td>Набор прочности</td><td data-label="Холодный">Недели, по мере испарения растворителя</td><td data-label="Горячий">Часы, при остывании</td></tr>
+      <tr><td>Стоимость за м²</td><td data-label="Холодный">Выше</td><td data-label="Горячий">Ниже при большом объёме</td></tr>
     </tbody>
   </table></div>
 
@@ -524,15 +497,15 @@
 
   <h2 class="d-sh" id="rashod">Сколько нужно</h2>
   <p>Расход считают по объёму ямы. Плотность уложенной смеси около 1,7 тонны на кубометр, поэтому мешок 25 килограммов даёт примерно 15 литров готового покрытия.</p>
-  <div class="d-table-wrap"><table>
+  <div class="d-table-wrap"><table class="d-stack">
     <caption>Расход холодного асфальта</caption>
     <thead><tr><th>Размер повреждения</th><th>Толщина слоя</th><th>Объём</th><th>Мешков по 25 кг</th></tr></thead>
     <tbody>
-      <tr><td>Яма 30×30 см</td><td>5 см</td><td>4,5 л</td><td>1</td></tr>
-      <tr><td>Яма 50×50 см</td><td>5 см</td><td>12,5 л</td><td>1</td></tr>
-      <tr><td>Яма 1×1 м</td><td>5 см</td><td>50 л</td><td>3-4</td></tr>
-      <tr><td>Полоса 1×5 м</td><td>4 см</td><td>200 л</td><td>13-14</td></tr>
-      <tr><td>Площадка 10 м²</td><td>4 см</td><td>400 л</td><td>27</td></tr>
+      <tr><td>Яма 30×30 см</td><td data-label="Толщина слоя">5 см</td><td data-label="Объём">4,5 л</td><td data-label="Мешков по 25 кг">1</td></tr>
+      <tr><td>Яма 50×50 см</td><td data-label="Толщина слоя">5 см</td><td data-label="Объём">12,5 л</td><td data-label="Мешков по 25 кг">1</td></tr>
+      <tr><td>Яма 1×1 м</td><td data-label="Толщина слоя">5 см</td><td data-label="Объём">50 л</td><td data-label="Мешков по 25 кг">3-4</td></tr>
+      <tr><td>Полоса 1×5 м</td><td data-label="Толщина слоя">4 см</td><td data-label="Объём">200 л</td><td data-label="Мешков по 25 кг">13-14</td></tr>
+      <tr><td>Площадка 10 м²</td><td data-label="Толщина слоя">4 см</td><td data-label="Объём">400 л</td><td data-label="Мешков по 25 кг">27</td></tr>
     </tbody>
   </table></div>
   <p>Последняя строка объясняет границу применимости. Двадцать семь мешков это уже сумма, за которую в большинстве случаев выгоднее сделать нормальное щебёночное основание, а асфальт заказать горячим или не делать вовсе.</p>
@@ -577,15 +550,15 @@
   <p>Крошку часто воспринимают как готовое покрытие, которое достаточно высыпать и разровнять. Так она и правда ляжет, и первый сезон продержится, но связного слоя не получится: битум в лежалой крошке уже не пластичен, и зёрна между собой не схватятся.</p>
   <p>Работает другой порядок. Крошка укладывается слоем 8-10 сантиметров поверх готового основания - щебёночного или скального, такого же, как под любую отсыпанную дорогу. Затем её укатывают катком или виброплитой, и укатывают в жару: при температуре воздуха от двадцати пяти градусов битум на зёрнах размягчается, и слой спекается в подобие асфальта.</p>
   <p>Свежая фрезерованная крошка схватывается заметно лучше лежалой - в ней битум ещё живой. Если материал пролежал на складе год, помогает укладка в самую жару и проливка <a href="/dostavka/bitum-i-asfalt/">битумной эмульсией</a>, но результат всё равно будет слабее.</p>
-  <div class="d-table-wrap"><table>
+  <div class="d-table-wrap"><table class="d-stack">
     <caption>Крошка по задачам</caption>
     <thead><tr><th>Задача</th><th>Слой</th><th>Основание</th><th>Замечание</th></tr></thead>
     <tbody>
-      <tr><td>Подъездная дорога к дому</td><td>8-10 см</td><td>Щебень или скальный грунт 20-25 см</td><td>Укатывать в жару</td></tr>
-      <tr><td>Двор частного дома</td><td>8 см</td><td>Щебень 15-20 см</td><td>Через 2-3 сезона слой спекается</td></tr>
-      <tr><td>Парковка, стоянка</td><td>10 см</td><td>Щебень 20-25 см</td><td>По краям нужен бордюр</td></tr>
-      <tr><td>Ремонт ям на грунтовке</td><td>по глубине ямы</td><td>Уплотнить дно ямы</td><td>Трамбовать послойно по 5 см</td></tr>
-      <tr><td>Дорожка в саду</td><td>5-6 см</td><td>Щебень 10 см</td><td>Тонкий слой хуже держится</td></tr>
+      <tr><td>Подъездная дорога к дому</td><td data-label="Слой">8-10 см</td><td data-label="Основание">Щебень или скальный грунт 20-25 см</td><td data-label="Замечание">Укатывать в жару</td></tr>
+      <tr><td>Двор частного дома</td><td data-label="Слой">8 см</td><td data-label="Основание">Щебень 15-20 см</td><td data-label="Замечание">Через 2-3 сезона слой спекается</td></tr>
+      <tr><td>Парковка, стоянка</td><td data-label="Слой">10 см</td><td data-label="Основание">Щебень 20-25 см</td><td data-label="Замечание">По краям нужен бордюр</td></tr>
+      <tr><td>Ремонт ям на грунтовке</td><td data-label="Слой">по глубине ямы</td><td data-label="Основание">Уплотнить дно ямы</td><td data-label="Замечание">Трамбовать послойно по 5 см</td></tr>
+      <tr><td>Дорожка в саду</td><td data-label="Слой">5-6 см</td><td data-label="Основание">Щебень 10 см</td><td data-label="Замечание">Тонкий слой хуже держится</td></tr>
     </tbody>
   </table></div>
   <p>Ремонт ям крошкой - отдельный частый случай. Яму очищают от воды и грязи, подрезают края до плотного материала, засыпают крошку слоями по пять сантиметров с трамбовкой каждого и оставляют небольшую горку сверху: она осядет под колёсами. В холодное время такая заплатка живёт до весны, в жару - несколько лет.</p>
@@ -597,7 +570,7 @@
 <h2 class="d-sh" id="skolko-stoit">Материалы дорожного покрытия с доставкой</h2>
 <div class="d-table-wrap"><table>
   <caption>Цена за материал без доставки, самовывозом. Доставку считаем отдельно по объёму и плечу доставки.</caption>
-  <thead><tr><th>Позиция</th><th>Цена с доставкой</th></tr></thead>
+  <thead><tr><th>Позиция</th><th>Цена</th></tr></thead>
   <tbody>
     <tr><td><a href="/dostavka/asfaltovaya-kroshka/">Асфальтовая крошка</a></td><td>от 500 руб/м³</td></tr>
     <tr><td><a href="/dostavka/shcheben/frakciya-20-40/">Щебень 20-40</a></td><td>от 770 руб/м³</td></tr>
@@ -730,12 +703,14 @@
     <input type="text" name="botcheck" class="d-hp" tabindex="-1" autocomplete="off"
            aria-hidden="true" aria-label="Оставьте это поле пустым">
     <label for="qf-phone">Телефон</label>
-    <input id="qf-phone" type="tel" name="Телефон" placeholder="+7" required>
+    <input id="qf-phone" type="tel" name="Телефон" placeholder="+7" autocomplete="tel" inputmode="tel" enterkeyhint="next" required>
     <label for="qf-msg">Что и куда привезти</label>
-    <input id="qf-msg" type="text" name="Заявка" placeholder="Например: 10 кубов, адрес">
+    <input id="qf-msg" type="text" name="Заявка" placeholder="Например: щебень, 10 кубов, адрес" enterkeyhint="send">
     <label class="d-consent"><input type="checkbox" name="Согласие" value="да" required>
       <span>Согласен на обработку персональных данных, включая передачу через зарубежный
       сервис отправки форм. <a href="/dostavka/politika/">Как мы обрабатываем данные</a></span></label>
+    
+    <p class="d-promo d-promo-form"><b class="d-promo-pct">5%</b><span>Скидка 5% при заявке через MAX или сайт</span></p>
     <button class="d-btn d-btn-wide" type="submit">Посчитать стоимость</button>
   </form>
 </div></section>
@@ -798,12 +773,13 @@
   
   <input type="text" name="botcheck" class="d-hp" tabindex="-1" autocomplete="off"
          aria-hidden="true" aria-label="Оставьте это поле пустым">
+  
   <label for="lf-name">Ваше имя</label>
-  <input id="lf-name" type="text" name="Имя" required>
+  <input id="lf-name" type="text" name="Имя" autocomplete="name" enterkeyhint="next">
   <label for="lf-phone">Телефон для связи</label>
-  <input id="lf-phone" type="tel" name="Телефон" placeholder="+7" required>
+  <input id="lf-phone" type="tel" name="Телефон" placeholder="+7" autocomplete="tel" inputmode="tel" enterkeyhint="next" required>
   <label for="lf-msg">Что и куда привезти</label>
-  <textarea id="lf-msg" name="Заявка" placeholder="Например: щебень 20-40, 10 кубов, Первоуральск, адрес"></textarea>
+  <textarea id="lf-msg" name="Заявка" placeholder="Например: щебень, 10 кубов, адрес"></textarea>
   <label class="d-consent"><input type="checkbox" name="Согласие" value="да" required>
     <span>Согласен на обработку персональных данных для ответа на заявку, включая
     передачу через зарубежный сервис отправки форм.
@@ -916,7 +892,7 @@
     <p class="d-phone-bottom"><a href="tel:+79506460953" onclick="try{ym(110405092,'reachGoal','call')}catch(e){}">+7 950 646-09-53</a></p>
   </div>
 </footer>
-<script src="/dostavka/assets/wa.js?v=a8e831b5" defer></script>
+<script src="/dostavka/assets/wa.js?v=6c55e5c6" defer></script>
 
 
 
