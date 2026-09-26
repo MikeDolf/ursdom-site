@@ -37,12 +37,16 @@
   if (!targets.length) return;
 
   var SHOW_AFTER = 700;
-  var shown = false;
 
+  /* Раньше скрипт вешал is-off и тут же читал позицию прокрутки:
+     чтение сразу после смены класса заставляло браузер синхронно
+     разложить всю страницу. На главной это 490 мс принудительной
+     раскладки и длинная задача на секунду в Lighthouse. Класс
+     по-прежнему ставится сразу (запись раскладку не запускает),
+     а первое чтение идёт в requestAnimationFrame, когда раскладка
+     уже готова. */
   function onScroll() {
-    if (shown) return;
     if ((window.pageYOffset || document.documentElement.scrollTop) > SHOW_AFTER) {
-      shown = true;
       targets.forEach(function (el) { el.classList.remove("is-off"); });
       /* Слушатель снимается сразу после первого срабатывания:
          дальше следить не за чем, а лишний обработчик на прокрутке
@@ -53,7 +57,59 @@
 
   targets.forEach(function (el) { el.classList.add("is-off"); });
   window.addEventListener("scroll", onScroll, { passive: true });
-  onScroll();
+  /* Кадр и таймер: проверка идёт уже после отрисовки кадра, когда
+     раскладка посчитана и чтение позиции ничего не пересчитывает. */
+  if (window.requestAnimationFrame) {
+    window.requestAnimationFrame(function () { setTimeout(onScroll, 0); });
+  } else {
+    setTimeout(onScroll, 0);
+  }
+})();
+
+/* Шапка уезжает вверх, когда страницу листают вниз, и возвращается
+   при первом движении вверх. На телефоне липкая шапка занимала 60 px
+   каждого экрана, а нужна она в момент, когда человек ищет, куда
+   нажать, и почти всегда в этот момент он листает назад. Кнопка MAX
+   при этом не пропадает: внизу стоит липкая панель.
+
+   - Прячется только после того, как ушла служебная полоса и сама
+     шапка (порог 200 px), иначе на первом экране она дёргалась бы.
+   - Мелкие движения пальца (меньше 6 px) не считаются, иначе шапка
+     мигала бы от дрожания при чтении.
+   - Если фокус внутри шапки (переход с клавиатуры), она не прячется.
+   - Позиция читается в requestAnimationFrame, не чаще раза за кадр.
+   Без JavaScript шапка просто липкая, как и была. */
+(function () {
+  "use strict";
+  var head = document.querySelector(".d-header");
+  if (!head || !window.requestAnimationFrame) return;
+  var last = 0, queued = false;
+  var DELTA = 6, AFTER = 200;
+
+  function update() {
+    queued = false;
+    var y = Math.max(0, window.pageYOffset || document.documentElement.scrollTop || 0);
+    head.classList.toggle("is-stuck", y > 48);
+    if (Math.abs(y - last) < DELTA) return;
+    var down = y > last;
+    last = y;
+    if (down && y > AFTER && !head.contains(document.activeElement)) {
+      head.classList.add("is-hidden");
+    } else if (!down || y <= AFTER) {
+      head.classList.remove("is-hidden");
+    }
+  }
+
+  window.addEventListener("scroll", function () {
+    if (!queued) { queued = true; window.requestAnimationFrame(update); }
+  }, { passive: true });
+  head.addEventListener("focusin", function () { head.classList.remove("is-hidden"); });
+  window.requestAnimationFrame(function () {
+    setTimeout(function () {
+      last = window.pageYOffset || 0;
+      update();
+    }, 0);
+  });
 })();
 
 /* Лента «Наши доставки». Без скрипта это горизонтальная лента

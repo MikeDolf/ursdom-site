@@ -153,12 +153,17 @@
       m3.value = fmt(v / MID);
       show(v / MID, v, v);
     }
+    /* Дробное число согласуется с родительным единственного: «6,6 тонны»,
+       а не «6,6 тонн», как выходило при округлении до целого. */
+    function tonnes(x) {
+      return fmt(x).indexOf(",") >= 0 ? "тонны"
+        : plural(Math.round(x), "тонна", "тонны", "тонн");
+    }
     function show(vol, tlo, thi) {
       var s = fmt(vol) + " м³ это " +
         (Math.abs(tlo - thi) < 0.05
-          ? fmt(tlo) + " " + plural(Math.round(tlo), "тонна", "тонны", "тонн")
-          : fmt(tlo) + "-" + fmt(thi) + " " +
-            plural(Math.round(thi), "тонна", "тонны", "тонн")) +
+          ? fmt(tlo) + " " + tonnes(tlo)
+          : fmt(tlo) + "-" + fmt(thi) + " " + tonnes(thi)) +
         ". Разброс из-за влажности и фракции: после дождя тот же объём тяжелее.";
       out.textContent = s;
     }

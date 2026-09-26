@@ -34,6 +34,10 @@
 <meta name="twitter:title" content="{{ og_title|default(title) }}">
 <meta name="twitter:description" content="{{ desc }}">
 <meta name="twitter:image" content="{{ og_image|default(cfg.og_image) }}">
+{# Соединение с Метрикой открывается заранее: счётчик грузится в конце
+   страницы, и на медленном мобильном интернете рукопожатие TLS съедало
+   первые секунды визита, которые в отчётах выглядели как отказы. #}
+<link rel="preconnect" href="https://mc.yandex.ru">
 <link rel="preload" href="/dostavka/assets/fonts/golos-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/dostavka/assets/fonts/mono-num.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/dostavka/assets/dostavka.min.css?v={{ cfg.css_version }}">
@@ -128,9 +132,9 @@
     <p class="d-phone-bottom"><a href="{{ cfg.phone_href }}" onclick="try{ym({{ cfg.metrika_id }},'reachGoal','{{ cfg.goal_contact }}')}catch(e){}">{{ cfg.phone }}</a></p>
   </div>
 </footer>
-<script src="/dostavka/assets/wa.js?v={{ cfg.css_version }}" defer></script>
-{% if has_calc %}<script src="/dostavka/assets/calc.js?v={{ cfg.css_version }}" defer></script>{% endif %}
-{% if vc %}<script src="/dostavka/assets/calcpage.js?v={{ cfg.css_version }}" defer></script>{% endif %}
+<script src="/dostavka/assets/wa.min.js?v={{ cfg.js_version }}" defer></script>
+{% if has_calc %}<script src="/dostavka/assets/calc.min.js?v={{ cfg.js_version }}" defer></script>{% endif %}
+{% if vc %}<script src="/dostavka/assets/calcpage.min.js?v={{ cfg.js_version }}" defer></script>{% endif %}
 
 {{ m.float_block(cfg) }}
 {# Липкая панель на телефоне: MAX, WhatsApp и «Узнать цену» в одной

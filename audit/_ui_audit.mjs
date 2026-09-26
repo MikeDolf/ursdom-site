@@ -163,6 +163,11 @@ const report = {};
 for (const u of urls) {
   await page.goto(BASE + u, { waitUntil: 'domcontentloaded' });
   await page.evaluate(() => document.fonts.ready);
+  // Панель внизу телефона и плавающая кнопка до прокрутки скрыты
+  // классом is-off, и проверка их не видела: подпись «Скидка 5% за
+  // заявку» полгода стояла с контрастом 4,36 при норме 4,5. Открываем
+  // их так же, как это делает прокрутка.
+  await page.evaluate(() => document.querySelectorAll('.is-off').forEach(e => e.classList.remove('is-off')));
   await page.waitForTimeout(120);
   const r = await page.evaluate(PROBE);
   const total = Object.values(r).reduce((a, b) => a + b.length, 0);

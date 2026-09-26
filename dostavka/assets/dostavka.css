@@ -544,7 +544,7 @@ section{padding:38px 0}
 .d-table-wrap{overflow-x:auto;background:var(--d-paper);
   border:1px solid var(--d-rule);margin:0 0 20px}
 .d-map-wrap{border:1px solid var(--d-rule);border-radius:2px;overflow:hidden;margin:0 0 20px}
-.d-map-wrap iframe{display:block}
+.d-map-wrap iframe{display:block;width:100%}
 table{border-collapse:collapse;width:100%;font-size:15.5px}
 /* Подпись прилипает к левому краю прокрутки. Ширина caption равна ширине
    таблицы, а таблица на узком экране шире экрана, поэтому без sticky текст
@@ -779,7 +779,7 @@ table td:only-child,table td:first-child:last-child{font-weight:400}
 .d-calc-row select{width:100%;max-width:34rem;padding:11px 12px;font:inherit;
   font-size:16px;color:var(--d-ink);background:#fff;
   border:1px solid var(--d-rule-2);min-height:48px}
-.d-calc-row output{font-variant-numeric:tabular-nums;color:var(--d-ink)}
+.d-calc-row .d-calc-vol{font-variant-numeric:tabular-nums;color:var(--d-ink)}
 .d-calc input[type=range]{width:100%;max-width:34rem;height:28px;
   -webkit-appearance:none;appearance:none;background:transparent}
 .d-calc input[type=range]::-webkit-slider-runnable-track{height:4px;
@@ -1505,7 +1505,11 @@ dd a:not([class*="d-btn"]),
    Зелёный выбран по контрасту: белый текст на #15803d даёт 5,0,
    на ховере #116932 - 6,5. Латунь остаётся акцентом заголовков
    и цен, а действие теперь одного цвета на всём разделе. */
-:root{--d-go:#15803d;--d-go-h:#116932;--d-go-soft:#dcf5e5}
+/* --d-go-soft был #dcf5e5: на #15803d это 4,36, ниже порога 4,5 для
+   подписи в 12 px («Скидка 5% за заявку» в панели на телефоне). Рендер-аудит
+   её не видел, потому что до прокрутки панель скрыта; нашёл axe после
+   пролистывания страницы. #f0fdf4 даёт 4,79 и 6,49 на ховере. */
+:root{--d-go:#15803d;--d-go-h:#116932;--d-go-soft:#f0fdf4}
 .d-btn{background:var(--d-go);border-color:var(--d-go);color:#fff}
 .d-btn:hover{background:var(--d-go-h);border-color:var(--d-go-h);color:#fff}
 .d-btn:not(.d-shelf-buy){font-size:17.5px;padding:18px 32px;min-height:60px;
@@ -1738,3 +1742,43 @@ dd a:not([class*="d-btn"]),
    обычная, зону нажатия по вертикали даёт padding. */
 .d-prose p a:not([class*="d-btn"]),.d-prose li a:not([class*="d-btn"]),p.d-note a:not([class*="d-btn"]){
   display:inline;margin-block:0}
+
+/* ============================================================
+   ПРОКРУТКА И СКОРОСТЬ (ревью сентября 2026, второй проход)
+   ============================================================ */
+
+/* Шапка уезжает вверх, когда листают вниз, и возвращается при движении
+   вверх: классы is-hidden и is-stuck ставит wa.js. Сдвиг через
+   transform, а не top или height: так он не трогает раскладку
+   страницы и идёт на отдельном слое без рывков. Тень появляется,
+   только когда шапка висит над содержимым. */
+.d-header{transition:transform .28s cubic-bezier(.2,.7,.2,1),box-shadow .2s ease;
+  will-change:transform}
+.d-header.is-stuck{box-shadow:0 6px 18px rgba(12,18,24,.28)}
+.d-header.is-hidden{transform:translateY(-100%);box-shadow:none}
+@media (prefers-reduced-motion:reduce){.d-header{transition:none}}
+
+/* Переход по якорю и фокус с клавиатуры не должны прятать цель под
+   шапкой сверху и под липкой панелью снизу (WCAG 2.4.11). */
+html{scroll-padding-top:88px}
+@media (max-width:1163px){html{scroll-padding-bottom:76px}}
+
+/* Полосы ниже первого экрана не раскладываются и не рисуются, пока
+   до них не долистали. Страница щебня на телефоне длиной 40 000 px,
+   и Lighthouse насчитал на главной 2,3 с стилей и раскладки при
+   загрузке. Текст остаётся в разметке: поиск и поиск по странице
+   его видят. auto в размере запоминает настоящую высоту полосы после
+   первого показа, чтобы полоса прокрутки не прыгала. */
+.d-band{content-visibility:auto;contain-intrinsic-block-size:auto 900px}
+/* Оговорка для тех, кто будет проверять страницу в PageSpeed. Проверка
+   контраста (axe в Lighthouse) не прокручивает страницу и берёт фон
+   у ещё не отрисованных полос, поэтому на длинных страницах может
+   отметить подвал или заголовок далёкой полосы как «светлый на светлом».
+   Это артефакт замера: после одного пролистывания те же элементы
+   проходят, настоящий контраст подвала 13:1. Проверено axe-core
+   до и после прокрутки на страницах щебня, отсева и Нижнего Тагила. */
+
+/* Ссылки в подвале стоят столбиком через <br>. Общее правило давало им
+   отрицательное поле, и соседние зоны нажатия наезжали друг на друга:
+   Lighthouse отмечал это на каждой странице (target-size). */
+.d-foot-grid p a{margin-block:0;padding-block:5px}

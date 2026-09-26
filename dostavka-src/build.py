@@ -159,6 +159,53 @@ if os.path.exists(_css):
         _f.write(_min)
     print("CSS: %d -> %d байт (-%.0f%%)"
           % (len(_src), len(_min), 100 * (1 - len(_min) / len(_src))))
+
+
+# Скрипты по тому же правилу, что CSS: правим читаемый исходник, отдаём
+# копию без комментариев. В wa.js комментариев больше, чем кода, и
+# Lighthouse насчитывал 7 КБ лишнего на каждой странице.
+# Версия у скриптов своя, из их содержимого. Раньше в ?v= стояла версия
+# CSS, и правка только в JS до вернувшегося посетителя не доходила:
+# браузер держал старый файл, пока не поменяется таблица стилей.
+def minify_js(src):
+    """Снимает блочные комментарии вне строк и пустые строки.
+
+    Переводы строк сохраняются, поэтому автоматическая расстановка точек
+    с запятой работает как в исходнике. Строчных комментариев в наших
+    скриптах нет; если появятся, сборка упадёт на проверке ниже."""
+    out, i, n, q = [], 0, len(src), None
+    while i < n:
+        c = src[i]
+        if q:
+            out.append(c)
+            if c == "\\":
+                out.append(src[i + 1])
+                i += 2
+                continue
+            if c == q:
+                q = None
+            i += 1
+            continue
+        if c in "\"'":
+            q = c
+        elif src.startswith("/*", i):
+            i = src.index("*/", i + 2) + 2
+            continue
+        out.append(c)
+        i += 1
+    lines = [ln.strip() for ln in "".join(out).split("\n")]
+    return "\n".join(ln for ln in lines if ln) + "\n"
+
+
+_jsh = hashlib.md5()
+for _name in ("wa", "calc", "calcpage"):
+    _p = os.path.join(OUT, "assets", _name + ".js")
+    _raw = open(_p, encoding="utf-8").read()
+    assert not re.search(r"(^|[^:\\])//", minify_js(_raw)), "строчный комментарий в " + _name
+    _jsh.update(_raw.encode("utf-8"))
+    with open(os.path.join(OUT, "assets", _name + ".min.js"), "w", encoding="utf-8") as _f:
+        _f.write(minify_js(_raw))
+SITE["js_version"] = _jsh.hexdigest()[:8]
 DOMAIN = SITE["domain"]
 TODAY = "2026-07-28"
 # Дата, до которой цена в разметке считается действующей.
@@ -1010,7 +1057,10 @@ def photos_for(slug):
         with Image.open(os.path.join(d, name)) as im:
             w, h = im.size
         webp, jpg = [], []
-        for wd in (800, 1600):
+        # 480 для телефона с DPR 2 и карточек в две колонки: без него
+        # самым мелким был 800-й, и Lighthouse насчитал на странице щебня
+        # полмегабайта лишнего веса картинок.
+        for wd in (480, 800, 1600):
             cand = "%s-%d.webp" % (base, wd)
             if os.path.exists(os.path.join(d, cand)):
                 webp.append("/dostavka/assets/img/%s/%s %dw" % (sub, cand, wd))
@@ -1044,7 +1094,7 @@ def img_one(rel):
     with Image.open(path) as im:
         w, h = im.size
     webp, jpg = [], []
-    for wd in (160, 320, 800, 1600):
+    for wd in (160, 320, 480, 800, 1600):
         cand = "%s-%d.webp" % (base, wd)
         if os.path.exists(os.path.join(d, cand)):
             webp.append("/dostavka/assets/img/%s/%s %dw" % (sub, cand, wd))
@@ -1482,8 +1532,8 @@ def _fleet(name):
 
 
 # Машины для блока «Какая машина приедет». Снимки из присланных
-# владельцем фото доставок и техники, классы - по нашему тарифу (5, 10
-# и 20 м³, TRUCKS в calc.py), описание - что проходит и когда выгодно.
+# владельцем фото доставок и техники, классы - по нашему тарифу (4, 10
+# и 26 м³, TRUCKS в calc.py), описание - что проходит и когда выгодно.
 TRUCKS_SHOW = [
     dict(name="Малый самосвал", vol="до 4 м³", img=_fleet("samosval-shcheben-k-domu"),
          text="Узкие улицы частного сектора и ворота, куда большой не заедет. "

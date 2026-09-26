@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Варианты снимка под <picture>: 1600 JPEG, 1200 JPEG, 800 и 1600 WebP.
+"""Варианты снимка под <picture>: 1600 JPEG, 1200 JPEG, 160-1600 WebP.
 
 Раньше варианты делались вручную по одному, и это уже стоило ошибки:
 у granit-40-70-hand не хватает 1600.webp и 1200.jpg, потому что шаг
@@ -41,10 +41,16 @@ with Image.open(SRC) as im:
     # разница не видна, а вес падает втрое.
     fit(im, 160).save(DST + "-160.webp", "WEBP", quality=72, method=6)
     fit(im, 320).save(DST + "-320.webp", "WEBP", quality=76, method=6)
+    # 480 по ширине, а не по большей стороне: в srcset он записан как
+    # 480w, и дескриптор обязан совпадать с настоящей шириной. Нужен
+    # телефону с DPR 2 в карточках на две колонки, иначе туда шёл 800-й.
+    w480 = im.resize((480, round(im.size[1] * 480 / im.size[0])), Image.LANCZOS) \
+        if im.size[0] > 480 else im.copy()
+    w480.save(DST + "-480.webp", "WEBP", quality=76, method=6)
     fit(im, 800).save(DST + "-800.webp", "WEBP", quality=78, method=6)
     fit(im, 1600).save(DST + "-1600.webp", "WEBP", quality=78, method=6)
 
-for suf in (".jpg", "-1200.jpg", "-160.webp", "-320.webp", "-800.webp", "-1600.webp"):
+for suf in (".jpg", "-1200.jpg", "-160.webp", "-320.webp", "-480.webp", "-800.webp", "-1600.webp"):
     p = DST + suf
     with Image.open(p) as v:
         print("%-22s %-11s %5d КБ" % (os.path.basename(p), "%dx%d" % v.size,

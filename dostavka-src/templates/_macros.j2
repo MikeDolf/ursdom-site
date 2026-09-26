@@ -115,7 +115,7 @@
    минут. Прежний разнобой («за 5 минут» против «в рабочее время»)
    и ширину кнопок разводил, и понижал MAX до запасного канала. #}
 {% macro float_block(cfg) -%}
-<div class="d-float" aria-label="Написать нам">
+<div class="d-float">
   <a class="d-float-btn" href="{{ cfg.max_url }}" target="_blank" rel="noopener"
      aria-label="Написать в MAX, {{ cfg.reply_promise }}"
      onclick="try{ym({{ cfg.metrika_id }},'reachGoal','{{ cfg.goal_contact }}')}catch(e){}">
@@ -542,7 +542,9 @@
 {% endfor %}      </select>
     </div>
     <div class="d-calc-row">
-      <label for="calc-vol">Объём: <output id="calc-vol-out">{{ calc.start.vol }}</output> м³</label>
+      {# Число объёма в span, а не в <output>: output сам считается полем
+         формы, и подпись оказывалась привязана к двум элементам сразу. #}
+      <label for="calc-vol">Объём: <span class="d-calc-vol" id="calc-vol-out">{{ calc.start.vol }}</span> м³</label>
       <input id="calc-vol" type="range" min="1" max="40" step="1" value="{{ calc.start.vol }}">
     </div>
     <div class="d-calc-row">
@@ -556,7 +558,9 @@
     </div>
     </div>
     <div class="d-calc-res">
-    <output class="d-calc-out" id="calc-out" aria-live="polite">
+    {# div, а не <output>: внутри таблица и абзац, а output допускает
+       только строчное содержимое. Живую область задаёт aria-live. #}
+    <div class="d-calc-out" id="calc-out" aria-live="polite">
       <table class="d-calc-table"><tbody>
         <tr><th scope="row">Материал</th><td class="d-calc-formula">{{ calc.start.vol }} м³ × {{ calc.start.price_s }} руб</td><td>{{ calc.start.material_s }} руб</td></tr>
         <tr><th scope="row">Доставка</th><td class="d-calc-formula">{{ calc.start.trips }} рейс × {{ calc.start.km * calc.round_trip }} км × {{ calc.rate }} руб</td><td>{{ calc.start.delivery_s }} руб</td></tr>
@@ -564,7 +568,7 @@
       </tbody></table>
       <p class="d-note">Кузов {{ calc.start.capacity }} м³. Расчёт предварительный,
       точную сумму называем по заявке.</p>
-    </output>
+    </div>
     {{ channels(cfg, "#zayavka", "Узнать точную цену") }}
 {% if lots %}    <p class="d-note">На ходовые объёмы по Екатеринбургу выше есть
     <a href="#obemy">фиксированная цена за машину</a>, и она выгоднее этого расчёта:
@@ -627,7 +631,7 @@
         <input id="vc-h" type="text" inputmode="numeric" autocomplete="off" value="{{ v.layer }}">
       </div>
     </div>
-    <output class="d-vc-out" id="vc-out" aria-live="polite"></output>
+    <div class="d-vc-out" id="vc-out" aria-live="polite"></div>
     {{ channels(cfg, "#zayavka", "Заказать этот объём") }}
   </div>
 
@@ -668,7 +672,7 @@
         <input id="tc-t" type="text" inputmode="decimal" autocomplete="off" value="">
       </div>
     </div>
-    <output class="d-tc-out" id="tc-out" aria-live="polite"></output>
+    <div class="d-tc-out" id="tc-out" aria-live="polite"></div>
   </div>
   <div class="d-tc-static">
     <div class="d-table-wrap"><table>

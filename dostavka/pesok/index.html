@@ -26,9 +26,11 @@
 <meta name="twitter:title" content="Купить песок в Екатеринбурге с доставкой от 990 руб/м³">
 <meta name="twitter:description" content="Песок с доставкой по Екатеринбургу и области: карьерный под отсыпку, речной мытый под бетон. КамАЗ целиком, заявки круглосуточно, оплата после выгрузки.">
 <meta name="twitter:image" content="https://ursdom.ru/dostavka/assets/img/pesok/karyernyy-shtabel.jpg">
+
+<link rel="preconnect" href="https://mc.yandex.ru">
 <link rel="preload" href="/dostavka/assets/fonts/golos-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/dostavka/assets/fonts/mono-num.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/dostavka/assets/dostavka.min.css?v=6c55e5c6">
+<link rel="stylesheet" href="/dostavka/assets/dostavka.min.css?v=76931053">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <script type="application/ld+json">
@@ -363,7 +365,7 @@
 
 <section class="d-hero2">
   <picture class="d-hero2-bg">
-    <source type="image/webp" srcset="/dostavka/assets/img/pesok/karyernyy-shtabel-160.webp 160w, /dostavka/assets/img/pesok/karyernyy-shtabel-320.webp 320w, /dostavka/assets/img/pesok/karyernyy-shtabel-800.webp 800w, /dostavka/assets/img/pesok/karyernyy-shtabel-1600.webp 1600w" sizes="100vw">
+    <source type="image/webp" srcset="/dostavka/assets/img/pesok/karyernyy-shtabel-160.webp 160w, /dostavka/assets/img/pesok/karyernyy-shtabel-320.webp 320w, /dostavka/assets/img/pesok/karyernyy-shtabel-480.webp 480w, /dostavka/assets/img/pesok/karyernyy-shtabel-800.webp 800w, /dostavka/assets/img/pesok/karyernyy-shtabel-1600.webp 1600w" sizes="100vw">
     <img src="/dostavka/assets/img/pesok/karyernyy-shtabel.jpg" srcset="/dostavka/assets/img/pesok/karyernyy-shtabel-1200.jpg 1200w, /dostavka/assets/img/pesok/karyernyy-shtabel.jpg 1600w" sizes="100vw" alt="карьерный песок, фотография материала"
          width="1600" height="1066" loading="eager" fetchpriority="high" decoding="async">
   </picture>
@@ -409,7 +411,7 @@
     <article class="d-shelf-item">
       <div class="d-shelf-ph">
         <picture>
-          <source type="image/webp" srcset="/dostavka/assets/img/pesok/karyernyy-shtabel-160.webp 160w, /dostavka/assets/img/pesok/karyernyy-shtabel-320.webp 320w, /dostavka/assets/img/pesok/karyernyy-shtabel-800.webp 800w, /dostavka/assets/img/pesok/karyernyy-shtabel-1600.webp 1600w" sizes="(max-width:700px) 50vw, 300px">
+          <source type="image/webp" srcset="/dostavka/assets/img/pesok/karyernyy-shtabel-160.webp 160w, /dostavka/assets/img/pesok/karyernyy-shtabel-320.webp 320w, /dostavka/assets/img/pesok/karyernyy-shtabel-480.webp 480w, /dostavka/assets/img/pesok/karyernyy-shtabel-800.webp 800w, /dostavka/assets/img/pesok/karyernyy-shtabel-1600.webp 1600w" sizes="(max-width:700px) 50vw, 300px">
           <img src="/dostavka/assets/img/pesok/karyernyy-shtabel.jpg" srcset="/dostavka/assets/img/pesok/karyernyy-shtabel-1200.jpg 1200w, /dostavka/assets/img/pesok/karyernyy-shtabel.jpg 1600w" sizes="(max-width:700px) 50vw, 300px"
                alt="Песок карьерный (сеяный), фотография материала" width="1600" height="1066"
                loading="lazy" decoding="async">
@@ -426,7 +428,7 @@
     <article class="d-shelf-item">
       <div class="d-shelf-ph">
         <picture>
-          <source type="image/webp" srcset="/dostavka/assets/img/pesok/peregruzka-greyfer-800.webp 800w, /dostavka/assets/img/pesok/peregruzka-greyfer-1600.webp 1600w" sizes="(max-width:700px) 50vw, 300px">
+          <source type="image/webp" srcset="/dostavka/assets/img/pesok/peregruzka-greyfer-480.webp 480w, /dostavka/assets/img/pesok/peregruzka-greyfer-800.webp 800w, /dostavka/assets/img/pesok/peregruzka-greyfer-1600.webp 1600w" sizes="(max-width:700px) 50vw, 300px">
           <img src="/dostavka/assets/img/pesok/peregruzka-greyfer.jpg" srcset="/dostavka/assets/img/pesok/peregruzka-greyfer-1200.jpg 1200w, /dostavka/assets/img/pesok/peregruzka-greyfer.jpg 1600w" sizes="(max-width:700px) 50vw, 300px"
                alt="Песок мытый (речной), фотография материала" width="1600" height="1066"
                loading="lazy" decoding="async">
@@ -478,7 +480,8 @@
       </select>
     </div>
     <div class="d-calc-row">
-      <label for="calc-vol">Объём: <output id="calc-vol-out">10</output> м³</label>
+      
+      <label for="calc-vol">Объём: <span class="d-calc-vol" id="calc-vol-out">10</span> м³</label>
       <input id="calc-vol" type="range" min="1" max="40" step="1" value="10">
     </div>
     <div class="d-calc-row">
@@ -536,7 +539,8 @@
     </div>
     </div>
     <div class="d-calc-res">
-    <output class="d-calc-out" id="calc-out" aria-live="polite">
+    
+    <div class="d-calc-out" id="calc-out" aria-live="polite">
       <table class="d-calc-table"><tbody>
         <tr><th scope="row">Материал</th><td class="d-calc-formula">10 м³ × 990 руб</td><td>9 900 руб</td></tr>
         <tr><th scope="row">Доставка</th><td class="d-calc-formula">1 рейс × 50 км × 95 руб</td><td>4 750 руб</td></tr>
@@ -544,7 +548,7 @@
       </tbody></table>
       <p class="d-note">Кузов 10 м³. Расчёт предварительный,
       точную сумму называем по заявке.</p>
-    </output>
+    </div>
     <p class="d-promo"><b class="d-promo-pct">5%</b><span>Скидка 5% при заявке через MAX или сайт</span></p>
 <div class="d-cta-row">
   <a class="d-btn d-btn-max" href="https://max.ru/u/f9LHodD0cOIgiq2N2buCj7oU32e1sbUDdW834GzM718dViUBpco7KXS8n10" target="_blank" rel="noopener" onclick="try{ym(110405092,'reachGoal','call')}catch(e){}">Написать в MAX</a>
@@ -635,7 +639,7 @@
   <div class="d-slides" tabindex="0">
     <figure class="d-slide">
       <picture>
-        <source type="image/webp" srcset="/dostavka/assets/img/dostavki/samosval-vygruzka-krupnyy-shcheben-800.webp 800w, /dostavka/assets/img/dostavki/samosval-vygruzka-krupnyy-shcheben-1600.webp 1600w" sizes="(max-width:700px) 88vw, 760px">
+        <source type="image/webp" srcset="/dostavka/assets/img/dostavki/samosval-vygruzka-krupnyy-shcheben-480.webp 480w, /dostavka/assets/img/dostavki/samosval-vygruzka-krupnyy-shcheben-800.webp 800w, /dostavka/assets/img/dostavki/samosval-vygruzka-krupnyy-shcheben-1600.webp 1600w" sizes="(max-width:700px) 88vw, 760px">
         <img src="/dostavka/assets/img/dostavki/samosval-vygruzka-krupnyy-shcheben.jpg" srcset="/dostavka/assets/img/dostavki/samosval-vygruzka-krupnyy-shcheben-1200.jpg 1200w, /dostavka/assets/img/dostavki/samosval-vygruzka-krupnyy-shcheben.jpg 1500w" sizes="(max-width:700px) 88vw, 760px"
              alt="Трёхосный самосвал с поднятым кузовом выгружает крупный щебень на участке у леса" width="1500" height="1125" loading="lazy" decoding="async">
       </picture>
@@ -643,7 +647,7 @@
     </figure>
     <figure class="d-slide">
       <picture>
-        <source type="image/webp" srcset="/dostavka/assets/img/dostavki/samosval-shcheben-k-domu-800.webp 800w, /dostavka/assets/img/dostavki/samosval-shcheben-k-domu-1600.webp 1600w" sizes="(max-width:700px) 88vw, 760px">
+        <source type="image/webp" srcset="/dostavka/assets/img/dostavki/samosval-shcheben-k-domu-480.webp 480w, /dostavka/assets/img/dostavki/samosval-shcheben-k-domu-800.webp 800w, /dostavka/assets/img/dostavki/samosval-shcheben-k-domu-1600.webp 1600w" sizes="(max-width:700px) 88vw, 760px">
         <img src="/dostavka/assets/img/dostavki/samosval-shcheben-k-domu.jpg" srcset="/dostavka/assets/img/dostavki/samosval-shcheben-k-domu-1200.jpg 1200w, /dostavka/assets/img/dostavki/samosval-shcheben-k-domu.jpg 1500w" sizes="(max-width:700px) 88vw, 760px"
              alt="Малотоннажный синий самосвал с кузовом щебня на улице частного сектора" width="1500" height="1125" loading="lazy" decoding="async">
       </picture>
@@ -651,7 +655,7 @@
     </figure>
     <figure class="d-slide">
       <picture>
-        <source type="image/webp" srcset="/dostavka/assets/img/dostavki/shcheben-v-kuzove-800.webp 800w, /dostavka/assets/img/dostavki/shcheben-v-kuzove-1600.webp 1600w" sizes="(max-width:700px) 88vw, 760px">
+        <source type="image/webp" srcset="/dostavka/assets/img/dostavki/shcheben-v-kuzove-480.webp 480w, /dostavka/assets/img/dostavki/shcheben-v-kuzove-800.webp 800w, /dostavka/assets/img/dostavki/shcheben-v-kuzove-1600.webp 1600w" sizes="(max-width:700px) 88vw, 760px">
         <img src="/dostavka/assets/img/dostavki/shcheben-v-kuzove.jpg" srcset="/dostavka/assets/img/dostavki/shcheben-v-kuzove-1200.jpg 1200w, /dostavka/assets/img/dostavki/shcheben-v-kuzove.jpg 1125w" sizes="(max-width:700px) 88vw, 760px"
              alt="Щебень в кузове самосвала крупным планом перед выгрузкой" width="1125" height="1500" loading="lazy" decoding="async">
       </picture>
@@ -659,7 +663,7 @@
     </figure>
     <figure class="d-slide">
       <picture>
-        <source type="image/webp" srcset="/dostavka/assets/img/dostavki/vygruzka-v-garazh-800.webp 800w, /dostavka/assets/img/dostavki/vygruzka-v-garazh-1600.webp 1600w" sizes="(max-width:700px) 88vw, 760px">
+        <source type="image/webp" srcset="/dostavka/assets/img/dostavki/vygruzka-v-garazh-480.webp 480w, /dostavka/assets/img/dostavki/vygruzka-v-garazh-800.webp 800w, /dostavka/assets/img/dostavki/vygruzka-v-garazh-1600.webp 1600w" sizes="(max-width:700px) 88vw, 760px">
         <img src="/dostavka/assets/img/dostavki/vygruzka-v-garazh.jpg" srcset="/dostavka/assets/img/dostavki/vygruzka-v-garazh-1200.jpg 1200w, /dostavka/assets/img/dostavki/vygruzka-v-garazh.jpg 1200w" sizes="(max-width:700px) 88vw, 760px"
              alt="Самосвал с поднятым кузовом высыпает щебень прямо в открытые ворота гаража" width="1200" height="1600" loading="lazy" decoding="async">
       </picture>
@@ -667,7 +671,7 @@
     </figure>
     <figure class="d-slide">
       <picture>
-        <source type="image/webp" srcset="/dostavka/assets/img/dostavki/vygruzka-novostroyki-800.webp 800w, /dostavka/assets/img/dostavki/vygruzka-novostroyki-1600.webp 1600w" sizes="(max-width:700px) 88vw, 760px">
+        <source type="image/webp" srcset="/dostavka/assets/img/dostavki/vygruzka-novostroyki-480.webp 480w, /dostavka/assets/img/dostavki/vygruzka-novostroyki-800.webp 800w, /dostavka/assets/img/dostavki/vygruzka-novostroyki-1600.webp 1600w" sizes="(max-width:700px) 88vw, 760px">
         <img src="/dostavka/assets/img/dostavki/vygruzka-novostroyki.jpg" srcset="/dostavka/assets/img/dostavki/vygruzka-novostroyki-1200.jpg 1200w, /dostavka/assets/img/dostavki/vygruzka-novostroyki.jpg 1500w" sizes="(max-width:700px) 88vw, 760px"
              alt="Самосвал выгрузил кучу сыпучего материала мелкой фракции во дворе новостроек" width="1500" height="1125" loading="lazy" decoding="async">
       </picture>
@@ -675,7 +679,7 @@
     </figure>
     <figure class="d-slide">
       <picture>
-        <source type="image/webp" srcset="/dostavka/assets/img/fleet/manipulyator-zagruzka-800.webp 800w, /dostavka/assets/img/fleet/manipulyator-zagruzka-1600.webp 1600w" sizes="(max-width:700px) 88vw, 760px">
+        <source type="image/webp" srcset="/dostavka/assets/img/fleet/manipulyator-zagruzka-480.webp 480w, /dostavka/assets/img/fleet/manipulyator-zagruzka-800.webp 800w, /dostavka/assets/img/fleet/manipulyator-zagruzka-1600.webp 1600w" sizes="(max-width:700px) 88vw, 760px">
         <img src="/dostavka/assets/img/fleet/manipulyator-zagruzka.jpg" srcset="/dostavka/assets/img/fleet/manipulyator-zagruzka-1200.jpg 1200w, /dostavka/assets/img/fleet/manipulyator-zagruzka.jpg 1600w" sizes="(max-width:700px) 88vw, 760px"
              alt="Манипулятор Mitsubishi Fuso с краном на площадке базы, на кузове мешки со стройматериалами" width="1600" height="1066" loading="lazy" decoding="async">
       </picture>
@@ -683,7 +687,7 @@
     </figure>
     <figure class="d-slide">
       <picture>
-        <source type="image/webp" srcset="/dostavka/assets/img/fleet/samosval-karyer-shchebenka-800.webp 800w, /dostavka/assets/img/fleet/samosval-karyer-shchebenka-1600.webp 1600w" sizes="(max-width:700px) 88vw, 760px">
+        <source type="image/webp" srcset="/dostavka/assets/img/fleet/samosval-karyer-shchebenka-480.webp 480w, /dostavka/assets/img/fleet/samosval-karyer-shchebenka-800.webp 800w, /dostavka/assets/img/fleet/samosval-karyer-shchebenka-1600.webp 1600w" sizes="(max-width:700px) 88vw, 760px">
         <img src="/dostavka/assets/img/fleet/samosval-karyer-shchebenka.jpg" srcset="/dostavka/assets/img/fleet/samosval-karyer-shchebenka-1200.jpg 1200w, /dostavka/assets/img/fleet/samosval-karyer-shchebenka.jpg 1600w" sizes="(max-width:700px) 88vw, 760px"
              alt="Самосвал КамАЗ под погрузкой щебня на карьере рядом с дробильно-сортировочной установкой" width="1600" height="1066" loading="lazy" decoding="async">
       </picture>
@@ -691,7 +695,7 @@
     </figure>
     <figure class="d-slide">
       <picture>
-        <source type="image/webp" srcset="/dostavka/assets/img/fleet/betonomeshalka-sitrak-800.webp 800w, /dostavka/assets/img/fleet/betonomeshalka-sitrak-1600.webp 1600w" sizes="(max-width:700px) 88vw, 760px">
+        <source type="image/webp" srcset="/dostavka/assets/img/fleet/betonomeshalka-sitrak-480.webp 480w, /dostavka/assets/img/fleet/betonomeshalka-sitrak-800.webp 800w, /dostavka/assets/img/fleet/betonomeshalka-sitrak-1600.webp 1600w" sizes="(max-width:700px) 88vw, 760px">
         <img src="/dostavka/assets/img/fleet/betonomeshalka-sitrak.jpg" srcset="/dostavka/assets/img/fleet/betonomeshalka-sitrak-1200.jpg 1200w, /dostavka/assets/img/fleet/betonomeshalka-sitrak.jpg 1600w" sizes="(max-width:700px) 88vw, 760px"
              alt="Бетоновоз-миксер SITRAK с барабаном Liebherr на площадке базы" width="1600" height="1066" loading="lazy" decoding="async">
       </picture>
@@ -699,7 +703,7 @@
     </figure>
     <figure class="d-slide">
       <picture>
-        <source type="image/webp" srcset="/dostavka/assets/img/fleet/baza-s-vozduha-800.webp 800w, /dostavka/assets/img/fleet/baza-s-vozduha-1600.webp 1600w" sizes="(max-width:700px) 88vw, 760px">
+        <source type="image/webp" srcset="/dostavka/assets/img/fleet/baza-s-vozduha-480.webp 480w, /dostavka/assets/img/fleet/baza-s-vozduha-800.webp 800w, /dostavka/assets/img/fleet/baza-s-vozduha-1600.webp 1600w" sizes="(max-width:700px) 88vw, 760px">
         <img src="/dostavka/assets/img/fleet/baza-s-vozduha.jpg" srcset="/dostavka/assets/img/fleet/baza-s-vozduha-1200.jpg 1200w, /dostavka/assets/img/fleet/baza-s-vozduha.jpg 1600w" sizes="(max-width:700px) 88vw, 760px"
              alt="Вид с воздуха на производственную базу с силосами, складом ЖБИ и парком техники" width="1600" height="1066" loading="lazy" decoding="async">
       </picture>
@@ -707,7 +711,7 @@
     </figure>
     <figure class="d-slide">
       <picture>
-        <source type="image/webp" srcset="/dostavka/assets/img/fleet/samosval-vygruzka-800.webp 800w, /dostavka/assets/img/fleet/samosval-vygruzka-1600.webp 1600w" sizes="(max-width:700px) 88vw, 760px">
+        <source type="image/webp" srcset="/dostavka/assets/img/fleet/samosval-vygruzka-480.webp 480w, /dostavka/assets/img/fleet/samosval-vygruzka-800.webp 800w, /dostavka/assets/img/fleet/samosval-vygruzka-1600.webp 1600w" sizes="(max-width:700px) 88vw, 760px">
         <img src="/dostavka/assets/img/fleet/samosval-vygruzka.jpg" srcset="/dostavka/assets/img/fleet/samosval-vygruzka-1200.jpg 1200w, /dostavka/assets/img/fleet/samosval-vygruzka.jpg 1600w" sizes="(max-width:700px) 88vw, 760px"
              alt="Самосвал с поднятым кузовом выгружает грунт на площадке, вид сверху" width="1600" height="1237" loading="lazy" decoding="async">
       </picture>
@@ -813,7 +817,7 @@
     <article class="d-shelf-item">
       <div class="d-shelf-ph">
         <picture>
-          <source type="image/webp" srcset="/dostavka/assets/img/shcheben/granit-5-20-tape-160.webp 160w, /dostavka/assets/img/shcheben/granit-5-20-tape-320.webp 320w, /dostavka/assets/img/shcheben/granit-5-20-tape-800.webp 800w, /dostavka/assets/img/shcheben/granit-5-20-tape-1600.webp 1600w" sizes="(max-width:700px) 50vw, 300px">
+          <source type="image/webp" srcset="/dostavka/assets/img/shcheben/granit-5-20-tape-160.webp 160w, /dostavka/assets/img/shcheben/granit-5-20-tape-320.webp 320w, /dostavka/assets/img/shcheben/granit-5-20-tape-480.webp 480w, /dostavka/assets/img/shcheben/granit-5-20-tape-800.webp 800w, /dostavka/assets/img/shcheben/granit-5-20-tape-1600.webp 1600w" sizes="(max-width:700px) 50vw, 300px">
           <img src="/dostavka/assets/img/shcheben/granit-5-20-tape.jpg" srcset="/dostavka/assets/img/shcheben/granit-5-20-tape-1200.jpg 1200w, /dostavka/assets/img/shcheben/granit-5-20-tape.jpg 1600w" sizes="(max-width:700px) 50vw, 300px"
                alt="Щебень 5-20, фотография материала" width="1600" height="1073"
                loading="lazy" decoding="async">
@@ -830,7 +834,7 @@
     <article class="d-shelf-item">
       <div class="d-shelf-ph">
         <picture>
-          <source type="image/webp" srcset="/dostavka/assets/img/shcheben/granit-20-40-macro-160.webp 160w, /dostavka/assets/img/shcheben/granit-20-40-macro-320.webp 320w, /dostavka/assets/img/shcheben/granit-20-40-macro-800.webp 800w, /dostavka/assets/img/shcheben/granit-20-40-macro-1600.webp 1600w" sizes="(max-width:700px) 50vw, 300px">
+          <source type="image/webp" srcset="/dostavka/assets/img/shcheben/granit-20-40-macro-160.webp 160w, /dostavka/assets/img/shcheben/granit-20-40-macro-320.webp 320w, /dostavka/assets/img/shcheben/granit-20-40-macro-480.webp 480w, /dostavka/assets/img/shcheben/granit-20-40-macro-800.webp 800w, /dostavka/assets/img/shcheben/granit-20-40-macro-1600.webp 1600w" sizes="(max-width:700px) 50vw, 300px">
           <img src="/dostavka/assets/img/shcheben/granit-20-40-macro.jpg" srcset="/dostavka/assets/img/shcheben/granit-20-40-macro-1200.jpg 1200w, /dostavka/assets/img/shcheben/granit-20-40-macro.jpg 1600w" sizes="(max-width:700px) 50vw, 300px"
                alt="Щебень 20-40, фотография материала" width="1600" height="1195"
                loading="lazy" decoding="async">
@@ -847,7 +851,7 @@
     <article class="d-shelf-item">
       <div class="d-shelf-ph">
         <picture>
-          <source type="image/webp" srcset="/dostavka/assets/img/shcheben/granit-40-70-hand-800.webp 800w" sizes="(max-width:700px) 50vw, 300px">
+          <source type="image/webp" srcset="/dostavka/assets/img/shcheben/granit-40-70-hand-480.webp 480w, /dostavka/assets/img/shcheben/granit-40-70-hand-800.webp 800w" sizes="(max-width:700px) 50vw, 300px">
           <img src="/dostavka/assets/img/shcheben/granit-40-70-hand.jpg" srcset="/dostavka/assets/img/shcheben/granit-40-70-hand.jpg 896w" sizes="(max-width:700px) 50vw, 300px"
                alt="Щебень 40-70, фотография материала" width="896" height="1200"
                loading="lazy" decoding="async">
@@ -864,7 +868,7 @@
     <article class="d-shelf-item">
       <div class="d-shelf-ph">
         <picture>
-          <source type="image/webp" srcset="/dostavka/assets/img/shcheben/granit-70-120-shtabel-800.webp 800w, /dostavka/assets/img/shcheben/granit-70-120-shtabel-1600.webp 1600w" sizes="(max-width:700px) 50vw, 300px">
+          <source type="image/webp" srcset="/dostavka/assets/img/shcheben/granit-70-120-shtabel-480.webp 480w, /dostavka/assets/img/shcheben/granit-70-120-shtabel-800.webp 800w, /dostavka/assets/img/shcheben/granit-70-120-shtabel-1600.webp 1600w" sizes="(max-width:700px) 50vw, 300px">
           <img src="/dostavka/assets/img/shcheben/granit-70-120-shtabel.jpg" srcset="/dostavka/assets/img/shcheben/granit-70-120-shtabel-1200.jpg 1200w, /dostavka/assets/img/shcheben/granit-70-120-shtabel.jpg 1600w" sizes="(max-width:700px) 50vw, 300px"
                alt="Щебень 70-120, фотография материала" width="1600" height="1200"
                loading="lazy" decoding="async">
@@ -881,7 +885,7 @@
     <article class="d-shelf-item">
       <div class="d-shelf-ph">
         <picture>
-          <source type="image/webp" srcset="/dostavka/assets/img/shcheben/vtorichniy-boy-betona-800.webp 800w, /dostavka/assets/img/shcheben/vtorichniy-boy-betona-1600.webp 1600w" sizes="(max-width:700px) 50vw, 300px">
+          <source type="image/webp" srcset="/dostavka/assets/img/shcheben/vtorichniy-boy-betona-480.webp 480w, /dostavka/assets/img/shcheben/vtorichniy-boy-betona-800.webp 800w, /dostavka/assets/img/shcheben/vtorichniy-boy-betona-1600.webp 1600w" sizes="(max-width:700px) 50vw, 300px">
           <img src="/dostavka/assets/img/shcheben/vtorichniy-boy-betona.jpg" srcset="/dostavka/assets/img/shcheben/vtorichniy-boy-betona-1200.jpg 1200w, /dostavka/assets/img/shcheben/vtorichniy-boy-betona.jpg 1600w" sizes="(max-width:700px) 50vw, 300px"
                alt="Щебень вторичный (бой), фотография материала" width="1600" height="1073"
                loading="lazy" decoding="async">
@@ -898,7 +902,7 @@
     <article class="d-shelf-item">
       <div class="d-shelf-ph">
         <picture>
-          <source type="image/webp" srcset="/dostavka/assets/img/otsev/otsev-hand-160.webp 160w, /dostavka/assets/img/otsev/otsev-hand-320.webp 320w, /dostavka/assets/img/otsev/otsev-hand-800.webp 800w, /dostavka/assets/img/otsev/otsev-hand-1600.webp 1600w" sizes="(max-width:700px) 50vw, 300px">
+          <source type="image/webp" srcset="/dostavka/assets/img/otsev/otsev-hand-160.webp 160w, /dostavka/assets/img/otsev/otsev-hand-320.webp 320w, /dostavka/assets/img/otsev/otsev-hand-480.webp 480w, /dostavka/assets/img/otsev/otsev-hand-800.webp 800w, /dostavka/assets/img/otsev/otsev-hand-1600.webp 1600w" sizes="(max-width:700px) 50vw, 300px">
           <img src="/dostavka/assets/img/otsev/otsev-hand.jpg" srcset="/dostavka/assets/img/otsev/otsev-hand-1200.jpg 1200w, /dostavka/assets/img/otsev/otsev-hand.jpg 1600w" sizes="(max-width:700px) 50vw, 300px"
                alt="Отсев 0-5, фотография материала" width="1600" height="1066"
                loading="lazy" decoding="async">
@@ -915,7 +919,7 @@
     <article class="d-shelf-item">
       <div class="d-shelf-ph">
         <picture>
-          <source type="image/webp" srcset="/dostavka/assets/img/pgs/pgs-kucha-karyer-800.webp 800w, /dostavka/assets/img/pgs/pgs-kucha-karyer-1600.webp 1600w" sizes="(max-width:700px) 50vw, 300px">
+          <source type="image/webp" srcset="/dostavka/assets/img/pgs/pgs-kucha-karyer-480.webp 480w, /dostavka/assets/img/pgs/pgs-kucha-karyer-800.webp 800w, /dostavka/assets/img/pgs/pgs-kucha-karyer-1600.webp 1600w" sizes="(max-width:700px) 50vw, 300px">
           <img src="/dostavka/assets/img/pgs/pgs-kucha-karyer.jpg" srcset="/dostavka/assets/img/pgs/pgs-kucha-karyer-1200.jpg 1200w, /dostavka/assets/img/pgs/pgs-kucha-karyer.jpg 1600w" sizes="(max-width:700px) 50vw, 300px"
                alt="ПГС, фотография материала" width="1600" height="1200"
                loading="lazy" decoding="async">
@@ -932,7 +936,7 @@
     <article class="d-shelf-item">
       <div class="d-shelf-ph">
         <picture>
-          <source type="image/webp" srcset="/dostavka/assets/img/skalnyy-grunt/skala-shtabel-800.webp 800w, /dostavka/assets/img/skalnyy-grunt/skala-shtabel-1600.webp 1600w" sizes="(max-width:700px) 50vw, 300px">
+          <source type="image/webp" srcset="/dostavka/assets/img/skalnyy-grunt/skala-shtabel-480.webp 480w, /dostavka/assets/img/skalnyy-grunt/skala-shtabel-800.webp 800w, /dostavka/assets/img/skalnyy-grunt/skala-shtabel-1600.webp 1600w" sizes="(max-width:700px) 50vw, 300px">
           <img src="/dostavka/assets/img/skalnyy-grunt/skala-shtabel.jpg" srcset="/dostavka/assets/img/skalnyy-grunt/skala-shtabel-1200.jpg 1200w, /dostavka/assets/img/skalnyy-grunt/skala-shtabel.jpg 1600w" sizes="(max-width:700px) 50vw, 300px"
                alt="Скальный грунт (скала), фотография материала" width="1600" height="1600"
                loading="lazy" decoding="async">
@@ -1115,7 +1119,7 @@
   <div class="d-trucks">
     <figure class="d-truck">
       <picture>
-        <source type="image/webp" srcset="/dostavka/assets/img/dostavki/samosval-shcheben-k-domu-800.webp 800w, /dostavka/assets/img/dostavki/samosval-shcheben-k-domu-1600.webp 1600w" sizes="(max-width:700px) 88vw, 340px">
+        <source type="image/webp" srcset="/dostavka/assets/img/dostavki/samosval-shcheben-k-domu-480.webp 480w, /dostavka/assets/img/dostavki/samosval-shcheben-k-domu-800.webp 800w, /dostavka/assets/img/dostavki/samosval-shcheben-k-domu-1600.webp 1600w" sizes="(max-width:700px) 88vw, 340px">
         <img src="/dostavka/assets/img/dostavki/samosval-shcheben-k-domu.jpg" srcset="/dostavka/assets/img/dostavki/samosval-shcheben-k-domu-1200.jpg 1200w, /dostavka/assets/img/dostavki/samosval-shcheben-k-domu.jpg 1500w" sizes="(max-width:700px) 88vw, 340px"
              alt="Малотоннажный синий самосвал с кузовом щебня на улице частного сектора" width="1500" height="1125" loading="lazy" decoding="async">
       </picture>
@@ -1123,7 +1127,7 @@
     </figure>
     <figure class="d-truck">
       <picture>
-        <source type="image/webp" srcset="/dostavka/assets/img/fleet/samosval-karyer-shchebenka-800.webp 800w, /dostavka/assets/img/fleet/samosval-karyer-shchebenka-1600.webp 1600w" sizes="(max-width:700px) 88vw, 340px">
+        <source type="image/webp" srcset="/dostavka/assets/img/fleet/samosval-karyer-shchebenka-480.webp 480w, /dostavka/assets/img/fleet/samosval-karyer-shchebenka-800.webp 800w, /dostavka/assets/img/fleet/samosval-karyer-shchebenka-1600.webp 1600w" sizes="(max-width:700px) 88vw, 340px">
         <img src="/dostavka/assets/img/fleet/samosval-karyer-shchebenka.jpg" srcset="/dostavka/assets/img/fleet/samosval-karyer-shchebenka-1200.jpg 1200w, /dostavka/assets/img/fleet/samosval-karyer-shchebenka.jpg 1600w" sizes="(max-width:700px) 88vw, 340px"
              alt="Самосвал КамАЗ под погрузкой щебня на карьере рядом с дробильно-сортировочной установкой" width="1600" height="1066" loading="lazy" decoding="async">
       </picture>
@@ -1131,7 +1135,7 @@
     </figure>
     <figure class="d-truck">
       <picture>
-        <source type="image/webp" srcset="/dostavka/assets/img/dostavki/samosval-vygruzka-krupnyy-shcheben-800.webp 800w, /dostavka/assets/img/dostavki/samosval-vygruzka-krupnyy-shcheben-1600.webp 1600w" sizes="(max-width:700px) 88vw, 340px">
+        <source type="image/webp" srcset="/dostavka/assets/img/dostavki/samosval-vygruzka-krupnyy-shcheben-480.webp 480w, /dostavka/assets/img/dostavki/samosval-vygruzka-krupnyy-shcheben-800.webp 800w, /dostavka/assets/img/dostavki/samosval-vygruzka-krupnyy-shcheben-1600.webp 1600w" sizes="(max-width:700px) 88vw, 340px">
         <img src="/dostavka/assets/img/dostavki/samosval-vygruzka-krupnyy-shcheben.jpg" srcset="/dostavka/assets/img/dostavki/samosval-vygruzka-krupnyy-shcheben-1200.jpg 1200w, /dostavka/assets/img/dostavki/samosval-vygruzka-krupnyy-shcheben.jpg 1500w" sizes="(max-width:700px) 88vw, 340px"
              alt="Трёхосный самосвал с поднятым кузовом выгружает крупный щебень на участке у леса" width="1500" height="1125" loading="lazy" decoding="async">
       </picture>
@@ -1198,7 +1202,7 @@
   <div class="d-photos">
     <figure>
       <picture>
-        <source type="image/webp" srcset="/dostavka/assets/img/pesok/karyernyy-shtabel-800.webp 800w, /dostavka/assets/img/pesok/karyernyy-shtabel-1600.webp 1600w" sizes="(max-width: 700px) 100vw, 46vw">
+        <source type="image/webp" srcset="/dostavka/assets/img/pesok/karyernyy-shtabel-480.webp 480w, /dostavka/assets/img/pesok/karyernyy-shtabel-800.webp 800w, /dostavka/assets/img/pesok/karyernyy-shtabel-1600.webp 1600w" sizes="(max-width: 700px) 100vw, 46vw">
         <img src="/dostavka/assets/img/pesok/karyernyy-shtabel.jpg" srcset="/dostavka/assets/img/pesok/karyernyy-shtabel-1200.jpg 1200w, /dostavka/assets/img/pesok/karyernyy-shtabel.jpg 1600w" sizes="(max-width: 700px) 100vw, 46vw"
              alt="Штабель карьерного песка высотой в несколько метров на площадке, пасмурное небо" width="1600" height="1066"
              loading="lazy" decoding="async">
@@ -1207,7 +1211,7 @@
     </figure>
     <figure>
       <picture>
-        <source type="image/webp" srcset="/dostavka/assets/img/pesok/peregruzka-greyfer-800.webp 800w, /dostavka/assets/img/pesok/peregruzka-greyfer-1600.webp 1600w" sizes="(max-width: 700px) 100vw, 46vw">
+        <source type="image/webp" srcset="/dostavka/assets/img/pesok/peregruzka-greyfer-480.webp 480w, /dostavka/assets/img/pesok/peregruzka-greyfer-800.webp 800w, /dostavka/assets/img/pesok/peregruzka-greyfer-1600.webp 1600w" sizes="(max-width: 700px) 100vw, 46vw">
         <img src="/dostavka/assets/img/pesok/peregruzka-greyfer.jpg" srcset="/dostavka/assets/img/pesok/peregruzka-greyfer-1200.jpg 1200w, /dostavka/assets/img/pesok/peregruzka-greyfer.jpg 1600w" sizes="(max-width: 700px) 100vw, 46vw"
              alt="Конус песка на площадке перевалки, грейферный ковш крана над ним, рядом вагон-хоппер" width="1600" height="1066"
              loading="lazy" decoding="async">
@@ -1216,7 +1220,7 @@
     </figure>
     <figure>
       <picture>
-        <source type="image/webp" srcset="/dostavka/assets/img/pesok/karyernyy-kucha-karyer-800.webp 800w, /dostavka/assets/img/pesok/karyernyy-kucha-karyer-1600.webp 1600w" sizes="(max-width: 700px) 100vw, 46vw">
+        <source type="image/webp" srcset="/dostavka/assets/img/pesok/karyernyy-kucha-karyer-480.webp 480w, /dostavka/assets/img/pesok/karyernyy-kucha-karyer-800.webp 800w, /dostavka/assets/img/pesok/karyernyy-kucha-karyer-1600.webp 1600w" sizes="(max-width: 700px) 100vw, 46vw">
         <img src="/dostavka/assets/img/pesok/karyernyy-kucha-karyer.jpg" srcset="/dostavka/assets/img/pesok/karyernyy-kucha-karyer-1200.jpg 1200w, /dostavka/assets/img/pesok/karyernyy-kucha-karyer.jpg 1600w" sizes="(max-width: 700px) 100vw, 46vw"
              alt="Высокая куча жёлтого песка на карьере, по земле следы протектора погрузчика" width="1600" height="1600"
              loading="lazy" decoding="async">
@@ -1617,7 +1621,7 @@
     <article class="d-shelf-item">
       <div class="d-shelf-ph">
         <picture>
-          <source type="image/webp" srcset="/dostavka/assets/img/shcheben/granit-20-40-shtabel-800.webp 800w, /dostavka/assets/img/shcheben/granit-20-40-shtabel-1600.webp 1600w" sizes="(max-width:700px) 50vw, 260px">
+          <source type="image/webp" srcset="/dostavka/assets/img/shcheben/granit-20-40-shtabel-480.webp 480w, /dostavka/assets/img/shcheben/granit-20-40-shtabel-800.webp 800w, /dostavka/assets/img/shcheben/granit-20-40-shtabel-1600.webp 1600w" sizes="(max-width:700px) 50vw, 260px">
           <img src="/dostavka/assets/img/shcheben/granit-20-40-shtabel.jpg" srcset="/dostavka/assets/img/shcheben/granit-20-40-shtabel-1200.jpg 1200w, /dostavka/assets/img/shcheben/granit-20-40-shtabel.jpg 1600w" sizes="(max-width:700px) 50vw, 260px"
                alt="Щебень, фотография материала" width="1600" height="1600"
                loading="lazy" decoding="async">
@@ -1633,7 +1637,7 @@
     <article class="d-shelf-item">
       <div class="d-shelf-ph">
         <picture>
-          <source type="image/webp" srcset="/dostavka/assets/img/otsev/otsev-shtabel-800.webp 800w, /dostavka/assets/img/otsev/otsev-shtabel-1600.webp 1600w" sizes="(max-width:700px) 50vw, 260px">
+          <source type="image/webp" srcset="/dostavka/assets/img/otsev/otsev-shtabel-480.webp 480w, /dostavka/assets/img/otsev/otsev-shtabel-800.webp 800w, /dostavka/assets/img/otsev/otsev-shtabel-1600.webp 1600w" sizes="(max-width:700px) 50vw, 260px">
           <img src="/dostavka/assets/img/otsev/otsev-shtabel.jpg" srcset="/dostavka/assets/img/otsev/otsev-shtabel-1200.jpg 1200w, /dostavka/assets/img/otsev/otsev-shtabel.jpg 1600w" sizes="(max-width:700px) 50vw, 260px"
                alt="Отсев 0-5, фотография материала" width="1600" height="1066"
                loading="lazy" decoding="async">
@@ -1649,7 +1653,7 @@
     <article class="d-shelf-item">
       <div class="d-shelf-ph">
         <picture>
-          <source type="image/webp" srcset="/dostavka/assets/img/pgs/pgs-kucha-karyer-800.webp 800w, /dostavka/assets/img/pgs/pgs-kucha-karyer-1600.webp 1600w" sizes="(max-width:700px) 50vw, 260px">
+          <source type="image/webp" srcset="/dostavka/assets/img/pgs/pgs-kucha-karyer-480.webp 480w, /dostavka/assets/img/pgs/pgs-kucha-karyer-800.webp 800w, /dostavka/assets/img/pgs/pgs-kucha-karyer-1600.webp 1600w" sizes="(max-width:700px) 50vw, 260px">
           <img src="/dostavka/assets/img/pgs/pgs-kucha-karyer.jpg" srcset="/dostavka/assets/img/pgs/pgs-kucha-karyer-1200.jpg 1200w, /dostavka/assets/img/pgs/pgs-kucha-karyer.jpg 1600w" sizes="(max-width:700px) 50vw, 260px"
                alt="ПГС и ОПГС, фотография материала" width="1600" height="1200"
                loading="lazy" decoding="async">
@@ -1665,7 +1669,7 @@
     <article class="d-shelf-item">
       <div class="d-shelf-ph">
         <picture>
-          <source type="image/webp" srcset="/dostavka/assets/img/graviy/graviy-hand-800.webp 800w, /dostavka/assets/img/graviy/graviy-hand-1600.webp 1600w" sizes="(max-width:700px) 50vw, 260px">
+          <source type="image/webp" srcset="/dostavka/assets/img/graviy/graviy-hand-480.webp 480w, /dostavka/assets/img/graviy/graviy-hand-800.webp 800w, /dostavka/assets/img/graviy/graviy-hand-1600.webp 1600w" sizes="(max-width:700px) 50vw, 260px">
           <img src="/dostavka/assets/img/graviy/graviy-hand.jpg" srcset="/dostavka/assets/img/graviy/graviy-hand-1200.jpg 1200w, /dostavka/assets/img/graviy/graviy-hand.jpg 1600w" sizes="(max-width:700px) 50vw, 260px"
                alt="Гравий, фотография материала" width="1600" height="1066"
                loading="lazy" decoding="async">
@@ -1735,11 +1739,11 @@
     <p class="d-phone-bottom"><a href="tel:+79506460953" onclick="try{ym(110405092,'reachGoal','call')}catch(e){}">+7 950 646-09-53</a></p>
   </div>
 </footer>
-<script src="/dostavka/assets/wa.js?v=6c55e5c6" defer></script>
-<script src="/dostavka/assets/calc.js?v=6c55e5c6" defer></script>
+<script src="/dostavka/assets/wa.min.js?v=ca25922e" defer></script>
+<script src="/dostavka/assets/calc.min.js?v=ca25922e" defer></script>
 
 
-<div class="d-float" aria-label="Написать нам">
+<div class="d-float">
   <a class="d-float-btn" href="https://max.ru/u/f9LHodD0cOIgiq2N2buCj7oU32e1sbUDdW834GzM718dViUBpco7KXS8n10" target="_blank" rel="noopener"
      aria-label="Написать в MAX, ответим за 5 минут"
      onclick="try{ym(110405092,'reachGoal','call')}catch(e){}">
