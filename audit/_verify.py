@@ -8,6 +8,7 @@
 Запуск: python3 audit/_verify.py
 """
 import io, json, os, re, sys, glob, collections, difflib, datetime
+import html as html_mod
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DIR = os.path.join(ROOT, "dostavka")
@@ -381,6 +382,24 @@ if os.path.exists(_css_path):
     for _c in sorted(_defined):
         if _c.startswith("d-") and _c not in _used:
             bad("(стили)", "css", "стиль для %r написан, но такого класса в разметке нет" % _c)
+
+# --- 33. описание страницы: не длиннее 160 знаков и не обрублено
+# Подбор длины (fit_range в build.py) при нехватке места резал строку
+# по словам, и в выдачу уходило «...самосвалы от 4 до 26 кубов, оплата
+# после.» на двадцати городских страницах. Обрыв узнаём по последнему
+# слову, которое не может закончить фразу.
+_DANGLE = {"после", "оплата", "от", "и", "в", "по", "с", "на", "за", "без", "до", "для",
+           "самосвалы", "или"}
+for _u, _h in pages.items():
+    _m = re.search(r'<meta name="description" content="([^"]*)"', _h)
+    if not _m:
+        continue
+    _d = html_mod.unescape(_m.group(1))
+    if len(_d) > 160:
+        bad(_u, "описание", "длиннее 160 знаков: %d" % len(_d))
+    _last = _d.rstrip(" .").split()[-1].lower() if _d.strip() else ""
+    if _last in _DANGLE:
+        bad(_u, "описание", "обрублено на «%s»: ...%s" % (_last, _d[-50:]))
 
 # --- 32. реклама РСЯ только в информационных статьях
 # Владелец решил: на продающих страницах ничто не должно уводить

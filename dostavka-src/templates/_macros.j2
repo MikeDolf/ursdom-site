@@ -296,12 +296,14 @@
   <input type="hidden" name="redirect" value="{{ cfg.domain }}{{ cfg.base }}spasibo/">
   <input type="hidden" name="subject" value="Заявка: {{ subject }}">
   <input type="hidden" name="from_name" value="{{ cfg.brand }}, сайт">
-  {# Ловушка для ботов. Скрыта уводом за экран, а не display:none: часть
-     ботов такие поля пропускает. Для скринридера её быть не должно,
-     поэтому aria-hidden и tabindex="-1": без них Lighthouse справедливо
-     ругался на поле формы без подписи. #}
-  <input type="text" name="botcheck" class="d-hp" tabindex="-1" autocomplete="off"
-         aria-hidden="true" aria-label="Оставьте это поле пустым">
+  {# Ловушка для ботов: галочка, как в документации Web3Forms, а не
+     текстовое поле. Текстовое поле с таким именем могли заполнить
+     автозаполнение браузера или менеджер паролей, и тогда Web3Forms молча
+     отбрасывал живую заявку как спам. Галочку автозаполнение не трогает.
+     Скрыта уводом за экран; aria-hidden и tabindex="-1", чтобы её не
+     находили скринридер и клавиатура. #}
+  <input type="checkbox" name="botcheck" class="d-hp" tabindex="-1"
+         aria-hidden="true" aria-label="Не отмечайте">
   {# Обязательных полей два: телефон и согласие. Имя необязательное:
      без него заявка всё равно доходит, а каждое лишнее обязательное
      поле на телефоне это ещё одна причина бросить форму. autocomplete
@@ -404,12 +406,17 @@
 <p class="d-promo{% if cls %} {{ cls }}{% endif %}"><b class="d-promo-pct">{{ cfg.promo_pct }}%</b><span>{{ cfg.promo }}</span></p>
 {%- endmacro %}
 
+{# Под кнопкой MAX запасной путь. За квартал на MAX нажали около десяти
+   человек, а написали двое: у остальных, судя по всему, нет MAX или они
+   не стали в нём регистрироваться, и на этом всё заканчивалось. Строка
+   ведёт их к форме, где нужен только телефон. #}
 {% macro channels(cfg, third_href=None, third_text=None, center=False) -%}
 {{ promo(cfg) }}
 <div class="d-cta-row{% if center %} d-center-row{% endif %}">
   <a class="d-btn d-btn-max" href="{{ cfg.max_url }}" target="_blank" rel="noopener" onclick="try{ym({{ cfg.metrika_id }},'reachGoal','{{ cfg.goal_contact }}')}catch(e){}">Написать в MAX</a>
 {% if third_href %}  <a class="d-btn d-btn-ghost" href="{{ third_href }}">{{ third_text }}</a>
 {% endif %}</div>
+<p class="d-nomax">Нет MAX? <a href="#zayavka">Оставьте телефон</a>, {{ cfg.callback_promise }}.</p>
 {%- endmacro %}
 
 {# Материалы для этой работы: название со ссылкой на товар, цена,
@@ -870,8 +877,8 @@
     <input type="hidden" name="redirect" value="{{ cfg.domain }}{{ cfg.base }}spasibo/">
     <input type="hidden" name="subject" value="Быстрая заявка: {{ subject }}">
     <input type="hidden" name="from_name" value="{{ cfg.brand }}, сайт">
-    <input type="text" name="botcheck" class="d-hp" tabindex="-1" autocomplete="off"
-           aria-hidden="true" aria-label="Оставьте это поле пустым">
+    <input type="checkbox" name="botcheck" class="d-hp" tabindex="-1"
+           aria-hidden="true" aria-label="Не отмечайте">
     <label for="qf-phone">Телефон</label>
     <input id="qf-phone" type="tel" name="Телефон" placeholder="+7" autocomplete="tel" inputmode="tel" enterkeyhint="next" required>
     <label for="qf-msg">Что и куда привезти</label>
@@ -958,7 +965,7 @@
       <h2 class="d-msgcard-h">Проще написать? Мы в MAX</h2>
       <p>Пришлите размеры площадки или фото участка и адрес: {{ cfg.reply_promise }}, с объёмом и ценой машины.</p>
     </div>
-    {{ channels(cfg) }}
+    <div class="d-msgcard-cta">{{ channels(cfg) }}</div>
   </div>
 </div></section>
 {%- endmacro %}

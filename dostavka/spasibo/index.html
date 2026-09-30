@@ -31,7 +31,7 @@
 <link rel="preconnect" href="https://mc.yandex.ru">
 <link rel="preload" href="/dostavka/assets/fonts/golos-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/dostavka/assets/fonts/mono-num.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/dostavka/assets/dostavka.min.css?v=76931053">
+<link rel="stylesheet" href="/dostavka/assets/dostavka.min.css?v=90cd69d8">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <script type="application/ld+json">
@@ -257,7 +257,7 @@
     <p class="d-phone-bottom"><a href="tel:+79506460953" onclick="try{ym(110405092,'reachGoal','call')}catch(e){}">+7 950 646-09-53</a></p>
   </div>
 </footer>
-<script src="/dostavka/assets/wa.min.js?v=ca25922e" defer></script>
+<script src="/dostavka/assets/wa.min.js?v=9ca93fed" defer></script>
 
 
 
@@ -281,13 +281,23 @@
 
 
 
+
 <script type="text/javascript">
+(function () {
+   var off = false;
+   try {
+     var q = location.search.match(/[?&]notrack=([01])/);
+     if (q) { if (q[1] === "1") localStorage.setItem("ursdom_notrack", "1"); else localStorage.removeItem("ursdom_notrack"); }
+     off = localStorage.getItem("ursdom_notrack") === "1";
+   } catch (e) {}
+   if (off) { window.ym = function () {}; return; }
    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
    m[i].l=1*new Date();
    for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
    k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js?id=110405092", "ym");
    ym(110405092, "init", {ssr:true, webvisor:true, clickmap:true, accurateTrackBounce:true, trackLinks:true});
+})();
 </script>
 <noscript><div><img src="https://mc.yandex.ru/watch/110405092" style="position:absolute; left:-9999px;" alt=""></div></noscript>
 

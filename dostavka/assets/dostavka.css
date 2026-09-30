@@ -1782,3 +1782,20 @@ html{scroll-padding-top:88px}
    отрицательное поле, и соседние зоны нажатия наезжали друг на друга:
    Lighthouse отмечал это на каждой странице (target-size). */
 .d-foot-grid p a{margin-block:0;padding-block:5px}
+
+/* ---------------------------------------------------- запасной путь для MAX
+   «Нет MAX? Оставьте телефон» под каждым рядом с кнопкой MAX. Из десяти
+   человек, нажавших MAX за квартал, написали двое. Строка тихая, чтобы
+   не спорить с зелёной кнопкой, но с ссылкой к форме. */
+.d-nomax{margin:10px 0 0;font-size:15px;line-height:1.45;color:var(--d-ink-2)}
+.d-nomax a{font-weight:700}
+.d-hero2 .d-nomax,.d-band-dark .d-nomax,.d-calc-res .d-nomax,.d-midcta .d-nomax,
+.d-tldr .d-nomax{color:var(--d-on-steel-2)}
+.d-hero2 .d-nomax a,.d-band-dark .d-nomax a,.d-calc-res .d-nomax a,.d-midcta .d-nomax a,
+.d-tldr .d-nomax a{color:var(--d-brass)}
+@media (max-width:560px){.d-hero2-in > .d-nomax{order:5}}
+/* В карточке «Проще написать?» плашка, кнопка и строка про MAX одним
+   столбцом справа от текста, а не тремя колонками гибкого ряда. */
+.d-msgcard-cta{flex:0 1 auto;max-width:26rem}
+.d-msgcard-cta .d-cta-row{margin-top:12px}
+@media (max-width:760px){.d-msgcard-cta{max-width:none}}

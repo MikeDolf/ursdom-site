@@ -158,6 +158,16 @@
         tel.reportValidity();
         return;
       }
+      /* Адрес страницы в письме: владелец видит, откуда заявка (город,
+         материал), не переспрашивая. Добавляется в момент отправки,
+         чтобы в разметке не было поля без подписи. */
+      if (!form.querySelector('input[name="Страница"]')) {
+        var pg = document.createElement("input");
+        pg.type = "hidden";
+        pg.name = "Страница";
+        pg.value = location.origin + location.pathname;
+        form.appendChild(pg);
+      }
       if (btn) {
         btn.disabled = true;
         btn.textContent = "Отправляем заявку...";

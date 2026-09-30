@@ -177,13 +177,29 @@
    контент и требовало закрытия кнопкой. Панель и виджет разведены
    по высоте и больше не пересекаются. #}
 
+{# Свои визиты не в Метрику. За квартал 13 из 27 «переходов в MAX» дал
+   один телефон владельца, и конверсия сайта выглядела вдвое лучше, чем
+   есть. Открыть любую страницу раздела с ?notrack=1 на своём телефоне
+   или компьютере: браузер запомнит метку, и счётчик на нём больше не
+   грузится. ?notrack=0 снимает метку. Фильтр Метрики «Не учитывать мои
+   визиты» работает только там, где вы вошли в аккаунт Яндекса, а этот
+   на любом устройстве. #}
 <script type="text/javascript">
+(function () {
+   var off = false;
+   try {
+     var q = location.search.match(/[?&]notrack=([01])/);
+     if (q) { if (q[1] === "1") localStorage.setItem("ursdom_notrack", "1"); else localStorage.removeItem("ursdom_notrack"); }
+     off = localStorage.getItem("ursdom_notrack") === "1";
+   } catch (e) {}
+   if (off) { window.ym = function () {}; return; }
    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
    m[i].l=1*new Date();
    for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
    k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js?id={{ cfg.metrika_id }}", "ym");
    ym({{ cfg.metrika_id }}, "init", {ssr:true, webvisor:true, clickmap:true, accurateTrackBounce:true, trackLinks:true});
+})();
 </script>
 <noscript><div><img src="https://mc.yandex.ru/watch/{{ cfg.metrika_id }}" style="position:absolute; left:-9999px;" alt=""></div></noscript>
 {% block tail %}{% endblock %}

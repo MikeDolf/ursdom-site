@@ -67,7 +67,7 @@ from longreads_tovar import TOVAR_LONGREADS
 from tags import TAG_LONGREADS
 from wordstat_cover import WS_FAQ, WS_SECTIONS, WS_LONGREADS, WS_FAM
 FAM.update(WS_FAM)
-from blog import BLOG_RUBRICS, BLOG_OF
+from blog import BLOG_RUBRICS, BLOG_OF, ARTICLE_MATS
 from kupit_cover import KUPIT_ROWS, buyers_ctx
 from kupit_pages import KUPIT_LONGREADS, KUPIT_SECTIONS
 LONGREADS = LONGREADS + WS_LONGREADS + KUPIT_LONGREADS + CORE_LONGREADS + BETON_LONGREADS + ZADACHI_LONGREADS + SMEZH_LONGREADS + BETON2_LONGREADS + GAP_LONGREADS + GAP2_LONGREADS + PLITKA_LONGREADS + BETON3_LONGREADS + SMESI_LONGREADS + SKALA_LONGREADS + REV_LONGREADS + BRENDY_LONGREADS + PESOK_LONGREADS + PRIM_LONGREADS + TOVAR_LONGREADS + TAG_LONGREADS
@@ -412,6 +412,20 @@ def fit_range_multi(bases, lo, hi, extras, dot=False):
 GEO_DESC_PAD = ["", ", без предоплаты",
                 ", объём проверяете по кузову",
                 ", объём проверяете по кузову, без предоплаты"]
+# Для городских страниц первой идёт скидка за заявку онлайн: это настоящее
+# условие владельца, и в выдаче оно отличает сниппет от соседних прайсов.
+GEO_DESC_PAD_SALE = ["", ", скидка 5% за заявку онлайн",
+                     ", без предоплаты, скидка 5% за заявку онлайн",
+                     ", без предоплаты", ", объём проверяете по кузову"]
+
+
+def list_ru(words, limit=3):
+    """«щебень, отсев и песок»; больше limit - «..., песок и другое»."""
+    if len(words) <= 1:
+        return "".join(words)
+    if len(words) <= limit:
+        return ", ".join(words[:-1]) + " и " + words[-1]
+    return ", ".join(words[:limit]) + " и другое"
 TITLE_MAX = 65
 
 
@@ -2023,12 +2037,17 @@ for c in CITIES:
         lots_note=(city_lots(ship_km(c["slug"]))[1] if c["slug"] in CITY_FACTS else None),
         plecho_km=ship_km(c["slug"]),
         hero_bg=hero_bg_for(c["slug"]), hero_price="от %d" % FLOOR["Щебень 20-40"],
-        title=title_pick(f"Доставка щебня {c['prep']}: цена за куб от {_title_floor('Щебень')} руб",
+        # Первым вариантом формулировка запроса: в Вебмастере покупатели
+        # ищут «купить щебень в <город>», а сайт стоит на 4-8 месте
+        # с кликабельностью 1-4%. Цена в заголовке, скидка в описании.
+        title=title_pick(f"Купить щебень {c['loc']} с доставкой: от {_title_floor('Щебень')} руб/м³",
+                         f"Доставка щебня {c['prep']}: цена за куб от {_title_floor('Щебень')} руб",
                          f"Доставка щебня {c['prep']}: от {_title_floor('Щебень')} руб за куб",
                          f"Доставка щебня {c['prep']}: цена за куб"),
-        desc=fit_range(f"Доставка щебня {c['prep']} и в район ({c['dist']}). Гранит, "
-                       "известняк, фракции 20-40, 40-70. Цена за куб, оплата после выгрузки",
-                       150, 160, GEO_DESC_PAD, dot=True),
+        desc=fit_range(f"Купить щебень {c['loc']} с доставкой: гранит и известняк, фракции "
+                       f"20-40 и 40-70 от {_title_floor('Щебень')} руб/м³. {ucfirst(c['dist'])}, "
+                       "оплата после выгрузки",
+                       150, 160, GEO_DESC_PAD_SALE, dot=True),
         h1=f"Доставка щебня {c['prep']}",
         hero_sub=f"Щебень всех фракций с доставкой {c['prep']} и в район. {ucfirst(c['dist'])}. "
                  f"Самосвалы от 4 до 26 кубов, {SITE['payment_short']}",
@@ -2203,13 +2222,14 @@ def gen_mat_city(mkey, price_key, rod, vin, calc_slug):
         htmlp = env.get_template("geoplus.j2").render(
             **BASE_CTX, **hero_ctx(forms["url"]), **buyers_for(forms["url"] + "/" + cs), place=place,
             canonical=DOMAIN + url, crumbs_html=crumbs(crumb_items), jsonld=jl,
-            title=title_pick("Доставка %s %s: цена за куб от %d руб" % (rod, f["prep"], low),
+            title=title_pick("Купить %s %s с доставкой: от %d руб/м³" % (forms["vin"], f["loc"], low),
+                             "Доставка %s %s: цена за куб от %d руб" % (rod, f["prep"], low),
                              "Доставка %s %s: от %d руб за куб" % (rod, f["prep"], low),
                              "Доставка %s %s: цена за куб" % (rod, f["prep"])),
-            desc=fit_range("Доставка %s %s и в район (%s). Цена от %d руб за куб, "
-                           "самосвалы от 4 кубов, оплата после выгрузки"
-                           % (rod, f["prep"], dist, low),
-                           150, 160, GEO_DESC_PAD, dot=True),
+            desc=fit_range("Купить %s %s с доставкой от %d руб за куб (%s). "
+                           "Самосвалы от 4 кубов, оплата после выгрузки"
+                           % (forms["vin"], f["loc"], low, dist),
+                           150, 160, GEO_DESC_PAD_SALE, dot=True),
             h1="Доставка %s %s" % (rod, f["prep"]),
             hero_sub=("%s с доставкой %s и в район. %s. Самосвалы от 4 кубов, %s"
                       % (forms["name"], f["prep"], ucfirst(dist), SITE["payment_short"])),
@@ -2262,12 +2282,14 @@ for c in PESOK_CITIES:
     ]
     htmlp = env.get_template("geoplus.j2").render(
         **BASE_CTX, **hero_ctx("pesok"), **buyers_for("pesok/" + c["slug"]), place=c, canonical=DOMAIN + url, crumbs_html=crumbs(crumb_items), jsonld=jl,
-        title=title_pick(f"Доставка песка {c['prep']}: цена за куб от {_title_floor('Песок')} руб",
+        title=title_pick(f"Купить песок {c['loc']} с доставкой: от {_title_floor('Песок')} руб/м³",
+                         f"Доставка песка {c['prep']}: цена за куб от {_title_floor('Песок')} руб",
                          f"Доставка песка {c['prep']}: карьерный и речной, цена за куб",
                          f"Доставка песка {c['prep']}: цена за куб"),
-        desc=fit_range(f"Доставка песка {c['prep']} и в район ({c['dist']}). Карьерный "
-                       "под отсыпку, речной мытый под бетон. Цена за куб, оплата после выгрузки",
-                       150, 160, GEO_DESC_PAD, dot=True),
+        desc=fit_range(f"Купить песок {c['loc']} с доставкой: карьерный под отсыпку от "
+                       f"{_title_floor('Песок')} руб/м³, речной мытый под бетон. "
+                       f"{ucfirst(c['dist'])}, оплата после выгрузки",
+                       150, 160, GEO_DESC_PAD_SALE, dot=True),
         h1=f"Доставка песка {c['prep']}",
         hero_sub=f"Карьерный и речной песок с доставкой {c['prep']} и в район. {ucfirst(c['dist'])}. "
                  f"Самосвалы от 4 кубов, {SITE['payment_short']}",
@@ -2507,9 +2529,12 @@ for a in LONGREADS:
         price_head=a.get("price_head", ""), order_head=a.get("order_head", ""),
         # Материалы этой работы под «коротко»: рубрика блога, а если
         # статья не из блога, первые строки прайса её семейства.
-        mat_rows=(BLOG_OF[a["slug"]]["mats"] if a["slug"] in BLOG_OF
+        # У самых посещаемых статей свой набор (ARTICLE_MATS в blog.py).
+        mat_rows=(ARTICLE_MATS[a["slug"]][1] if a["slug"] in ARTICLE_MATS
+                  else BLOG_OF[a["slug"]]["mats"] if a["slug"] in BLOG_OF
                   else (_conv["rows"][:3] if _conv else None)),
-        mat_head="Материалы для этой работы с доставкой",
+        mat_head=(ARTICLE_MATS[a["slug"]][0] if a["slug"] in ARTICLE_MATS
+                  else "Материалы для этой работы с доставкой"),
         related_links=list(dict.fromkeys(rel))[:14])
     pages.append((url, htmlp, "longread"))
 
@@ -3012,20 +3037,29 @@ for city_slug, mats in MATRIX.items():
     pair = m1["name"] + (" и " + m2["vin"] if m2 else "")
     h1 = f"{pair} {facts['loc']} с доставкой"
     _fl = _title_floor(m1["name"].split()[0])
-    title = title_pick(f"{m1['name']} {facts['loc']}: доставка, цена за куб от {_fl} руб",
+    title = title_pick(f"Купить {m1['vin']} {facts['loc']} с доставкой: от {_fl} руб/м³",
+                       f"{m1['name']} {facts['loc']}: доставка, цена за куб от {_fl} руб",
                        f"{m1['name']} {facts['loc']} с доставкой: от {_fl} руб за куб",
                        f"{m1['name']} {facts['loc']}: доставка, цена за куб",
                        f"{m1['name']} {facts['loc']}: цена за куб")
-    # Список материалов не идёт в description без ограничения: у города
-    # с пятью материалами строка "щебня, песка, отсева, гравия, керамзита"
-    # сама по себе перебирала весь диапазон. Ограничиваем двумя именами
-    # плюс счётчиком остальных - длина перестаёт зависеть от того, сколько
-    # материалов возит этот конкретный город.
-    _names_str = (", ".join(names) if len(names) <= 2
-                  else ", ".join(names[:2]) + f" и ещё {len(names) - 2}")
-    desc = fit_range(f"Доставка {facts['prep']} и по округу: " + _names_str +
-                     f". Плечо {dist}, самосвалы от 4 до 26 кубов, оплата после выгрузки",
-                     150, 160, GEO_DESC_PAD, dot=True)
+    # Список материалов в description не длиннее трёх имён (list_ru):
+    # у города с пятью материалами полный список сам перебирал диапазон.
+    # «Купить щебень, отсев и песок в Косулино» вместо «Доставка в Косулино:
+    # щебень, песок и ещё 1»: формулировка запроса и без «и ещё 1»,
+    # которое в выдаче читалось как сбой шаблона.
+    # Цена в описании привязана к щебню явно: у отсева и песка свои «от».
+    # Варианты от длинного к короткому: у «Каменска-Уральского» и пяти
+    # материалов полная строка не влезала в 160 и обрезалась на «оплата после.».
+    _vins = [MAT_FORMS[m]['vin'] for m in head]
+    _lead = f"с доставкой, {m1['vin']} от {_fl} руб/м³. Плечо {dist}"
+    _one = f"Купить {m1['vin']} {facts['loc']} с доставкой от {_fl} руб/м³. Плечо {dist}"
+    _bases = [f"{_one}, самосвалы от 4 до 26 кубов, оплата после выгрузки",
+              f"{_one}, оплата после выгрузки"]
+    if len(_vins) > 1:
+        _bases = [f"Купить {list_ru(_vins)} {facts['loc']} {_lead}, самосвалы от 4 до 26 кубов, "
+                  "оплата после выгрузки",
+                  f"Купить {list_ru(_vins)} {facts['loc']} {_lead}, оплата после выгрузки"] + _bases
+    desc = fit_range_multi(_bases, 150, 160, GEO_DESC_PAD_SALE, dot=True)
     hero = (f"Везём " + ", ".join(names) + f" {facts['prep']} самосвалами "
             f"от 4 до 26 кубов. Рейс {pl['tier']}, {dist}: {pl['term']}. "
             f"Оплата после выгрузки, объём проверяете при приёмке.")
