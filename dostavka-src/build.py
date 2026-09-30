@@ -2497,6 +2497,11 @@ for a in LONGREADS:
         cta_after=a["cta_after"], cta_head=a["cta_head"], cta_text=a["cta_text"],
         cta_head2=a.get("cta_head2"), cta_text2=a.get("cta_text2"),
         commercial=a.get("commercial", False),
+        # РСЯ только в информационной статье блога: не продающая
+        # (commercial) и без калькулятора доставки (у таких статей
+        # покупательский запрос, «КамАЗ щебня с доставкой»).
+        ads=(a["kind"] == "article" and a["slug"].startswith("stati/")
+             and not a.get("commercial") and not _calc),
         conv=_conv,
         order_steps=ORDER_STEPS, objections=OBJECTIONS,
         price_head=a.get("price_head", ""), order_head=a.get("order_head", ""),
