@@ -215,7 +215,7 @@
   "published": "2026-07-28"
  },
  "stati/chem-otsypat-uchastok": {
-  "fp": "118379bef78e2b56",
+  "fp": "70107bfbb93515a5",
   "modified": "2026-11-04",
   "published": "2026-07-28"
  },
@@ -285,8 +285,8 @@
   "published": "2026-08-15"
  },
  "stati/frakcii-shchebnya": {
-  "fp": "9cf7249b58fbb850",
-  "modified": "2026-08-15",
+  "fp": "16b97ff53f10238b",
+  "modified": "2026-11-04",
   "published": "2026-08-15"
  },
  "stati/fundament-pod-banyu": {
@@ -670,13 +670,13 @@
   "published": "2026-08-15"
  },
  "stati/skolko-shchebnya-i-peska-na-kub-betona": {
-  "fp": "e11f5ce161aa7e47",
-  "modified": "2026-09-26",
+  "fp": "c1e9122361d83d59",
+  "modified": "2026-11-04",
   "published": "2026-08-11"
  },
  "stati/skolko-shchebnya-nuzhno": {
-  "fp": "90ce0081bc5546c2",
-  "modified": "2026-09-26",
+  "fp": "9a06f484c456b3c6",
+  "modified": "2026-11-04",
   "published": "2026-07-28"
  },
  "stati/skolko-shchebnya-v-kamaze": {
@@ -690,7 +690,7 @@
   "published": "2026-11-04"
  },
  "stati/skolko-vesit-kub": {
-  "fp": "34fde37e7e09ddb8",
+  "fp": "f7ee8b76dddac564",
   "modified": "2026-11-04",
   "published": "2026-08-11"
  },
@@ -750,8 +750,8 @@
   "published": "2026-08-15"
  },
  "stati/vidy-shchebnya": {
-  "fp": "95e8b9bc1ca701d6",
-  "modified": "2026-09-26",
+  "fp": "0c7912c68a6b0abc",
+  "modified": "2026-11-04",
   "published": "2026-09-26"
  },
  "stati/vybrat-trotuarnuyu-plitku": {

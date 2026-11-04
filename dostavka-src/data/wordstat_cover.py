@@ -648,8 +648,10 @@ WS_FAM = {"stati/ukladka-shchebnya": "nerud", "stati/dekorativnyy-shcheben": "ne
           "stati/vidy-shchebnya": "nerud"}
 
 # Ключи из подсказок Вордстата, ноябрь 2026: дописки к существующим страницам.
-from wordstat_cover2 import S as _WS2_S, F as _WS2_F  # noqa: E402
+from wordstat_cover2 import S as _WS2_S, F as _WS2_F, CITY_F as _WS2_CF  # noqa: E402
 for _k, _v in _WS2_S.items():
     WS_SECTIONS[_k] = list(WS_SECTIONS.get(_k, [])) + _v
 for _k, _v in _WS2_F.items():
     WS_FAQ[_k] = list(WS_FAQ.get(_k, [])) + _v
+for _k, _v in _WS2_CF.items():
+    WS_FAQ["city:" + _k] = list(WS_FAQ.get("city:" + _k, [])) + _v
