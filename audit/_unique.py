@@ -77,8 +77,10 @@ def main():
     arts = {"/dostavka/" + a["slug"] + "/": a for a in WS2_LONGREADS}
     # дописки к существующим страницам: проверяется только добавленный текст
     from wordstat_cover2 import S as _S2, F as _F2
-    for _sl in set(_S2) | set(_F2):
-        arts["/dostavka/" + _sl + "/"] = {"sections": _S2.get(_sl, []), "faq": _F2.get(_sl, [])}
+    from wordstat_cover3 import S as _S3, F as _F3
+    for _sl in set(_S2) | set(_F2) | set(_S3) | set(_F3):
+        arts["/dostavka/" + _sl + "/"] = {"sections": _S2.get(_sl, []) + _S3.get(_sl, []),
+                                          "faq": list(_F2.get(_sl, [])) + list(_F3.get(_sl, []))}
     pages = {}
     for p in glob.glob(os.path.join(ROOT, "dostavka", "**", "index.html"), recursive=True):
         u = "/" + os.path.relpath(os.path.dirname(p), ROOT).replace(os.sep, "/") + "/"

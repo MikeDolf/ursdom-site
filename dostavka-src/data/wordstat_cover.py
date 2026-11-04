@@ -655,3 +655,10 @@ for _k, _v in _WS2_F.items():
     WS_FAQ[_k] = list(WS_FAQ.get(_k, [])) + _v
 for _k, _v in _WS2_CF.items():
     WS_FAQ["city:" + _k] = list(WS_FAQ.get("city:" + _k, [])) + _v
+
+# Третья партия Вордстата, ноябрь 2026.
+from wordstat_cover3 import S as _WS3_S, F as _WS3_F  # noqa: E402
+for _k, _v in _WS3_S.items():
+    WS_SECTIONS[_k] = list(WS_SECTIONS.get(_k, [])) + _v
+for _k, _v in _WS3_F.items():
+    WS_FAQ[_k] = list(WS_FAQ.get(_k, [])) + _v

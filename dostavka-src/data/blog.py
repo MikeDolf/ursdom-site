@@ -115,6 +115,10 @@ _WS2_RUBRIC["drenazh"] += ["kolodec-iz-kolec-obustroystvo"]
 _WS2_RUBRIC["blagoustroystvo"] += ["mramornaya-kroshka"]
 _WS2_RUBRIC["beton"] += ["cementno-peschanyy-rastvor"]
 _WS2_RUBRIC.setdefault("vybor", []).append("kvarcevyy-pesok")
+# третья партия
+_WS2_RUBRIC["otsypka"] += ["shlak"]
+_WS2_RUBRIC["fundament"] += ["pogreb"]
+_WS2_RUBRIC["beton"] += ["plitochnyy-kley"]
 for _r in BLOG_RUBRICS:
     _r["slugs"] = list(_r["slugs"]) + _WS2_RUBRIC.get(_r["id"], [])
 

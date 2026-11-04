@@ -1074,3 +1074,5 @@ from longreads_ws2c import WS2C_LONGREADS  # noqa: E402
 WS2_LONGREADS += WS2C_LONGREADS
 from longreads_ws2d import WS2D_LONGREADS  # noqa: E402
 WS2_LONGREADS += WS2D_LONGREADS
+from longreads_ws3 import WS3_LONGREADS  # noqa: E402
+WS2_LONGREADS += WS3_LONGREADS
