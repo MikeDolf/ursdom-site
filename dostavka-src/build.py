@@ -65,12 +65,13 @@ from longreads_pesok import PESOK_LONGREADS
 from longreads_prim import PRIM_LONGREADS
 from longreads_tovar import TOVAR_LONGREADS
 from tags import TAG_LONGREADS
+from longreads_ws2 import WS2_LONGREADS
 from wordstat_cover import WS_FAQ, WS_SECTIONS, WS_LONGREADS, WS_FAM
 FAM.update(WS_FAM)
 from blog import BLOG_RUBRICS, BLOG_OF, ARTICLE_MATS
 from kupit_cover import KUPIT_ROWS, buyers_ctx
 from kupit_pages import KUPIT_LONGREADS, KUPIT_SECTIONS
-LONGREADS = LONGREADS + WS_LONGREADS + KUPIT_LONGREADS + CORE_LONGREADS + BETON_LONGREADS + ZADACHI_LONGREADS + SMEZH_LONGREADS + BETON2_LONGREADS + GAP_LONGREADS + GAP2_LONGREADS + PLITKA_LONGREADS + BETON3_LONGREADS + SMESI_LONGREADS + SKALA_LONGREADS + REV_LONGREADS + BRENDY_LONGREADS + PESOK_LONGREADS + PRIM_LONGREADS + TOVAR_LONGREADS + TAG_LONGREADS
+LONGREADS = LONGREADS + WS_LONGREADS + KUPIT_LONGREADS + CORE_LONGREADS + BETON_LONGREADS + ZADACHI_LONGREADS + SMEZH_LONGREADS + BETON2_LONGREADS + GAP_LONGREADS + GAP2_LONGREADS + PLITKA_LONGREADS + BETON3_LONGREADS + SMESI_LONGREADS + SKALA_LONGREADS + REV_LONGREADS + BRENDY_LONGREADS + PESOK_LONGREADS + PRIM_LONGREADS + TOVAR_LONGREADS + TAG_LONGREADS + WS2_LONGREADS
 
 # Формулировки из выгрузки Вордстата (data/wordstat_cover.py): вопросы
 # в частые вопросы и разделы в конец существующих страниц. Применяются
@@ -2363,7 +2364,7 @@ for _o in LONGREADS:
 # Заголовок товарной страницы лежит не в описании материала, а в конфиге
 # денежной страницы: MATERIALS_* хранит содержание, MONEY_CFG_* - обёртку.
 for _src in (money_cfg, MONEY_CFG_EXT, MONEY_CFG_ZHBI, MONEY_CFG_BETON,
-             MONEY_CFG_GAP, MONEY_CFG_GAP2, MONEY_CFG_GAP3, MONEY_CFG_REV):
+             MONEY_CFG_GAP, MONEY_CFG_GAP2, MONEY_CFG_GAP3, MONEY_CFG_GAP4, MONEY_CFG_REV):
     for _k, _v in _src.items():
         if isinstance(_v, dict) and _v.get("h1"):
             RELATED_TITLE.setdefault(_k, _v["h1"])
@@ -2841,6 +2842,7 @@ for slug, mc in MONEY_CFG_EXT.items():
     htmlp = env.get_template("money.j2").render(
         **BASE_CTX, calc=_calc, has_calc=bool(_calc), canonical=DOMAIN + url, crumbs_html=crumbs(crumb_items),
         **buyers_for(slug), buy_sections=KUPIT_SECTIONS.get(slug, []),
+        extra_sections=WS_SECTIONS.get(slug, []),
         # Цена в title, как у щебня, песка, отсева и ПГС: число то же,
         # что в витрине и в первом экране этой страницы (mc["low"]).
         jsonld=jl, title=title_pick(mc["title"].replace(": цена за куб", ": цена за куб от %s руб" % mc["low"]),
@@ -2890,6 +2892,9 @@ _ZHBI_ALL = dict(MONEY_CFG_ZHBI); _ZHBI_ALL.update(MONEY_CFG_BETON); _ZHBI_ALL.u
 _MAT_ALL = dict(MATERIALS_ZHBI); _MAT_ALL.update(MATERIALS_BETON); _MAT_ALL.update(MATERIALS_GAP); _MAT_ALL.update(MATERIALS_GAP2); _MAT_ALL.update(MATERIALS_GAP3); _MAT_ALL.update(MATERIALS_GAP4); _MAT_ALL.update(MATERIALS_REV)
 for slug, mc in _ZHBI_ALL.items():
     mat = _MAT_ALL[slug]
+    # вопросы и разделы под ключи Вордстата, как у остальных товарных страниц
+    if WS_FAQ.get(slug):
+        mat = dict(mat, faq=list(mat["faq"]) + WS_FAQ[slug])
     url = SITE["base"] + slug + "/"
     crumb_items = [("Главная", "/"), ("Доставка материалов", SITE["base"]),
                    (mat["name"], None)]
@@ -2912,7 +2917,8 @@ for slug, mc in _ZHBI_ALL.items():
             ("/dostavka/", "Все города и материалы")]
     ctx = dict(BASE_CTX)
     _calc = calc_for(slug)
-    ctx.update(buyers_for(slug), buy_sections=KUPIT_SECTIONS.get(slug, []))
+    ctx.update(buyers_for(slug), buy_sections=KUPIT_SECTIONS.get(slug, []),
+               extra_sections=WS_SECTIONS.get(slug, []))
     ctx.update(
         calc=_calc, has_calc=bool(_calc),
         canonical=DOMAIN + url, crumbs_html=crumbs(crumb_items), jsonld=jl,

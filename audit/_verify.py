@@ -670,6 +670,35 @@ try:
 except Exception as _e:
     bad("(купить)", "формулировка", "не удалось проверить: %s" % _e)
 
+# --- 34. ключи Вордстата стоят на своих страницах точным вхождением
+# Владелец: каждый ключ из выгрузки стоит в тексте ровно как в Вордстате,
+# слова, формы и порядок подряд, без вставок. Между словами допустимы
+# запятые, кавычки и скобки, но не точка, двоеточие, точка с запятой:
+# на них _wordstat.segments рвёт предложение. Реестр страница -> ключи
+# в audit/klyuchi-tochnye.json, туда страница попадает, когда дописана.
+try:
+    sys.path.insert(0, os.path.join(ROOT, "audit"))
+    import _wordstat
+    _reg = json.load(io.open(os.path.join(ROOT, "audit", "klyuchi-tochnye.json"), encoding="utf-8"))
+
+    def _strict(qt, segs):
+        n = len(qt)
+        for t in segs:
+            for i in range(len(t) - n + 1):
+                if t[i:i + n] == qt:
+                    return True
+        return False
+    for _u, _keys in sorted(_reg.items()):
+        if _u not in pages:
+            bad(_u, "точный ключ", "страницы нет в сборке")
+            continue
+        _sg = _wordstat.segments(pages[_u])
+        for _q in _keys:
+            if not _strict(_wordstat.query_tokens(_q), _sg):
+                bad(_u, "точный ключ", "нет точного вхождения: «%s»" % _q)
+except Exception as _e:
+    bad("(точные ключи)", "точный ключ", "не удалось проверить: %s" % _e)
+
 # ------------------------------------------------------------------ вывод
 by_kind = collections.Counter(k for _, k, _ in problems)
 print("страниц проверено: %d" % len(pages))

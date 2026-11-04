@@ -1,7 +1,7 @@
 {
  "beton/betononasos": {
-  "fp": "0e661ab917022e6b",
-  "modified": "2026-08-15",
+  "fp": "2c5edbd79cbcf7c7",
+  "modified": "2026-11-04",
   "published": "2026-08-15"
  },
  "beton/cena-za-kub": {
@@ -20,23 +20,23 @@
   "published": "2026-08-16"
  },
  "beton/m200": {
-  "fp": "84fed8983212e6a4",
-  "modified": "2026-08-15",
+  "fp": "d1a68bdd4f0fb7d9",
+  "modified": "2026-11-04",
   "published": "2026-08-15"
  },
  "beton/m250": {
-  "fp": "e18a8c803604b1cc",
-  "modified": "2026-08-15",
+  "fp": "df74b19bcd902c9c",
+  "modified": "2026-11-04",
   "published": "2026-08-15"
  },
  "beton/m300": {
-  "fp": "2a96a4b029148135",
-  "modified": "2026-08-15",
+  "fp": "c45d646da71964a6",
+  "modified": "2026-11-04",
   "published": "2026-08-15"
  },
  "beton/m350": {
-  "fp": "0a1359761e8f9a05",
-  "modified": "2026-08-15",
+  "fp": "3abee7c9b475f43e",
+  "modified": "2026-11-04",
   "published": "2026-08-15"
  },
  "beton/m400": {
@@ -150,19 +150,44 @@
   "published": "2026-07-28"
  },
  "stati/arbolit-i-polistirolbeton": {
-  "fp": "54917f5201ab33a9",
-  "modified": "2026-08-25",
+  "fp": "11791e47e96f3fc5",
+  "modified": "2026-11-04",
   "published": "2026-08-15"
  },
+ "stati/armirovanie-fundamenta": {
+  "fp": "05795f19251f6052",
+  "modified": "2026-11-04",
+  "published": "2026-11-04"
+ },
+ "stati/armopoyas": {
+  "fp": "28b04f1bb0711e5c",
+  "modified": "2026-11-04",
+  "published": "2026-11-04"
+ },
  "stati/behaton": {
-  "fp": "e01e4cfe01a978be",
-  "modified": "2026-09-22",
+  "fp": "718c813ba8d75dd3",
+  "modified": "2026-11-04",
   "published": "2026-08-15"
  },
  "stati/beton-iz-otseva-i-pgs": {
-  "fp": "51de71420026d6ae",
-  "modified": "2026-08-23",
+  "fp": "a7acb6787ea9d314",
+  "modified": "2026-11-04",
   "published": "2026-08-23"
+ },
+ "stati/betonnaya-dorozhka": {
+  "fp": "13747d9c6bba6ed9",
+  "modified": "2026-11-04",
+  "published": "2026-11-04"
+ },
+ "stati/betonnyy-zabor-razmery": {
+  "fp": "6f5328477d516252",
+  "modified": "2026-11-04",
+  "published": "2026-11-04"
+ },
+ "stati/bloki-fbs-razmery": {
+  "fp": "a51d31b498553cdd",
+  "modified": "2026-11-04",
+  "published": "2026-11-04"
  },
  "stati/butovanie-stolbov": {
   "fp": "b7f712bd4cabbcbb",
@@ -170,9 +195,19 @@
   "published": "2026-08-23"
  },
  "stati/cement-m400-i-m500": {
-  "fp": "7132ad9c728ecf85",
-  "modified": "2026-08-15",
+  "fp": "f57ad155600cd063",
+  "modified": "2026-11-04",
   "published": "2026-08-15"
+ },
+ "stati/cementnaya-shtukaturka": {
+  "fp": "97a64460d88defc0",
+  "modified": "2026-11-04",
+  "published": "2026-11-04"
+ },
+ "stati/cementno-peschanyy-rastvor": {
+  "fp": "08e1e8e1f96e4e67",
+  "modified": "2026-11-04",
+  "published": "2026-11-04"
  },
  "stati/cena-kuba-s-dostavkoy": {
   "fp": "ac1025624d04c5c9",
@@ -180,9 +215,14 @@
   "published": "2026-07-28"
  },
  "stati/chem-otsypat-uchastok": {
-  "fp": "664c343d4b5188e9",
-  "modified": "2026-09-25",
+  "fp": "118379bef78e2b56",
+  "modified": "2026-11-04",
   "published": "2026-07-28"
+ },
+ "stati/cokol": {
+  "fp": "18bb726d50bab612",
+  "modified": "2026-11-04",
+  "published": "2026-11-04"
  },
  "stati/cvet-trotuarnoy-plitki": {
   "fp": "5ce81ce6a4b0edfd",
@@ -195,13 +235,18 @@
   "published": "2026-08-23"
  },
  "stati/dekorativnyy-shcheben": {
-  "fp": "32fb71b207237236",
-  "modified": "2026-09-26",
+  "fp": "77cd865c3436131a",
+  "modified": "2026-11-04",
   "published": "2026-09-26"
  },
+ "stati/detskaya-ploshchadka": {
+  "fp": "a688a9f07edaf31b",
+  "modified": "2026-11-04",
+  "published": "2026-11-04"
+ },
  "stati/doroga-k-uchastku": {
-  "fp": "a5be7ecd270b8680",
-  "modified": "2026-08-23",
+  "fp": "18cef396f22b6103",
+  "modified": "2026-11-04",
   "published": "2026-08-23"
  },
  "stati/dorozhka-iz-shchebnya": {
@@ -210,9 +255,14 @@
   "published": "2026-08-23"
  },
  "stati/dorozhki-na-uchastke": {
-  "fp": "5cc85698e557b56c",
-  "modified": "2026-09-22",
+  "fp": "d0e0e6d6d86fa560",
+  "modified": "2026-11-04",
   "published": "2026-08-15"
+ },
+ "stati/dorozhnye-plity-razmery": {
+  "fp": "806f2f7b4fcc95fb",
+  "modified": "2026-11-04",
+  "published": "2026-11-04"
  },
  "stati/dostavka-na-dachu": {
   "fp": "7416e5609ae91991",
@@ -220,8 +270,8 @@
   "published": "2026-07-28"
  },
  "stati/drenazh-uchastka": {
-  "fp": "6e04707f7b061f3d",
-  "modified": "2026-08-23",
+  "fp": "05770319649dbc60",
+  "modified": "2026-11-04",
   "published": "2026-08-23"
  },
  "stati/drenazhnyy-kolodec": {
@@ -239,19 +289,44 @@
   "modified": "2026-08-15",
   "published": "2026-08-15"
  },
+ "stati/fundament-pod-banyu": {
+  "fp": "56d67d5846d42354",
+  "modified": "2026-11-04",
+  "published": "2026-11-04"
+ },
+ "stati/fundament-pod-garazh": {
+  "fp": "2331498f28b4a888",
+  "modified": "2026-11-04",
+  "published": "2026-11-04"
+ },
+ "stati/gazobeton-razmery": {
+  "fp": "d1ab3ef55b57acf9",
+  "modified": "2026-11-04",
+  "published": "2026-11-04"
+ },
  "stati/geotekstil-pod-shcheben": {
   "fp": "00c77c2aebfd4a8c",
   "modified": "2026-09-26",
   "published": "2026-08-23"
  },
  "stati/gidroizolyaciya-betona": {
-  "fp": "f34985e9583d2314",
-  "modified": "2026-09-22",
+  "fp": "a6f5fe25b03b642d",
+  "modified": "2026-11-04",
   "published": "2026-08-15"
  },
+ "stati/gidroizolyaciya-fundamenta": {
+  "fp": "b28543da947134a2",
+  "modified": "2026-11-04",
+  "published": "2026-11-04"
+ },
+ "stati/glubina-promerzaniya": {
+  "fp": "234a13f2af0c0908",
+  "modified": "2026-11-04",
+  "published": "2026-11-04"
+ },
  "stati/gost-na-shcheben-i-pesok": {
-  "fp": "e28755fe4ddf6e90",
-  "modified": "2026-09-06",
+  "fp": "a9fb30864a48adf5",
+  "modified": "2026-11-04",
   "published": "2026-08-15"
  },
  "stati/granitnaya-bruschatka": {
@@ -264,9 +339,14 @@
   "modified": "2026-08-15",
   "published": "2026-08-15"
  },
+ "stati/izvest": {
+  "fp": "ee67339bd3442a93",
+  "modified": "2026-11-04",
+  "published": "2026-11-04"
+ },
  "stati/kakoy-pesok-vybrat": {
-  "fp": "b028e7937c4a5815",
-  "modified": "2026-07-28",
+  "fp": "e2d870f06708904c",
+  "modified": "2026-11-04",
   "published": "2026-07-28"
  },
  "stati/kakoy-shcheben-vybrat": {
@@ -275,8 +355,8 @@
   "published": "2026-07-28"
  },
  "stati/keramzit-frakcii-i-ves": {
-  "fp": "27522336220e25f2",
-  "modified": "2026-09-25",
+  "fp": "794f577e00f3faac",
+  "modified": "2026-11-04",
   "published": "2026-08-15"
  },
  "stati/keramzit-v-styazhke": {
@@ -284,14 +364,19 @@
   "modified": "2026-09-25",
   "published": "2026-08-23"
  },
+ "stati/keramzitoblok": {
+  "fp": "94c30c82e4dfffb0",
+  "modified": "2026-11-04",
+  "published": "2026-11-04"
+ },
  "stati/kladochnaya-smes": {
-  "fp": "1725a0eb7815b404",
-  "modified": "2026-08-16",
+  "fp": "9d87a239dbf61726",
+  "modified": "2026-11-04",
   "published": "2026-08-16"
  },
  "stati/kladochnaya-smes-dlya-pechey": {
-  "fp": "300dc98ced95b67f",
-  "modified": "2026-08-17",
+  "fp": "86f9b31dc7960de0",
+  "modified": "2026-11-04",
   "published": "2026-08-17"
  },
  "stati/klassy-peska": {
@@ -300,23 +385,53 @@
   "published": "2026-08-15"
  },
  "stati/koefficient-uplotneniya": {
-  "fp": "b482b6f8143e8133",
-  "modified": "2026-08-11",
+  "fp": "23f1245b60fa0022",
+  "modified": "2026-11-04",
   "published": "2026-08-11"
  },
  "stati/kolca-zhbi-razmery": {
-  "fp": "367fb51d1a36bae5",
-  "modified": "2026-08-25",
+  "fp": "04136cf2d32010a3",
+  "modified": "2026-11-04",
   "published": "2026-08-15"
+ },
+ "stati/kolodec-iz-kolec-obustroystvo": {
+  "fp": "54fec650413e0855",
+  "modified": "2026-11-04",
+  "published": "2026-11-04"
+ },
+ "stati/kryshki-i-dnishcha-kolodcev": {
+  "fp": "72b06b2ce956f269",
+  "modified": "2026-11-04",
+  "published": "2026-11-04"
+ },
+ "stati/kvarcevyy-pesok": {
+  "fp": "78300233e9184148",
+  "modified": "2026-11-04",
+  "published": "2026-11-04"
+ },
+ "stati/lentochnyy-fundament": {
+  "fp": "7dd7ca980addfa1e",
+  "modified": "2026-11-04",
+  "published": "2026-11-04"
+ },
+ "stati/lestnichnye-marshi": {
+  "fp": "e3dfc63e1ec62a4f",
+  "modified": "2026-11-04",
+  "published": "2026-11-04"
  },
  "stati/lotki-i-dozhdepriemniki": {
-  "fp": "0bed60fbdd353f25",
-  "modified": "2026-09-22",
+  "fp": "f8eb4d25ab52f625",
+  "modified": "2026-11-04",
   "published": "2026-08-15"
  },
+ "stati/lyuki-kolodcev": {
+  "fp": "be1c7aea22bab218",
+  "modified": "2026-11-04",
+  "published": "2026-11-04"
+ },
  "stati/marki-betona": {
-  "fp": "7d56c52456ade560",
-  "modified": "2026-08-25",
+  "fp": "4c5dc3c664661ef7",
+  "modified": "2026-11-04",
   "published": "2026-08-15"
  },
  "stati/materialy-na-dom-po-etapam": {
@@ -329,6 +444,11 @@
   "modified": "2026-08-15",
   "published": "2026-08-15"
  },
+ "stati/mramornaya-kroshka": {
+  "fp": "2cfa55f0606518e7",
+  "modified": "2026-11-04",
+  "published": "2026-11-04"
+ },
  "stati/myagkaya-otmostka": {
   "fp": "093c70f1b88b4ed4",
   "modified": "2026-08-23",
@@ -340,18 +460,23 @@
   "published": "2026-08-16"
  },
  "stati/nasypnaya-plotnost": {
-  "fp": "0b7d16d94d00d5d1",
-  "modified": "2026-09-05",
+  "fp": "ca4cce0a6b6c16cc",
+  "modified": "2026-11-04",
   "published": "2026-08-23"
  },
  "stati/obratnaya-zasypka": {
-  "fp": "9bab701f9beb17d1",
-  "modified": "2026-08-23",
+  "fp": "7cc4270ee94296dc",
+  "modified": "2026-11-04",
   "published": "2026-08-23"
  },
+ "stati/opalubka": {
+  "fp": "3e7a8867229b1692",
+  "modified": "2026-11-04",
+  "published": "2026-11-04"
+ },
  "stati/osnovanie-pod-basseyn": {
-  "fp": "36d813fdeec5b3fd",
-  "modified": "2026-08-23",
+  "fp": "47e0524ebf49747a",
+  "modified": "2026-11-04",
   "published": "2026-08-23"
  },
  "stati/osnovanie-pod-krylco": {
@@ -364,9 +489,14 @@
   "modified": "2026-08-23",
   "published": "2026-08-23"
  },
+ "stati/osnovanie-pod-vorota-i-besedku": {
+  "fp": "7637919d1a912a84",
+  "modified": "2026-11-04",
+  "published": "2026-11-04"
+ },
  "stati/otmostka-vokrug-doma": {
-  "fp": "3b16538405b0819c",
-  "modified": "2026-09-22",
+  "fp": "30d7679992169fa0",
+  "modified": "2026-11-04",
   "published": "2026-08-15"
  },
  "stati/otsev-gde-primenyat": {
@@ -380,18 +510,28 @@
   "published": "2026-08-23"
  },
  "stati/parkovka-iz-shchebnya": {
-  "fp": "fbc4839fdb532964",
-  "modified": "2026-08-23",
+  "fp": "906c3633e7a12487",
+  "modified": "2026-11-04",
   "published": "2026-08-23"
  },
  "stati/pechnoy-rastvor": {
-  "fp": "f7b8cc4ddd73f125",
-  "modified": "2026-10-06",
+  "fp": "43f51598dfbc964a",
+  "modified": "2026-11-04",
   "published": "2026-08-16"
  },
+ "stati/peremychki": {
+  "fp": "af65733bc31368b4",
+  "modified": "2026-11-04",
+  "published": "2026-11-04"
+ },
+ "stati/peskobeton": {
+  "fp": "c406b82ef3c55582",
+  "modified": "2026-11-04",
+  "published": "2026-11-04"
+ },
  "stati/pesok-pod-gazon": {
-  "fp": "2e2250f8169693cb",
-  "modified": "2026-08-23",
+  "fp": "9cbc12238a7482f3",
+  "modified": "2026-11-04",
   "published": "2026-08-23"
  },
  "stati/pesok-pod-plitku": {
@@ -400,8 +540,8 @@
   "published": "2026-08-15"
  },
  "stati/pgs-ili-opgs": {
-  "fp": "554fb4b872c4991b",
-  "modified": "2026-09-25",
+  "fp": "5a69f56ff07234ce",
+  "modified": "2026-11-04",
   "published": "2026-08-15"
  },
  "stati/plastikovyy-sadovyy-bordyur": {
@@ -419,10 +559,25 @@
   "modified": "2026-08-15",
   "published": "2026-08-15"
  },
+ "stati/plitnyy-fundament": {
+  "fp": "513f09372ed8bbb7",
+  "modified": "2026-11-04",
+  "published": "2026-11-04"
+ },
+ "stati/plity-perekrytiya-razmery": {
+  "fp": "eefd5b8792064e04",
+  "modified": "2026-11-04",
+  "published": "2026-11-04"
+ },
  "stati/podushka-pod-fundament": {
-  "fp": "b9af478792254926",
-  "modified": "2026-08-16",
+  "fp": "c763504d3dbe52d9",
+  "modified": "2026-11-04",
   "published": "2026-08-16"
+ },
+ "stati/pol-po-gruntu": {
+  "fp": "ab10b53da0d6f801",
+  "modified": "2026-11-04",
+  "published": "2026-11-04"
  },
  "stati/pol-v-bane": {
   "fp": "740b4d089022fc6b",
@@ -430,9 +585,14 @@
   "published": "2026-08-23"
  },
  "stati/pol-v-garazhe": {
-  "fp": "cfad7561f0df6126",
-  "modified": "2026-09-25",
+  "fp": "d4ac804c603d3e80",
+  "modified": "2026-11-04",
   "published": "2026-08-23"
+ },
+ "stati/porebrik-i-bordyur": {
+  "fp": "180f4f585f6df8f6",
+  "modified": "2026-11-04",
+  "published": "2026-11-04"
  },
  "stati/proizvoditeli-trotuarnoy-plitki": {
   "fp": "8857f3f23ac1e7cb",
@@ -445,8 +605,8 @@
   "published": "2026-08-17"
  },
  "stati/propitki-dlya-betona": {
-  "fp": "45632eefe949e4d8",
-  "modified": "2026-08-15",
+  "fp": "abfe5e2b640b4067",
+  "modified": "2026-11-04",
   "published": "2026-08-15"
  },
  "stati/rashod-na-m2": {
@@ -455,13 +615,13 @@
   "published": "2026-08-23"
  },
  "stati/rastvor-proporcii": {
-  "fp": "db362b63bb3ce432",
-  "modified": "2026-08-15",
+  "fp": "2421fa5123bdacc3",
+  "modified": "2026-11-04",
   "published": "2026-08-15"
  },
  "stati/razmery-bordyurov": {
-  "fp": "1ad3c71690e3e754",
-  "modified": "2026-08-15",
+  "fp": "6056f2a8c691c149",
+  "modified": "2026-11-04",
   "published": "2026-08-15"
  },
  "stati/remontnye-smesi-dlya-betona": {
@@ -469,19 +629,24 @@
   "modified": "2026-09-22",
   "published": "2026-08-15"
  },
+ "stati/rostverk": {
+  "fp": "7f802454460ea213",
+  "modified": "2026-11-04",
+  "published": "2026-11-04"
+ },
  "stati/sadovyy-bordyur": {
-  "fp": "2f5f47d46f39f940",
-  "modified": "2026-08-16",
+  "fp": "bc54a9ad6ba596e4",
+  "modified": "2026-11-04",
   "published": "2026-08-16"
  },
  "stati/septik-iz-kolec": {
-  "fp": "0f3d795090650057",
-  "modified": "2026-08-25",
+  "fp": "90003ad9499c0468",
+  "modified": "2026-11-04",
   "published": "2026-08-23"
  },
  "stati/shcheben-ili-graviy": {
-  "fp": "8cf221907a96549c",
-  "modified": "2026-09-25",
+  "fp": "4e733829eb357932",
+  "modified": "2026-11-04",
   "published": "2026-08-11"
  },
  "stati/shvy-trotuarnoy-plitki": {
@@ -519,14 +684,29 @@
   "modified": "2026-09-26",
   "published": "2026-07-28"
  },
+ "stati/skolko-sohnet-beton": {
+  "fp": "b16d963971962b01",
+  "modified": "2026-11-04",
+  "published": "2026-11-04"
+ },
  "stati/skolko-vesit-kub": {
-  "fp": "022317143cac9435",
-  "modified": "2026-09-26",
+  "fp": "34fde37e7e09ddb8",
+  "modified": "2026-11-04",
   "published": "2026-08-11"
  },
+ "stati/smotrovaya-yama": {
+  "fp": "9dfcdcf19b4cdf21",
+  "modified": "2026-11-04",
+  "published": "2026-11-04"
+ },
+ "stati/stolbchatyy-fundament": {
+  "fp": "eab35933d643d0ec",
+  "modified": "2026-11-04",
+  "published": "2026-11-04"
+ },
  "stati/styazhka-pola": {
-  "fp": "09b4a752e7e19303",
-  "modified": "2026-09-22",
+  "fp": "e96946ace50feac2",
+  "modified": "2026-11-04",
   "published": "2026-08-15"
  },
  "stati/taktilnaya-plitka": {
@@ -540,18 +720,23 @@
   "published": "2026-09-26"
  },
  "stati/ukladka-trotuarnoy-plitki": {
-  "fp": "942b354a825aa10c",
-  "modified": "2026-08-15",
+  "fp": "2cdb33e8a8b91917",
+  "modified": "2026-11-04",
   "published": "2026-08-15"
  },
+ "stati/uplotnenie-grunta": {
+  "fp": "cb78b0cc365804df",
+  "modified": "2026-11-04",
+  "published": "2026-11-04"
+ },
  "stati/ustanovka-bordyura": {
-  "fp": "4e86269341431554",
-  "modified": "2026-09-22",
+  "fp": "7c70b9a3e4abca4b",
+  "modified": "2026-11-04",
   "published": "2026-08-15"
  },
  "stati/uteplenie-keramzitom": {
-  "fp": "96eebd6dc379b4c6",
-  "modified": "2026-08-23",
+  "fp": "43b67247e0e33346",
+  "modified": "2026-11-04",
   "published": "2026-08-23"
  },
  "stati/uzory-plitki": {
@@ -574,14 +759,24 @@
   "modified": "2026-09-22",
   "published": "2026-08-15"
  },
+ "stati/vygrebnaya-yama": {
+  "fp": "da3fd6f8db15f09f",
+  "modified": "2026-11-04",
+  "published": "2026-11-04"
+ },
+ "stati/zaezd-cherez-kanavu": {
+  "fp": "f87af0b15ceeab6f",
+  "modified": "2026-11-04",
+  "published": "2026-11-04"
+ },
  "stati/zames-betona-vedrami": {
-  "fp": "f99ac3bf9a82b58d",
-  "modified": "2026-09-22",
+  "fp": "61558630909909db",
+  "modified": "2026-11-04",
   "published": "2026-08-15"
  },
  "stati/zasypka-podpola": {
-  "fp": "6672a23f721a7cfc",
-  "modified": "2026-08-23",
+  "fp": "a1e1bae9cb22570f",
+  "modified": "2026-11-04",
   "published": "2026-08-23"
  }
 }

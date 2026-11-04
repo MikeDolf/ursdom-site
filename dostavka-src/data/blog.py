@@ -91,6 +91,33 @@ BLOG_RUBRICS = [
 ]
 
 # статья -> рубрика
+# Статьи под ключи Вордстата, ноябрь 2026 (longreads_ws2.py).
+_WS2_RUBRIC = {
+    "fundament": ["lentochnyy-fundament", "bloki-fbs-razmery", "glubina-promerzaniya",
+                  "gidroizolyaciya-fundamenta", "opalubka"],
+    "beton": ["armopoyas", "cementnaya-shtukaturka", "izvest", "smotrovaya-yama"],
+    "otsypka": ["uplotnenie-grunta"],
+}
+# партия 2
+_WS2_RUBRIC["fundament"] += ["rostverk", "plity-perekrytiya-razmery", "peremychki", "lestnichnye-marshi"]
+_WS2_RUBRIC["drenazh"] = ["lyuki-kolodcev", "kryshki-i-dnishcha-kolodcev", "vygrebnaya-yama"]
+_WS2_RUBRIC["dorozhki"] = ["dorozhnye-plity-razmery"]
+_WS2_RUBRIC["blagoustroystvo"] = ["porebrik-i-bordyur", "betonnyy-zabor-razmery"]
+# партия 3
+_WS2_RUBRIC["fundament"] += ["cokol", "armirovanie-fundamenta", "fundament-pod-banyu", "gazobeton-razmery", "keramzitoblok"]
+_WS2_RUBRIC["beton"] += ["peskobeton", "pol-po-gruntu", "skolko-sohnet-beton"]
+_WS2_RUBRIC["blagoustroystvo"] += ["detskaya-ploshchadka"]
+_WS2_RUBRIC["dorozhki"] += ["zaezd-cherez-kanavu"]
+# партия 4
+_WS2_RUBRIC["fundament"] += ["stolbchatyy-fundament", "plitnyy-fundament", "fundament-pod-garazh", "osnovanie-pod-vorota-i-besedku"]
+_WS2_RUBRIC["dorozhki"] += ["betonnaya-dorozhka"]
+_WS2_RUBRIC["drenazh"] += ["kolodec-iz-kolec-obustroystvo"]
+_WS2_RUBRIC["blagoustroystvo"] += ["mramornaya-kroshka"]
+_WS2_RUBRIC["beton"] += ["cementno-peschanyy-rastvor"]
+_WS2_RUBRIC.setdefault("vybor", []).append("kvarcevyy-pesok")
+for _r in BLOG_RUBRICS:
+    _r["slugs"] = list(_r["slugs"]) + _WS2_RUBRIC.get(_r["id"], [])
+
 BLOG_OF = {}
 for _r in BLOG_RUBRICS:
     for _s in _r["slugs"]:
