@@ -105,6 +105,9 @@
   mat.addEventListener("input", render);
   vol.addEventListener("input", render);
   dest.addEventListener("input", render);
+  /* change дублирует input для браузеров, где у select нет события input */
+  mat.addEventListener("change", render);
+  dest.addEventListener("change", render);
   render();
   ui.hidden = false;
   if (stat) stat.hidden = true;

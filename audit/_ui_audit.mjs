@@ -8,7 +8,8 @@ const BASE = 'http://127.0.0.1:8899';
 const urls = JSON.parse(fs.readFileSync(process.argv[2], 'utf8'));
 const VIEW = process.argv[3] === 'desk' ? { width: 1440, height: 900 } : { width: 390, height: 844 };
 
-const browser = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' });
+// Проектный playwright может ждать другую сборку браузера; берём системную.
+const browser = await chromium.launch({ executablePath: process.env.PW_CHROME || '/opt/pw-browsers/chromium' });
 const ctx = await browser.newContext({ viewport: VIEW, deviceScaleFactor: 1 });
 const page = await ctx.newPage();
 
@@ -161,6 +162,8 @@ const PROBE = () => {
 
 const report = {};
 for (const u of urls) {
+  // Страница-заглушка с meta refresh уходит на другой адрес посреди замера.
+  try {
   await page.goto(BASE + u, { waitUntil: 'domcontentloaded' });
   await page.evaluate(() => document.fonts.ready);
   // Панель внизу телефона и плавающая кнопка до прокрутки скрыты
@@ -172,6 +175,7 @@ for (const u of urls) {
   const r = await page.evaluate(PROBE);
   const total = Object.values(r).reduce((a, b) => a + b.length, 0);
   if (total) report[u] = r;
+  } catch (e) { report[u] = { crash: [String(e.message).split('\n')[0].slice(0, 160)] }; }
 }
 await browser.close();
 console.log(JSON.stringify(report, null, 1));

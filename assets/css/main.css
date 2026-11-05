@@ -82,7 +82,12 @@ img, svg { max-width: 100%; height: auto; }
   font-family: var(--sans);
 }
 
+/* Логотип и пункты меню - цели нажатия на телефоне: высота 48px,
+   иначе по ссылке 25px высотой пальцем попадают через раз. */
 .logo {
+  display: inline-flex;
+  align-items: center;
+  min-height: 48px;
   color: #fff;
   text-decoration: none;
   font-weight: 800;
@@ -91,16 +96,18 @@ img, svg { max-width: 100%; height: auto; }
 }
 .logo:hover { color: #ffd9b0; }
 
-.logo .dot { color: var(--cta); }
+/* Точка светлее фирменного оранжевого: на тёмно-синей шапке
+   #b05f16 давал контраст 2,5. */
+.logo .dot { color: #f0a050; }
 
 .site-nav {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.2rem 1.1rem;
+  gap: 0 1.1rem;
   font-size: 0.95rem;
 }
 
-.site-nav a { color: #dbe6ee; text-decoration: none; }
+.site-nav a { color: #dbe6ee; text-decoration: none; display: inline-flex; align-items: center; min-height: 48px; }
 .site-nav a:hover { color: #fff; text-decoration: underline; }
 
 /* Хлебные крошки */
@@ -231,7 +238,10 @@ figcaption {
 .buy-card .btn { margin-top: auto; }
 
 .btn {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
   background: var(--cta);
   color: #fff;
   font-family: var(--sans);

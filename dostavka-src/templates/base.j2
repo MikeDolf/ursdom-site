@@ -65,7 +65,7 @@
    попросил не держать его на виду вообще нигде выше содержимого
    страницы, только внизу, где его ищут осознанно (см. подвал). #}
 <div class="d-topbar"><div class="wrap">
-  <span class="d-topbar-geo">{{ cfg.region }}</span>
+  <span class="d-topbar-geo">{{ cfg.region_bar|default(cfg.region) }}</span>
   <span class="d-topbar-sep" aria-hidden="true"></span>
   <span class="d-topbar-hours">{{ cfg.hours }}</span>
   <span class="d-topbar-sale">{{ cfg.promo }}</span>

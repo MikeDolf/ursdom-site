@@ -210,6 +210,12 @@ table,.d-sieve,.d-cat-price{font-variant-numeric:tabular-nums}
   display:inline-flex;align-items:center;min-height:48px}
 .d-topbar a:hover{color:var(--d-brass)}
 .d-topbar-sale{color:var(--d-brass);font-weight:650}
+/* Планшет: полоса целиком не помещается в строку, и адрес с почтой
+   уезжали на вторую. Регион и часы есть в подвале и на контактах,
+   здесь оставляем скидку, адрес и почту. */
+@media(min-width:721px) and (max-width:1023px){
+  .d-topbar-geo,.d-topbar-sep,.d-topbar-hours{display:none}
+}
 /* На телефоне остаются адрес базы и почта: владелец просил почту
    вернуть, а без региона, режима и скидки строка вмещает обе ссылки.
    Скидка при этом не пропадает - она стоит подписью под призывом

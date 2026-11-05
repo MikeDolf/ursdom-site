@@ -15,7 +15,7 @@
   /* Пробел как разделитель разрядов и запятая как десятичный знак:
      на сайте все числа набраны по русской типографике. */
   function money(n) {
-    return String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+    return String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, "\u00a0");
   }
   function fmt(x) {
     var r = Math.round(x * 10) / 10;
